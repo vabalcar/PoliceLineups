@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "validate",
+            "label": "validate PDF/A-2u",
             "type": "shell",
             "command": "echo",
             "args": [
@@ -28,7 +28,7 @@
         },
         
         {
-            "label": "validate with XML report",
+            "label": "validate PDF/A-2u and generate XML report",
             "type": "shell",
             "command": "echo",
             "args": [
