@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "validate PDF/A-2u",
+            "label": "Validate PDF/A-2u",
             "type": "shell",
             "command": "echo",
             "args": [
@@ -23,12 +23,13 @@
             "group": "test",
             "presentation": {
                 "reveal": "always",
-                "panel": "dedicated"
+                "panel": "dedicated",
+                "clear": true,
+                "echo": false
             }
         },
-        
         {
-            "label": "validate PDF/A-2u and generate XML report",
+            "label": "Validate PDF/A-2u and generate XML report",
             "type": "shell",
             "command": "echo",
             "args": [
@@ -47,8 +48,115 @@
             "group": "test",
             "presentation": {
                 "reveal": "always",
-                "panel": "dedicated"
+                "panel": "dedicated",
+                "clear": true,
+                "echo": false
             }
+        },
+        {
+            "label": "Install API dependencies",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\api"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "install.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Install client dependencies",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\client"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "install.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Install server dependencies",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\server"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "install.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Generate client API",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\client"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "generate-api.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Generate server API",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\server"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "generate-api.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true,
+                "echo": false
+            },
+            "problemMatcher": []
         }
     ]
 }
