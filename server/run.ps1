@@ -1,14 +1,16 @@
-$venvName = 'server-env'
+Write-Host 'Running server...'
+$packageInfo = Get-Content (Join-Path '.' 'package-info.json') | ConvertFrom-Json
+$config = Get-Content (Join-Path '..' 'config' 'server.json') | ConvertFrom-Json
+$venvName = $packageInfo.venvName
 
-Write-Output 'Running server...'
 if ($IsWindows) {
-    & (Join-Path $venvName Scripts activate.ps1)
+    & (Join-Path "$venvName" 'Scripts' 'activate.ps1')
 } else {
-    Start-Process -nnw -Wait -Path 'source' -Args (Join-Path $venvName bin activate)
+    & 'source' (Join-Path "$venvName" 'bin' 'activate')
 }
-$env:FLASK_APP = 'app.py'
 
-& (Join-Path .. common pwsh ctrlc-wrapper.ps1) -Proc (Start-Process -nnw -PassThru -Path 'flask' -Args 'run')
+$env:FLASK_RUN_PORT = $config.port
+& (Join-Path '..' 'common' 'pwsh' 'ctrlc-wrapper.ps1') -Proc (Start-Process -nnw -PassThru -Path 'python' -Args 'app.py')
 
 & deactivate
-Write-Output 'stopped'
+Write-Host 'stopped.'

@@ -1,0 +1,1 @@
+& (Join-Path '.' 'producer.ps1') -Script 'build.ps1' -WD (Join-Path '..' '..')

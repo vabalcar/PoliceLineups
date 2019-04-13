@@ -1,9 +1,7 @@
-$wd = Get-Location
+. (Join-Path '.' 'common' 'pwsh' 'script-executing')
 
-Set-Location api
-& (Join-Path . install.ps1)
-Set-Location $wd
-
-Set-Location client
-& (Join-Path . install.ps1)
-Set-Location $wd
+[Executor]::ExecuteParallelly(@(
+    @{Script = 'install.ps1'; WD = 'api'}, 
+    @{Script = 'install.ps1'; WD = 'server'},
+    @{Script = 'install.ps1'; WD = 'client'}
+))
