@@ -24,7 +24,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
-                "clear": true,
+                "clear": false,
                 "echo": false
             }
         },
@@ -49,7 +49,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
-                "clear": true,
+                "clear": false,
                 "echo": false
             }
         },
@@ -69,28 +69,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
-                "clear": true,
-                "echo": false
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "Install client dependencies",
-            "type": "shell",
-            "options": {
-                "cwd": "${workspaceFolder}\\code\\client"
-            },
-            "command": "pwsh",
-            "args": [
-                "-NoLogo",
-                "-File",
-                "install.ps1"
-            ],
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated",
-                "clear": true,
+                "clear": false,
                 "echo": false
             },
             "problemMatcher": []
@@ -111,13 +90,13 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
-                "clear": true,
+                "clear": false,
                 "echo": false
             },
             "problemMatcher": []
         },
         {
-            "label": "Generate client API",
+            "label": "Install client dependencies",
             "type": "shell",
             "options": {
                 "cwd": "${workspaceFolder}\\code\\client"
@@ -126,13 +105,34 @@
             "args": [
                 "-NoLogo",
                 "-File",
-                "generate-api.ps1"
+                "install.ps1"
             ],
             "group": "build",
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
-                "clear": true,
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Install all dependencies",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "install.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
                 "echo": false
             },
             "problemMatcher": []
@@ -153,9 +153,294 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
-                "clear": true,
+                "clear": false,
                 "echo": false
             },
+            "problemMatcher": []
+        },
+        {
+            "label": "Generate client API",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\client"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "generate-api.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Generate API",
+            "dependsOn": [
+                "Generate server API",
+                "Generate client API"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build server",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\server"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "build.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build client",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\client"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "build.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build all",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "build.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build all [p]",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\common\\pwsh"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "build-all.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Wait for build all [c]",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\common\\pwsh"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "wait-for-build-all.ps1"
+            ],
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run server",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\server"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "run.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run client",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\client"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "run.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run all",
+            "dependsOn": [
+                "Run server",
+                "Run client"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build & run server",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\server"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "build-and-run.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build & run client",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\client"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "build-and-run.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build & run server concurrently",
+            "dependsOn": [
+                "Build all [p]"
+            ],
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\server"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "run.ps1"
+            ],
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build & run client concurrently",
+            "dependsOn": [
+                "Wait for build all [c]"
+            ],
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\client"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "run.ps1"
+            ],
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build & run all",
+            "dependsOn": [
+                "Build & run client concurrently",
+                "Build & run server concurrently"
+            ],
+            "group": "build",
             "problemMatcher": []
         }
     ]

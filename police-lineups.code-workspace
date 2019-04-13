@@ -11,9 +11,13 @@
 		{
 			"path": "code",
 			"name": "Code"
+		},
+		{
+			"path": "code\\server",
+			"name": "Server"
 		}
 	],
-	
+
 	"settings": {
 		"files.associations": {
 			"*.pdf": "xml",
@@ -35,14 +39,14 @@
 			// BibTeX auxiliary files
 			"*.bbl",
 			"*.blg",
-
+	
 			// latexmk auxiliary files
 			"*.fdb_latexmk",
-
+	
 			// SyncTeX auxiliary files
 			"*.synctex.gz",
 			"*.synctex.gz(busy)"
-
+	
 			// *.xmpi and prace.pdf files aren't deleted, since this cleaning is used to remove all uninteresting files created during TeX build process.
 		]
 	}

@@ -23,32 +23,11 @@
             },
             "module": "flask",
             "env": {
-                "FLASK_APP": "app.py"
+                "FLASK_APP": "app.py",
+                "FLASK_RUN_PORT": 6666
             },
             "args": [
                 "run"
-            ]
-        },
-        {
-            "name": "Run client",
-            "type": "PowerShell",
-            "request": "launch",
-            "cwd": "${workspaceFolder}\\code\\client",
-            "script": "${workspaceFolder}\\code\\common\\pwsh\\vscode-wrapper.ps1",
-            "args": [
-                "-Script",
-                "run.ps1"
-            ]
-        },
-        {
-            "name": "Run server",
-            "type": "PowerShell",
-            "request": "launch",
-            "cwd": "${workspaceFolder}\\code\\server",
-            "script": "${workspaceFolder}\\code\\common\\pwsh\\vscode-wrapper.ps1",
-            "args": [
-                "-Script",
-                "run.ps1"
             ]
         }
     ]
