@@ -263,7 +263,7 @@
                 "-File",
                 "build-all.ps1"
             ],
-            "group": "build",
+            "group": "none",
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
