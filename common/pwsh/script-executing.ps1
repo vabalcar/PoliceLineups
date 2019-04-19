@@ -13,9 +13,14 @@ class ScriptExecutor {
     [Queue[ScriptExecutionDescription]] $scriptExecutionDescriptions = [Queue[ScriptExecutionDescription]]::new()
 
     [void] Add([ScriptExecutionDescription] $scriptExecutionDescription) {
-        $script = $scriptExecutionDescription.script
         [int] $curId = ++$this.id
+        $script = $scriptExecutionDescription.script
         [string] $scriptExecutionDescription.outFile = "$script.$curId.out"
+
+        if (($scriptExecutionDescription.wd -eq $null) -or ($scriptExecutionDescription.wd.Length -eq 0)) {
+            $scriptExecutionDescription.wd = '.'
+        }
+
         $this.scriptExecutionDescriptions.Enqueue($scriptExecutionDescription)
     }
 
