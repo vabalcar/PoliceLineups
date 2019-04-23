@@ -1,1 +1,0 @@
-& (Join-Path '.' 'consumer.ps1') -Script 'greetings.ps1'
