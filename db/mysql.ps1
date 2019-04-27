@@ -11,12 +11,12 @@ function Add-SemicolonIfMissing {
         [string] $string = $_
         if ($string.Length -gt 0) {
             if ($string[$string.Length - 1] -ne ';') {
-                "$string;" | Write-Output
+                "$string;"
             } else {
-                $string | Write-Output
+                $string
             }
         } else {
-            ';' | Write-Output
+            ';'
         }
     }
 }
@@ -27,7 +27,7 @@ function Get-TerminatedMysqlStmt {
         [Parameter(Mandatory=$true)] [string] $stmt
     )
 
-    $stmt | Add-SemicolonIfMissing | Write-Output
+    $stmt | Add-SemicolonIfMissing
 }
 
 function Get-MysqlScriptStmt {
@@ -41,7 +41,7 @@ function Get-MysqlScriptStmt {
         [string] $trimmedCurLine = $_.Trim()
         if ($trimmedCurLine.Length -gt 0) {
             if (!$firstNonEmptyLine) {
-                $prevLine | Write-Output
+                $prevLine
             } else {
                 $firstNonEmptyLine = $false
             }
@@ -49,21 +49,27 @@ function Get-MysqlScriptStmt {
         }
     }
     
-    $prevLine | Add-SemicolonIfMissing | Write-Output
+    $prevLine | Add-SemicolonIfMissing
 }
 
 function Get-CSVImportMysqlStmt {
     Param(
         [Parameter(Mandatory=$true)] [string] $csv,
         [Parameter(Mandatory=$true)] [string] $table,
-        [string] $delimiter = (Get-Culture).TextInfo.ListSeparator
+        [string] $delimiter = (Get-Culture).TextInfo.ListSeparator,
+        [string] $encoding = 'utf8BOM',
+        [switch] $purge
     )
+
+    if ($purge) {
+        "DELETE FROM ``$table``"
+    }
 
     [string] $header | Out-Null
     [List[string]] $headerCells = [List[string]]::new()
     [StringBuilder] $sb = [StringBuilder]::new()
 
-    Import-Csv -Path $csv -Delimiter $delimiter -Encoding 'utf8BOM' | ForEach-Object {
+    Import-Csv -Path $csv -Delimiter $delimiter -Encoding $encoding | ForEach-Object {
         if ($null -eq $header) {
             $_ | Get-Member -MemberType NoteProperty | ForEach-Object {
                 $headerCells.Add($_.name)
@@ -91,7 +97,7 @@ function Get-CSVImportMysqlStmt {
         $row = $sb.ToString()
         $sb.Clear() | Out-Null
         
-        "INSERT INTO ``$table`` $header VALUES $row;" | Write-Output
+        "INSERT INTO ``$table`` $header VALUES $row;"
     }
 }
 
@@ -194,7 +200,7 @@ function Invoke-Mysql {
         [switch] $omitCreation,
 
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        [IMysqlStmt] $stmt
+        [IMysqlStmt[]] $stmt
     )
 
     begin {
@@ -239,6 +245,55 @@ function Invoke-Mysql {
             & $_.GetStmtProvider() @description
         } | & 'mysql' @mysqlArgs
     }
+}
+
+function Get-MysqlConstDecl {
+    [CmdletBinding(DefaultParameterSetName='JustFromName')]
+    [OutputType([string])]
+    param (
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [string] $type,
+        
+        [Parameter(Mandatory=$true, ParameterSetName='JustFromName')]
+        [Parameter(ParameterSetName='FromNameAndValue')]
+        [ValidateNotNullOrEmpty()]
+        [string] $name,
+        
+        [Parameter(Mandatory=$true, ParameterSetName='FromNameAndValue')]
+        $value
+    )
+
+    if ($PSCmdlet.ParameterSetName -eq 'JustFromName') {
+        $value = Get-Variable -ValueOnly -Name $name
+    }
+
+    $isString = $type -eq 'string'
+    if ($isString) {
+        $type = "CHAR($($value.Length))"
+    }
+
+    [MysqlStmt]::new(@"
+DROP FUNCTION IF EXISTS $name;
+CREATE FUNCTION $name() RETURNS $type DETERMINISTIC
+    RETURN $(if ($isString) {"'$value'"} else {$value});
+"@)
+}
+
+function Install-Mysql {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$true)] [string] $DBConfigFile
+    )
+
+    $PATH_DELIMITER = [Path]::DirectorySeparatorChar -replace '\\', '\\'
+
+    $stringConstants = 'PATH_DELIMITER' | ForEach-Object {
+        Get-MysqlConstDecl -Type 'string' -Name $_
+    }
+    $procedures = [MysqlScript]::new((Join-Path '.' 'scripts' 'procedures.sql'))
+
+    $stringConstants, $procedures | Invoke-Mysql -DBConfigFile $DBConfigFile
 }
 
 function ConvertTo-Encoding {
@@ -288,37 +343,34 @@ function Export-MysqlTable {
         [string] $delimiter = (Get-Culture).TextInfo.ListSeparator,
         [string] $encoding = 'utf8BOM'
     )
-    
-    $pathHeader = "$path-header.csv"
-    $pathData = "$path-data.csv"
 
     Remove-Item -Force -Path $path *> $null
-    Remove-Item -Force -Path $pathHeader *> $null
-    Remove-Item -Force -Path $pathData *> $null
-
-    $mysqlPathHeader = $pathHeader | ConvertTo-MysqlPath
-    $mysqlPathData = $pathData | ConvertTo-MysqlPath
-
-    $libImport = [MysqlScript]::new((Join-Path '.' 'scripts' 'export-table.sql'))
-    $call = [MysqlStmt]::new("CALL ExportTable('$table','$delimiter','$mysqlPathHeader','$mysqlPathData')")
-    $libImport, $call | Invoke-Mysql -DBConfigFile $DBConfigFile
+    $mysqlPath = $path | ConvertTo-MysqlPath
     
-    if ((Test-Path -Path $pathHeader) -and (Test-Path -Path $pathData)) {
-        [StringBuilder] $sb = [StringBuilder]::new()
-        [bool] $firstLine = $true
-        Get-Content -Path $pathHeader | ForEach-Object {
-            if (!$firstLine) {
-                $sb.Append($delimiter) | Out-Null
-            } else {
-                $firstLine = $false
-            }
-            $sb.Append($_) | Out-Null
-        }
-        $sb.ToString() | Out-File -Path $path -Encoding $encoding
+    $call = [MysqlStmt]::new("CALL ExportTable('$table','$delimiter','$mysqlPath')")
+    $call | Invoke-Mysql -DBConfigFile $DBConfigFile
+    
+    ConvertTo-Encoding -Path $path -InEncoding 'utf8NoBOM' -OutEncoding $encoding
+}
 
-        Get-Content -Path $pathData | Out-File -Append -Encoding $encoding -Path $path
-        
-        Remove-Item -Force -Path $pathHeader
-        Remove-Item -Force -Path $pathData
+function Export-MysqlDB {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)] [string] $DBConfigFile,
+        [Parameter(Mandatory=$true)] [string] $path,
+        [string] $delimiter = (Get-Culture).TextInfo.ListSeparator,
+        [string] $encoding = 'utf8BOM'
+    )
+
+    $timestamp = Get-Date -Format 'o' | ForEach-Object {$_ -replace ":", "."}
+    $path = Join-path $path $timestamp
+    New-Item -ItemType Directory -Force $path | Out-Null
+    $mysqlPath = $path | ConvertTo-MysqlPath
+
+    $call = [MysqlStmt]::new("CALL ExportDB('$delimiter','$pathDelim','$mysqlPath')")
+    $call | Invoke-Mysql -DBConfigFile $DBConfigFile
+
+    Get-ChildItem -Path $path | ForEach-Object {
+        ConvertTo-Encoding -Path $_ -InEncoding 'utf8NoBOM' -OutEncoding $encoding
     }
 }

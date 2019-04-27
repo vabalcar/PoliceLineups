@@ -12,5 +12,9 @@ $mysqlStmts = @(
     #[MysqlCsvImport]::new('users.csv', 'users')
 )
 
+Install-Mysql -DBConfigFile (Join-Path '..' 'config' 'db.json')
+#[MysqlStmt]::new('SELECT PATH_DELIMITER()') | Invoke-Mysql -DBConfigFile (Join-Path '..' 'config' 'db.json') -Force:$force
+
 #$mysqlStmts | Invoke-Mysql -DBConfigFile (Join-Path '..' 'config' 'db.json') -Force:$force
-Export-MysqlTable -DBConfigFile (Join-Path '..' 'config' 'db.json') -Table 'users' -Path 'exported-users.csv' -Delimiter ';'
+#Export-MysqlTable -DBConfigFile (Join-Path '..' 'config' 'db.json') -Table 'users' -Path 'exported-users.csv' -Delimiter ';'
+Export-MysqlDB -DBConfigFile (Join-Path '..' 'config' 'db.json') -Path 'dumps' -Delimiter ';'
