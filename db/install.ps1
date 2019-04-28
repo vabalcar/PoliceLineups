@@ -7,14 +7,6 @@ Param(
 
 . (Join-Path '.' 'mysql.ps1')
 
-$mysqlStmts = @(
-    #[MysqlScript]::new('create-tables.sql'),
-    #[MysqlCsvImport]::new('users.csv', 'users')
-)
-
 Install-Mysql -DBConfigFile (Join-Path '..' 'config' 'db.json')
-#[MysqlStmt]::new('SELECT PATH_DELIMITER()') | Invoke-Mysql -DBConfigFile (Join-Path '..' 'config' 'db.json') -Force:$force
-
-#$mysqlStmts | Invoke-Mysql -DBConfigFile (Join-Path '..' 'config' 'db.json') -Force:$force
-#Export-MysqlTable -DBConfigFile (Join-Path '..' 'config' 'db.json') -Table 'users' -Path 'exported-users.csv' -Delimiter ';'
-Export-MysqlDB -DBConfigFile (Join-Path '..' 'config' 'db.json') -Path 'dumps' -Delimiter ';'
+#Export-MysqlDB -DBConfigFile (Join-Path '..' 'config' 'db.json') -Path 'dumps' -Delimiter ';'
+#Import-MysqlDB -Path (Join-Path 'dumps' '2019-04-28T12.16.34.6070484+02.00') -DBConfigFile (Join-Path '..' 'config' 'db.json') -Delimiter ';' -Purge

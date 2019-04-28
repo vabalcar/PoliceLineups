@@ -62,7 +62,7 @@ function Get-CSVImportMysqlStmt {
     )
 
     if ($purge) {
-        "DELETE FROM ``$table``"
+        "DELETE FROM ``$table``;"
     }
 
     [string] $header | Out-Null
@@ -149,24 +149,23 @@ class MysqlScript : IMysqlStmt {
 
 class MysqlCsvImport : IMysqlStmt {
     hidden [string] $csv
-    hidden [string] $table
-    hidden [string] $delimiter
+    [string] $table
+    [string] $delimiter = (Get-Culture).TextInfo.ListSeparator
+    [string] $encoding = 'utf8BOM'
+    [bool] $purge = $false
 
-    MysqlCsvImport([string] $csv, [string] $table, [string] $delimiter) {
+    MysqlCsvImport([string] $csv) {
         $this.csv = $csv
-        $this.table = $table
-        $this.delimiter = $delimiter
-    }
-
-    MysqlCsvImport([string] $csv, [string] $table) {
-        MysqlCsvImport($csv, $table, (Get-Culture).TextInfo.ListSeparator)
+        $this.table = [Path]::GetFileNameWithoutExtension((Split-Path -Leaf $csv))
     }
     
     [hashtable] GetStmtDescription() {
         return @{
             CSV = $this.csv;
             Table = $this.table;
-            Delimiter = $this.delimiter
+            Delimiter = $this.delimiter;
+            Encoding = $this.encoding;
+            Purge = $this.purge
         }
     }
 
@@ -245,6 +244,39 @@ function Invoke-Mysql {
             & $_.GetStmtProvider() @description
         } | & 'mysql' @mysqlArgs
     }
+}
+
+function Import-MysqlTable {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$true)] [string] $DBConfigFile,
+        [string] $delimiter = (Get-Culture).TextInfo.ListSeparator,
+        [string] $encoding = 'utf8BOM',
+        [switch] $purge,
+
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true)] [string] $csv
+    )
+
+    $input | ForEach-Object {
+        [MysqlCsvImport] $importStmt = [MysqlCsvImport]::new($_)
+        $importStmt.delimiter = $delimiter
+        $importStmt.encoding = $encoding
+        $importStmt.purge = $purge
+        $importStmt
+    } | Invoke-Mysql -DBConfigFile $DBConfigFile
+}
+
+function Import-MysqlDB {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$true)] [string] $DBConfigFile,
+        [Parameter(Mandatory=$true)] [string] $path,
+        [string] $delimiter = (Get-Culture).TextInfo.ListSeparator,
+        [string] $encoding = 'utf8BOM',
+        [switch] $purge
+    )
+
+    Get-ChildItem -Path $path -Include '*.csv' | Import-MysqlTable -DBConfigFile $DBConfigFile -Delimiter $delimiter -Encoding $encoding -Purge:$purge
 }
 
 function Get-MysqlConstDecl {
