@@ -276,7 +276,7 @@ function Import-MysqlDB {
         [switch] $purge
     )
 
-    Get-ChildItem -Path $path -Include '*.csv' | Import-MysqlTable -DBConfigFile $DBConfigFile -Delimiter $delimiter -Encoding $encoding -Purge:$purge
+    Get-ChildItem -Recurse -Path $path -Include '*.csv' | Import-MysqlTable -DBConfigFile $DBConfigFile -Delimiter $delimiter -Encoding $encoding -Purge:$purge
 }
 
 function Get-MysqlConstDecl {
@@ -312,20 +312,15 @@ CREATE FUNCTION $name() RETURNS $type DETERMINISTIC
 "@)
 }
 
-function Install-Mysql {
+function Get-MysqlConstantsInstall {
     [CmdletBinding()]
-    param (
-        [Parameter(Mandatory=$true)] [string] $DBConfigFile
-    )
+    param ()
 
     $PATH_DELIMITER = [Path]::DirectorySeparatorChar -replace '\\', '\\'
 
-    $stringConstants = 'PATH_DELIMITER' | ForEach-Object {
+    'PATH_DELIMITER' | ForEach-Object {
         Get-MysqlConstDecl -Type 'string' -Name $_
     }
-    $procedures = [MysqlScript]::new((Join-Path '.' 'scripts' 'procedures.sql'))
-
-    $stringConstants, $procedures | Invoke-Mysql -DBConfigFile $DBConfigFile
 }
 
 function ConvertTo-Encoding {

@@ -1,12 +1,23 @@
-using namespace System.Text
-using namespace System.IO
-
 Param(
     [switch] $force
 )
 
 . (Join-Path '.' 'mysql.ps1')
 
-Install-Mysql -DBConfigFile (Join-Path '..' 'config' 'db.json')
-#Export-MysqlDB -DBConfigFile (Join-Path '..' 'config' 'db.json') -Path 'dumps' -Delimiter ';'
-#Import-MysqlDB -Path (Join-Path 'dumps' '2019-04-28T12.16.34.6070484+02.00') -DBConfigFile (Join-Path '..' 'config' 'db.json') -Delimiter ';' -Purge
+$installInfoFile = 'install-info.json'
+if (Test-Path $installInfoFile) {
+    if ($force) {
+        Remove-Item $installInfoFile
+    } elseif ((Get-Content -Path $installInfoFile | ConvertFrom-Json).Installed) {
+        "DB already installed" | Out-Host
+        exit
+    }
+}
+
+$DBConfigFile = Join-Path '..' 'config' 'db.json'
+(Get-MysqlConstantsInstall), [MysqlScript]::new('procedures.sql'), [MysqlScript]::new('schema.sql') | Invoke-Mysql -DBConfigFile $DBConfigFile -Force:$force
+Import-MysqlDB -Path (Join-Path 'data' 'init') -DBConfigFile $DBConfigFile -Delimiter ';' -Purge:$force
+
+@{
+    Installed = $true
+} | ConvertTo-Json | Out-File -Path $installInfoFile

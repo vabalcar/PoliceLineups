@@ -6,7 +6,8 @@ $cmdWrapper = (Join-Path '..' 'common' 'pwsh' 'cmd-wrapper.ps1')
 ))
 [Executor]::ExecuteParallelly(@(
     @{Script = 'build.ps1'; WD = 'server'},
-    @{Script = 'build.ps1'; WD = 'client'}
+    @{Script = 'build.ps1'; WD = 'client'},
+    @{Script = 'install.ps1'; WD = 'db'}
 ))
 [Executor]::ExecuteParallelly(@(
     @{Script = 'run.ps1'; WD = 'server'; isExternal = $true; Wrapper = $cmdWrapper},
