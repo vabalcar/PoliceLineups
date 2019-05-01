@@ -54,6 +54,26 @@
             }
         },
         {
+            "label": "Dump DB",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\db"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "dump.ps1"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            }
+        },
+        {
             "label": "Install API dependencies",
             "type": "shell",
             "options": {
@@ -100,6 +120,27 @@
             "type": "shell",
             "options": {
                 "cwd": "${workspaceFolder}\\code\\client"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "install.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Install DB",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code\\db"
             },
             "command": "pwsh",
             "args": [
