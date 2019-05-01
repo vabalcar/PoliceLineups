@@ -62,7 +62,11 @@ class ParallelScriptExecutor : ScriptExecutor {
                     $wd = $args[0]
                     $sd = $args[1]
                     
-                    Set-Location (Join-Path $wd $sd.wd)
+                    if ([System.IO.Path]::IsPathRooted($sd.wd)) {
+                        Set-Location $sd.wd
+                    } else {
+                        Set-Location (Join-Path $wd $sd.wd)
+                    }
                     & (Join-Path '.' $sd.script) *> (Join-Path $wd $sd.outFile)
                     return $sd
                 }

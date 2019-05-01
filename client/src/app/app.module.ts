@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { BASE_PATH } from './api/variables';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -12,7 +14,12 @@ import { AppComponent } from './app.component';
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    {provide: BASE_PATH, useFactory: () => {
+      const serverConfig = require('../../../config/server.json');
+      return `localhost:${serverConfig.port}`;
+    }}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

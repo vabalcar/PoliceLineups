@@ -4,22 +4,19 @@ $venvName = $packageInfo.venvName
 
 Write-Host 'Checking python environment...'
 $virtualenvInstalled = $false
-$pipLsOutFile = 'pip-ls.out'
-& 'pip' 'list' '--format' 'json' > $pipLsOutFile 
-$pipLs = Get-Content $pipLsOutFile | ConvertFrom-Json
+$pipLs = & 'pip' 'list' '--format' 'json' | ConvertFrom-Json
 foreach($package in $pipLs) {
     if ($package.name -eq 'virtualenv') {
         $virtualenvInstalled = $true
         break
     }
 }
-Remove-Item -Path $pipLsOutFile
 
 if (!$virtualenvInstalled) {
     Write-Host 'Installing virtualenv...'
     $pipIOutFile = 'pip-i-virtualenv.out'
     New-Item -Force -Path "." -Type "File" -Name $pipIOutFile | Out-Null
-    $virtualEnvInstallScript = (Join-Path . install-virtualenv.ps1)
+    $virtualEnvInstallScript = (Join-Path '.' 'install-virtualenv.ps1')
     Start-Process -Wait -Verb RunAs -Path 'pwsh' -Args '-NoLogo', '-Command', "& $virtualEnvInstallScript -OutputFile $pipIOutFile"
     Get-Content $pipIOutFile
     Remove-Item -Path $pipIOutFile
