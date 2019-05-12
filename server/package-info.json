@@ -4,6 +4,7 @@
     "venvName": "server-env",
     "dependencies": [
         "flask",
+        "flask_cors",
         "pylint",
         "connexion==1.1.15",
         "python_dateutil==2.6.0",

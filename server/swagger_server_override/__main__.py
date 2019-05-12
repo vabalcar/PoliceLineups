@@ -4,6 +4,7 @@ import connexion
 import os
 
 from swagger_server import encoder
+from flask_cors import CORS
 
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 5000
@@ -15,6 +16,7 @@ def main():
         run_port = DEFAULT_PORT
 
     app = connexion.App(__name__, specification_dir='./swagger/')
+    CORS(app.app)
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api('swagger.yaml', arguments={'title': 'police lineups API'})
     app.run(port=run_port, host=run_host)

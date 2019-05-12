@@ -12,15 +12,15 @@ paths:
       summary: Returns a list of users.
       x-swagger-router-controller: controllers.users
       operationId: getUsers
+      produces: 
+        - "application/json"
       responses:
-        '200':
+        200:
           description: A JSON array of users
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: '#/definitions/User'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
 definitions:
   User:
     type: object
