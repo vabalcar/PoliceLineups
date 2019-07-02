@@ -9,6 +9,7 @@ if ($IsWindows) {
     & 'source' (Join-Path "$venvName" 'bin' 'activate')
 }
 
+$env:FLASK_RUN_HOST = $config.host
 $env:FLASK_RUN_PORT = $config.port
 & (Join-Path '..' 'common' 'pwsh' 'ctrlc-wrapper.ps1') -Proc (Start-Process -nnw -PassThru -Path 'python' -Args 'app.py')
 

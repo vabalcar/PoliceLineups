@@ -22,7 +22,8 @@ import { BASE_PATH } from './api/variables';
   providers: [
     {provide: BASE_PATH, useFactory: () => {
       const serverConfig = require('../../../config/server.json');
-      return `http://localhost:${serverConfig.port}/v1`;
+      const apiConfig = require('../../../api/api.json');
+      return `${apiConfig.schemes[0]}://${serverConfig.host}:${serverConfig.port}${apiConfig.basePath}`;
     }},
     DefaultService
   ],

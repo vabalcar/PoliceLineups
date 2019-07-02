@@ -1,6 +1,7 @@
 . (Join-Path '.' 'common' 'pwsh' 'script-executing')
 
 [Executor]::ExecuteSequentially(@(
+    @{Script = 'check-environment.ps1'},
     @{Script = 'install.ps1'; WD = 'api'}
 ))
 [Executor]::ExecuteParallelly(@(
