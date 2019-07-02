@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "PowerShell",
+            "name": "Debug current PowerShell script",
             "type": "PowerShell",
             "request": "launch",
             "script": "${file}",
@@ -13,22 +13,27 @@
             "cwd": "${file}"
         },
         {
+            // Client must be already launched when debugging an angular script
+            "name": "Debug client",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:4666",
+            "webRoot": "${workspaceFolder}\\code\\client"
+        },
+        {
+            // Launches server
             "name": "Debug server",
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}\\code\\server",
-            //"pythonPath": "${workspaceFolder}\\code\\server\\server-env\\bin\\python",
+            "module": "swagger_server",
             "windows": {
                 "pythonPath": "${workspaceFolder}\\code\\server\\server-env\\Scripts\\python.exe"
             },
-            "module": "flask",
             "env": {
-                "FLASK_APP": "app.py",
-                "FLASK_RUN_PORT": 6666
-            },
-            "args": [
-                "run"
-            ]
+                "FLASK_RUN_HOST": "localhost",
+                "FLASK_RUN_PORT": 8080
+            }
         }
     ]
 }
