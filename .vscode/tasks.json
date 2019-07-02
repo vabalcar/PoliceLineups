@@ -74,6 +74,27 @@
             }
         },
         {
+            "label": "Check environment",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}\\code"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "check-environment.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "Install API dependencies",
             "type": "shell",
             "options": {
