@@ -18,17 +18,17 @@
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost:4666",
-            "webRoot": "${workspaceFolder}\\code\\client"
+            "webRoot": "${workspaceFolder}\\app\\client"
         },
         {
             // Launches server
             "name": "Debug server",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}\\code\\server",
+            "cwd": "${workspaceFolder}\\app\\server",
             "module": "swagger_server",
             "windows": {
-                "pythonPath": "${workspaceFolder}\\code\\server\\server-env\\Scripts\\python.exe"
+                "pythonPath": "${workspaceFolder}\\app\\server\\server-env\\Scripts\\python.exe"
             },
             "env": {
                 "FLASK_RUN_HOST": "localhost",

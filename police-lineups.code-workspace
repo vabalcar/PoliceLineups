@@ -5,15 +5,15 @@
 			"name": "Root"
 		},
 		{
-			"path": "text",
-			"name": "Text"
+			"path": "docs\\thesis",
+			"name": "Thesis"
 		},
 		{
-			"path": "code",
-			"name": "Code"
+			"path": "app",
+			"name": "App"
 		},
 		{
-			"path": "code\\server",
+			"path": "app\\server",
 			"name": "Server"
 		}
 	],
