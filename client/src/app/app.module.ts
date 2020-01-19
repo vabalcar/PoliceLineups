@@ -8,6 +8,10 @@ import { UsersComponent } from './users/users.component';
 
 import { DefaultService } from './api/api/default.service';
 import { BASE_PATH } from './api/variables';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatSliderModule } from '@angular/material/slider';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -17,7 +21,10 @@ import { BASE_PATH } from './api/variables';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatCardModule
   ],
   providers: [
     {provide: BASE_PATH, useFactory: () => {
