@@ -1,0 +1,1 @@
+& (Join-Path '.' 'consumer.ps1') -Script 'build.ps1'
