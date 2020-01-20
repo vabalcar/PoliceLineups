@@ -13,7 +13,7 @@ while ($true) {
 }
 
 if(!(Test-Path -PathType Leaf $outFile)) {
-    $swaggerRepo = "http://central.maven.org/maven2/io/swagger/$swaggerCLIName"
+    $swaggerRepo = "https://repo1.maven.org/maven2/io/swagger/$swaggerCLIName"
     $swaggerVersion = $package.swaggerVersion
     $targetFile = "$swaggerCLIName-$swaggerVersion.jar"
     
