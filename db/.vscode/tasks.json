@@ -43,6 +43,27 @@
                 "echo": false
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Run DB",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "run.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
         }
     ]
 }
