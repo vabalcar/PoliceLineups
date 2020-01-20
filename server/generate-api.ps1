@@ -1,6 +1,16 @@
-Remove-Item -Recurse -Force -Path (Join-Path '.' 'generated') *> $null
-Remove-Item -Recurse -Force -Path (Join-Path '.' 'swagger_server') *> $null
-Remove-Item -Recurse -Force -Path (Join-Path '.' 'swagger_server_requirements') *> $null
+function Remove-FolderSilently {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory = $true)] $Path
+    )
+    if (Test-Path -PathType Container -Path $Path) {
+        Remove-Item -Recurse -Force -Path $Path
+    }
+}
+
+Remove-FolderSilently -Path (Join-Path '.' 'generated')
+Remove-FolderSilently -Path (Join-Path '.' 'swagger_server')
+Remove-FolderSilently -Path (Join-Path '.' 'swagger_server_requirements')
 
 & (Join-Path '..' 'api' 'generate-api.ps1') -Lang 'python-flask' -Dir 'generated'
 
