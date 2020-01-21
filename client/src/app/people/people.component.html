@@ -1,0 +1,21 @@
+<h2>People</h2>
+<mat-grid-list cols="8" rowHeight="550px">
+  <mat-grid-tile *ngFor="let p of people">
+    <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>{{p.name}}</mat-card-title>
+          <mat-card-subtitle>{{p.email}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <mat-slider class="centered-slider" min="1" max="100" step="1" value="1"></mat-slider>
+          <p>
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>Select</button>
+        </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

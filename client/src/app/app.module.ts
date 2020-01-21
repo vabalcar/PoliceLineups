@@ -4,19 +4,24 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UsersComponent } from './users/users.component';
 
 import { DefaultService } from './api/api/default.service';
 import { BASE_PATH } from './api/variables';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSliderModule } from '@angular/material/slider';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatGridListModule } from '@angular/material/grid-list';
+
+import { PeopleComponent } from './people/people.component';
+import { PersonComponent } from './person/person.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UsersComponent
+    PeopleComponent,
+    PersonComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +29,9 @@ import {MatCardModule} from '@angular/material/card';
     HttpClientModule,
     BrowserAnimationsModule,
     MatSliderModule,
-    MatCardModule
+    MatCardModule,
+    MatToolbarModule,
+    MatGridListModule
   ],
   providers: [
     {provide: BASE_PATH, useFactory: () => {
