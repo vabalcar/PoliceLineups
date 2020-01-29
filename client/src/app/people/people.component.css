@@ -1,9 +1,16 @@
+mat-list-item {
+    height: fit-content !important;
+    width: fit-content !important;
+    display: inline-block !important;
+}
+
 .card {
-    max-width: 250px;
-    margin: 50px;
+    width: 200px;
+    height: fit-content;
+    margin: 15px;
 }
 
 .centered-slider {
     margin-left: 25px;
-    width: 200px;
+    min-width: 200px;
 }

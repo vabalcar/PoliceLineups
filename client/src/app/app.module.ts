@@ -12,7 +12,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatGridListModule } from '@angular/material/grid-list';
+import {MatListModule} from '@angular/material/list';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 import { PeopleComponent } from './people/people.component';
 import { PersonComponent } from './person/person.component';
@@ -31,7 +34,10 @@ import { PersonComponent } from './person/person.component';
     MatSliderModule,
     MatCardModule,
     MatToolbarModule,
-    MatGridListModule
+    MatListModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [
     {provide: BASE_PATH, useFactory: () => {
