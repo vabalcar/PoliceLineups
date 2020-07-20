@@ -1,4 +1,10 @@
-Write-Host 'Installing server dependencies...'
+$executionPolicy = Get-ExecutionPolicy
+if(("$executionPolicy" -eq 'Restricted') -or ("$executionPolicy" -eq 'AllSigned')) {
+    $executionPolicySetter = (Join-Path . 'update-pwsh-execution-policy.ps1')
+    Start-Process -Wait -Verb RunAs -Path 'pwsh' -Args '-NoLogo', '-Command', "& $executionPolicySetter"
+}
+Write-Host "PowerShell execution policy is set to ""$executionPolicy""."
+
 $packageInfo = Get-Content package-info.json | ConvertFrom-Json
 $venvName = $packageInfo.venvName
 
@@ -24,29 +30,21 @@ if (!$virtualenvInstalled) {
     Write-Host 'Virtualenv is installed.'
 }
 
-if(!(Test-Path -PathType Container $venvName)) {
+$activationScript = $IsWindows ? (Join-Path $venvName 'Scripts' 'activate.ps1') : (Join-Path $venvName 'bin' 'activate.ps1')
+
+if(!(Test-Path -PathType Leaf $activationScript)) {
     Write-Host "Creating virtual environment ""$venvName""..."
     & 'virtualenv' $venvName
 } else {
     "Virtual environment ""$venvName"" exists."
 }
 
-$executionPolicy = Get-ExecutionPolicy
-if(("$executionPolicy" -eq 'Restricted') -or ("$executionPolicy" -eq 'AllSigned')) {
-    $executionPolicySetter = (Join-Path . 'update-pwsh-execution-policy.ps1')
-    Start-Process -Wait -Verb RunAs -Path 'pwsh' -Args '-NoLogo', '-Command', "& $executionPolicySetter"
-}
-Write-Host "PowerShell execution policy is set to ""$executionPolicy""."
-
 Write-Host 'Installing local dependencies...'
-if ($IsWindows) {
-    & (Join-Path $venvName 'Scripts' 'activate.ps1')
-} else {
-    & 'source' (Join-Path $venvName 'bin' 'activate')
-}
+& $activationScript
 $deps = $packageInfo.dependencies
 foreach ($dep in $deps) {
     & 'pip' 'install' $dep
 }
 & deactivate
+
 Write-Host 'done.'
