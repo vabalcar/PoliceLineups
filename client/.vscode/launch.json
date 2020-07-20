@@ -11,6 +11,14 @@
             "script": "${file}",
             "args": [],
             "cwd": "${file}"
+        },
+        {
+            // Client must be already launched when debugging an angular script
+            "name": "Debug client",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:4666",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }

@@ -1,0 +1,53 @@
+swagger: "2.0"
+info:
+  title: Police lineups
+  version: 1.0.0
+host: localhost:8080
+basePath: /v1
+schemes:
+  - http
+paths:
+  /people:
+    get:
+      summary: Returns a list of people.
+      x-swagger-router-controller: controllers.people
+      operationId: getPeople
+      produces: 
+        - "application/json"
+      responses:
+        200:
+          description: a JSON array of people
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Person'
+  /person/{id}:
+    get:
+      summary: Returns a person.
+      x-swagger-router-controller: controllers.people
+      operationId: getPerson
+      parameters:
+        - in: path
+          name: id
+          description: ID of the person.
+          required: true
+          type: integer
+      produces: 
+        - "application/json"
+      responses:
+        200:
+          description: a JSON object describing the person
+          schema:
+            type: object
+            $ref: '#/definitions/Person'
+
+definitions:
+  Person:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string

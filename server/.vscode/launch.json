@@ -11,6 +11,21 @@
             "script": "${file}",
             "args": [],
             "cwd": "${file}"
+        },
+        {
+            // Launches server
+            "name": "Debug server",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "module": "swagger_server",
+            "windows": {
+                "pythonPath": "${workspaceFolder}\\server-env\\Scripts\\python.exe"
+            },
+            "env": {
+                "FLASK_RUN_HOST": "localhost",
+                "FLASK_RUN_PORT": 8080
+            }
         }
     ]
 }
