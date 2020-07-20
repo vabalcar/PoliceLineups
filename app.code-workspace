@@ -9,7 +9,8 @@
 		"files.exclude": {
 			"**/.git": true,
 			"client": true,
-			"server": true
+			"server": true,
+			"db": true
 		}
 	}
 }
