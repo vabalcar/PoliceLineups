@@ -6,9 +6,9 @@
         "flask",
         "flask_cors",
         "pylint",
-        "connexion==1.1.15",
-        "python_dateutil==2.6.0",
-        "setuptools>=21.0.0",
+        "connexion",
+        "python_dateutil",
+        "setuptools",
         "mysql-connector-python"
     ]
 }
