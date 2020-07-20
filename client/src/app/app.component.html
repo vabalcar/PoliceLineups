@@ -1,0 +1,15 @@
+<mat-toolbar class="toolbar">
+  <button type="button" mat-icon-button (click)="drawer.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="top-toolbar">Police lineups</span>
+</mat-toolbar>
+<mat-drawer-container class="drawer-container">
+  <mat-drawer #drawer mode="over">
+      <p class = "drawer-header">Backend: <a href="{{backend}}">{{backend}}</a></p>
+      <button mat-button routerLink="/people" routerLinkActive="active" (click)="drawer.toggle()">People</button>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

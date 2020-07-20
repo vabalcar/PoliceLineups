@@ -1,0 +1,20 @@
+<h2>People</h2>
+<mat-list>
+  <mat-list-item *ngFor="let p of people">
+    <mat-card class="card">
+        <mat-card-header>
+          <mat-card-title>{{p.name}}</mat-card-title>
+          <mat-card-subtitle>{{p.email}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button routerLink="/person/{{p.id}}" routerLinkActive="active">More</button>
+        </mat-card-actions>
+    </mat-card>
+  </mat-list-item>
+</mat-list>
