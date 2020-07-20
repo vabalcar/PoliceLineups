@@ -8,13 +8,8 @@
 	"settings": {
 		"files.exclude": {
 			"**/.git": true,
-			"api": true,
 			"client": true,
-			"common": true,
-			"config": true,
-			"db": true,
-			"environment": true,
-			"server": true,
+			"server": true
 		}
 	}
 }
