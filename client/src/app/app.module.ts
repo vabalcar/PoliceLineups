@@ -20,6 +20,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { PeopleComponent } from './people/people.component';
 import { PersonComponent } from './person/person.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,10 +41,12 @@ import { PersonComponent } from './person/person.component';
     MatIconModule
   ],
   providers: [
-    {provide: BASE_PATH, useFactory: () => {
-      const serverConfig = require('../../../config/server.json');
+    { provide: BASE_PATH, useFactory: () => {
       const apiConfig = require('../../../api/api.json');
-      return `${apiConfig.schemes[0]}://${serverConfig.host}:${serverConfig.port}${apiConfig.basePath}`;
+      const serverConfig = require('../../../config/server.json');
+      if (serverConfig.outPort == 80) serverConfig.outPort = '';
+      else serverConfig.outPort = `:${serverConfig.outPort}`;
+      return `${apiConfig.schemes[0]}://${serverConfig.outHost}${serverConfig.outPort}${serverConfig.outBasePath}${apiConfig.basePath}`;
     }},
     DefaultService
   ],
