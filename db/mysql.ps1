@@ -222,7 +222,8 @@ function Invoke-Mysql {
             '-h', $mysqlhost,
             '-u', $mysqlUser,
             "-p$decodedPassword",
-            '-P', $port
+            '-P', $port,
+            '--default-character-set', 'utf8mb4'
         )
 
         $stmts = @()
@@ -241,7 +242,8 @@ function Invoke-Mysql {
     end {
         $stmts | ForEach-Object { 
             $description = $_.GetStmtDescription()
-            & $_.GetStmtProvider() @description
+            $result = & $_.GetStmtProvider() @description
+            return $result
         } | & 'mysql' @mysqlArgs
     }
 }
