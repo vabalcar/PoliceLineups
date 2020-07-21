@@ -2,16 +2,11 @@
 <mat-card class="card">
     <mat-card-header>
       <mat-card-title>{{person.name}}</mat-card-title>
-      <mat-card-subtitle>{{person.email}}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    <img mat-card-image src="assets/media/photos/{{person.pid}}.jpg" alt="Photo of {{person.name}}" />
     <mat-card-content>
-      <mat-slider class="centered-slider" min="1" max="100" step="1" value="1"></mat-slider>
-      <p>
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </p>
+      <div *ngFor="let f of features">
+        <b>{{f.name}}:</b> {{f.value}}<br />
+      </div>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>Select</button>
-    </mat-card-actions>
 </mat-card>

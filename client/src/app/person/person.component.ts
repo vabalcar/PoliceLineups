@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DefaultService } from '../api/api/default.service';
-import { Person } from '../api'
+import { Person } from '../api';
 
 @Component({
   selector: 'app-person',
@@ -11,14 +11,46 @@ import { Person } from '../api'
 export class PersonComponent implements OnInit {
 
   person: Person;
+  features: Array<any>;
 
   constructor(private route: ActivatedRoute, private api: DefaultService) {
     this.person = {} as Person
   }
 
+  static isUppercase(s: string): boolean {
+    return s.toUpperCase() === s;
+  }
+
+  static parseFeature(feature: string) {
+    var featureDesc = feature.split(' ');
+    var featureName: string = '';
+    var featureValue: string = '';
+
+    for(var i = 0; i < featureDesc.length; ++i) {
+      if (PersonComponent.isUppercase(featureDesc[i])) {
+        if (featureName.length === 0) {
+          featureName = featureDesc[i]
+        } else {
+          featureName += ` ${featureDesc[i]}`;
+        }
+      } else {
+        if (featureValue.length === 0) {
+          featureValue = featureDesc[i]
+        } else {
+          featureValue += ` ${featureDesc[i]}`;
+        }
+      }
+    }
+
+    return {name: featureName, value: featureValue}
+  }
+
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.api.getPerson(id).subscribe(p => this.person = p)
+    this.api.getPerson(id).subscribe(p => {
+      this.features = p.features.split(',').map(PersonComponent.parseFeature);
+      this.person = p;
+    })
   }
 
 }
