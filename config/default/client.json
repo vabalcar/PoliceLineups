@@ -1,0 +1,7 @@
+{
+    "host": "localhost",
+    "port": 4666,
+    "outHost": "localhost",
+    "outPort": 4666,
+    "outBasePath": "/"
+}
