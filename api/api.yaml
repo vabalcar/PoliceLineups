@@ -7,6 +7,39 @@ basePath: /v1
 schemes:
   - http
 paths:
+  /users:
+    get:
+      summary: Returns a list of users.
+      x-swagger-router-controller: controllers.users
+      operationId: getusers
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: a JSON array of users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+  /user/{id}:
+    get:
+      summary: Returns a user.
+      x-swagger-router-controller: controllers.users
+      operationId: getUser
+      parameters:
+        - in: path
+          name: id
+          description: ID of the user.
+          required: true
+          type: integer
+      produces: 
+        - "application/json"
+      responses:
+        200:
+          description: a JSON object describing the User
+          schema:
+            type: object
+            $ref: '#/definitions/User'
   /people:
     get:
       summary: Returns a list of people.
@@ -40,9 +73,8 @@ paths:
           schema:
             type: object
             $ref: '#/definitions/Person'
-
 definitions:
-  Person:
+  User:
     type: object
     properties:
       id:
@@ -50,4 +82,19 @@ definitions:
       name:
         type: string
       email:
+        type: string
+  Person:
+    type: object
+    properties:
+      id:
+        type: integer
+      pid:
+        type: string
+      name:
+        type: string
+      born:
+        type: integer
+      nationality:
+        type: string
+      features:
         type: string

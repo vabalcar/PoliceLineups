@@ -4,8 +4,8 @@ import json
 import mysql.connector
 from os import path
 
+from swagger_server.models.user import User  # noqa: E501
 from swagger_server import util
-from swagger_server.models import Person
 
 def queryDB(query, resultProcessor):
 
@@ -33,32 +33,28 @@ def queryDB(query, resultProcessor):
      
      return result
 
-def parse_person_from_row(row):
-     if len(row) == 6:
-       fs = row[5]
-     else:
-       fs = ""
-     return Person(id=row[0], pid=row[1], name=row[2],  born=row[3], nationality=row[4], features=fs)
+def parse_user_from_row(row):
+     return User(id=row[0], name=row[1], email=row[2])
 
-def get_people():  # noqa: E501
-     """Returns a list of people.
+
+def getusers():  # noqa: E501
+    """Returns a list of users.
 
      # noqa: E501
 
 
-     :rtype: None
-     """
+    :rtype: List[User]
+    """
+    return queryDB("SELECT * FROM users", parse_user_from_row)
 
-     return queryDB("SELECT * FROM people", parse_person_from_row)
-
-def get_person(id):  # noqa: E501
-    """Returns a person.
+def get_user(id):  # noqa: E501
+    """Returns a user.
 
      # noqa: E501
 
-    :param id: ID of the person.
+    :param id: ID of the user.
     :type id: int
 
-    :rtype: Person
+    :rtype: User
     """
-    return queryDB('SELECT * FROM people WHERE id={}'.format(id), parse_person_from_row)[0]
+    return queryDB('SELECT * FROM users WHERE id={}'.format(id), parse_user_from_row)[0]
