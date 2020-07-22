@@ -9,5 +9,5 @@ import { BASE_PATH } from './api/variables';
 export class AppComponent {
   title = 'client';
 
-  constructor(@Inject(BASE_PATH) private backend: String) {}
+  constructor(@Inject(BASE_PATH) public backend: String) {}
 }
