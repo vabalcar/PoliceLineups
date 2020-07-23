@@ -1,3 +1,4 @@
+#!/usr/bin/pwsh
 $executionPolicy = Get-ExecutionPolicy
 if(("$executionPolicy" -eq 'Restricted') -or ("$executionPolicy" -eq 'AllSigned')) {
     $executionPolicySetter = (Join-Path . 'update-pwsh-execution-policy.ps1')

@@ -1,3 +1,4 @@
+#!/usr/bin/pwsh
 . (Join-Path '.' 'common' 'pwsh' 'script-executing')
 $cmdWrapper = (Join-Path '..' 'common' 'pwsh' 'cmd-wrapper.ps1')
 

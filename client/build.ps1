@@ -1,3 +1,4 @@
+#!/usr/bin/pwsh
 . (Join-Path '..' 'common' 'pwsh' 'script-executing')
 
 [Executor]::ExecuteParallelly(@(

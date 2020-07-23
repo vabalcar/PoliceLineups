@@ -1,3 +1,4 @@
+#!/usr/bin/pwsh
 Write-Host 'Running server...'
 $packageInfo = Get-Content (Join-Path '.' 'package-info.json') | ConvertFrom-Json
 $config = Get-Content (Join-Path '..' 'config' 'server.json') | ConvertFrom-Json

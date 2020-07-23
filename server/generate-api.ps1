@@ -1,3 +1,4 @@
+#!/usr/bin/pwsh
 function Remove-FolderSilently {
     [CmdletBinding()]
     Param (

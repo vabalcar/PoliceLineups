@@ -1,3 +1,4 @@
+#!/usr/bin/pwsh
 $package = Get-Content package-info.json | ConvertFrom-Json
 $swaggerCLIName = 'swagger-codegen-cli'
 $outFile = "$swaggerCLIName.jar"

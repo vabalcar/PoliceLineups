@@ -1,3 +1,4 @@
+#!/usr/bin/pwsh
 $apiConfig = Get-Content (Join-Path '..' 'api' 'api.json') | ConvertFrom-Json
 $clientConfig = Get-Content (Join-Path '..' 'config' 'client.json') | ConvertFrom-Json
 

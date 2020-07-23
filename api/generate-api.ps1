@@ -1,3 +1,4 @@
+#!/usr/bin/pwsh
 Param (
     [Parameter(Mandatory = $true)] [string] $dir,
     [Parameter(Mandatory = $true)] [string] $lang,

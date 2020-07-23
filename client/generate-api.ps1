@@ -1,3 +1,4 @@
+#!/usr/bin/pwsh
 using namespace System.IO
 
 Import-Module powershell-yaml

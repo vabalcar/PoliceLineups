@@ -17,7 +17,7 @@ class ScriptExecutor {
         $script = $scriptExecutionDescription.script
         [string] $scriptExecutionDescription.outFile = "$script.$curId.out"
 
-        if (($scriptExecutionDescription.wd -eq $null) -or ($scriptExecutionDescription.wd.Length -eq 0)) {
+        if (($null -eq $scriptExecutionDescription.wd) -or ($scriptExecutionDescription.wd.Length -eq 0)) {
             $scriptExecutionDescription.wd = '.'
         }
 
@@ -52,7 +52,7 @@ class ParallelScriptExecutor : ScriptExecutor {
             $script = $scriptExecutionDescription.script
             if ($scriptExecutionDescription.isExternal) {
                 $wrapper = $scriptExecutionDescription.wrapper
-                if (($wrapper -ne $null) -and ($wrapper.Length -gt 0)) {
+                if (($null -ne $wrapper) -and ($wrapper.Length -gt 0)) {
                     Start-Process -PassThru -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -Args '-NoLogo', '-Command', "& $wrapper -Script $script"
                 } else {
                     Start-Process -PassThru -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -Args '-NoLogo', '-File', $script

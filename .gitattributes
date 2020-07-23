@@ -1,0 +1,2 @@
+#Text file types with LF line endings.
+/**/*.ps1       text eol=lf
