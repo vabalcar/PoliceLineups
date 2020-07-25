@@ -1,9 +1,10 @@
-Param(
+#!/usr/bin/pwsh
+param(
     [string] $Path = (Join-Path 'data' 'init'),
-    [switch] $Force
+    [switch] $Force,
+    [string] $DBConfigFile = (Join-Path '..' 'config' 'db.json')
 )
 
 . (Join-Path '.' 'mysql.ps1')
 
-$DBConfigFile = Join-Path '..' 'config' 'db.json'
 Import-MysqlDB -Path $Path -DBConfigFile $DBConfigFile -Delimiter ';' -Purge:$Force

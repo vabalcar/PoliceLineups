@@ -1,7 +1,11 @@
+#!/usr/bin/pwsh
+param(
+    [string] $Path = (Join-Path 'data' 'dumps'),
+    [string] $DBConfigFile = (Join-Path '..' 'config' 'db.json')
+)
+
 . (Join-Path '.' 'mysql.ps1')
 
-$DBConfigFile = Join-Path '..' 'config' 'db.json'
-$targetFolder = Join-Path '.' 'data' 'dumps'
-"Dumping DB into $targetFolder..." | Out-Host
-Export-MysqlDB -DBConfigFile $DBConfigFile -Path (Join-Path 'data' 'dumps') -Delimiter ';'
-"done."
+"Dumping DB into $Path..." | Out-Host
+Export-MysqlDB -DBConfigFile $DBConfigFile -Path $Path -Delimiter ';'
+'done.' | Out-Host
