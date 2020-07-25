@@ -1,7 +1,7 @@
 #!/usr/bin/pwsh
-. (Join-Path '..' 'common' 'pwsh' 'script-executing')
+. (Join-Path '..' 'common' 'pwsh' 'script-executing.ps1')
 
 [Executor]::ExecuteParallelly(@(
-    @{Script = 'install.ps1'}, 
-    @{Script = 'generate-api.ps1'}
+    @{Script = 'generate-api.ps1'},
+    @{Script = 'install.ps1'}
 ))

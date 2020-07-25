@@ -1,7 +1,7 @@
 #!/usr/bin/pwsh
-. (Join-Path '..' 'common' 'pwsh' 'script-executing')
+. (Join-Path '..' 'common' 'pwsh' 'script-executing.ps1')
 
 [Executor]::ExecuteSequentially(@(
-    @{Script = 'build.ps1'}, 
+    @{Script = 'build.ps1'},
     @{Script = 'run.ps1'}
 ))

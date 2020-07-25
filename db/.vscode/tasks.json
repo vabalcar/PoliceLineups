@@ -13,7 +13,7 @@
             "args": [
                 "-NoLogo",
                 "-File",
-                "dump.ps1"
+                "dump-db.ps1"
             ],
             "group": "test",
             "presentation": {
@@ -46,6 +46,9 @@
         },
         {
             "label": "Run DB",
+            "dependsOn": [
+                "Install DB"
+            ],
             "type": "shell",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -56,7 +59,10 @@
                 "-File",
                 "run.ps1"
             ],
-            "group": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",

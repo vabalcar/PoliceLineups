@@ -4,27 +4,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Install client dependencies",
-            "type": "shell",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "command": "pwsh",
-            "args": [
-                "-NoLogo",
-                "-File",
-                "install.ps1"
-            ],
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated",
-                "clear": false,
-                "echo": false
-            },
-            "problemMatcher": []
-        },
-        {
             "label": "Generate client API",
             "type": "shell",
             "options": {
@@ -46,7 +25,10 @@
             "problemMatcher": []
         },
         {
-            "label": "Build client",
+            "label": "Install client dependencies",
+            "dependsOn": [
+                "Generate client API"
+            ],
             "type": "shell",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -55,7 +37,7 @@
             "args": [
                 "-NoLogo",
                 "-File",
-                "build.ps1"
+                "install.ps1"
             ],
             "group": "build",
             "presentation": {
@@ -68,6 +50,9 @@
         },
         {
             "label": "Run client",
+            "dependsOn": [
+                "Install client dependencies"
+            ],
             "type": "shell",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -78,28 +63,10 @@
                 "-File",
                 "run.ps1"
             ],
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated",
-                "clear": false,
-                "echo": false
+            "group": {
+                "kind": "build",
+                "isDefault": true
             },
-            "problemMatcher": []
-        },
-        {
-            "label": "Build & run client",
-            "type": "shell",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "command": "pwsh",
-            "args": [
-                "-NoLogo",
-                "-File",
-                "build-and-run.ps1"
-            ],
-            "group": "build",
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
