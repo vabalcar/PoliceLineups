@@ -5,5 +5,10 @@
 		}
 
 	],
-	"settings": {}
+	"settings": {
+		"files.exclude": {
+			"server-env": true,
+			"server-env-win": true
+		}
+	}
 }
