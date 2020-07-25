@@ -15,8 +15,8 @@ if (Test-Path $installInfoFile) {
         exit
     }
 }
-
-(Get-MysqlConstantsInstall), [MysqlScript]::new('procedures.sql'), [MysqlScript]::new('schema.sql') | Invoke-Mysql -DBConfigFile $DBConfigFile -Force:$Force
+$srcFolder = 'src'
+(Get-MysqlConstantsInstall),[MysqlScript]::new((Join-Path $srcFolder 'procedures.sql')), [MysqlScript]::new((Join-Path $srcFolder 'schema.sql')) | Invoke-Mysql -DBConfigFile $DBConfigFile -Force:$Force
 Import-MysqlDB -Path (Join-Path 'data' 'init') -DBConfigFile $DBConfigFile -Delimiter ';' -Purge:$Force
 
 @{

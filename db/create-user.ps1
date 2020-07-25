@@ -1,6 +1,6 @@
 #!/usr/bin/pwsh
 param(
-    [string] $OutFile = (Join-Path '.' 'create-user.sql'),
+    [string] $OutFile = (Join-Path 'src' 'admin-user.sql'),
     [string] $DBConfigFile = (Join-Path '..' 'config' 'db.json')
 )
 
