@@ -1,14 +1,12 @@
 #!/usr/bin/pwsh
-using namespace System.IO
-
 Import-Module powershell-yaml
 
-$origLocation = Get-Location
-Set-Location (Join-Path '..' 'api')
-& (Join-Path '.' 'generate-api.ps1') -lang 'typescript-angular' -dir (Join-Path '..' 'client' 'src' 'app' 'api')
+$apiDir = Join-Path '..' 'api'
+& (Join-Path $apiDir 'generate-api.ps1') -Language 'typescript-angular' -Directory (Join-Path 'src' 'app' 'api')
 
-[string] $yaml = [File]::ReadAllText((Join-Path (Get-Location) 'api.yaml'))
-ConvertFrom-Yaml $yaml | ConvertTo-Yaml -JsonCompatible | ConvertFrom-Json | ConvertTo-Json | Out-File 'api.json'
-
-Set-Location $origLocation
-Get-ChildItem -Path (Join-Path 'src' 'app' 'api') -File | Where-Object -Property Name -NotIn (Get-Content 'api-generation-whitelist.json' | ConvertFrom-Json) | Remove-Item
+Get-Content -Raw -Path (Join-Path $apiDir 'api.yaml')
+# Convert from yaml to ugly but complete json
+| ConvertFrom-Yaml | ConvertTo-Yaml -JsonCompatible
+# Convert ugly json to nice json using following line converts hashtables in original yaml to strings containing serialized hashtables, which is probably wrong conversion
+#| ConvertFrom-Json | ConvertTo-Json
+| Out-File (Join-Path $apiDir 'api.json')

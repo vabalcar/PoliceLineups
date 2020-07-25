@@ -1,13 +1,43 @@
 #!/usr/bin/pwsh
 Param (
-    [Parameter(Mandatory = $true)] [string] $dir,
-    [Parameter(Mandatory = $true)] [string] $lang,
-    [string] $api = 'api.yaml'
-)
+        [Parameter(Mandatory = $true)] [string] $Language,
+        [Parameter(Mandatory = $true)] [string] $Directory,
+        [string] $TmpDirectory = 'generated',
+        [string] $APIGenerationWhitelist = 'apiGenerationWhitelist.json',
+        [string] $API = 'api.yaml'
+    )
 
-Write-Host "Generating $lang api in $dir..."
-$curDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$swaggerCli = Join-Path "$curDir" 'swagger-codegen-cli.jar'
-$swaggerInput = Join-Path "$curDir" 'api.yaml'
-& 'java' '-jar' $swaggerCli 'generate' '-i' $swaggerInput '-o' $dir '-l' $lang
-Write-Host 'done.'
+function Invoke-SwaggerCodegen {
+    Param (
+        [Parameter(Mandatory = $true)] [string] $Language,
+        [Parameter(Mandatory = $true)] [string] $Directory,
+        [Parameter(Mandatory = $true)] [string] $API
+    )
+
+    "Generating $Language api in $Directory..." | Out-Host
+    $curDir = $PSScriptRoot
+    $swaggerCli = Join-Path $curDir 'swagger-codegen-cli.jar'
+    $swaggerInput = Join-Path $curDir $API
+    & java -jar $swaggerCli generate -i $swaggerInput -o $Directory -l $Language
+    'done.' | Out-Host
+}
+
+Remove-Item -Recurse -Force -Path $TmpDirectory -ErrorAction Ignore
+Invoke-SwaggerCodegen -Language $Language -Directory $TmpDirectory -API $API
+Get-ChildItem -Path $TmpDirectory
+    | Where-Object -Property Name -NotIn (Get-Content $APIGenerationWhitelist | ConvertFrom-Json)
+    | ForEach-Object {
+        "Removing $_..." | Out-Host
+        $_
+    }
+    | Remove-Item -Recurse -Force -ErrorAction Ignore
+
+Get-ChildItem -Path $Directory
+    | Where-Object -Property Name -In (Get-Content $APIGenerationWhitelist | ConvertFrom-Json)
+    | ForEach-Object {
+        "Removing $_..." | Out-Host
+        $_
+    }
+    | Remove-Item -Recurse -Force -ErrorAction Ignore
+Move-Item -Force -Path (Join-Path $TmpDirectory '*') -Destination $Directory
+Remove-Item -Recurse -Force -Path $TmpDirectory -ErrorAction Ignore
