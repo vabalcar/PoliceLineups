@@ -7,14 +7,13 @@ $environmentReady = $true
 
 Import-Csv -Path 'environment.csv' -Delimiter ';' | ForEach-Object {
     if (!(IsInstalled($_.executable))) {
-        "$($_.name) is missing in the environment. Please visit $($_.installWebsite) and install it."
+        "$($_.name) is missing in the environment. Please visit $($_.installWebsite) and install it." | Out-Host
         $global:environmentReady = $false
     }
 }
 
 if (!$environmentReady) {
-    'Evironment is not ready. Please follow instructions above and try again.'
-    exit
+    'Evironment is not ready. Please follow instructions above and try again.' | Out-Host
 } else {
-    'Environment is ready.'
+    'Environment is ready.' | Out-Host
 }
