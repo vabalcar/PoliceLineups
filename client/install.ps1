@@ -1,4 +1,4 @@
 #!/usr/bin/pwsh
-Write-Host 'Installing client...'
-& 'npm' 'install'
-Write-Host 'done.'
+'Installing client...' | Out-Host
+& npm install
+'done.' | Out-Host
