@@ -2,11 +2,13 @@
     "name": "server",
     "version": "0.0.0.0",
     "venvName": "server-env",
+    "venvNameWindows": "server-env-win",
     "dependencies": [
+        "pylint",
         "flask",
         "flask_cors",
-        "pylint",
         "connexion",
+        "connexion[swagger-ui]",
         "python_dateutil",
         "setuptools",
         "mysql-connector-python"
