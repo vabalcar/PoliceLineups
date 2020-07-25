@@ -1,28 +1,16 @@
 #!/usr/bin/pwsh
-$package = Get-Content package-info.json | ConvertFrom-Json
 $swaggerCLIName = 'swagger-codegen-cli'
+$swaggerCLIInfo = Get-Content "$swaggerCLIName.json" | ConvertFrom-Json
 $outFile = "$swaggerCLIName.jar"
 
-while ($true) {
-    try {
-        $file = [System.IO.File]::Open($MyInvocation.MyCommand.Path, 'Open', 'Read', 'None')
-        break
-    }
-    catch {
-        [System.Threading.Thread]::Sleep(1000)
-    }
-}
-
 if(!(Test-Path -PathType Leaf $outFile)) {
-    $swaggerRepo = "https://repo1.maven.org/maven2/io/swagger/$swaggerCLIName"
-    $swaggerVersion = $package.swaggerVersion
+    $swaggerRepo = "$($swaggerCLIInfo.repoRoot)/$swaggerCLIName"
+    $swaggerVersion = $swaggerCLIInfo.version
     $targetFile = "$swaggerCLIName-$swaggerVersion.jar"
     
-    Write-Host "Downloading Swagger $swaggerVersion..."
-    Invoke-WebRequest -OutFile $outFile "$swaggerRepo/$swaggerVersion/$targetFile"
-    Write-Host "done."
+    "Downloading Swagger $swaggerVersion..." | Out-Host
+    Invoke-WebRequest -URI "$swaggerRepo/$swaggerVersion/$targetFile" -OutFile $outFile
+    'done.' | Out-Host
 } else {
-    Write-Host "Swagger $swaggerVersion already installed."
+    'Swagger already installed.' | Out-Host
 }
-
-$file.close()
