@@ -1,6 +1,6 @@
 #!/usr/bin/pwsh
-. (Join-Path '.' 'common' 'pwsh' 'script-executing.ps1')
-$cmdWrapper = (Join-Path '..' 'common' 'pwsh' 'cmd-wrapper.ps1')
+. (Join-Path '.' 'pwsh' 'libs' 'script-executing.ps1')
+$cmdWrapper = (Join-Path '..' 'pwsh' 'libs' 'cmd-wrapper.ps1')
 
 [Executor]::ExecuteParallelly(@(
     @{Script = 'run.ps1'; WD = 'db'; isExternal = $true; Wrapper = $cmdWrapper},

@@ -4,7 +4,7 @@ param(
     [string] $DBConfigFile = (Join-Path '..' 'config' 'db.json')
 )
 
-. (Join-Path '..' 'common' 'pwsh' 'mysql.ps1')
+. (Join-Path '..' 'pwsh' 'libs' 'mysql.ps1')
 
 $installInfoFile = 'install-info.json'
 if (Test-Path $installInfoFile) {

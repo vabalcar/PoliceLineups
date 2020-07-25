@@ -1,5 +1,5 @@
 #!/usr/bin/pwsh
-. (Join-Path '.' 'common' 'pwsh' 'script-executing.ps1')
+. (Join-Path '.' 'pwsh' 'libs' 'script-executing.ps1')
 
 [Executor]::ExecuteSequentially(@(
     @{Script = 'install.ps1'; WD = 'api'},
