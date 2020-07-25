@@ -65,7 +65,7 @@ class ParallelScriptExecutor : ScriptExecutor {
                     return $sd
                 }
             }
-            "Running script $script..." | Out-Host
+            "Running script $(Join-Path $scriptExecutionDescription.wd $script)..." | Out-Host
         }
 
         $inProgress = (Get-Job | Measure-Object).Count
