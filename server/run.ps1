@@ -8,7 +8,7 @@ $env:FLASK_RUN_PORT = $config.port
 
 'Running server...' | Out-Host
 try {
-    & python app.py
+    & python (Join-Path 'src' 'app.py')
 } finally {
     'stopped.' | Out-Host
     & deactivate
