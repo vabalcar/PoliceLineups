@@ -44,34 +44,28 @@ class SequentialScriptExecutor : ScriptExecutor {
 }
 
 class ParallelScriptExecutor : ScriptExecutor {
-    
-    [void] Execute() {      
-        
+
+    [void] Execute() {
+
         while ($this.scriptExecutionDescriptions.Count -gt 0) {
             $scriptExecutionDescription = $this.scriptExecutionDescriptions.Dequeue()
             $script = $scriptExecutionDescription.script
             if ($scriptExecutionDescription.isExternal) {
                 $wrapper = $scriptExecutionDescription.wrapper
                 if (($null -ne $wrapper) -and ($wrapper.Length -gt 0)) {
-                    Start-Process -PassThru -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -Args '-NoLogo', '-Command', "& $wrapper -Script $script"
+                    Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& $wrapper -Script $script"
                 } else {
-                    Start-Process -PassThru -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -Args '-NoLogo', '-File', $script
+                    Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', $script
                 }
             } else {
                 Start-Job -ArgumentList (Get-Location), $scriptExecutionDescription -ScriptBlock {
                     $wd = $args[0]
                     $sd = $args[1]
-                    
-                    if ([System.IO.Path]::IsPathRooted($sd.wd)) {
-                        Set-Location $sd.wd
-                    } else {
-                        Set-Location (Join-Path $wd $sd.wd)
-                    }
-                    & (Join-Path '.' $sd.script) *> (Join-Path $wd $sd.outFile)
+                    Start-Process -Wait -NoNewWindow -WorkingDirectory $sd.wd -RedirectStandardOutput (Join-Path $wd $sd.outFile) -Path 'pwsh' -ArgumentList '-NoLogo', '-File', $sd.script
                     return $sd
                 }
             }
-            Write-Host "Running script $script..."
+            "Running script $script..." | Out-Host
         }
 
         $inProgress = (Get-Job | Measure-Object).Count
@@ -81,17 +75,17 @@ class ParallelScriptExecutor : ScriptExecutor {
             Remove-Job $job
             --$inProgress
             $script = $scriptExecutionDescription.script
-            Write-Host "Run of $script has completed, output follows:"
-            Write-Host "----- $script's output begin -----"
+            "Run of $script has completed, output follows:" | Out-Host
+            "----- $script's output begin -----" | Out-Host
             Get-Content (Join-Path '.' $scriptExecutionDescription.outFile) | Out-Host
-            Write-Host "------ $script's output end ------"
+            "------ $script's output end ------" | Out-Host
             Remove-Item -Force -Path $scriptExecutionDescription.outFile
         }
     }
 }
 
 class Executor {
-    
+
     static [void] Execute([ScriptExecutor] $executor, [ScriptExecutionDescription[]] $seds) {
         foreach($sed in $seds) {
             $executor.Add($sed)
