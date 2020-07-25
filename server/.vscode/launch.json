@@ -17,14 +17,17 @@
             "name": "Debug server",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/src",
             "module": "swagger_server",
+            "linux": {
+                "pythonPath": "${workspaceFolder}/server-env/bin/python"
+            },
             "windows": {
-                "pythonPath": "${workspaceFolder}\\server-env\\Scripts\\python.exe"
+                "pythonPath": "${workspaceFolder}\\server-env-win\\Scripts\\python.exe"
             },
             "env": {
                 "FLASK_RUN_HOST": "localhost",
-                "FLASK_RUN_PORT": 8080
+                "FLASK_RUN_PORT": "8080"
             }
         }
     ]
