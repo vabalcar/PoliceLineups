@@ -1,5 +1,6 @@
 #!/usr/bin/pwsh
 param(
+    [switch] $NoImport,
     [switch] $Force,
     [string] $DBConfigFile = (Join-Path '..' 'config' 'db.json')
 )
@@ -15,9 +16,14 @@ if (Test-Path $installInfoFile) {
         exit
     }
 }
-$srcFolder = 'src'
-(Get-MysqlConstantsInstall),[MysqlScript]::new((Join-Path $srcFolder 'procedures.sql')), [MysqlScript]::new((Join-Path $srcFolder 'schema.sql')) | Invoke-Mysql -DBConfigFile $DBConfigFile -Force:$Force
-Import-MysqlDB -Path (Join-Path 'data' 'init') -DBConfigFile $DBConfigFile -Delimiter ';' -Purge:$Force
+
+'constants.sql', 'procedures.sql', 'schema.sql' | ForEach-Object {
+    [MysqlScript]::new((Join-Path 'src' $_))
+} | Invoke-Mysql -DBConfigFile $DBConfigFile -Force:$Force
+
+if (!$NoImport) {
+    & (Join-Path '.' 'import-db.ps1') -Force:$Force
+}
 
 @{
     Installed = $true

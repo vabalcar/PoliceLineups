@@ -282,47 +282,31 @@ function Import-MysqlDB {
 }
 
 function Get-MysqlConstDecl {
-    [CmdletBinding(DefaultParameterSetName='JustFromName')]
+    [CmdletBinding()]
     [OutputType([string])]
     param (
         [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [string] $type,
+        [string] $Type,
         
-        [Parameter(Mandatory=$true, ParameterSetName='JustFromName')]
-        [Parameter(ParameterSetName='FromNameAndValue')]
+        [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [string] $name,
+        [string] $Name,
         
-        [Parameter(Mandatory=$true, ParameterSetName='FromNameAndValue')]
-        $value
+        [Parameter(Mandatory=$true)]
+        $Value
     )
 
-    if ($PSCmdlet.ParameterSetName -eq 'JustFromName') {
-        $value = Get-Variable -ValueOnly -Name $name
-    }
-
-    $isString = $type -eq 'string'
+    $isString = $Type -eq 'string'
     if ($isString) {
-        $type = "CHAR($($value.Length))"
+        $Type = "CHAR($($Value.Length))"
     }
 
-    [MysqlStmt]::new(@"
-DROP FUNCTION IF EXISTS $name;
-CREATE FUNCTION $name() RETURNS $type DETERMINISTIC
-    RETURN $(if ($isString) {"'$value'"} else {$value});
-"@)
-}
-
-function Get-MysqlConstantsInstall {
-    [CmdletBinding()]
-    param ()
-
-    $PATH_DELIMITER = [Path]::DirectorySeparatorChar -replace '\\', '\\'
-
-    'PATH_DELIMITER' | ForEach-Object {
-        Get-MysqlConstDecl -Type 'string' -Name $_
-    }
+    return @"
+DROP FUNCTION IF EXISTS $Name;
+CREATE FUNCTION $Name() RETURNS $Type DETERMINISTIC
+    RETURN $(if ($isString) {"'$Value'"} else {$Value});
+"@
 }
 
 function ConvertTo-Encoding {
