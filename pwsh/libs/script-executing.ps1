@@ -21,6 +21,18 @@ class ScriptExecutor {
         $this.scriptExecutionDescriptions.Enqueue($scriptExecutionDescription)
     }
 
+    [void] InitializeScriptExecution([ScriptExecutionDescription] $scriptExecutionDescription) {
+        "Running script $($scriptExecutionDescription.scriptFull)..." | Out-Host
+    }
+
+    [void] InitializeScriptExecutionOutput([ScriptExecutionDescription] $scriptExecutionDescription) {
+        "----- output of $($scriptExecutionDescription.scriptFull) begin -----" | Out-Host
+    }
+
+    [void] FinalizeScriptExecutionOutput([ScriptExecutionDescription] $scriptExecutionDescription) {
+        "------ output of $($scriptExecutionDescription.scriptFull) end ------" | Out-Host
+    }
+
     [void] Execute() {
         throw [System.NotImplementedException]::new()
     }
@@ -34,10 +46,13 @@ class SequentialScriptExecutor : ScriptExecutor {
         while ($this.scriptExecutionDescriptions.Count -gt 0) {
             $scriptExecutionDescription = $this.scriptExecutionDescriptions.Dequeue()
             Set-Location $scriptExecutionDescription.wd
+            $this.InitializeScriptExecution($scriptExecutionDescription)
+            $this.InitializeScriptExecutionOutput($scriptExecutionDescription)
             try {
                 $argumentList = $scriptExecutionDescription.argumentList
                 & (Join-Path '.' $scriptExecutionDescription.script) @argumentList
             } finally {
+                $this.FinalizeScriptExecutionOutput($scriptExecutionDescription)
                 Set-Location $originalWD
             }
         }
@@ -50,6 +65,7 @@ class ParallelScriptExecutor : ScriptExecutor {
 
         while ($this.scriptExecutionDescriptions.Count -gt 0) {
             $scriptExecutionDescription = $this.scriptExecutionDescriptions.Dequeue()
+            $this.InitializeScriptExecution($scriptExecutionDescription)
             $script = $scriptExecutionDescription.script
             $argumentList = $scriptExecutionDescription.argumentList
             if ($scriptExecutionDescription.isExternal) {
@@ -68,7 +84,6 @@ class ParallelScriptExecutor : ScriptExecutor {
                     return $sd
                 }
             }
-            "Running script $($scriptExecutionDescription.scriptFull)..." | Out-Host
         }
 
         $inProgress = (Get-Job | Measure-Object).Count
@@ -79,9 +94,9 @@ class ParallelScriptExecutor : ScriptExecutor {
             --$inProgress
             $scriptFull = $scriptExecutionDescription.scriptFull
             "Run of $scriptFull has completed, output follows:" | Out-Host
-            "-----output of $scriptFull begin -----" | Out-Host
+            $this.InitializeScriptExecutionOutput($scriptExecutionDescription)
             Get-Content $scriptExecutionDescription.outFile | Out-Host
-            "------output of $scriptFull end ------" | Out-Host
+            $this.FinalizeScriptExecutionOutput($scriptExecutionDescription)
             Remove-Item -Force -Path $scriptExecutionDescription.outFile
         }
     }
