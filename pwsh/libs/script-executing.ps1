@@ -2,24 +2,20 @@ using namespace System.Collections.Generic
 
 class ScriptExecutionDescription {
     [string] $script
-    [array] $argumentList
-    [string] $wd
+    [array] $argumentList = @()
+    [string] $wd = '.'
     [string] $scriptFull
     [string] $outFile
     [string] $wrapper
-    [bool] $isExternal
+    [bool] $isExternal = $false
 }
 
 class ScriptExecutor {
     [Queue[ScriptExecutionDescription]] $scriptExecutionDescriptions = [Queue[ScriptExecutionDescription]]::new()
 
     [void] Add([ScriptExecutionDescription] $scriptExecutionDescription) {
+
         $scriptExecutionDescription.outFile = (New-TemporaryFile).FullName
-
-        if (($null -eq $scriptExecutionDescription.wd) -or ($scriptExecutionDescription.wd.Length -eq 0)) {
-            $scriptExecutionDescription.wd = '.'
-        }
-
         $scriptExecutionDescription.scriptFull = Join-Path $scriptExecutionDescription.wd $scriptExecutionDescription.script
 
         $this.scriptExecutionDescriptions.Enqueue($scriptExecutionDescription)
@@ -40,7 +36,7 @@ class SequentialScriptExecutor : ScriptExecutor {
             Set-Location $scriptExecutionDescription.wd
             try {
                 $argumentList = $scriptExecutionDescription.argumentList
-                & (Join-Path '.' $scriptExecutionDescription.script @argumentList)
+                & (Join-Path '.' $scriptExecutionDescription.script) @argumentList
             } finally {
                 Set-Location $originalWD
             }
