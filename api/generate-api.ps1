@@ -24,7 +24,7 @@ function Invoke-SwaggerCodegen {
 
 Remove-Item -Recurse -Force -Path $TmpDirectory -ErrorAction Ignore
 Invoke-SwaggerCodegen -Language $Language -Directory $TmpDirectory -API $API
-Get-ChildItem -Path $TmpDirectory
+Get-ChildItem -Force -Path $TmpDirectory
     | Where-Object -Property Name -NotIn (Get-Content $APIGenerationWhitelist | ConvertFrom-Json)
     | ForEach-Object {
         "Removing $_..." | Out-Host
@@ -32,7 +32,7 @@ Get-ChildItem -Path $TmpDirectory
     }
     | Remove-Item -Recurse -Force -ErrorAction Ignore
 
-Get-ChildItem -Path $Directory
+Get-ChildItem -Force -Path $Directory
     | Where-Object -Property Name -In (Get-Content $APIGenerationWhitelist | ConvertFrom-Json)
     | ForEach-Object {
         "Removing $_..." | Out-Host
