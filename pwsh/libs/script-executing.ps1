@@ -3,23 +3,23 @@ using namespace System.Collections.Generic
 class ScriptExecutionDescription {
     [string] $script
     [string] $wd
+    [string] $scriptFull
     [string] $outFile
     [string] $wrapper
     [bool] $isExternal
 }
 
 class ScriptExecutor {
-    hidden [int] $id = -1
     [Queue[ScriptExecutionDescription]] $scriptExecutionDescriptions = [Queue[ScriptExecutionDescription]]::new()
 
     [void] Add([ScriptExecutionDescription] $scriptExecutionDescription) {
-        [int] $curId = ++$this.id
-        $script = $scriptExecutionDescription.script
-        [string] $scriptExecutionDescription.outFile = "$script.$curId.out"
+        $scriptExecutionDescription.outFile = (New-TemporaryFile).FullName
 
         if (($null -eq $scriptExecutionDescription.wd) -or ($scriptExecutionDescription.wd.Length -eq 0)) {
             $scriptExecutionDescription.wd = '.'
         }
+
+        $scriptExecutionDescription.scriptFull = Join-Path $scriptExecutionDescription.wd $scriptExecutionDescription.script
 
         $this.scriptExecutionDescriptions.Enqueue($scriptExecutionDescription)
     }
@@ -32,13 +32,16 @@ class ScriptExecutor {
 class SequentialScriptExecutor : ScriptExecutor {
 
     [void] Execute() {
-        
+
         $originalWD = Get-Location
         while ($this.scriptExecutionDescriptions.Count -gt 0) {
             $scriptExecutionDescription = $this.scriptExecutionDescriptions.Dequeue()
             Set-Location $scriptExecutionDescription.wd
-            & (Join-Path '.' $scriptExecutionDescription.script)
-            Set-Location $originalWD
+            try {
+                & (Join-Path '.' $scriptExecutionDescription.script)
+            } finally {
+                Set-Location $originalWD
+            }
         }
     }
 }
@@ -58,14 +61,14 @@ class ParallelScriptExecutor : ScriptExecutor {
                     Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', $script
                 }
             } else {
-                Start-Job -ArgumentList (Get-Location), $scriptExecutionDescription -ScriptBlock {
-                    $wd = $args[0]
-                    $sd = $args[1]
-                    Start-Process -Wait -NoNewWindow -WorkingDirectory $sd.wd -RedirectStandardOutput (Join-Path $wd $sd.outFile) -Path 'pwsh' -ArgumentList '-NoLogo', '-File', $sd.script
+                Start-Job -ArgumentList $scriptExecutionDescription -ScriptBlock {
+                    $sd = $args[0]
+                    Set-Location $sd.wd
+                    & pwsh -NoLogo -File $sd.script *> $sd.outFile
                     return $sd
                 }
             }
-            "Running script $(Join-Path $scriptExecutionDescription.wd $script)..." | Out-Host
+            "Running script $($scriptExecutionDescription.scriptFull)..." | Out-Host
         }
 
         $inProgress = (Get-Job | Measure-Object).Count
@@ -74,17 +77,22 @@ class ParallelScriptExecutor : ScriptExecutor {
             $scriptExecutionDescription = Receive-Job -Job $job
             Remove-Job $job
             --$inProgress
-            $script = $scriptExecutionDescription.script
-            "Run of $script has completed, output follows:" | Out-Host
-            "----- $script's output begin -----" | Out-Host
-            Get-Content (Join-Path '.' $scriptExecutionDescription.outFile) | Out-Host
-            "------ $script's output end ------" | Out-Host
+            $scriptFull = $scriptExecutionDescription.scriptFull
+            "Run of $scriptFull has completed, output follows:" | Out-Host
+            "-----output of $scriptFull begin -----" | Out-Host
+            Get-Content $scriptExecutionDescription.outFile | Out-Host
+            "------output of $scriptFull end ------" | Out-Host
             Remove-Item -Force -Path $scriptExecutionDescription.outFile
         }
     }
 }
 
 class Executor {
+
+    static [bool] IsParalellismAllowed() {
+        $config = Get-Content -Path (Join-Path $PSScriptRoot '..' '..' 'config' 'build.json') | ConvertFrom-Json
+        return $config.parallelismAllowed
+    }
 
     static [void] Execute([ScriptExecutor] $executor, [ScriptExecutionDescription[]] $seds) {
         foreach($sed in $seds) {
@@ -94,7 +102,7 @@ class Executor {
     }
 
     static [void] ExecuteParallelly([ScriptExecutionDescription[]] $seds) {
-        [Executor]::Execute([ParallelScriptExecutor]::new(), $seds)
+        [Executor]::Execute([Executor]::IsParalellismAllowed() ? [ParallelScriptExecutor]::new() : [SequentialScriptExecutor]::new(), $seds)
     }
 
     static [void] ExecuteSequentially([ScriptExecutionDescription[]] $seds) {
