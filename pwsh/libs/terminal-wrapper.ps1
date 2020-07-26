@@ -13,5 +13,5 @@ try{
         & (Join-Path '.' $Script)
     }
 } finally {
-    Wait-AnyKeyPress
+    Wait-AnyKeyPress -Purpose 'close this window'
 }
