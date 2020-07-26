@@ -17,7 +17,7 @@ if (Test-Path $installInfoFile) {
     }
 }
 
-'constants.sql', 'procedures.sql', 'schema.sql' | ForEach-Object {
+'constants.sql', 'procedures.sql', 'tables.sql' | ForEach-Object {
     [MysqlScript]::new((Join-Path 'src' $_))
 } | Invoke-Mysql -DBConfigFile $DBConfigFile -Force:$Force
 
