@@ -2,14 +2,17 @@
 using namespace System.IO
 
 param(
-    [string] $AdminUserOutFile = (Join-Path 'src' 'admin-user.sql'),
-    [string] $ConstantsOutFile = (Join-Path 'src' 'constants.sql'),
+    [string] $OutputDirectory = 'src',
+    [string] $AdminUserOutFile = (Join-Path $OutputDirectory 'admin-user.sql'),
+    [string] $ConstantsOutFile = (Join-Path $OutputDirectory 'constants.sql'),
     [string] $DBConfigFile = (Join-Path '..' 'config' 'db.json')
 )
 
 . (Join-Path '..' 'pwsh' 'libs' 'mysql.ps1')
 
 $DBConf = Get-Content -Path $DBConfigFile | ConvertFrom-Json
+
+"Generating DB SQL scripts into $OutputDirectory..." | Out-Host
 
 # Generate script to create admin user
 
@@ -19,10 +22,11 @@ GRANT ALL PRIVILEGES ON * . * TO '$($DBConf.user)'@'$($DBConf.host)';
 FLUSH PRIVILEGES;
 "@ | Out-File -Path $AdminUserOutFile
 
-"Please run '$AdminUserOutFile' as db's root user" | Out-host
+"'$($DBConf.user)'@'$($DBConf.host)' DB user creation has been generated into '$AdminUserOutFile'" | Out-Host
 
 # Generate script to create constant functions
 
 Get-MysqlConstDecl -Type 'string' -Name 'PATH_DELIMITER' -Value ([Path]::DirectorySeparatorChar -replace '\\', '\\') | Out-File $ConstantsOutFile
 
-"Constant function declarations have been generated into $ConstantsOutFile" | Out-Host
+"constant function creations have been generated into '$ConstantsOutFile'" | Out-Host
+'done.' | Out-Host
