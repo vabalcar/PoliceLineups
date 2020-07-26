@@ -2,6 +2,7 @@ using namespace System.Collections.Generic
 
 class ScriptExecutionDescription {
     [string] $script
+    [array] $argumentList
     [string] $wd
     [string] $scriptFull
     [string] $outFile
@@ -38,7 +39,8 @@ class SequentialScriptExecutor : ScriptExecutor {
             $scriptExecutionDescription = $this.scriptExecutionDescriptions.Dequeue()
             Set-Location $scriptExecutionDescription.wd
             try {
-                & (Join-Path '.' $scriptExecutionDescription.script)
+                $argumentList = $scriptExecutionDescription.argumentList
+                & (Join-Path '.' $scriptExecutionDescription.script @argumentList)
             } finally {
                 Set-Location $originalWD
             }
@@ -53,18 +55,20 @@ class ParallelScriptExecutor : ScriptExecutor {
         while ($this.scriptExecutionDescriptions.Count -gt 0) {
             $scriptExecutionDescription = $this.scriptExecutionDescriptions.Dequeue()
             $script = $scriptExecutionDescription.script
+            $argumentList = $scriptExecutionDescription.argumentList
             if ($scriptExecutionDescription.isExternal) {
                 $wrapper = $scriptExecutionDescription.wrapper
                 if (($null -ne $wrapper) -and ($wrapper.Length -gt 0)) {
-                    Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& $wrapper -Script $script"
+                    Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& $wrapper -Script $script -ArgumentList $argumentList"
                 } else {
-                    Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', $script
+                    Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', $script @argumentList
                 }
             } else {
                 Start-Job -ArgumentList $scriptExecutionDescription -ScriptBlock {
                     $sd = $args[0]
                     Set-Location $sd.wd
-                    & pwsh -NoLogo -File $sd.script *> $sd.outFile
+                    $argumentList = $sd.argumentList
+                    & pwsh -NoLogo -File $sd.script @argumentList *> $sd.outFile
                     return $sd
                 }
             }
