@@ -2,7 +2,7 @@
 Import-Module powershell-yaml
 
 $apiDir = Join-Path '..' 'api'
-& (Join-Path $apiDir 'generate-api.ps1') -Language 'typescript-angular' -Directory (Join-Path 'src' 'app' 'api')
+& (Join-Path $apiDir 'generate-code.ps1') -Language 'typescript-angular' -Directory (Join-Path 'src' 'app' 'api')
 
 Get-Content -Raw -Path (Join-Path $apiDir 'api.yaml')
 # Convert from yaml to ugly but complete json

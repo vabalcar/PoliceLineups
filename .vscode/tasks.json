@@ -46,7 +46,7 @@
             "problemMatcher": []
         },
         {
-            "label": "Generate API",
+            "label": "Generate code",
             "dependsOn": [
                 "Install API dependencies"
             ],
@@ -58,7 +58,7 @@
             "args": [
                 "-NoLogo",
                 "-File",
-                "generate-api.ps1"
+                "generate-code.ps1"
             ],
             "group": "build",
             "presentation": {
@@ -72,7 +72,7 @@
         {
             "label": "Install all dependencies",
             "dependsOn": [
-                "Generate API"
+                "Generate code"
             ],
             "type": "shell",
             "options": {

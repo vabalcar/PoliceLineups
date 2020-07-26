@@ -4,7 +4,31 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Generate server code",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "generate-code.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "Install server dependencies",
+            "dependsOn": [
+                "Generate server code"
+            ],
             "type": "shell",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -25,49 +49,10 @@
             "problemMatcher": []
         },
         {
-            "label": "Generate server API",
-            "type": "shell",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "command": "pwsh",
-            "args": [
-                "-NoLogo",
-                "-File",
-                "generate-api.ps1"
-            ],
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated",
-                "clear": false,
-                "echo": false
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "Build server",
-            "type": "shell",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "command": "pwsh",
-            "args": [
-                "-NoLogo",
-                "-File",
-                "build.ps1"
-            ],
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated",
-                "clear": false,
-                "echo": false
-            },
-            "problemMatcher": []
-        },
-        {
             "label": "Run server",
+            "dependsOn": [
+                "Install server dependencies"
+            ],
             "type": "shell",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -78,28 +63,10 @@
                 "-File",
                 "run.ps1"
             ],
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated",
-                "clear": false,
-                "echo": false
+            "group": {
+                "kind": "build",
+                "isDefault": true
             },
-            "problemMatcher": []
-        },
-        {
-            "label": "Build & run server",
-            "type": "shell",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "command": "pwsh",
-            "args": [
-                "-NoLogo",
-                "-File",
-                "build-and-run.ps1"
-            ],
-            "group": "build",
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",

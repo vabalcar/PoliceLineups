@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Generate client API",
+            "label": "Generate client code",
             "type": "shell",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -13,7 +13,7 @@
             "args": [
                 "-NoLogo",
                 "-File",
-                "generate-api.ps1"
+                "generate-code.ps1"
             ],
             "group": "build",
             "presentation": {
@@ -27,7 +27,7 @@
         {
             "label": "Install client dependencies",
             "dependsOn": [
-                "Generate client API"
+                "Generate client code"
             ],
             "type": "shell",
             "options": {
