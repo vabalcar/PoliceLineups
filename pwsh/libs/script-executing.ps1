@@ -42,18 +42,16 @@ class SequentialScriptExecutor : ScriptExecutor {
 
     [void] Execute() {
 
-        $originalWD = Get-Location
         while ($this.scriptExecutionDescriptions.Count -gt 0) {
             $scriptExecutionDescription = $this.scriptExecutionDescriptions.Dequeue()
-            Set-Location $scriptExecutionDescription.wd
             $this.InitializeScriptExecution($scriptExecutionDescription)
             $this.InitializeScriptExecutionOutput($scriptExecutionDescription)
             try {
+                $script = $scriptExecutionDescription.script
                 $argumentList = $scriptExecutionDescription.argumentList
-                & (Join-Path '.' $scriptExecutionDescription.script) @argumentList
+                Start-Process -Wait -NoNewWindow -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$script $argumentList"
             } finally {
                 $this.FinalizeScriptExecutionOutput($scriptExecutionDescription)
-                Set-Location $originalWD
             }
         }
     }
@@ -73,7 +71,7 @@ class ParallelScriptExecutor : ScriptExecutor {
                 if (($null -ne $wrapper) -and ($wrapper.Length -gt 0)) {
                     Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& $wrapper -Script $script -ArgumentList $argumentList"
                 } else {
-                    Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', $script @argumentList
+                    Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$script $argumentList"
                 }
             } else {
                 Start-Job -ArgumentList $scriptExecutionDescription -ScriptBlock {
