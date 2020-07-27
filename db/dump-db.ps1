@@ -1,6 +1,7 @@
 #!/usr/bin/pwsh
 param(
     [string] $Path = (Join-Path 'data' 'dumps'),
+    [string] $CsvDelimiter = ';',
     [string] $DBConfigFile = (Join-Path '..' 'config' 'db.json')
 )
 
@@ -11,6 +12,6 @@ if ((Get-MysqlVariable -DBConfigFile $DBConfigFile -Name 'secure_file_priv') -ne
 } else {
     $DBConf = Get-Content -Path $DBConfigFile | ConvertFrom-Json
     "Dumping DB '$($DBConf.db)' into $Path..." | Out-Host
-    Export-MysqlDB -DBConfigFile $DBConfigFile -Path $Path -Delimiter ';'
+    Export-MysqlDB -DBConfigFile $DBConfigFile -Path $Path -Delimiter $CsvDelimiter
     'done.' | Out-Host
 }

@@ -1,6 +1,7 @@
 #!/usr/bin/pwsh
 param(
     [string] $Path = (Join-Path 'data' 'init'),
+    [string] $CsvDelimiter = ';',
     [switch] $Force,
     [string] $DBConfigFile = (Join-Path '..' 'config' 'db.json')
 )
@@ -9,4 +10,4 @@ param(
 
 $DBConf = Get-Content -Path $DBConfigFile | ConvertFrom-Json
 "Importing DB '$($DBConf.db)'..." | Out-Host
-Import-MysqlDB -Path $Path -DBConfigFile $DBConfigFile -Delimiter ';' -Purge:$Force
+Import-MysqlDB -Path $Path -DBConfigFile $DBConfigFile -Delimiter $CsvDelimiter -Purge:$Force
