@@ -6,42 +6,42 @@ CREATE PROCEDURE ExportTable(
         IN delim VARCHAR(255),
         IN path VARCHAR(255)) BEGIN
 
-    DECLARE columnName VARCHAR(255);
+    DECLARE db, columnName, header VARCHAR(255);
+    DECLARE done, firstLine BOOL;
 
     DECLARE curColumns CURSOR FOR
         SELECT column_name
         FROM information_schema.columns
-        WHERE table_schema = @db
-        AND table_name = tableName
+        WHERE table_schema = db AND table_name = tableName
         ORDER BY ordinal_position;
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND
-        SET @done = TRUE;
+        SET done = TRUE;
 
-    SET @db = DATABASE();
-    SET @done = FALSE;
-    SET @firstLine = TRUE;
-    SET @header = '';
+    SET db = DATABASE();
+    SET done = FALSE;
+    SET firstLine = TRUE;
+    SET header = '';
 
     OPEN curColumns;
 
     columns_loop: LOOP
         FETCH curColumns INTO columnName;
-        IF @done THEN
+        IF done THEN
             LEAVE columns_loop;
         END IF;
-        IF @firstLine THEN
-            SET @header = CONCAT("'", columnName, "'");
-            SET @firstLine = FALSE;
+        IF firstLine THEN
+            SET header = CONCAT("'", columnName, "'");
+            SET firstLine = FALSE;
             ITERATE columns_loop;
         END IF;
-        SET @header = CONCAT(@header, ", '", columnName, "'");
+        SET header = CONCAT(header, ", '", columnName, "'");
     END LOOP;
 
     CLOSE curColumns;
 
-    SET @exportData = CONCAT(
-        '(SELECT ', @header ,") 
+    SET @exportTableData = CONCAT(
+        '(SELECT ', header ,") 
         UNION ALL
         (SELECT * 
         FROM `", tableName ,"`)
@@ -51,9 +51,12 @@ CREATE PROCEDURE ExportTable(
         LINES TERMINATED BY '\r\n'"
     );
 
-    PREPARE exportData FROM @exportData;
-    EXECUTE exportData;
-    DEALLOCATE PREPARE exportData;
+    PREPARE exportTableData FROM @exportTableData;
+    EXECUTE exportTableData;
+    DEALLOCATE PREPARE exportTableData;
+
+    SET @exportTableData = NULL;
+
 END $$
 
 CREATE PROCEDURE ExportDB(
@@ -61,30 +64,31 @@ CREATE PROCEDURE ExportDB(
     IN pathDelim VARCHAR(255),
     IN path VARCHAR(255)) BEGIN
 
-    DECLARE tableName VARCHAR(255);
+    DECLARE db, tableName, outPath, pathDelim VARCHAR(255);
+    DECLARE done BOOL;
 
-    DECLARE curTables CURSOR FOR 
+    DECLARE curTables CURSOR FOR
         SELECT table_name
         FROM information_schema.tables
-        WHERE table_schema = @db;
+        WHERE table_schema = db;
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND
-        SET @done = TRUE;
+        SET done = TRUE;
 
-    SET @db = DATABASE();
-    SET @pathDelim = PATH_DELIMITER();
-    SET @pathDelim = CONCAT(@pathDelim, @pathDelim);
-    SET @done = FALSE;
+    SET db = DATABASE();
+    SET pathDelim = PATH_DELIMITER();
+    SET pathDelim = CONCAT(pathDelim, pathDelim);
+    SET done = FALSE;
 
     OPEN curTables;
 
-    tables_loop: LOOP
+    tablesLoop: LOOP
         FETCH curTables INTO tableName;
-        IF @done THEN
-            LEAVE tables_loop;
+        IF done THEN
+            LEAVE tablesLoop;
         END IF;
-        SET @outPath = CONCAT(path, @pathDelim, tableName, '.csv');
-        CALL ExportTable(tableName, delim, @outPath);
+        SET outPath = CONCAT(path, pathDelim, tableName, '.csv');
+        CALL ExportTable(tableName, delim, outPath);
     END LOOP;
 
     CLOSE curTables;
