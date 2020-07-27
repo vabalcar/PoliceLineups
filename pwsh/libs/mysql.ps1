@@ -53,7 +53,7 @@ function Get-MysqlScriptStmt {
 }
 
 function Get-CSVImportMysqlStmt {
-    Param(
+    param(
         [Parameter(Mandatory=$true)] [string] $csv,
         [Parameter(Mandatory=$true)] [string] $table,
         [string] $delimiter = (Get-Culture).TextInfo.ListSeparator,
@@ -210,7 +210,7 @@ password=$($config.password)
 
 function Invoke-Mysql {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(Mandatory = $true)] [string] $DBConfigFile,
         [switch] $force,
         [switch] $omitCreation,
