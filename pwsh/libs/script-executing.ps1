@@ -33,6 +33,18 @@ class ScriptExecutor {
         "------ output of $($scriptExecutionDescription.scriptFull) end ------" | Out-Host
     }
 
+    [void] ExecuteExternally([ScriptExecutionDescription] $scriptExecutionDescription) {
+        $script = $scriptExecutionDescription.script
+        $argumentList = $scriptExecutionDescription.argumentList
+        $wrapper = $scriptExecutionDescription.wrapper
+        if (($null -ne $wrapper) -and ($wrapper.Length -gt 0)) {
+            $argsInOption = $argumentList.Count -ne 0 ? " -ArgumentList $argumentList" : ''
+            Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& $wrapper -Script $script$argsInOption"
+        } else {
+            Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$script $argumentList"
+        }
+    }
+
     [void] Execute() {
         throw [System.NotImplementedException]::new()
     }
@@ -45,13 +57,17 @@ class SequentialScriptExecutor : ScriptExecutor {
         while ($this.scriptExecutionDescriptions.Count -gt 0) {
             $scriptExecutionDescription = $this.scriptExecutionDescriptions.Dequeue()
             $this.InitializeScriptExecution($scriptExecutionDescription)
-            $this.InitializeScriptExecutionOutput($scriptExecutionDescription)
-            try {
-                $script = $scriptExecutionDescription.script
-                $argumentList = $scriptExecutionDescription.argumentList
-                Start-Process -Wait -NoNewWindow -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$script $argumentList"
-            } finally {
-                $this.FinalizeScriptExecutionOutput($scriptExecutionDescription)
+            if ($scriptExecutionDescription.isExternal) {
+                $this.ExecuteExternally($scriptExecutionDescription)
+            } else {
+                $this.InitializeScriptExecutionOutput($scriptExecutionDescription)
+                try {
+                    $script = $scriptExecutionDescription.script
+                    $argumentList = $scriptExecutionDescription.argumentList
+                    Start-Process -Wait -NoNewWindow -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$script $argumentList"
+                } finally {
+                    $this.FinalizeScriptExecutionOutput($scriptExecutionDescription)
+                }
             }
         }
     }
@@ -64,15 +80,8 @@ class ParallelScriptExecutor : ScriptExecutor {
         while ($this.scriptExecutionDescriptions.Count -gt 0) {
             $scriptExecutionDescription = $this.scriptExecutionDescriptions.Dequeue()
             $this.InitializeScriptExecution($scriptExecutionDescription)
-            $script = $scriptExecutionDescription.script
-            $argumentList = $scriptExecutionDescription.argumentList
             if ($scriptExecutionDescription.isExternal) {
-                $wrapper = $scriptExecutionDescription.wrapper
-                if (($null -ne $wrapper) -and ($wrapper.Length -gt 0)) {
-                    Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& $wrapper -Script $script -ArgumentList $argumentList"
-                } else {
-                    Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$script $argumentList"
-                }
+                $this.ExecuteExternally($scriptExecutionDescription)
             } else {
                 Start-Job -ArgumentList $scriptExecutionDescription -ScriptBlock {
                     $sd = $args[0]
