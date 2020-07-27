@@ -174,27 +174,44 @@ class MysqlCsvImport : IMysqlStmt {
     }
 }
 
+function Get-DBCnf {
+    [CmdletBinding()]
+    [OutputType([string])]
+    param (
+        [Parameter(Mandatory=$true)] [string] $DBConfigFile
+    )
+
+    $configDir = $DBConfigFile | Resolve-Path | Split-Path -Parent
+    $generatedConfigDir = Join-Path $configDir 'generated'
+    $DBConfigInfo = Join-Path $generatedConfigDir 'dbConfigInfo.json'
+    $dbCnf = Join-Path $generatedConfigDir 'db.cnf'
+    $lastConfigUpdate = (Get-Item -Path $DBConfigFile).LastWriteTime.ToUniversalTime().Ticks
+
+    if ((Test-Path -PathType Leaf -Path $DBConfigInfo) -and ($lastConfigUpdate -eq (Get-Content $DBConfigInfo | ConvertFrom-Json).LastUpdate)) {
+        return $dbCnf
+    }
+
+    "Generating DB config file $DBConfigFile" | Out-Host
+    $config = Get-Content $DBConfigFile | ConvertFrom-Json
+    @"
+[client]
+host=$($config.host)
+port=$($config.port)
+user=$($config.user)
+password=$($config.password)
+"@ | Out-File $dbCnf
+
+    @{
+        LastUpdate = $lastConfigUpdate
+    } | ConvertTo-Json | Out-File -Path $DBConfigInfo
+
+    return $dbCnf
+}
+
 function Invoke-Mysql {
-    [CmdletBinding(DefaultParameterSetName='DBConfigFromJson')]
+    [CmdletBinding()]
     Param(
-        [Parameter(Mandatory = $true, ParameterSetName = 'DBConfigFromJson')] 
-        [string] $DBConfigFile,
-
-        [Parameter(Mandatory = $true, ParameterSetName = 'DBConfigFromParams')]
-        [string] $mysqlHost,
-
-        [Parameter(Mandatory = $true, ParameterSetName = 'DBConfigFromParams')]
-        [string] $mysqlUser,
-
-        [Parameter(Mandatory = $true, ParameterSetName = 'DBConfigFromParams')]
-        [securestring] $password,
-
-        [Parameter(Mandatory = $true, ParameterSetName = 'DBConfigFromParams')]
-        [int] $port,
-
-        [Parameter(Mandatory = $true, ParameterSetName = 'DBConfigFromParams')]
-        [string] $database,
-
+        [Parameter(Mandatory = $true)] [string] $DBConfigFile,
         [switch] $force,
         [switch] $omitCreation,
 
@@ -203,31 +220,15 @@ function Invoke-Mysql {
     )
 
     begin {
-        switch ($PSCmdlet.ParameterSetName) {
-            'DBConfigFromJson' {
-                $dbConfig = Get-Content -Path $DBConfigFile | ConvertFrom-Json
-                $mysqlHost = $dbConfig.host
-                $mysqlUser = $dbConfig.user
-                $decodedPassword = $dbConfig.password
-                $port = $dbConfig.port
-                $database = $dbConfig.db
-            }
-            'DBConfigFromParams' {
-                $decodedPassword = ConvertFrom-SecureString $password
-            }
-        }
-        
+        $dbConfig = Get-Content -Path $DBConfigFile | ConvertFrom-Json
         $mysqlArgs = @(
-            '-B',
-            '-h', $mysqlhost,
-            '-u', $mysqlUser,
-            "-p$decodedPassword",
-            '-P', $port,
-            '--default-character-set', 'utf8mb4'
+            "--defaults-extra-file=$(Get-DBCnf -DBConfigFile $DBConfigFile)",
+            '--default-character-set=utf8mb4',
+            '-B'
         )
 
+        $database = $dbConfig.db
         $stmts = @()
-
         if ($force) {
             $stmts += [MysqlStmt]::new("DROP DATABASE IF EXISTS ``$database``")
         }
@@ -244,7 +245,7 @@ function Invoke-Mysql {
             $description = $_.GetStmtDescription()
             $result = & $_.GetStmtProvider() @description
             return $result
-        } | & 'mysql' @mysqlArgs
+        } | & mysql @mysqlArgs
     }
 }
 
@@ -386,4 +387,22 @@ function Export-MysqlDB {
     Get-ChildItem -Path $path | ForEach-Object {
         ConvertTo-Encoding -Path $_ -InEncoding 'utf8NoBOM' -OutEncoding $encoding
     }
+}
+
+function Get-MysqlVariable {
+    [CmdletBinding()]
+    [OutputType([string])]
+    param (
+        [Parameter(Mandatory = $true)] [string] $DBConfigFile,
+        [Parameter(Mandatory=$true)] [string] $Name
+    )
+    
+    $queryResult = [MysqlStmt]::new("SHOW VARIABLES LIKE '$Name'") | Invoke-Mysql -DBConfigFile $DBConfigFile
+    if ($null -eq $queryResult) { return $null }
+
+    $columnDelimiter = "`t"
+    $filterResult = $queryResult | ForEach-Object { [string] $_ } | Where-Object { $_.StartsWith("$Name$columnDelimiter") }
+    if ($null -eq $filterResult) { return $null }
+
+    return $filterResult.Split($columnDelimiter)[1]
 }
