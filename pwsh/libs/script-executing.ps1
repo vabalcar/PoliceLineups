@@ -61,11 +61,17 @@ class SequentialScriptExecutor : ScriptExecutor {
                 $this.ExecuteExternally($scriptExecutionDescription)
             } else {
                 $this.InitializeScriptExecutionOutput($scriptExecutionDescription)
+                $origWD = Get-Location
                 try {
                     $script = $scriptExecutionDescription.script
                     $argumentList = $scriptExecutionDescription.argumentList
-                    Start-Process -Wait -NoNewWindow -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$script $argumentList"
+                    $wd = $scriptExecutionDescription.wd
+                    Set-Location $wd
+                    & pwsh -NoLogo -File $script @argumentList | Out-Host
+                    # Following way to run a scripts waits for externally run scripts but gives colorful output
+                    # Start-Process -Wait -NoNewWindow -WorkingDirectory $wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$script $argumentList"
                 } finally {
+                    Set-Location $origWD
                     $this.FinalizeScriptExecutionOutput($scriptExecutionDescription)
                 }
             }
