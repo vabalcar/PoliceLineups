@@ -1,4 +1,5 @@
-Param (
+#!/usr/bin/pwsh
+param (
     [string] $ModulesListFile = 'modules.txt'
 )
 
