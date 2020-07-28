@@ -22,7 +22,7 @@ class ScriptExecutor {
     }
 
     [void] InitializeScriptExecution([ScriptExecutionDescription] $scriptExecutionDescription) {
-        "Running script $($scriptExecutionDescription.scriptFull)..." | Out-Host
+        "Running script $($scriptExecutionDescription.scriptFull)" | Out-Host
     }
 
     [void] InitializeScriptExecutionOutput([ScriptExecutionDescription] $scriptExecutionDescription) {

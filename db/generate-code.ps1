@@ -12,7 +12,7 @@ param(
 
 $DBConf = Get-Content -Path $DBConfigFile | ConvertFrom-Json
 
-"Generating DB SQL scripts into $OutputDirectory..." | Out-Host
+"Generating DB SQL scripts into $OutputDirectory" | Out-Host
 
 # Generate script to create admin user
 
