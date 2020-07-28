@@ -183,12 +183,15 @@ function Get-DBCnf {
 
     $configDir = $DBConfigFile | Resolve-Path | Split-Path -Parent
     $generatedConfigDir = Join-Path $configDir 'generated'
-    $DBConfigInfo = Join-Path $generatedConfigDir 'dbConfigInfo.json'
+    $DBConfigInfoFile = Join-Path $generatedConfigDir 'dbConfigInfo.json'
     $dbCnf = Join-Path $generatedConfigDir 'db.cnf'
     $lastConfigUpdate = (Get-Item -Path $DBConfigFile).LastWriteTime.ToUniversalTime().Ticks
 
-    if ((Test-Path -PathType Leaf -Path $DBConfigInfo) -and ($lastConfigUpdate -eq (Get-Content $DBConfigInfo | ConvertFrom-Json).LastUpdate)) {
-        return $dbCnf
+    if (Test-Path -PathType Leaf -Path $DBConfigInfoFile) {
+        $DBConfigInfo = Get-Content $DBConfigInfoFile | ConvertFrom-Json
+        if (($lastConfigUpdate -eq $DBConfigInfo.LastUpdate) -and ($IsWindows -or !$DBConfigInfo.CreatedOnWindows)) {
+            return $dbCnf
+        }
     }
 
     "Generating DB config file $DBConfigFile" | Out-Host
@@ -201,9 +204,14 @@ user=$($config.user)
 password=$($config.password)
 "@ | Out-File $dbCnf
 
+    if (!$IsWindows) {
+        & chmod 0444 $dbCnf
+    }
+
     @{
-        LastUpdate = $lastConfigUpdate
-    } | ConvertTo-Json | Out-File -Path $DBConfigInfo
+        LastUpdate = $lastConfigUpdate;
+        CreatedOnWindows = $IsWindows
+    } | ConvertTo-Json | Out-File -Path $DBConfigInfoFile
 
     return $dbCnf
 }
