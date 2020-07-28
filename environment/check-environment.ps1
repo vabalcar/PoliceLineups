@@ -1,6 +1,6 @@
 #!/usr/bin/pwsh
 function IsInstalled([string] $executable) {
-    return Get-Command -CommandType Application -TotalCount 1 -Name $executable -ErrorAction SilentlyContinue;
+    return Get-Command -CommandType Application -TotalCount 1 -Name $executable -ErrorAction SilentlyContinue
 }
 
 $environmentReady = $true
