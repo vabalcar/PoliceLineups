@@ -1,10 +1,10 @@
 #!/usr/bin/pwsh
-$config = Get-Content (Join-Path '..' 'config' 'server.json') | ConvertFrom-Json
+$serverConfig = Get-Content (Join-Path '..' 'serverConfig' 'server.json') | ConvertFrom-Json
 
 & (Join-Path '.' 'activate.ps1')
 
-$env:FLASK_RUN_HOST = $config.host
-$env:FLASK_RUN_PORT = $config.port
+$env:FLASK_RUN_HOST = $serverConfig.host
+$env:FLASK_RUN_PORT = $serverConfig.port
 
 'Running server...' | Out-Host
 try {

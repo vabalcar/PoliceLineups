@@ -13,7 +13,6 @@
             "cwd": "${file}"
         },
         {
-            // Launches server
             "name": "Debug server",
             "type": "python",
             "request": "launch",

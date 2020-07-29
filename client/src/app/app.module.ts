@@ -44,9 +44,14 @@ import { PersonComponent } from './person/person.component';
     { provide: BASE_PATH, useFactory: () => {
       const apiConfig = require('../../../api/api.json');
       const serverConfig = require('../../../config/server.json');
-      if (serverConfig.outPort == 80) serverConfig.outPort = '';
-      else serverConfig.outPort = `:${serverConfig.outPort}`;
-      return `${apiConfig.schemes[0]}://${serverConfig.outHost}${serverConfig.outPort}${serverConfig.outBasePath}${apiConfig.basePath}`;
+
+      const dev : boolean = serverConfig.dev;
+      const serverScheme : string = dev ? 'http' : apiConfig.schemes[0];
+      const serverHost : string = dev ? serverConfig.host : serverConfig.outHost;
+      let serverPort : string = dev ? serverConfig.port : serverConfig.outPort;
+      serverPort = serverPort == '80' ? '' : `:${serverPort}`;
+      const serverBasePath : string = dev ? '' : serverConfig.outBasePath;
+      return `${serverScheme}://${serverHost}${serverPort}${serverBasePath}${apiConfig.basePath}`;
     }},
     DefaultService
   ],

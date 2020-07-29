@@ -10,7 +10,7 @@ from swagger_server.models import Person
 def queryDB(query, resultProcessor):
 
      wd = path.dirname(__file__)
-     config_path = path.join(wd, '..', '..', 'config', 'db.json')
+     config_path = path.join(wd, '..', '..', '..', 'config', 'db.json')
      with open(config_path) as config_json:
           db_config = json.load(config_json)
 

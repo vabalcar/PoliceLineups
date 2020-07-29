@@ -13,12 +13,28 @@
             "cwd": "${file}"
         },
         {
-            // Client must be already launched when debugging an angular script
-            "name": "Debug client",
+            "name": "Debug client in Chrome",
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost:4666",
-            "webRoot": "${workspaceFolder}"
+            "webRoot": "${workspaceFolder}",
+            "preLaunchTask": "Run client"
+        },
+        {
+            "name": "Debug client in Firefox",
+            "type": "firefox",
+            "request": "launch",
+            "url": "http://localhost:4666",
+            "webRoot": "${workspaceFolder}",
+            "preLaunchTask": "Run client"
+        },
+        {
+            "name": "Debug client in Edge",
+            "type": "pwa-msedge",
+            "request": "launch",
+            "url": "http://localhost:4666",
+            "webRoot": "${workspaceFolder}",
+            "preLaunchTask": "Run client"
         }
     ]
 }

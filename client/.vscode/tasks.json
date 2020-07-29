@@ -50,6 +50,7 @@
         },
         {
             "label": "Run client",
+            "isBackground": true,
             "dependsOn": [
                 "Install client dependencies"
             ],
@@ -73,7 +74,24 @@
                 "clear": false,
                 "echo": false
             },
-            "problemMatcher": []
+            "problemMatcher": {
+                "owner": "typescript",
+                "source": "ts",
+                "fileLocation": [
+                    "relative",
+                    "${cwd}"
+                ],
+                "pattern": "$tsc",
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": {
+                        "regexp": "^.*$"
+                    },
+                    "endsPattern": {
+                        "regexp": "^.*Compiled successfully|Failed to compile.*$"
+                    }
+                }
+            }
         }
     ]
 }
