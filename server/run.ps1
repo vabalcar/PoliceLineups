@@ -1,5 +1,21 @@
 #!/usr/bin/pwsh
-$serverConfig = Get-Content (Join-Path '..' 'serverConfig' 'server.json') | ConvertFrom-Json
+param (
+    [switch] $Dev,
+    [switch] $NoRun
+)
+
+$serverConfigFile = Join-Path '..' 'config' 'server.json'
+
+if ($Dev) {
+    . (Join-Path '..' 'pwsh' 'libs' 'json.ps1')
+    $serverConfig = Update-JsonObject -Path $serverConfigFile -Attribute 'dev' -Value $true
+} else {
+    $serverConfig = Get-Content $serverConfigFile | ConvertFrom-Json
+}
+
+if ($NoRun) {
+    exit
+}
 
 & (Join-Path '.' 'activate.ps1')
 

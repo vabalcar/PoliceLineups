@@ -62,7 +62,8 @@
             "args": [
                 "-NoLogo",
                 "-File",
-                "run.ps1"
+                "run.ps1",
+                "-Dev"
             ],
             "group": {
                 "kind": "build",

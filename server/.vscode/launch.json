@@ -20,7 +20,7 @@
                 "FLASK_RUN_HOST": "localhost",
                 "FLASK_RUN_PORT": "8080"
             },
-            "preLaunchTask": "Install server dependencies"
+            "preLaunchTask": "Prepare server debugging"
         },
         {
             "name": "Debug current PowerShell script",

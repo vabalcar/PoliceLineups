@@ -49,6 +49,35 @@
             "problemMatcher": []
         },
         {
+            "label": "Prepare server debugging",
+            "dependsOn": [
+                "Install server dependencies"
+            ],
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "command": "pwsh",
+            "args": [
+                "-NoLogo",
+                "-File",
+                "run.ps1",
+                "-Dev",
+                "-NoRun"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": false,
+                "echo": false
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "Run server",
             "dependsOn": [
                 "Install server dependencies"
@@ -61,7 +90,8 @@
             "args": [
                 "-NoLogo",
                 "-File",
-                "run.ps1"
+                "run.ps1",
+                "-Dev"
             ],
             "group": {
                 "kind": "build",

@@ -1,6 +1,23 @@
 #!/usr/bin/pwsh
+param (
+    [switch] $Dev,
+    [switch] $NoRun
+)
+
+$clientConfigFile = Join-Path '..' 'config' 'client.json'
+
+if ($Dev) {
+    . (Join-Path '..' 'pwsh' 'libs' 'json.ps1')
+    $clientConfig = Update-JsonObject -Path $clientConfigFile -Attribute 'dev' -Value $true
+} else {
+    $clientConfig = Get-Content $clientConfigFile | ConvertFrom-Json
+}
+
+if ($NoRun) {
+    exit
+}
+
 $apiConfig = Get-Content -Raw (Join-Path '..' 'api' 'api.json') | ConvertFrom-Json
-$clientConfig = Get-Content (Join-Path '..' 'config' 'client.json') | ConvertFrom-Json
 
 'Running client...' | Out-Host
 try {
