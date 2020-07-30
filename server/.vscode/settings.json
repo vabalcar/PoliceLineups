@@ -1,6 +1,4 @@
 {
-    "python.pythonPath": "server-env-win\\Scripts\\python.exe",
-    //"python.pythonPath": "server-env/bin/python",
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
     "python.linting.pylintArgs": [
