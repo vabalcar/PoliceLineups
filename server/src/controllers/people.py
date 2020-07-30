@@ -25,7 +25,7 @@ def get_people():  # noqa: E501
 
     return query_db("SELECT * FROM people", parse_person_from_row)
 
-def get_person(person_id):  # noqa: E501
+def get_person(id):  # noqa: E501
     """
     Returns a person.
 
@@ -34,4 +34,4 @@ def get_person(person_id):  # noqa: E501
 
     :rtype: Person
     """
-    return query_db('SELECT * FROM people WHERE id={}'.format(person_id), parse_person_from_row)[0]
+    return query_db('SELECT * FROM people WHERE id={}'.format(id), parse_person_from_row)[0]
