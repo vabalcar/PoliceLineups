@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import signal
-import sys 
+import sys
 import runpy
 
 def on_ctrlc(signal, frame):

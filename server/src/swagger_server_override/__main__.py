@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-
-import connexion
 import os
-
-from swagger_server import encoder
+import connexion
 from flask_cors import CORS
+from swagger_server import encoder
 
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 5000
