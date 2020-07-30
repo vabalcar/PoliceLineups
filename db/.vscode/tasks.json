@@ -19,7 +19,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
-                "clear": false,
+                "clear": true,
                 "echo": false
             }
         },
@@ -39,7 +39,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
-                "clear": false,
+                "clear": true,
                 "echo": false
             },
             "problemMatcher": []
@@ -63,7 +63,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
-                "clear": false,
+                "clear": true,
                 "echo": false
             },
             "problemMatcher": []
@@ -90,7 +90,7 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
-                "clear": false,
+                "clear": true,
                 "echo": false
             },
             "problemMatcher": []
