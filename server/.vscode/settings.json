@@ -4,6 +4,10 @@
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
     "python.linting.pylintArgs": [
+        "--variable-rgx",
+        "^[a-z][a-z0-9]*(_[a-z0-9]+)*$",
+        "--argument-rgx",
+        "^[a-z][a-z0-9]*(_[a-z0-9]+)*$",
         "--init-hook",
         "import sys; sys.path.insert(0, 'src')"
     ]
