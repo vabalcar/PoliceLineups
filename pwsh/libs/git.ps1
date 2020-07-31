@@ -21,5 +21,5 @@ function Remove-GitIgnoredFiles {
             "Removing $_" | Out-Host
             $_
         }
-        | Remove-Item -Recurse -Force -WhatIf
+        | Remove-Item -Recurse -Force
 }
