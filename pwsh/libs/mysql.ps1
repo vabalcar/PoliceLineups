@@ -220,10 +220,11 @@ function Invoke-Mysql {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)] [string] $DBConfigFile,
-        [switch] $force,
-        [switch] $omitCreation,
+        [switch] $Force,
+        [switch] $NoDBCreate,
+        [switch] $NoDBUse,
 
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [Parameter(ValueFromPipeline = $true)]
         [IMysqlStmt[]] $stmt
     )
 
@@ -237,19 +238,23 @@ function Invoke-Mysql {
 
         $database = $dbConfig.db
         $stmts = @()
-        if ($force) {
+        if ($Force) {
             $stmts += [MysqlStmt]::new("DROP DATABASE IF EXISTS ``$database``")
         }
-        if (!$omitCreation) {
+        if (!$NoDBCreate) {
             $stmts += [MysqlStmt]::new("CREATE DATABASE IF NOT EXISTS ``$database``")
         }
-        $stmts += [MysqlStmt]::new("USE ``$database``")
+        if (!$NoDBUse) {
+            $stmts += [MysqlStmt]::new("USE ``$database``")
+        }
     }
     process {
-        $stmts += $stmt
+        if ($null -ne $stmt) {
+            $stmts += $stmt
+        }
     }
     end {
-        $stmts | ForEach-Object { 
+        $stmts | ForEach-Object {
             $description = $_.GetStmtDescription()
             $result = & $_.GetStmtProvider() @description
             return $result
@@ -314,7 +319,7 @@ function Get-MysqlConstDecl {
     return @"
 DROP FUNCTION IF EXISTS $Name;
 CREATE FUNCTION $Name() RETURNS $Type DETERMINISTIC
-    RETURN $(if ($isString) {"'$Value'"} else {$Value});
+    RETURN $($isString ? "'$Value'" : $Value);
 "@
 }
 
@@ -395,6 +400,15 @@ function Export-MysqlDB {
     Get-ChildItem -Path $path | ForEach-Object {
         ConvertTo-Encoding -Path $_ -InEncoding 'utf8NoBOM' -OutEncoding $encoding
     }
+}
+
+function Remove-MysqlDB {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$true)] [string] $DBConfigFile
+    )
+
+    Invoke-Mysql -DBConfigFile $DBConfigFile -Force -NoDBCreate -NoDBUse
 }
 
 function Get-MysqlVariable {
