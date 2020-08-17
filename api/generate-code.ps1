@@ -1,14 +1,14 @@
 #!/usr/bin/pwsh
-Param (
-        [Parameter(Mandatory = $true)] [string] $Language,
-        [Parameter(Mandatory = $true)] [string] $Directory,
-        [string] $TmpDirectory = 'generated',
-        [string] $APIGenerationWhitelist = 'apiGenerationWhitelist.json',
-        [string] $API = 'api.yaml'
-    )
+param (
+    [Parameter(Mandatory = $true)] [string] $Language,
+    [Parameter(Mandatory = $true)] [string] $Directory,
+    [string] $TmpDirectory = 'generated',
+    [string] $APIGenerationWhitelist = 'apiGenerationWhitelist.json',
+    [string] $API = 'api.yaml'
+)
 
 function Invoke-SwaggerCodegen {
-    Param (
+    param (
         [Parameter(Mandatory = $true)] [string] $Language,
         [Parameter(Mandatory = $true)] [string] $Directory,
         [Parameter(Mandatory = $true)] [string] $API
