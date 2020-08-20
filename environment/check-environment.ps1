@@ -1,14 +1,21 @@
 #!/usr/bin/pwsh
-function IsInstalled([string] $executable) {
-    return Get-Command -CommandType Application -TotalCount 1 -Name $executable -ErrorAction SilentlyContinue
+function Test-Executable() {
+    param (
+        [Parameter(Mandatory=$true)] [string] $Executable
+    )
+
+    return Get-Command -CommandType Application -TotalCount 1 -Name $Executable -ErrorAction SilentlyContinue
 }
 
 $environmentReady = $true
 
-Import-Csv -Path 'environment.csv' -Delimiter ';' | ForEach-Object {
-    if (!(IsInstalled($_.executable))) {
-        "$($_.name) is missing in the environment. Please visit $($_.installWebsite) and install it." | Out-Host
-        $global:environmentReady = $false
+$executableDescriptions = Import-Csv -Path 'environment.csv' -Delimiter ';'
+foreach ($description in $executableDescriptions) {
+    if (!(Test-Executable -Executable $description.executable)) {
+        "$($description.name) is missing in the environment. Please visit $($description.installWebsite) and install it." | Out-Host
+        if ($environmentReady) {
+            $environmentReady = $false
+        }
     }
 }
 
