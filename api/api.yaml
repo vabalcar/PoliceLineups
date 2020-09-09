@@ -62,7 +62,7 @@ paths:
               $ref: '#/definitions/Response'
   /register:
     post:
-      summary: Logins registered user
+      summary: Registers an user
       x-swagger-router-controller: controllers.auth
       operationId: register
       consumes:
@@ -81,6 +81,31 @@ paths:
       responses:
         '200':
           description: registration result
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Response'
+  /unregister:
+    post:
+      summary: Unregisters an user
+      x-swagger-router-controller: controllers.auth
+      operationId: unregister
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: an user to unregister
+          required: true
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/User'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: unregistration result
           schema:
             type: object
             items:

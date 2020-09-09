@@ -191,10 +191,10 @@ class MysqlDBTable(metaclass=Singleton):
 
         return self.header
 
-    def insert(self, o: object):
+    def insert(self, o: object) -> int:
 
         self.assert_type(o)
-        update_db(f"INSERT INTO {self.name} {self._to_mysql_columns(o)} VALUES {self._to_mysql_values(o)}")
+        return update_db(f"INSERT INTO {self.name} {self._to_mysql_columns(o)} VALUES {self._to_mysql_values(o)}")
 
     def find(self, **kwargs) -> list:
 

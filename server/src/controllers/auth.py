@@ -55,10 +55,11 @@ def logout():  # noqa: E501
     :rtype: object
     """
 
-    success = len(session) > 0
+    success = False
 
-    if success:
+    if len(session) > 0:
         session.clear()
+        success = True
 
     return Response(success)
 
@@ -81,7 +82,27 @@ def register(user):  # noqa: E501
     success = False
 
     if not MysqlDBTable('users').contains(username=user.username):
-        MysqlDBTable('users').insert(user)
-        success = True
+        success = MysqlDBTable('users').insert(user) == 1
+
+    return Response(success)
+
+def unregister(user):  # noqa: E501
+    """Unregisters an user
+
+     # noqa: E501
+
+    :param user: an user to unregister
+    :type user: 
+
+    :rtype: object
+    """
+
+    if connexion.request.is_json:
+        user = User.from_dict(connexion.request.get_json())  # noqa: E501
+
+    success = False
+
+    if session.get('username') == user.username:
+        success = logout().success and MysqlDBTable('users').delete(username=user.username) == 1
 
     return Response(success)
