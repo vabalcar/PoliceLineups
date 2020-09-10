@@ -25,7 +25,7 @@
             "problemMatcher": []
         },
         {
-            "label": "Install server dependencies",
+            "label": "Install server",
             "dependsOn": [
                 "Generate server code"
             ],
@@ -51,7 +51,7 @@
         {
             "label": "Prepare server debugging",
             "dependsOn": [
-                "Install server dependencies"
+                "Install server"
             ],
             "type": "shell",
             "options": {
@@ -80,7 +80,7 @@
         {
             "label": "Run server",
             "dependsOn": [
-                "Install server dependencies"
+                "Install server"
             ],
             "type": "shell",
             "options": {
