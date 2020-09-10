@@ -65,10 +65,7 @@
                 "-Dev",
                 "-NoRun"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
+            "group": "build",
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",

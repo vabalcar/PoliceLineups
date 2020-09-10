@@ -1,11 +1,8 @@
-from os import path
-
-import json
-import os
 import mysql.connector
 import sqlparse
 
 from police_lineups.singleton import Singleton
+from police_lineups.json.utils import parse_json_file
 
 class MysqlDBConnector(metaclass=Singleton):
 
@@ -13,15 +10,7 @@ class MysqlDBConnector(metaclass=Singleton):
         self.db_config = None
 
     def load_db_config(self, db_config_path, *db_config_path_children):
-        if not path.isabs(db_config_path):
-            cur_dir = os.getcwd()
-            db_config_path = path.join(cur_dir, db_config_path)
-
-        if db_config_path_children:
-            db_config_path = path.join(db_config_path, *db_config_path_children)
-
-        with open(db_config_path) as db_config_file:
-            self.db_config = json.load(db_config_file)
+        self.db_config = parse_json_file(db_config_path, *db_config_path_children)
 
     def connect(self):
         return mysql.connector.connect(
