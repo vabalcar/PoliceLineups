@@ -1,234 +1,232 @@
-swagger: "2.0"
+openapi: '3.0.2'
 info:
   title: Police lineups
-  version: 1.0.0
-host: localhost:8080
-basePath: /v1
-schemes:
-  - http
+  version: '1.0'
+servers:
+  - url: http://localhost:8080/v1
 paths:
   /login:
     post:
       summary: Logins registered user
       x-swagger-router-controller: controllers.auth
       operationId: login
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: request
-          description: AuthRequest
-          required: true
-          schema:
-            type: object
-            items:
-              $ref: '#/definitions/AuthRequest'
-      produces:
-        - application/json
+      requestBody:
+        description: AuthRequest
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
       responses:
         '200':
           description: login result
-          schema:
-            type: object
-            items:
-              $ref: '#/definitions/AuthResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
   /isLoggedIn:
     get:
-      summary: Checks if an user is logged-in
+      summary: Checks if a user is logged-in
       x-swagger-router-controller: controllers.auth
       operationId: isLoggedIn
-      produces:
-        - application/json
       responses:
         '200':
           description: is-logged-in check result
-          schema:
-            type: object
-            items: 
-              $ref: '#/definitions/Response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
   /logout:
     get:
       summary: Logouts logged-in user
       x-swagger-router-controller: controllers.auth
       operationId: logout
-      produces:
-        - application/json
       responses:
         '200':
           description: logout result
-          schema:
-            type: object
-            items: 
-              $ref: '#/definitions/Response'
-  /register:
-    post:
-      summary: Registers an user
-      x-swagger-router-controller: controllers.auth
-      operationId: register
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: user
-          description: an user to register
-          required: true
-          schema:
-            type: object
-            items:
-              $ref: '#/definitions/User'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: registration result
-          schema:
-            type: object
-            items:
-              $ref: '#/definitions/Response'
-  /unregister:
-    post:
-      summary: Unregisters an user
-      x-swagger-router-controller: controllers.auth
-      operationId: unregister
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: user
-          description: an user to unregister
-          required: true
-          schema:
-            type: object
-            items:
-              $ref: '#/definitions/User'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: unregistration result
-          schema:
-            type: object
-            items:
-              $ref: '#/definitions/Response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
   /users:
     get:
       summary: Returns a list of users.
       x-swagger-router-controller: controllers.users
       operationId: getUsers
-      produces:
-        - application/json
       responses:
         '200':
           description: a JSON array of users
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/User'
-  /user/{id}:
-    get:
-      summary: Returns a user.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Registers a user
       x-swagger-router-controller: controllers.users
-      operationId: getUser
+      operationId: register
+      requestBody:
+        description: a user to register
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: registration result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  /user/{username}:
+    get:
+      summary: Returns a user
+      x-swagger-router-controller: controllers.users
+      operationId: get
       parameters:
         - in: path
-          name: id
-          description: ID of the user.
+          name: username
+          description: username of a user
           required: true
-          type: integer
-      produces: 
-        - application/json
+          schema:
+            type: string
       responses:
         '200':
           description: a JSON object describing the User
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    patch:
+      summary: Updates a user
+      x-swagger-router-controller: controllers.users
+      operationId: update
+      requestBody:
+        description: a user to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      parameters:
+        - in: path
+          name: username
+          description: username of a user
+          required: true
           schema:
-            type: object
-            items: 
-              $ref: '#/definitions/User'
+            type: string
+      responses:
+        '200':
+          description: unregistration result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      summary: Deletes a user
+      x-swagger-router-controller: controllers.users
+      operationId: delete
+      parameters:
+        - in: path
+          name: username
+          description: a username of a user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: unregistration result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
   /people:
     get:
-      summary: Returns a list of people.
+      summary: Returns a list of people
       x-swagger-router-controller: controllers.people
       operationId: getPeople
-      produces: 
-        - application/json
       responses:
         '200':
           description: a JSON array of people
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Person'
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
   /person/{id}:
     get:
-      summary: Returns a person.
+      summary: Returns a person
       x-swagger-router-controller: controllers.people
       operationId: getPerson
       parameters:
         - in: path
           name: id
-          description: ID of the person.
+          description: ID of the person
           required: true
-          type: integer
-      produces: 
-        - application/json
+          schema:
+            type: integer
       responses:
         '200':
           description: a JSON object describing the person
-          schema:
-            type: object
-            items:
-              $ref: '#/definitions/Person'
-definitions:
-  AuthRequest:
-    type: object
-    properties:
-      username:
-        type: string
-      password:
-        type: string
-      path:
-        type: string
-    required:
-      - username
-      - password
-      - path
-  Response:
-    type: object
-    properties:
-      success: 
-        type: boolean
-  AuthResponse:
-    allOf:
-      - $ref: '#/definitions/Response'
-      - type: object
-        properties:
-          path: 
-            type: string
-  User:
-    type: object
-    properties:
-      id:
-        type: integer
-      username:
-        type: string
-      password:
-        type: string
-      name:
-        type: string
-      email:
-        type: string
-  Person:
-    type: object
-    properties:
-      id:
-        type: integer
-      pid:
-        type: string
-      name:
-        type: string
-      born:
-        type: integer
-      nationality:
-        type: string
-      features:
-        type: string
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+components:
+  schemas:
+    AuthRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        path:
+          type: string
+      required:
+        - username
+        - password
+        - path
+    Response:
+      type: object
+      properties:
+        success: 
+          type: boolean
+    AuthResponse:
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          properties:
+            path: 
+              type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+    Person:
+      type: object
+      properties:
+        id:
+          type: integer
+        pid:
+          type: string
+        name:
+          type: string
+        born:
+          type: integer
+        nationality:
+          type: string
+        features:
+          type: string

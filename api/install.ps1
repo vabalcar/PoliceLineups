@@ -8,7 +8,7 @@ if(!(Test-Path -PathType Leaf $outFile)) {
     $swaggerVersion = $swaggerCLIInfo.version
     $targetFile = "$swaggerCLIName-$swaggerVersion.jar"
     
-    "Downloading Swagger $swaggerVersion..." | Out-Host
+    "Downloading $swaggerCLIName $swaggerVersion..." | Out-Host
     Invoke-WebRequest -URI "$swaggerRepo/$swaggerVersion/$targetFile" -OutFile $outFile
     'done.' | Out-Host
 } else {
