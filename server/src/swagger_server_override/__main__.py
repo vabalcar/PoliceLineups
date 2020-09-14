@@ -26,7 +26,7 @@ def main():
     app = connexion.App(__name__, specification_dir='./swagger/')
     CORS(app.app)
     app.app.json_encoder = encoder.JSONEncoder
-    app.app.secret_key = secrets.token_urlsafe(20)
+    # app.app.secret_key = secrets.token_urlsafe(20)
     app.add_api('swagger.yaml')
 
     setup_db()

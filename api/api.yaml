@@ -8,8 +8,9 @@ paths:
   /login:
     post:
       summary: Logins registered user
-      x-swagger-router-controller: controllers.auth
+      x-openapi-router-controller: controllers.auth
       operationId: login
+      security: [] # Disabled security
       requestBody:
         description: AuthRequest
         required: true
@@ -24,34 +25,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
-  /isLoggedIn:
-    get:
-      summary: Checks if a user is logged-in
-      x-swagger-router-controller: controllers.auth
-      operationId: isLoggedIn
-      responses:
-        '200':
-          description: is-logged-in check result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Response'
-  /logout:
-    get:
-      summary: Logouts logged-in user
-      x-swagger-router-controller: controllers.auth
-      operationId: logout
-      responses:
-        '200':
-          description: logout result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Response'
   /users:
     get:
-      summary: Returns a list of users.
-      x-swagger-router-controller: controllers.users
+      summary: Returns all users
+      x-openapi-router-controller: controllers.users
       operationId: getUsers
       responses:
         '200':
@@ -63,11 +40,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/User'
     post:
-      summary: Registers a user
-      x-swagger-router-controller: controllers.users
-      operationId: register
+      summary: Adds a user
+      x-openapi-router-controller: controllers.users
+      operationId: addUser
       requestBody:
-        description: a user to register
+        description: a user to add
         required: true
         content:
           application/json:
@@ -75,7 +52,7 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         '200':
-          description: registration result
+          description: addition result
           content:
             application/json:
               schema:
@@ -83,8 +60,8 @@ paths:
   /user/{username}:
     get:
       summary: Returns a user
-      x-swagger-router-controller: controllers.users
-      operationId: get
+      x-openapi-router-controller: controllers.users
+      operationId: getUser
       parameters:
         - in: path
           name: username
@@ -101,8 +78,8 @@ paths:
                 $ref: '#/components/schemas/User'
     patch:
       summary: Updates a user
-      x-swagger-router-controller: controllers.users
-      operationId: update
+      x-openapi-router-controller: controllers.users
+      operationId: updateUser
       requestBody:
         description: a user to update
         required: true
@@ -119,15 +96,15 @@ paths:
             type: string
       responses:
         '200':
-          description: unregistration result
+          description: update result
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response'
     delete:
-      summary: Deletes a user
-      x-swagger-router-controller: controllers.users
-      operationId: delete
+      summary: Removes a user
+      x-openapi-router-controller: controllers.users
+      operationId: removeUser
       parameters:
         - in: path
           name: username
@@ -137,7 +114,7 @@ paths:
             type: string
       responses:
         '200':
-          description: unregistration result
+          description: removal result
           content:
             application/json:
               schema:
@@ -145,7 +122,7 @@ paths:
   /people:
     get:
       summary: Returns a list of people
-      x-swagger-router-controller: controllers.people
+      x-openapi-router-controller: controllers.people
       operationId: getPeople
       responses:
         '200':
@@ -156,10 +133,28 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Person'
+    post:
+      summary: Adds a person
+      x-openapi-router-controller: controllers.people
+      operationId: addPerson
+      requestBody:
+        description: a person to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        '200':
+          description: addition result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
   /person/{id}:
     get:
       summary: Returns a person
-      x-swagger-router-controller: controllers.people
+      x-openapi-router-controller: controllers.people
       operationId: getPerson
       parameters:
         - in: path
@@ -170,12 +165,62 @@ paths:
             type: integer
       responses:
         '200':
-          description: a JSON object describing the person
+          description: the person
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/Person'
+    patch:
+      summary: Updates a person
+      x-openapi-router-controller: controllers.people
+      operationId: updatePerson
+      requestBody:
+        description: a person to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      parameters:
+        - in: path
+          name: id
+          description: name of a person
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: update result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      summary: Removes a person
+      x-openapi-router-controller: controllers.people
+      operationId: removePerson
+      parameters:
+        - in: path
+          name: id
+          description: ID of a person
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: removal result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+security:
+  - jwt: []
 components:
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     AuthRequest:
       type: object
@@ -201,6 +246,8 @@ components:
         - type: object
           properties:
             path: 
+              type: string
+            auth_token:
               type: string
     User:
       type: object

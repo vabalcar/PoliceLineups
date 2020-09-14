@@ -4,7 +4,8 @@ param (
     [Parameter(Mandatory = $true)] [string] $Directory,
     [string] $TmpDirectory = 'generated',
     [string] $APIGenerationWhitelist = 'apiGenerationWhitelist.json',
-    [string] $API = 'api.yaml'
+    [string] $API = 'api.yaml',
+    [string] $AdditionalConfiguration
 )
 
 function Invoke-SwaggerCodegen {
@@ -18,7 +19,13 @@ function Invoke-SwaggerCodegen {
     $curDir = $PSScriptRoot
     $swaggerCli = Join-Path $curDir 'swagger-codegen-cli.jar'
     $swaggerInput = Join-Path $curDir $API
-    & java -jar $swaggerCli generate -i $swaggerInput -o $Directory -l $Language
+
+    $swaggerCliArgs = 'generate', '-i', $swaggerInput, '-o', $Directory, '-l', $Language
+    if ($AdditionalConfiguration) {
+        $swaggerCliArgs += '-c', $AdditionalConfiguration
+    }
+    & java -jar $swaggerCli @swaggerCliArgs
+
     'done.' | Out-Host
 }
 
