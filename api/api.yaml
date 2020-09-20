@@ -4,6 +4,7 @@ info:
   version: '1.0'
 servers:
   - url: http://localhost:8080/v1
+security: [jwt-user: []]
 paths:
   /login:
     post:
@@ -25,6 +26,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
+  /init/rootUser:
+    get:
+      summary: Inits root user
+      x-openapi-router-controller: controllers.users
+      operationId: initRootUser
+      security: [jwt-init: []]
+      responses:
+        '200':
+          description: root user initialization result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
   /users:
     get:
       summary: Returns all users
@@ -119,6 +133,103 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response'
+  /user/{username}/roles:
+    get:
+      summary: Returns roles of the user
+      x-openapi-router-controller: controllers.users
+      operationId: getUserRoles
+      parameters:
+        - in: path
+          name: username
+          description: username of a user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: a JSON object describing the User
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+    post:
+      summary: Extends user roles
+      x-openapi-router-controller: controllers.users
+      operationId: addUserRole
+      requestBody:
+        description: a user to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      parameters:
+        - in: path
+          name: username
+          description: username of a user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: update result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  /user/{username}/roles/{role}:
+    get:
+      summary: Determines if a user has a role
+      x-openapi-router-controller: controllers.users
+      operationId: hasUserRole
+      parameters:
+        - in: path
+          name: username
+          description: a username of a user
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: role
+          description: a role of a user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: determination result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      summary: Removes a user role
+      x-openapi-router-controller: controllers.users
+      operationId: removeUserRole
+      parameters:
+        - in: path
+          name: username
+          description: a username of a user
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: role
+          description: a role of a user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: removal result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
   /people:
     get:
       summary: Returns a list of people
@@ -156,6 +267,7 @@ paths:
       summary: Returns a person
       x-openapi-router-controller: controllers.people
       operationId: getPerson
+      security: [jwt-admin: []]
       parameters:
         - in: path
           name: id
@@ -213,11 +325,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Response'
-security:
-  - jwt: []
 components:
   securitySchemes:
-    jwt:
+    jwt-user:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    jwt-admin:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    jwt-init:
       type: http
       scheme: bearer
       bearerFormat: JWT
@@ -252,8 +370,6 @@ components:
     User:
       type: object
       properties:
-        id:
-          type: integer
         username:
           type: string
         password:
@@ -261,6 +377,13 @@ components:
         name:
           type: string
         email:
+          type: string
+    UserRole:
+      type: object
+      properties:
+        username:
+          type: string
+        role:
           type: string
     Person:
       type: object
