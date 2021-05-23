@@ -16,12 +16,13 @@ ROOT_DEFAULT_PASSWORD = '1234'
 ROOT_DEFAULT_ROLE = 'admin'
 
 def init_root_user():
-    success = add_user(User(
+    root_user = User(
         username=ROOT_USERNAME, \
         password=ROOT_DEFAULT_PASSWORD, \
         name=ROOT_DEFAULT_NAME
-    ))
-    success = success and add_user_role([ROOT_DEFAULT_ROLE], ROOT_USERNAME)
+    )
+    success = add_user(root_user).success
+    success = success and add_user_role([ROOT_DEFAULT_ROLE], ROOT_USERNAME).success
     return Response(success)
 
 def get_users():  # noqa: E501
@@ -46,7 +47,11 @@ def get_user(username):  # noqa: E501
     :rtype: User
     """
 
-    return MysqlDBTable('users').find(username=username)
+    results = MysqlDBTable('users').find(username=username)
+    if len(results) == 1:
+        return results[0]
+    else:
+        return None
 
 def add_user(body):  # noqa: E501
     """Adds a user
@@ -61,6 +66,9 @@ def add_user(body):  # noqa: E501
 
     if connexion.request.is_json:
         user = User.from_dict(connexion.request.get_json())  # noqa: E501
+
+    if isinstance(body, User):
+        user = body
 
     success = False
 
@@ -153,7 +161,7 @@ def add_user_role(body, username):  # noqa: E501
 
     for role in body:
         if len(MysqlDBTable('user_roles').find(username=username, role=role)) == 0:
-            success &= MysqlDBTable('user_roles').insert(UserRole(username, role)) == 1
+            success = MysqlDBTable('user_roles').insert(UserRole(username, role)) == 1
 
     return Response(success)
 

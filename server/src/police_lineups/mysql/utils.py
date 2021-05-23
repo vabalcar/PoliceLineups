@@ -1,8 +1,12 @@
+import functools
 import mysql.connector
 import sqlparse
 
 from police_lineups.singleton import Singleton
 from police_lineups.json.utils import parse_json_file
+
+def foldl(func, acc, xs):
+    return functools.reduce(func, xs, acc)
 
 class MysqlDBConnector(metaclass=Singleton):
 
@@ -23,32 +27,30 @@ class MysqlDBConnector(metaclass=Singleton):
 
 class MysqlAnalyzer:
 
-    _keyword_values = ['NULL', 'TRUE', 'FALSE']
-
     @staticmethod
-    def parse_mysql_singleton(t: type, s):
+    def parse_mysql_singleton(s: any, t: type, *tts):
         parsed = sqlparse.parse(f'{s}')
-        return parsed[0][0] \
-            if len(parsed) == 1 \
-                and len(parsed[0].tokens) == 1 \
-                and isinstance(parsed[0][0], t) \
-            else None
+        return parsed[0][0] if len(parsed) == 1 \
+            and len(parsed[0].tokens) == 1 \
+            and isinstance(parsed[0][0], t) \
+            and (len(tts) == 0 or foldl(lambda acc, tt: acc or parsed[0][0].ttype in tt, False, tts)) else None
 
     @staticmethod
-    def is_mysql_value(s) -> bool:
-        token = MysqlAnalyzer.parse_mysql_singleton(sqlparse.sql.Token, s)
-        return token is not None \
-                    and (token.ttype in sqlparse.tokens.Literal \
-                        or (token.ttype in sqlparse.tokens.Keyword \
-                            and f"{token}".upper() in MysqlAnalyzer._keyword_values))
+    def validate_mysql_singletion(s: any, t: type, *tts):
+        return MysqlAnalyzer.parse_mysql_singleton(s, t, *tts) is not None
+
+    @staticmethod
+    def is_mysql_value(s: any) -> bool:
+        return MysqlAnalyzer.validate_mysql_singletion(s, sqlparse.sql.Token, sqlparse.tokens.Literal, sqlparse.tokens.Keyword)
 
     @staticmethod
     def assert_mysql_value(s):
         assert MysqlAnalyzer.is_mysql_value(s), f"{s} is not a MySQL value"
 
     @staticmethod
-    def is_mysql_identifier(s) -> bool:
-        return MysqlAnalyzer.parse_mysql_singleton(sqlparse.sql.Identifier, s) is not None
+    def is_mysql_identifier(s: any) -> bool:
+        return MysqlAnalyzer.validate_mysql_singletion(s, sqlparse.sql.Identifier) \
+            or MysqlAnalyzer.validate_mysql_singletion(s, sqlparse.sql.Token, sqlparse.tokens.Keyword)
 
     @staticmethod
     def assert_mysql_identifier(s):

@@ -1,6 +1,9 @@
 {
+    "schema": "http",
     "host": "localhost",
     "port": 4666,
+    "basePath": "/",
+    "outSchema": "http",
     "outHost": "localhost",
     "outPort": 4666,
     "outBasePath": "/"

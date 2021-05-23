@@ -1,4 +1,3 @@
-import secrets
 import connexion
 from flask_cors import CORS
 from swagger_server import encoder

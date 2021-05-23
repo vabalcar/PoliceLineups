@@ -26,7 +26,11 @@ def get_person(id):  # noqa: E501
     :rtype: Person
     """
 
-    return MysqlDBTable('people').find(id=id)
+    results = MysqlDBTable('people').find(id=id)
+    if len(results) == 1:
+        return results[0]
+    else:
+        return None
 
 def add_person(body):  # noqa: E501
     """Adds a person

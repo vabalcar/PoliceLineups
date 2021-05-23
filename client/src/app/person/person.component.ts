@@ -22,9 +22,9 @@ export class PersonComponent implements OnInit {
   }
 
   static parseFeature(feature: string) {
-    var featureDesc = feature.split(' ');
-    var featureName: string = '';
-    var featureValue: string = '';
+    const featureDesc = feature.split(' ');
+    let featureName = '';
+    let featureValue = '';
 
     for(var i = 0; i < featureDesc.length; ++i) {
       if (PersonComponent.isUppercase(featureDesc[i])) {

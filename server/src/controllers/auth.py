@@ -34,31 +34,31 @@ def decode_auth_token(token):
     except JWTError:
         raise Unauthorized
 
-def login(request):  # noqa: E501
+def login(body):  # noqa: E501
     """Logins registered user
 
      # noqa: E501
 
-    :param request: AuthRequest
-    :type request: dict | bytes
+    :param body: AuthRequest
+    :type body: dict | bytes
 
     :rtype: object
     """
     if connexion.request.is_json:
-        request = AuthRequest.from_dict(connexion.request.get_json())  # noqa: E501
+        body = AuthRequest.from_dict(connexion.request.get_json())  # noqa: E501
 
     success = False
     path = '/'
     auth_token = None
 
-    username = request.username
-    password = request.password
+    username = body.username
+    password = body.password
 
     result = MysqlDBTable('users').find(username=username)
     success = len(result) == 1 and  check_password_hash(result[0].password, password)
 
     if success:
-        path = request.path
+        path = body.path
         auth_token = _generate_auth_token(username)
 
     return AuthResponse(success, path, auth_token)
