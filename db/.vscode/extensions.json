@@ -5,9 +5,9 @@
   // List of extensions which should be recommended for users of this workspace.
   "recommendations": [
     "ms-vscode.powershell",
+
     "GrapeCity.gc-excelviewer",
-    "jakebathman.mysql-syntax",
-    "formulahendry.vscode-mysql"
+    "jakebathman.mysql-syntax"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []
