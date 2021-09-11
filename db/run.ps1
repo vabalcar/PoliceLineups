@@ -1,6 +1,6 @@
 #!/usr/bin/pwsh
 param (
-    [string] $MysqlService = $IsWindows ? 'MYSQL80' : 'mysql'
+    [string] $MysqlService = 'mysql'
 )
 
 'Running db...' | Out-Host
@@ -13,12 +13,14 @@ if ($IsWindows) {
     }
 
     "DB (service $MysqlService) is $($dbStatus.ToString().ToLower())" | Out-Host
-} else {
+}
+else {
     if (Get-Command -CommandType Application -TotalCount 1 -Name 'genie' -ErrorAction SilentlyContinue) {
         # WSL 2 support
         & genie -c sudo systemctl start $MysqlService
         & genie -c sudo systemctl status $MysqlService
-    } else {
+    }
+    else {
         & sudo systemctl start $MysqlService
         & sudo systemctl status $MysqlService
     }
