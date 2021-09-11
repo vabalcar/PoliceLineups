@@ -7,6 +7,7 @@ _db_tables = {
     'user_roles': UserRole
 }
 
+
 def setup_db():
 
     MysqlDBConnector().load_db_config('..', '..', 'config', 'db.json')

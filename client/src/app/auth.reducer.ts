@@ -1,4 +1,9 @@
-import { Action, ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  ActionReducerMap,
+  createFeatureSelector,
+  createSelector,
+} from "@ngrx/store";
 
 // State
 export interface State {
@@ -7,20 +12,19 @@ export interface State {
 
 export const reducers: ActionReducerMap<State> = {
   auth: authReducer,
-  
 };
 
-export const authReducerFeatureKey = 'authReducer';
+export const authReducerFeatureKey = "authReducer";
 
 export interface AuthState {
   token: string;
 }
 
 export const initialAuthState: AuthState = {
-  token: ''
+  token: "",
 };
 
-function _newState(state: AuthState, update) : AuthState {
+function _newState(state: AuthState, update): AuthState {
   const newState = Object.assign({}, state, update);
   //localStorage.setItem(authReducerFeatureKey, JSON.stringify(newState));
   return newState;
@@ -28,7 +32,7 @@ function _newState(state: AuthState, update) : AuthState {
 
 function _retrieveSavedState(): AuthState {
   const serializedState = localStorage.getItem(authReducerFeatureKey);
-  return serializedState ? JSON.parse(serializedState) as AuthState : null;
+  return serializedState ? (JSON.parse(serializedState) as AuthState) : null;
 }
 
 function _deleteSavedState() {
@@ -37,14 +41,13 @@ function _deleteSavedState() {
 
 // Actions
 
-const LOGIN_ACTION = 'login';
-const LOGIN_FAILED_ACTION = 'login-failed';
-const LOGOUT_ACTION = 'logout';
+const LOGIN_ACTION = "login";
+const LOGIN_FAILED_ACTION = "login-failed";
+const LOGOUT_ACTION = "logout";
 
 export class LoginAction implements Action {
   readonly type = LOGIN_ACTION;
-  constructor(public token: string) {
-  }
+  constructor(public token: string) {}
 }
 
 export class LoginFailedAction implements Action {
@@ -57,8 +60,11 @@ export class LogoutAction implements Action {
 
 //Reducers
 
-export function authReducer(state: AuthState = initialAuthState, action: Action) {
-  switch(action.type) {
+export function authReducer(
+  state: AuthState = initialAuthState,
+  action: Action
+) {
+  switch (action.type) {
     case LOGIN_ACTION:
       return _newState(state, { token: (action as LoginAction).token });
     case LOGIN_FAILED_ACTION:
@@ -76,9 +82,9 @@ export function authReducer(state: AuthState = initialAuthState, action: Action)
 
 // Selectors
 
-export const featureKey = 'auth';
+export const featureKey = "auth";
 
-export const selectAuth = createFeatureSelector<AuthState>('auth');
+export const selectAuth = createFeatureSelector<AuthState>("auth");
 
 export const selectAccessToken = createSelector(
   selectAuth,

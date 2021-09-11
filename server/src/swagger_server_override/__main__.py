@@ -7,6 +7,7 @@ from police_lineups.json.utils import parse_json_file
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 5000
 
+
 def main():
 
     # parse configuration from configuration
@@ -32,6 +33,7 @@ def main():
 
     # run the server
     app.run(port=port, host=host)
+
 
 if __name__ == '__main__':
     main()

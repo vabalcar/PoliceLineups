@@ -1,6 +1,7 @@
 import json
 import os
 
+
 def parse_json_file(path, *path_children):
     if not os.path.isabs(path):
         cur_dir = os.getcwd()

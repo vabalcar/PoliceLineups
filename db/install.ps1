@@ -13,7 +13,8 @@ $installInfoFile = 'install-info.json'
 if (Test-Path $installInfoFile) {
     if ($Force) {
         Remove-Item $installInfoFile
-    } elseif ((Get-Content -Path $installInfoFile | ConvertFrom-Json).Installed) {
+    }
+    elseif ((Get-Content -Path $installInfoFile | ConvertFrom-Json).Installed) {
         'DB already installed' | Out-Host
         exit
     }

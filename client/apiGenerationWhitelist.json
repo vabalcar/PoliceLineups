@@ -1,7 +1,1 @@
-[
-    "configuration.ts",
-    "encoder.ts",
-    "variables.ts",
-    "api",
-    "model"
-]
+["configuration.ts", "encoder.ts", "variables.ts", "api", "model"]

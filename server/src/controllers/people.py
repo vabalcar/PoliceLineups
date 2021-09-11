@@ -7,6 +7,7 @@ from police_lineups.mysql.utils import MysqlDBTable
 from swagger_server.models.person import Person
 from swagger_server.models.response import Response
 
+
 def get_people():  # noqa: E501
     """
     Returns a list of people.
@@ -15,6 +16,7 @@ def get_people():  # noqa: E501
     """
 
     return MysqlDBTable('people').content()
+
 
 def get_person(id):  # noqa: E501
     """
@@ -31,6 +33,7 @@ def get_person(id):  # noqa: E501
         return results[0]
     else:
         return None
+
 
 def add_person(body):  # noqa: E501
     """Adds a person
@@ -55,6 +58,7 @@ def add_person(body):  # noqa: E501
 
     return Response(success)
 
+
 def update_person(body, id):  # noqa: E501
     """Updates a person
 
@@ -73,6 +77,7 @@ def update_person(body, id):  # noqa: E501
     success = new_values is not None \
         and MysqlDBTable('people').update(new_values, id=id) == 1
     return Response(success)
+
 
 def remove_person(id):  # noqa: E501
     """Removes a person

@@ -5,8 +5,10 @@ import sqlparse
 from police_lineups.singleton import Singleton
 from police_lineups.json.utils import parse_json_file
 
+
 def foldl(func, acc, xs):
     return functools.reduce(func, xs, acc)
+
 
 class MysqlDBConnector(metaclass=Singleton):
 
@@ -25,6 +27,7 @@ class MysqlDBConnector(metaclass=Singleton):
             port=self.db_config['port']
         ) if self.db_config is not None else None
 
+
 class MysqlAnalyzer:
 
     @staticmethod
@@ -41,7 +44,8 @@ class MysqlAnalyzer:
 
     @staticmethod
     def is_mysql_value(s: any) -> bool:
-        return MysqlAnalyzer.validate_mysql_singleton(s, sqlparse.sql.Token, sqlparse.tokens.Literal, sqlparse.tokens.Keyword)
+        return MysqlAnalyzer.validate_mysql_singleton(
+            s, sqlparse.sql.Token, sqlparse.tokens.Literal, sqlparse.tokens.Keyword)
 
     @staticmethod
     def assert_mysql_value(s):
@@ -55,6 +59,7 @@ class MysqlAnalyzer:
     @staticmethod
     def assert_mysql_identifier(s):
         assert MysqlAnalyzer.is_mysql_identifier(s), f"{s} is not a MySQL identifier"
+
 
 class MysqlDBTable(metaclass=Singleton):
 
@@ -190,8 +195,8 @@ class MysqlDBTable(metaclass=Singleton):
     def find(self, **kwargs) -> list:
 
         where_clause = self._to_where_clause(delimited=True, **kwargs)
-        return query_db(f"SELECT * FROM {self.name}{where_clause}", \
-            self._parse_from_mysql if self.entity_type else None)
+        return query_db(f"SELECT * FROM {self.name}{where_clause}",
+                        self._parse_from_mysql if self.entity_type else None)
 
     def contains(self, **kwargs) -> bool:
         return len(self.find(**kwargs)) > 0
@@ -226,6 +231,7 @@ def query_db(query, row_processor=None) -> list:
     db.close()
 
     return results
+
 
 def update_db(query) -> int:
 

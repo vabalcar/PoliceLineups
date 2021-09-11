@@ -1,18 +1,18 @@
 /*@import '@angular/material/prebuilt-themes/deeppurple-amber.css';*/
 
 .toolbar {
-    height: 5%;
+  height: 5%;
 }
 
 .drawer-container {
-    height: 95%;
+  height: 95%;
 }
 
 .drawer-header {
-    margin: 20px;
+  margin: 20px;
 }
 
 mat-drawer button {
-    width: 100%;
-    text-align: start;
+  width: 100%;
+  text-align: start;
 }

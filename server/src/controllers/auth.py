@@ -14,8 +14,10 @@ JWT_SECRET = secrets.token_urlsafe(32)
 JWT_LIFETIME_SECONDS = 600
 JWT_ALGORITHM = 'HS256'
 
+
 def _current_timestamp() -> int:
     return int(time.time())
+
 
 def _generate_auth_token(username):
     timestamp = _current_timestamp()
@@ -28,11 +30,13 @@ def _generate_auth_token(username):
 
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
+
 def decode_auth_token(token):
     try:
         return jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
     except JWTError:
         raise Unauthorized
+
 
 def login(body):  # noqa: E501
     """Logins registered user
@@ -55,7 +59,7 @@ def login(body):  # noqa: E501
     password = body.password
 
     result = MysqlDBTable('users').find(username=username)
-    success = len(result) == 1 and  check_password_hash(result[0].password, password)
+    success = len(result) == 1 and check_password_hash(result[0].password, password)
 
     if success:
         path = body.path

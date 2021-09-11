@@ -1,14 +1,13 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-
-	],
-	"settings": {
-		"files.exclude": {
-			"server-env": true,
-			"server-env-win": true
-		}
-	}
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "server-env": true,
+      "server-env-win": true
+    }
+  }
 }

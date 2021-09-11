@@ -41,9 +41,9 @@ CREATE PROCEDURE ExportTable(
     CLOSE curColumns;
 
     SET @exportTableData = CONCAT(
-        '(SELECT ', header ,") 
+        '(SELECT ', header ,")
         UNION ALL
-        (SELECT * 
+        (SELECT *
         FROM `", tableName ,"`)
         INTO OUTFILE '", path, "'
         CHARACTER SET 'utf8mb4'

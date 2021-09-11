@@ -9,7 +9,8 @@ $clientConfigFile = Join-Path '..' 'config' 'client.json'
 if ($Dev) {
     . (Join-Path '..' 'pwsh' 'libs' 'json.ps1')
     $clientConfig = Update-JsonObject -Path $clientConfigFile -Attribute 'dev' -Value $true
-} else {
+}
+else {
     $clientConfig = Get-Content $clientConfigFile | ConvertFrom-Json
 }
 
@@ -21,11 +22,13 @@ if ($NoRun) {
 try {
     if ($clientConfig.dev) {
         & ng serve --host $($clientConfig.host) --port $($clientConfig.port)
-    } else {
+    }
+    else {
         $clientOutPort = $clientConfig.outPort -eq 80 ? '' : ":${$clientConfig.outPort}"
         $publicHost = "$($clientConfig.schema)://$($clientConfig.outHost)$($clientOutPort)$($clientConfig.outBasePath)/"
         & ng serve --host $($clientConfig.host) --port $($clientConfig.port) --publicHost=$publicHost
     }
-} finally {
+}
+finally {
     'stopped.' | Out-Host
 }
