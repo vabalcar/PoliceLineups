@@ -36,12 +36,12 @@ class MysqlAnalyzer:
             and (len(tts) == 0 or foldl(lambda acc, tt: acc or parsed[0][0].ttype in tt, False, tts)) else None
 
     @staticmethod
-    def validate_mysql_singletion(s: any, t: type, *tts):
+    def validate_mysql_singleton(s: any, t: type, *tts):
         return MysqlAnalyzer.parse_mysql_singleton(s, t, *tts) is not None
 
     @staticmethod
     def is_mysql_value(s: any) -> bool:
-        return MysqlAnalyzer.validate_mysql_singletion(s, sqlparse.sql.Token, sqlparse.tokens.Literal, sqlparse.tokens.Keyword)
+        return MysqlAnalyzer.validate_mysql_singleton(s, sqlparse.sql.Token, sqlparse.tokens.Literal, sqlparse.tokens.Keyword)
 
     @staticmethod
     def assert_mysql_value(s):
@@ -49,8 +49,8 @@ class MysqlAnalyzer:
 
     @staticmethod
     def is_mysql_identifier(s: any) -> bool:
-        return MysqlAnalyzer.validate_mysql_singletion(s, sqlparse.sql.Identifier) \
-            or MysqlAnalyzer.validate_mysql_singletion(s, sqlparse.sql.Token, sqlparse.tokens.Keyword)
+        return MysqlAnalyzer.validate_mysql_singleton(s, sqlparse.sql.Identifier) \
+            or MysqlAnalyzer.validate_mysql_singleton(s, sqlparse.sql.Token, sqlparse.tokens.Keyword)
 
     @staticmethod
     def assert_mysql_identifier(s):
