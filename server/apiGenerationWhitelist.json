@@ -1,5 +1,1 @@
-[
-    "swagger_server",
-    "requirements.txt",
-    "test-requirements.txt"
-]
+["swagger_server", "requirements.txt", "test-requirements.txt"]

@@ -7,12 +7,14 @@ param (
 
 . (Join-Path $PSScriptRoot 'io.ps1')
 
-try{
+try {
     if ([Path]::IsPathRooted($Script)) {
         & $Script @ArgumentList
-    } else {
+    }
+    else {
         & (Join-Path '.' $Script) @ArgumentList
     }
-} finally {
+}
+finally {
     Wait-AnyKeyPress -Purpose 'close this window'
 }

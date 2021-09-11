@@ -1,7 +1,7 @@
 #!/usr/bin/pwsh
 function Test-Executable() {
     param (
-        [Parameter(Mandatory=$true)] [string] $Executable
+        [Parameter(Mandatory = $true)] [string] $Executable
     )
 
     return Get-Command -CommandType Application -TotalCount 1 -Name $Executable -ErrorAction SilentlyContinue
@@ -21,6 +21,7 @@ foreach ($description in $executableDescriptions) {
 
 if (!$environmentReady) {
     'Evironment is not ready. Please follow instructions above and try again.' | Out-Host
-} else {
+}
+else {
     'Environment is ready.' | Out-Host
 }

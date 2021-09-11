@@ -11,7 +11,8 @@ function Wait-AnyKeyPress {
         $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown') | Out-Null
         $Host.UI.RawUI.Flushinputbuffer()
         Write-Host
-    } catch [MethodInvocationException] {
+    }
+    catch [MethodInvocationException] {
         'error - waiting for any keypress is not supported on this platforms/terminal.' | Out-Host
         Write-Host -NoNewline "Press enter to $Purpose..."
         Read-Host

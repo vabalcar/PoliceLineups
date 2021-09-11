@@ -1,10 +1,10 @@
 {
-    "schema": "http",
-    "host": "localhost",
-    "port": 8080,
-    "basePath": "/v1",
-    "outSchema": "http",
-    "outHost": "localhost",
-    "outPort": 8080,
-    "outBasePath": "/v1"
+  "schema": "http",
+  "host": "localhost",
+  "port": 8080,
+  "basePath": "/v1",
+  "outSchema": "http",
+  "outHost": "localhost",
+  "outPort": 8080,
+  "outBasePath": "/v1"
 }

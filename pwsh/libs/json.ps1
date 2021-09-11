@@ -1,8 +1,8 @@
 function Update-JsonObject {
     param (
-        [Parameter(Mandatory=$true)] [string] $Path,
-        [Parameter(Mandatory=$true)] [string] $Attribute,
-        [Parameter(Mandatory=$true)] $Value
+        [Parameter(Mandatory = $true)] [string] $Path,
+        [Parameter(Mandatory = $true)] [string] $Attribute,
+        [Parameter(Mandatory = $true)] $Value
     )
 
     $jsonObject = Get-Content -Raw -Path $Path | ConvertFrom-Json

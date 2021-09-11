@@ -1,4 +1,4 @@
 {
-    "venvName": "server-env",
-    "venvNameWindows": "server-env-win"
+  "venvName": "server-env",
+  "venvNameWindows": "server-env-win"
 }

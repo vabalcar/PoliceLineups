@@ -12,10 +12,12 @@ function Add-SemicolonIfMissing {
         if ($string.Length -gt 0) {
             if ($string[$string.Length - 1] -ne ';') {
                 "$string;"
-            } else {
+            }
+            else {
                 $string
             }
-        } else {
+        }
+        else {
             ';'
         }
     }
@@ -24,7 +26,7 @@ function Add-SemicolonIfMissing {
 function Get-TerminatedMysqlStmt {
     [OutputType([string])]
     param (
-        [Parameter(Mandatory=$true)] [string] $stmt
+        [Parameter(Mandatory = $true)] [string] $stmt
     )
 
     $stmt | Add-SemicolonIfMissing
@@ -33,7 +35,7 @@ function Get-TerminatedMysqlStmt {
 function Get-MysqlScriptStmt {
     [OutputType([string])]
     param (
-        [Parameter(Mandatory=$true)] [string] $script
+        [Parameter(Mandatory = $true)] [string] $script
     )
     [string] $prevLine | Out-Null
     [bool] $firstNonEmptyLine = $true
@@ -42,20 +44,21 @@ function Get-MysqlScriptStmt {
         if ($trimmedCurLine.Length -gt 0) {
             if (!$firstNonEmptyLine) {
                 $prevLine
-            } else {
+            }
+            else {
                 $firstNonEmptyLine = $false
             }
-            $prevLine = $trimmedCurLine   
+            $prevLine = $trimmedCurLine
         }
     }
-    
+
     $prevLine | Add-SemicolonIfMissing
 }
 
 function Get-CSVImportMysqlStmt {
     param(
-        [Parameter(Mandatory=$true)] [string] $csv,
-        [Parameter(Mandatory=$true)] [string] $table,
+        [Parameter(Mandatory = $true)] [string] $csv,
+        [Parameter(Mandatory = $true)] [string] $table,
         [string] $delimiter = (Get-Culture).TextInfo.ListSeparator,
         [string] $encoding = 'utf8BOM',
         [switch] $purge
@@ -75,7 +78,7 @@ function Get-CSVImportMysqlStmt {
                 $headerCells.Add($_.name)
             }
             $sb.Append('(') | Out-Null
-            for($i = 0; $i -lt $headerCells.Count; ++$i) {
+            for ($i = 0; $i -lt $headerCells.Count; ++$i) {
                 if ($i -ne 0) {
                     $sb.Append(', ') | Out-Null
                 }
@@ -87,7 +90,7 @@ function Get-CSVImportMysqlStmt {
         }
 
         $sb.Append('(') | Out-Null
-        for($i = 0; $i -lt $headerCells.Count; ++$i) {
+        for ($i = 0; $i -lt $headerCells.Count; ++$i) {
             if ($i -ne 0) {
                 $sb.Append(', ') | Out-Null
             }
@@ -96,7 +99,7 @@ function Get-CSVImportMysqlStmt {
         $sb.Append(')') | Out-Null
         $row = $sb.ToString()
         $sb.Clear() | Out-Null
-        
+
         "INSERT INTO ``$table`` $header VALUES $row;"
     }
 }
@@ -113,13 +116,13 @@ class IMysqlStmt {
 
 class MysqlStmt : IMysqlStmt {
     hidden [string] $stmt
-    
+
     MysqlStmt([string] $stmt) {
         $this.stmt = $stmt
     }
-    
+
     [hashtable] GetStmtDescription() {
-        return @{   
+        return @{
             Stmt = $this.stmt
         }
     }
@@ -158,14 +161,14 @@ class MysqlCsvImport : IMysqlStmt {
         $this.csv = $csv
         $this.table = [Path]::GetFileNameWithoutExtension((Split-Path -Leaf $csv))
     }
-    
+
     [hashtable] GetStmtDescription() {
         return @{
-            CSV = $this.csv;
-            Table = $this.table;
+            CSV       = $this.csv;
+            Table     = $this.table;
             Delimiter = $this.delimiter;
-            Encoding = $this.encoding;
-            Purge = $this.purge
+            Encoding  = $this.encoding;
+            Purge     = $this.purge
         }
     }
 
@@ -178,7 +181,7 @@ function Get-DBCnf {
     [CmdletBinding()]
     [OutputType([string])]
     param (
-        [Parameter(Mandatory=$true)] [string] $DBConfigFile
+        [Parameter(Mandatory = $true)] [string] $DBConfigFile
     )
 
     $configDir = $DBConfigFile | Resolve-Path | Split-Path -Parent
@@ -209,7 +212,7 @@ password=$($config.password)
     }
 
     @{
-        LastUpdate = $lastConfigUpdate;
+        LastUpdate       = $lastConfigUpdate;
         CreatedOnWindows = $IsWindows
     } | ConvertTo-Json | Out-File -Path $DBConfigInfoFile
 
@@ -265,12 +268,12 @@ function Invoke-Mysql {
 function Import-MysqlTable {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory=$true)] [string] $DBConfigFile,
+        [Parameter(Mandatory = $true)] [string] $DBConfigFile,
         [string] $delimiter = (Get-Culture).TextInfo.ListSeparator,
         [string] $encoding = 'utf8BOM',
         [switch] $purge,
 
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)] [string] $csv
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)] [string] $csv
     )
 
     $input | ForEach-Object {
@@ -285,8 +288,8 @@ function Import-MysqlTable {
 function Import-MysqlDB {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory=$true)] [string] $DBConfigFile,
-        [Parameter(Mandatory=$true)] [string] $path,
+        [Parameter(Mandatory = $true)] [string] $DBConfigFile,
+        [Parameter(Mandatory = $true)] [string] $path,
         [string] $delimiter = (Get-Culture).TextInfo.ListSeparator,
         [string] $encoding = 'utf8BOM',
         [switch] $purge
@@ -299,15 +302,15 @@ function Get-MysqlConstDecl {
     [CmdletBinding()]
     [OutputType([string])]
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string] $Type,
-        
-        [Parameter(Mandatory=$true)]
+
+        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string] $Name,
-        
-        [Parameter(Mandatory=$true)]
+
+        [Parameter(Mandatory = $true)]
         $Value
     )
 
@@ -326,9 +329,9 @@ CREATE FUNCTION $Name() RETURNS $Type DETERMINISTIC
 function ConvertTo-Encoding {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory=$true)] [string] $path,
-        [Parameter(Mandatory=$true)] [string] $inEncoding,
-        [Parameter(Mandatory=$true)] [string] $outEncoding
+        [Parameter(Mandatory = $true)] [string] $path,
+        [Parameter(Mandatory = $true)] [string] $inEncoding,
+        [Parameter(Mandatory = $true)] [string] $outEncoding
     )
 
     if (![Path]::IsPathRooted($path)) {
@@ -364,19 +367,19 @@ function ConvertTo-MysqlPath {
 function Export-MysqlTable {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory=$true)] [string] $DBConfigFile,
-        [Parameter(Mandatory=$true)] [string] $table,
-        [Parameter(Mandatory=$true)] [string] $path,
+        [Parameter(Mandatory = $true)] [string] $DBConfigFile,
+        [Parameter(Mandatory = $true)] [string] $table,
+        [Parameter(Mandatory = $true)] [string] $path,
         [string] $delimiter = (Get-Culture).TextInfo.ListSeparator,
         [string] $encoding = 'utf8BOM'
     )
 
     Remove-Item -Force -Path $path *> $null
     $mysqlPath = $path | ConvertTo-MysqlPath
-    
+
     $call = [MysqlStmt]::new("CALL ExportTable('$table','$delimiter','$mysqlPath')")
     $call | Invoke-Mysql -DBConfigFile $DBConfigFile
-    
+
     ConvertTo-Encoding -Path $path -InEncoding 'utf8NoBOM' -OutEncoding $encoding
 }
 
@@ -384,12 +387,12 @@ function Export-MysqlDB {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)] [string] $DBConfigFile,
-        [Parameter(Mandatory=$true)] [string] $path,
+        [Parameter(Mandatory = $true)] [string] $path,
         [string] $delimiter = (Get-Culture).TextInfo.ListSeparator,
         [string] $encoding = 'utf8BOM'
     )
 
-    $timestamp = Get-Date -Format 'o' | ForEach-Object {$_ -replace ":", "."}
+    $timestamp = Get-Date -Format 'o' | ForEach-Object { $_ -replace ":", "." }
     $path = Join-path $path $timestamp
     New-Item -ItemType Directory -Force $path | Out-Null
     $mysqlPath = $path | ConvertTo-MysqlPath
@@ -405,7 +408,7 @@ function Export-MysqlDB {
 function Remove-MysqlDB {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory=$true)] [string] $DBConfigFile
+        [Parameter(Mandatory = $true)] [string] $DBConfigFile
     )
 
     Invoke-Mysql -DBConfigFile $DBConfigFile -Force -NoDBCreate -NoDBUse
@@ -416,9 +419,9 @@ function Get-MysqlVariable {
     [OutputType([string])]
     param (
         [Parameter(Mandatory = $true)] [string] $DBConfigFile,
-        [Parameter(Mandatory=$true)] [string] $Name
+        [Parameter(Mandatory = $true)] [string] $Name
     )
-    
+
     $queryResult = [MysqlStmt]::new("SHOW VARIABLES LIKE '$Name'") | Invoke-Mysql -DBConfigFile $DBConfigFile
     if ($null -eq $queryResult) { return $null }
 

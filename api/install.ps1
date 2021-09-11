@@ -3,14 +3,15 @@ $swaggerCLIName = 'swagger-codegen-cli'
 $swaggerCLIInfo = Get-Content "$swaggerCLIName.json" | ConvertFrom-Json
 $outFile = "$swaggerCLIName.jar"
 
-if(!(Test-Path -PathType Leaf $outFile)) {
+if (!(Test-Path -PathType Leaf $outFile)) {
     $swaggerRepo = "$($swaggerCLIInfo.repoRoot)/$swaggerCLIName"
     $swaggerVersion = $swaggerCLIInfo.version
     $targetFile = "$swaggerCLIName-$swaggerVersion.jar"
-    
+
     "Downloading $swaggerCLIName $swaggerVersion..." | Out-Host
     Invoke-WebRequest -URI "$swaggerRepo/$swaggerVersion/$targetFile" -OutFile $outFile
     'done.' | Out-Host
-} else {
+}
+else {
     'Swagger already installed.' | Out-Host
 }

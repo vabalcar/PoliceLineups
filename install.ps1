@@ -2,8 +2,8 @@
 . (Join-Path '.' 'pwsh' 'libs' 'script-executing.ps1')
 
 [Executor]::ExecuteParallelly(@(
-    @{Script = 'install.ps1'; WD = 'api'},
-    @{Script = 'install.ps1'; ArgumentList = @('-SkipUserCreationMessage'); WD = 'db'},
-    @{Script = 'install.ps1'; WD = 'server'},
-    @{Script = 'install.ps1'; WD = 'client'}
-))
+        @{Script = 'install.ps1'; WD = 'api' },
+        @{Script = 'install.ps1'; ArgumentList = @('-SkipUserCreationMessage'); WD = 'db' },
+        @{Script = 'install.ps1'; WD = 'server' },
+        @{Script = 'install.ps1'; WD = 'client' }
+    ))

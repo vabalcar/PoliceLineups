@@ -109,7 +109,7 @@ def remove_user(username):  # noqa: E501
      # noqa: E501
 
     :param user: an user to unregister
-    :type user: 
+    :type user:
 
     :rtype: object
     """

@@ -40,7 +40,8 @@ class ScriptExecutor {
         if (($null -ne $wrapper) -and ($wrapper.Length -gt 0)) {
             $argsInOption = $argumentList.Count -ne 0 ? " -ArgumentList $argumentList" : ''
             Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& $wrapper -Script $script$argsInOption"
-        } else {
+        }
+        else {
             Start-Process -WorkingDirectory $scriptExecutionDescription.wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$script $argumentList"
         }
     }
@@ -59,7 +60,8 @@ class SequentialScriptExecutor : ScriptExecutor {
             $this.InitializeScriptExecution($scriptExecutionDescription)
             if ($scriptExecutionDescription.isExternal) {
                 $this.ExecuteExternally($scriptExecutionDescription)
-            } else {
+            }
+            else {
                 $this.InitializeScriptExecutionOutput($scriptExecutionDescription)
                 $origWD = Get-Location
                 try {
@@ -70,7 +72,8 @@ class SequentialScriptExecutor : ScriptExecutor {
                     & pwsh -NoLogo -File $script @argumentList | Out-Host
                     # Following way to run a scripts waits for externally run scripts but gives colorful output
                     # Start-Process -Wait -NoNewWindow -WorkingDirectory $wd -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$script $argumentList"
-                } finally {
+                }
+                finally {
                     Set-Location $origWD
                     $this.FinalizeScriptExecutionOutput($scriptExecutionDescription)
                 }
@@ -88,7 +91,8 @@ class ParallelScriptExecutor : ScriptExecutor {
             $this.InitializeScriptExecution($scriptExecutionDescription)
             if ($scriptExecutionDescription.isExternal) {
                 $this.ExecuteExternally($scriptExecutionDescription)
-            } else {
+            }
+            else {
                 Start-Job -ArgumentList $scriptExecutionDescription -ScriptBlock {
                     $sd = $args[0]
                     Set-Location $sd.wd
@@ -123,7 +127,7 @@ class Executor {
     }
 
     static [void] Execute([ScriptExecutor] $executor, [ScriptExecutionDescription[]] $seds) {
-        foreach($sed in $seds) {
+        foreach ($sed in $seds) {
             $executor.Add($sed)
         }
         $executor.Execute()

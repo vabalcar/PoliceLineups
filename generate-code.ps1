@@ -2,7 +2,7 @@
 . (Join-Path '.' 'pwsh' 'libs' 'script-executing.ps1')
 
 [Executor]::ExecuteParallelly(@(
-    @{Script = 'generate-code.ps1'; WD = 'db'},
-    @{Script = 'generate-code.ps1'; WD = 'server'},
-    @{Script = 'generate-code.ps1'; WD = 'client'}
-))
+        @{Script = 'generate-code.ps1'; WD = 'db' },
+        @{Script = 'generate-code.ps1'; WD = 'server' },
+        @{Script = 'generate-code.ps1'; WD = 'client' }
+    ))

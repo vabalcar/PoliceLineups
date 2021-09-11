@@ -35,16 +35,16 @@ function Read-GitIgnore {
     }
 
     & git ls-files @gitLsArgs -- $Path
-        | ForEach-Object {
-            if ($dirs.Length -ne 0) {
-                foreach($dir in $dirs) {
-                    if ("$_".StartsWith("$dir")) {
-                        return
-                    }
+    | ForEach-Object {
+        if ($dirs.Length -ne 0) {
+            foreach ($dir in $dirs) {
+                if ("$_".StartsWith("$dir")) {
+                    return
                 }
             }
-            $result.Add($_)
         }
+        $result.Add($_)
+    }
 
     return $result
 }
@@ -62,21 +62,21 @@ function Remove-GitIgnoredFiles {
         Read-GitIgnore -Path $Path -IgnoreFile $CleanIgnoreFile -FilesOnly | ForEach-Object { $cleanIgnoreFiles.Add($_) | Out-Null }
     }
     Read-GitIgnore -Path $Path
-        | Where-Object {
-            if (!$cleanIgnoreDirs) {
-                return $true
-            }
-            foreach($dir in $cleanIgnoreDirs) {
-                if ("$_".StartsWith("$dir")) {
-                    return $false
-                }
-            }
+    | Where-Object {
+        if (!$cleanIgnoreDirs) {
             return $true
         }
-        | Where-Object { !$cleanIgnoreFiles.Contains($_) }
-        | ForEach-Object {
-            "Removing $_" | Out-Host
-            $_
+        foreach ($dir in $cleanIgnoreDirs) {
+            if ("$_".StartsWith("$dir")) {
+                return $false
+            }
         }
-        | Remove-Item -Recurse -Force
+        return $true
+    }
+    | Where-Object { !$cleanIgnoreFiles.Contains($_) }
+    | ForEach-Object {
+        "Removing $_" | Out-Host
+        $_
+    }
+    | Remove-Item -Recurse -Force
 }

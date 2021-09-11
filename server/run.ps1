@@ -21,7 +21,8 @@ $originalWD = Get-Location
 try {
     Set-Location -Path 'src'
     & python 'app.py'
-} finally {
+}
+finally {
     'stopped.' | Out-Host
     & deactivate
     Set-Location -Path $originalWD
