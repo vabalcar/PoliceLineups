@@ -12,10 +12,7 @@ import { AuthService } from "./auth.service";
 export class AuthGuard implements CanActivate {
   constructor(private auth: AuthService) {}
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
+  canActivate(next: ActivatedRouteSnapshot): boolean {
     return this.auth.canAccess(next.url.toString());
   }
 }
