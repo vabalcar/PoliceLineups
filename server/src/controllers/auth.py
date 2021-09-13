@@ -3,6 +3,7 @@ import time
 import connexion
 
 from werkzeug.security import check_password_hash
+from werkzeug.datastructures import Authorization
 from werkzeug.exceptions import Unauthorized
 from jose import JWTError, jwt
 
@@ -12,7 +13,7 @@ from police_lineups.mysql.utils import MysqlDBTable
 JWT_ISSUER = 'policelineups'
 JWT_SECRET = secrets.token_urlsafe(32)
 JWT_LIFETIME_SECONDS = 600
-JWT_ALGORITHM = 'HS256'
+JWT_ALGORITHM = 'HS256'  # https://en.wikipedia.org/wiki/HMAC
 
 
 def _current_timestamp() -> int:
@@ -33,9 +34,11 @@ def _generate_auth_token(username):
 
 def decode_auth_token(token):
     try:
-        return jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-    except JWTError:
-        raise Unauthorized
+        token_data = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        connexion.request.authorization = Authorization("bearer", dict(username=token_data["sub"]))
+        return token_data
+    except JWTError as auth_error:
+        raise Unauthorized from auth_error
 
 
 def login(body):  # noqa: E501
