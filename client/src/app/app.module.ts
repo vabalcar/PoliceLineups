@@ -18,7 +18,7 @@ import { BASE_PATH } from "./api/variables";
 
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-import { reducers, authReducer } from "./auth.reducer";
+import { reducers } from "./auth.reducer";
 
 import { AppComponent } from "./app.component";
 import { PeopleComponent } from "./people/people.component";

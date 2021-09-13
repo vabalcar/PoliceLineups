@@ -1,56 +1,35 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { AuthResponse } from "./api/model/authResponse";
-import { AuthRequest } from "./api/model/authRequest";
 import { Router } from "@angular/router";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import {
-  AuthState,
-  LoginAction,
-  LoginFailedAction,
-  LogoutAction,
-} from "./auth.reducer";
+import { LoginAction, LoginFailedAction, LogoutAction } from "./auth.reducer";
 import { DefaultService } from "./api/api/default.service";
 import { Action } from "@ngrx/store";
-//import * as fromStore from 'src/app/core/store/states/state';
 import * as fromAuth from "./auth.reducer";
-import { FormatInputPathObject } from "path";
-import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  private token: string;
-  private tokenObservable$: Observable<string>;
-  public loggedIn = new BehaviorSubject<boolean>(false);
+  private token$: Observable<string>;
 
   get isLoggedIn(): boolean {
-    return !!this.token;
+    return this.api.configuration.accessToken !== undefined;
   }
 
   constructor(
-    private http: HttpClient,
     private router: Router,
-    private store: Store<fromAuth.AuthState>,
+    private store: Store<fromAuth.AppState>,
     private api: DefaultService
   ) {
-    this.tokenObservable$ = this.store.select(fromAuth.selectAccessToken);
+    this.token$ = this.store.select(fromAuth.selectAuthToken);
 
-    this.tokenObservable$.subscribe((value) => {
-      console.log(`token is ${value} now`);
-      this.token = value;
-      this.api.configuration.accessToken =
-        value.length === 0 ? undefined : value;
-      this.loggedIn.next(!!value);
+    this.token$.subscribe((value) => {
+      this.api.configuration.accessToken = value;
     });
-
-    //this.tokenObservable$.subscribe(value => this.api.configuration.accessToken = (value.length === 0 ? undefined : value));
-    //this.tokenObservable$.subscribe(value => this.loggedIn.next(!!value));
   }
 
-  canAccess(path: string = null): boolean {
+  canAccess(path: string): boolean {
     return this.isLoggedIn;
   }
 
@@ -62,17 +41,12 @@ export class AuthService {
         path,
       })
       .subscribe((response) => {
-        let path: string;
-        let action: Action;
-        if (response.success) {
-          path = response.path;
-          action = new LoginAction(response.authToken);
-        } else {
-          path = response.path;
-          action = new LoginFailedAction();
-        }
+        const action: Action = response.success
+          ? new LoginAction(response.authToken)
+          : new LoginFailedAction();
+
         this.store.dispatch(action);
-        this.router.navigateByUrl(path);
+        this.router.navigateByUrl(response.path);
       });
   }
 

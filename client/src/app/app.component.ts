@@ -17,6 +17,6 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.auth.loggedIn.subscribe((loggedIn) => (this.showLogout = loggedIn));
+    // TODO: this.auth.loggedIn.subscribe((loggedIn) => (this.showLogout = !loggedIn));
   }
 }
