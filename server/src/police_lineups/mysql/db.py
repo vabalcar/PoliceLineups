@@ -1,10 +1,9 @@
-from swagger_server.models import User, Person, UserRole
+from swagger_server.models import User, Person
 from police_lineups.mysql.utils import MysqlDBConnector, MysqlDBTable
 
 _db_tables = {
     'users': User,
     'people': Person,
-    'user_roles': UserRole
 }
 
 

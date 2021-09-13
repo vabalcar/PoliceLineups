@@ -2,14 +2,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(45) NOT NULL DEFAULT '',
   `password` varchar(258) DEFAULT NULL,
   `name` varchar(45) DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
+  `is_admin` boolean DEFAULT 0,
   PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE IF NOT EXISTS `user_roles` (
-  `username` varchar(45) NOT NULL DEFAULT '',
-  `role` varchar(45) NOT NULL DEFAULT '',
-  FOREIGN KEY (`username`) REFERENCES `users`(`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `people` (
