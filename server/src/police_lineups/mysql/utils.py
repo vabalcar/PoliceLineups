@@ -2,6 +2,8 @@ import functools
 import mysql.connector
 import sqlparse
 
+from typing import Generic, Type, TypeVar
+
 from police_lineups.singleton import Singleton
 from police_lineups.json.utils import parse_json_file
 
@@ -33,10 +35,15 @@ class MysqlAnalyzer:
     @staticmethod
     def parse_mysql_singleton(s: any, t: type, *tts):
         parsed = sqlparse.parse(f'{s}')
-        return parsed[0][0] if len(parsed) == 1 \
-            and len(parsed[0].tokens) == 1 \
-            and isinstance(parsed[0][0], t) \
-            and (len(tts) == 0 or foldl(lambda acc, tt: acc or parsed[0][0].ttype in tt, False, tts)) else None
+        return parsed[0][0] if len(parsed) == 1 and len(
+            parsed[0].tokens) == 1 and isinstance(
+            parsed[0][0],
+            t) and (
+            len(tts) == 0 or foldl(
+                lambda acc,
+                tt: acc or parsed[0][0].ttype in tt,
+                False,
+                tts)) else None
 
     @staticmethod
     def validate_mysql_singleton(s: any, t: type, *tts):
@@ -53,37 +60,34 @@ class MysqlAnalyzer:
 
     @staticmethod
     def is_mysql_identifier(s: any) -> bool:
-        return MysqlAnalyzer.validate_mysql_singleton(s, sqlparse.sql.Identifier) \
-            or MysqlAnalyzer.validate_mysql_singleton(s, sqlparse.sql.Token, sqlparse.tokens.Keyword)
+        return MysqlAnalyzer.validate_mysql_singleton(
+            s, sqlparse.sql.Identifier) or MysqlAnalyzer.validate_mysql_singleton(
+            s, sqlparse.sql.Token, sqlparse.tokens.Keyword)
 
     @staticmethod
     def assert_mysql_identifier(s):
         assert MysqlAnalyzer.is_mysql_identifier(s), f"{s} is not a MySQL identifier"
 
 
-class MysqlDBTable(metaclass=Singleton):
+T = TypeVar('T')
 
-    def set_entity_type(self, entity_type: type):
-        self.entity_type = entity_type
 
-    def __init__(self, name: str):
+class MysqlDBTable(Generic[T], metaclass=Singleton):
+
+    def __init__(self, member_type: Type[T], name: str) -> None:
 
         MysqlAnalyzer.assert_mysql_identifier(name)
 
         self.name = name
-        self.entity_type = None
         self.header = None
+        self.member_type = member_type
 
         self.get_header()
-
-    def assert_type(self, o: object):
-        if self.entity_type is not None and not isinstance(o, self.entity_type):
-            raise TypeError(f'Typed table {self.name} accepts only objects of type {self.entity_type}')
 
     def assert_header(self, **kwargs):
         for kwarg in kwargs:
             if kwarg not in self.header:
-                raise TypeError(f"type {self.entity_type} does not contain property {kwarg}")
+                raise TypeError(f"type {T} does not contain property {kwarg}")
 
     def _to_mysql_value(self, value) -> str:
         if isinstance(value, str):
@@ -97,9 +101,7 @@ class MysqlDBTable(metaclass=Singleton):
 
         return mysql_value
 
-    def _to_mysql_columns(self, o: object) -> str:
-
-        self.assert_type(o)
+    def _to_mysql_columns(self, o: T) -> str:
 
         columns = []
         for column in self.header:
@@ -110,9 +112,7 @@ class MysqlDBTable(metaclass=Singleton):
 
         return f"({', '.join(columns)})"
 
-    def _to_mysql_values(self, o: object) -> str:
-
-        self.assert_type(o)
+    def _to_mysql_values(self, o: T) -> str:
 
         str_values = []
         for column in self.header:
@@ -124,9 +124,7 @@ class MysqlDBTable(metaclass=Singleton):
 
         return f"({', '.join(str_values)})"
 
-    def _filter_by_header(self, o: object) -> dict:
-
-        self.assert_type(o)
+    def _filter_by_header(self, o: T) -> dict:
 
         filtered = {}
         for column in self.header:
@@ -149,7 +147,12 @@ class MysqlDBTable(metaclass=Singleton):
 
         return assignments
 
-    def _join_assignments_to_clause(self, kw: str, delimiter: str, delimited_clause: bool, **kwargs) -> str:
+    def _join_assignments_to_clause(
+            self,
+            kw: str,
+            delimiter: str,
+            delimited_clause: bool,
+            **kwargs) -> str:
 
         clause_delimiter = ' ' if delimited_clause else ''
         assignments = delimiter.join(self._to_assignments(**kwargs))
@@ -161,14 +164,14 @@ class MysqlDBTable(metaclass=Singleton):
     def _to_where_clause(self, delimited: bool, **kwargs) -> str:
         return self._join_assignments_to_clause('WHERE', ' AND ', delimited, **kwargs)
 
-    def _parse_from_mysql(self, row: tuple):
+    def _parse_from_mysql(self, row: tuple) -> T:
 
         entity_properties = {}
 
         for i, entity_property in enumerate(self.header):
             entity_properties[entity_property] = row[i] if i < len(row) else None
 
-        return self.entity_type(**entity_properties)
+        return self.member_type(**entity_properties)
 
     def get_header(self) -> list:
 
@@ -187,18 +190,19 @@ class MysqlDBTable(metaclass=Singleton):
 
         return self.header
 
-    def insert(self, o: object) -> int:
+    def insert(self, o: T) -> int:
 
-        self.assert_type(o)
-        return update_db(f"INSERT INTO {self.name} {self._to_mysql_columns(o)} VALUES {self._to_mysql_values(o)}")
+        return update_db(
+            f"INSERT INTO {self.name} {self._to_mysql_columns(o)} VALUES {self._to_mysql_values(o)}")
 
-    def find(self, **kwargs) -> list:
+    def find(self, **kwargs) -> list[T]:
 
         where_clause = self._to_where_clause(delimited=True, **kwargs)
         return query_db(f"SELECT * FROM {self.name}{where_clause}",
-                        self._parse_from_mysql if self.entity_type else None)
+                        self._parse_from_mysql)
 
-    def find_one(self, **kwargs) -> object:
+    def find_one(self, **kwargs) -> T:
+
         results = self.find(**kwargs)
         if len(results) < 1:
             return None
@@ -208,7 +212,7 @@ class MysqlDBTable(metaclass=Singleton):
     def contains(self, **kwargs) -> bool:
         return len(self.find(**kwargs)) > 0
 
-    def content(self) -> list:
+    def content(self) -> list[T]:
         return self.find()
 
     def delete(self, **kwargs) -> int:

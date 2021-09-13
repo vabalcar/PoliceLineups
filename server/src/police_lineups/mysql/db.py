@@ -1,15 +1,17 @@
+from police_lineups.singleton import Singleton
 from swagger_server.models import User, Person
-from police_lineups.mysql.utils import MysqlDBConnector, MysqlDBTable
-
-_db_tables = {
-    'users': User,
-    'people': Person,
-}
+from police_lineups.mysql.utils import MysqlDBTable
 
 
-def setup_db():
+class DB(metaclass=Singleton):
 
-    MysqlDBConnector().load_db_config('..', '..', 'config', 'db.json')
+    _users = MysqlDBTable(User, 'users')
+    _people = MysqlDBTable(Person, 'people')
 
-    for table in _db_tables:
-        MysqlDBTable(table).set_entity_type(_db_tables[table])
+    @ property
+    def users(self) -> MysqlDBTable[User]:
+        return self._users
+
+    @ property
+    def people(self) -> MysqlDBTable[Person]:
+        return self._people

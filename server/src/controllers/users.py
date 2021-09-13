@@ -5,9 +5,10 @@ import connexion
 
 from werkzeug.security import generate_password_hash
 
-from police_lineups.mysql.utils import MysqlDBTable
 from swagger_server.models.user import User
 from swagger_server.models.response import Response
+
+from police_lineups.mysql.db import DB
 
 ROOT_USERNAME = 'root'
 ROOT_DEFAULT_NAME = 'root'
@@ -34,7 +35,7 @@ def get_users():  # noqa: E501
     :rtype: List[User]
     """
 
-    return MysqlDBTable('users').content()
+    return DB().users.content()
 
 
 def get_user(username):  # noqa: E501
@@ -48,7 +49,7 @@ def get_user(username):  # noqa: E501
     :rtype: User
     """
 
-    return MysqlDBTable('users').find_one(username=username)
+    return DB().users.find_one(username=username)
 
 
 def add_user(body):  # noqa: E501
@@ -74,8 +75,8 @@ def add_user(body):  # noqa: E501
 
     user.password = generate_password_hash(user.password)
 
-    if not MysqlDBTable('users').contains(username=user.username):
-        success = MysqlDBTable('users').insert(user) == 1
+    if not DB().users.contains(username=user.username):
+        success = DB().users.insert(user) == 1
 
     return Response(success)
 
@@ -103,8 +104,8 @@ def update_user(body, username):  # noqa: E501
         return Response(success)
 
     success = new_values.get(username) != ROOT_USERNAME \
-        and (username != ROOT_USERNAME or new_values.get(username) == ROOT_USERNAME) \
-        and MysqlDBTable('users').update(new_values, username=username) == 1
+        and username != ROOT_USERNAME \
+        and DB().users.update(new_values, username=username) == 1
 
     return Response(success)
 
@@ -120,5 +121,5 @@ def remove_user(username):  # noqa: E501
     :rtype: object
     """
 
-    success = username != ROOT_USERNAME and MysqlDBTable('users').delete(username=username) == 1
+    success = username != ROOT_USERNAME and DB().users.delete(username=username) == 1
     return Response(success)
