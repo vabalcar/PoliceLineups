@@ -1,5 +1,6 @@
 import secrets
 import time
+from typing import Mapping
 import connexion
 
 from werkzeug.security import check_password_hash
@@ -8,7 +9,9 @@ from werkzeug.exceptions import Unauthorized
 from jose import JWTError, jwt
 
 from swagger_server.models import AuthRequest, AuthResponse
-from police_lineups.mysql.utils import MysqlDBTable
+from swagger_server.models.user import User
+
+from police_lineups.mysql.db import DB
 
 JWT_ISSUER = 'policelineups'
 JWT_SECRET = secrets.token_urlsafe(32)
@@ -20,25 +23,51 @@ def _current_timestamp() -> int:
     return int(time.time())
 
 
-def _generate_auth_token(username):
+def _generate_auth_token(username) -> str:
     timestamp = _current_timestamp()
-    payload = {
+    auth_payload = {
         "iss": JWT_ISSUER,
         "iat": int(timestamp),
         "exp": int(timestamp + JWT_LIFETIME_SECONDS),
         "sub": username,
     }
 
-    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+    return jwt.encode(auth_payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
 
-def decode_auth_token(token):
+def _decode_auth_token(token) -> Mapping:
     try:
-        token_data = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        connexion.request.authorization = Authorization("bearer", dict(username=token_data["sub"]))
-        return token_data
+        return jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
     except JWTError as auth_error:
         raise Unauthorized from auth_error
+
+
+def _authorize_user_by_token_payload(token_payload) -> User:
+    username_from_payload = token_payload["sub"]
+    authorized_user = DB().users.find_one(username=username_from_payload)
+    if authorized_user is None:
+        raise Unauthorized
+
+    connexion.request.authorization = Authorization(
+        "bearer", dict(username=authorized_user.username))
+
+    return authorized_user
+
+
+def authorize_user_by_token(token) -> Mapping:
+    token_payload = _decode_auth_token(token)
+    _authorize_user_by_token_payload(token_payload)
+
+    return token_payload
+
+
+def authorize_admin_by_token(token) -> Mapping:
+    token_payload = _decode_auth_token(token)
+    authorized_user = _authorize_user_by_token_payload(token_payload)
+    if not authorized_user.is_admin:
+        raise Unauthorized
+
+    return token_payload
 
 
 def login(body):  # noqa: E501
@@ -61,8 +90,8 @@ def login(body):  # noqa: E501
     username = body.username
     password = body.password
 
-    result = MysqlDBTable('users').find(username=username)
-    success = len(result) == 1 and check_password_hash(result[0].password, password)
+    user = DB().users.find_one(username=username)
+    success = user is not None and check_password_hash(user.password, password)
 
     if success:
         path = body.path

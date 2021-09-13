@@ -4,13 +4,15 @@ info:
   version: "1.0"
 servers:
   - url: http://localhost:8080/v1
+security:
+  - JwtAuthUser: []
 paths:
   /login:
     post:
-      summary: Logins registered user
+      summary: Logins registered userUser
       x-openapi-router-controller: controllers.auth
       operationId: login
-      security: [] # Disabled security
+      security: [] # Enabled anonymous access
       requestBody:
         description: AuthRequest
         required: true
@@ -30,8 +32,7 @@ paths:
       summary: Inits root user
       x-openapi-router-controller: controllers.users
       operationId: initRootUser
-      #security: [jwt_init: []]
-      security: []
+      security: [] # Enabled anonymous access
       responses:
         "200":
           description: root user initialization result
@@ -76,12 +77,10 @@ paths:
       summary: Returns a user
       x-openapi-router-controller: controllers.users
       operationId: getUser
-      security:
-        - JwtAuth: []
       parameters:
         - in: path
           name: username
-          description: username of a user
+          description: username of a userUser
           required: true
           schema:
             type: string
@@ -172,8 +171,6 @@ paths:
       summary: Returns a person
       x-openapi-router-controller: controllers.people
       operationId: getPerson
-      security:
-        - JwtAuth: []
       parameters:
         - in: path
           name: id
@@ -233,11 +230,16 @@ paths:
                 $ref: "#/components/schemas/Response"
 components:
   securitySchemes:
-    JwtAuth:
+    JwtAuthUser:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      x-bearerInfoFunc: controllers.auth.decode_auth_token
+      x-bearerInfoFunc: swagger_server.controllers.authorization_controller.check_JwtAuthUser # workaround of a bug in codegen
+    JwtAuthAdmin:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: swagger_server.controllers.authorization_controller.check_JwtAuthAdmin # workaround of a bug in codegen
   schemas:
     AuthRequest:
       type: object
