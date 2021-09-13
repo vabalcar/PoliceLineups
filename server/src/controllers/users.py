@@ -76,7 +76,7 @@ def add_user(body):  # noqa: E501
     user.password = generate_password_hash(user.password)
 
     if not DB().users.contains(username=user.username):
-        success = DB().users.insert(user) == 1
+        success = DB().users.insert_one(user)
 
     return Response(success)
 
@@ -105,7 +105,7 @@ def update_user(body, username):  # noqa: E501
 
     success = new_values.get(username) != ROOT_USERNAME \
         and username != ROOT_USERNAME \
-        and DB().users.update(new_values, username=username) == 1
+        and DB().users.update_one(new_values, username=username)
 
     return Response(success)
 
@@ -121,5 +121,5 @@ def remove_user(username):  # noqa: E501
     :rtype: object
     """
 
-    success = username != ROOT_USERNAME and DB().users.delete(username=username) == 1
+    success = username != ROOT_USERNAME and DB().users.delete_one(username=username)
     return Response(success)

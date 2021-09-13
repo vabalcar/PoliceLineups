@@ -2,7 +2,7 @@ import functools
 import mysql.connector
 import sqlparse
 
-from typing import Generic, Type, TypeVar
+from typing import Any, Generic, Type, TypeVar
 
 from police_lineups.singleton import Singleton
 from police_lineups.json.utils import parse_json_file
@@ -75,21 +75,20 @@ T = TypeVar('T')
 class MysqlDBTable(Generic[T], metaclass=Singleton):
 
     def __init__(self, member_type: Type[T], name: str) -> None:
-
         MysqlAnalyzer.assert_mysql_identifier(name)
 
         self.name = name
         self.header = None
         self.member_type = member_type
 
-        self.get_header()
+        self._get_header()
 
-    def assert_header(self, **kwargs):
+    def _assert_header(self, **kwargs):
         for kwarg in kwargs:
             if kwarg not in self.header:
                 raise TypeError(f"type {T} does not contain property {kwarg}")
 
-    def _to_mysql_value(self, value) -> str:
+    def _to_mysql_value(self, value: Any) -> str:
         if isinstance(value, str):
             mysql_value = f"'{value}'"
         elif value is None:
@@ -102,7 +101,6 @@ class MysqlDBTable(Generic[T], metaclass=Singleton):
         return mysql_value
 
     def _to_mysql_columns(self, o: T) -> str:
-
         columns = []
         for column in self.header:
             if hasattr(o, column) and getattr(o, column) is not None:
@@ -113,7 +111,6 @@ class MysqlDBTable(Generic[T], metaclass=Singleton):
         return f"({', '.join(columns)})"
 
     def _to_mysql_values(self, o: T) -> str:
-
         str_values = []
         for column in self.header:
             if hasattr(o, column) and getattr(o, column) is not None:
@@ -125,7 +122,6 @@ class MysqlDBTable(Generic[T], metaclass=Singleton):
         return f"({', '.join(str_values)})"
 
     def _filter_by_header(self, o: T) -> dict:
-
         filtered = {}
         for column in self.header:
             if hasattr(o, column) and getattr(o, column) is not None:
@@ -135,9 +131,8 @@ class MysqlDBTable(Generic[T], metaclass=Singleton):
 
         return filtered
 
-    def _to_assignments(self, **kwargs) -> list:
-
-        self.assert_header(**kwargs)
+    def _to_assignments(self, **kwargs) -> list[str]:
+        self._assert_header(**kwargs)
 
         assignments = []
         for kwarg in kwargs:
@@ -165,7 +160,6 @@ class MysqlDBTable(Generic[T], metaclass=Singleton):
         return self._join_assignments_to_clause('WHERE', ' AND ', delimited, **kwargs)
 
     def _parse_from_mysql(self, row: tuple) -> T:
-
         entity_properties = {}
 
         for i, entity_property in enumerate(self.header):
@@ -173,10 +167,8 @@ class MysqlDBTable(Generic[T], metaclass=Singleton):
 
         return self.member_type(**entity_properties)
 
-    def get_header(self) -> list:
-
+    def _get_header(self) -> list:
         if self.header is None:
-
             columns = query_db(f"""
             SELECT column_name
             FROM information_schema.columns
@@ -191,44 +183,50 @@ class MysqlDBTable(Generic[T], metaclass=Singleton):
         return self.header
 
     def insert(self, o: T) -> int:
-
         return update_db(
             f"INSERT INTO {self.name} {self._to_mysql_columns(o)} VALUES {self._to_mysql_values(o)}")
 
-    def find(self, **kwargs) -> list[T]:
+    def insert_one(self, o: T) -> bool:
+        return self.insert(o) == 1
 
+    def find(self, **kwargs) -> list[T]:
         where_clause = self._to_where_clause(delimited=True, **kwargs)
         return query_db(f"SELECT * FROM {self.name}{where_clause}",
                         self._parse_from_mysql)
 
     def find_one(self, **kwargs) -> T:
-
         results = self.find(**kwargs)
         if len(results) < 1:
             return None
 
         return results[0]
 
+    def count(self, **kwargs) -> int:
+        return len(self.find(**kwargs))
+
     def contains(self, **kwargs) -> bool:
-        return len(self.find(**kwargs)) > 0
+        return self.count(**kwargs) > 0
 
     def content(self) -> list[T]:
         return self.find()
 
     def delete(self, **kwargs) -> int:
-
         where_clause = self._to_where_clause(delimited=True, **kwargs)
         return update_db(f"DELETE FROM {self.name}{where_clause}")
 
-    def update(self, value: object, **kwargs) -> int:
+    def delete_one(self, **kwargs) -> bool:
+        return self.delete(**kwargs) == 1
 
+    def update(self, value: object, **kwargs) -> int:
         set_clause = self._to_set_clause(delimited=True, **self._filter_by_header(value))
         where_clause = self._to_where_clause(delimited=True, **kwargs)
         return update_db(f"UPDATE {self.name}{set_clause}{where_clause}")
 
+    def update_one(self, value: object, **kwargs) -> bool:
+        return self.update(value, **kwargs) == 1
 
-def query_db(query, row_processor=None) -> list:
 
+def query_db(query: str, row_processor=None) -> list:
     db = MysqlDBConnector().connect()
 
     db_cursor = db.cursor()
@@ -245,7 +243,6 @@ def query_db(query, row_processor=None) -> list:
 
 
 def update_db(query) -> int:
-
     db = MysqlDBConnector().connect()
 
     db_cursor = db.cursor()

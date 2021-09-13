@@ -51,7 +51,7 @@ def add_person(body):  # noqa: E501
         return Response(success)
 
     if not DB().people.contains(id=person.id):
-        success = DB().people.insert(person) == 1
+        success = DB().people.insert_one(person)
 
     return Response(success)
 
@@ -72,7 +72,7 @@ def update_person(body, id):  # noqa: E501
         new_values = Person.from_dict(connexion.request.get_json())  # noqa: E501
 
     success = new_values is not None \
-        and DB().people.update(new_values, id=id) == 1
+        and DB().people.update_one(new_values, id=id)
     return Response(success)
 
 
@@ -86,5 +86,5 @@ def remove_person(id):  # noqa: E501
 
     :rtype: Response
     """
-    success = DB().people.delete(id=id) == 1
+    success = DB().people.delete_one(id=id)
     return Response(success)
