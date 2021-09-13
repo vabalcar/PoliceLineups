@@ -198,6 +198,13 @@ class MysqlDBTable(metaclass=Singleton):
         return query_db(f"SELECT * FROM {self.name}{where_clause}",
                         self._parse_from_mysql if self.entity_type else None)
 
+    def find_one(self, **kwargs) -> object:
+        results = self.find(**kwargs)
+        if len(results) < 1:
+            return None
+
+        return results[0]
+
     def contains(self, **kwargs) -> bool:
         return len(self.find(**kwargs)) > 0
 
