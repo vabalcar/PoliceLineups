@@ -25,7 +25,7 @@ const retrieveSavedAuthState = (): AuthState | undefined => {
   return JSON.parse(serializedState) as AuthState;
 };
 
-const initialAuthState: AuthState = retrieveSavedAuthState();
+const initialAuthState: AuthState = retrieveSavedAuthState() ?? {};
 
 // State manupilation
 const updateAuthState = (
