@@ -16,7 +16,8 @@ export interface AppState {
 }
 
 export interface AuthState {
-  token?: string;
+  token: string;
+  isAdmin: boolean;
 }
 
 const retrieveSavedAuthState = (): AuthState | undefined => {
@@ -29,21 +30,18 @@ const retrieveSavedAuthState = (): AuthState | undefined => {
 };
 
 // Actions
-export const loginAction = createAction(
-  "[Auth] login",
-  props<{ token: string }>()
-);
+export const loginAction = createAction("[Auth] login", props<AuthState>());
 export const loginFailedAction = createAction("[Auth] login failed");
 export const logoutAction = createAction("[Auth] logout");
 
 // State manupilation
-const defaultAuthState: AuthState = {};
+const defaultAuthState: AuthState = { token: null, isAdmin: false };
 const initialAuthState: AuthState =
   retrieveSavedAuthState() ?? defaultAuthState;
 
 const updateAuthState = (
   state: AuthState,
-  update: { token: string }
+  update: Partial<AuthState>
 ): AuthState => {
   const updatedState = Object.assign({}, state, update);
   localStorage.setItem(authFeatureName, JSON.stringify(updatedState));
@@ -74,4 +72,9 @@ export const selectAuthFeature = createFeatureSelector<AppState, AuthState>(
 export const selectAuthToken = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.token
+);
+
+export const selectAuthIsAdmin = createSelector(
+  selectAuthFeature,
+  (state: AuthState) => state.isAdmin ?? false
 );

@@ -4,10 +4,11 @@ import { LoginComponent } from "./login/login.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { PeopleComponent } from "./people/people.component";
 import { PersonComponent } from "./person/person.component";
-import { UserAuthGuard } from "./auth.guard";
 import { HomeComponent } from "./home/home.component";
 import { RegisterComponent } from "./register/register.component";
 import { ImportPersonComponent } from "./import-person/import-person.component";
+import { UserAuthGuard } from "./auth-user.guard";
+import { AdminAuthGuard } from "./auth-admin.guard";
 
 const routes: Routes = [
   {
@@ -21,7 +22,11 @@ const routes: Routes = [
     component: PersonComponent,
     canActivate: [UserAuthGuard],
   },
-  { path: "register", component: RegisterComponent },
+  {
+    path: "register",
+    component: RegisterComponent,
+    canActivate: [AdminAuthGuard],
+  },
   {
     path: "login",
     component: LoginComponent,

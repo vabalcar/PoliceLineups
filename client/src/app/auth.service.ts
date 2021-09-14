@@ -11,15 +11,25 @@ import * as fromAuth from "./auth.reducer";
   providedIn: "root",
 })
 export class AuthService {
-  readonly isLoggedIn$;
+  readonly isLoggedIn$: Observable<boolean>;
+  readonly isAdmin$: Observable<boolean>;
 
-  private token$: Observable<string>;
-  private isLoggedInSubject$: BehaviorSubject<boolean> = new BehaviorSubject(
-    false
+  private readonly token$: Observable<string>;
+
+  private readonly isLoggedInSubject$: BehaviorSubject<boolean> =
+    new BehaviorSubject(false);
+  private readonly isAdminSubject$: BehaviorSubject<boolean> =
+    new BehaviorSubject(false);
+  private readonly tokenSubject$: BehaviorSubject<string> = new BehaviorSubject(
+    null
   );
 
   get isLoggedIn(): boolean {
     return this.isLoggedInSubject$.getValue();
+  }
+
+  get isAdmin(): boolean {
+    return this.isAdminSubject$.getValue();
   }
 
   constructor(
@@ -27,20 +37,26 @@ export class AuthService {
     private store: Store<fromAuth.AppState>,
     private api: DefaultService
   ) {
-    this.isLoggedIn$ = this.isLoggedInSubject$.asObservable();
     this.token$ = this.store.select(fromAuth.selectAuthToken);
-    this.token$.subscribe((value) => {
-      this.api.configuration.accessToken = value;
+    this.token$.subscribe(this.tokenSubject$);
+
+    this.isAdmin$ = this.store.select(fromAuth.selectAuthIsAdmin);
+    this.isAdmin$.subscribe(this.isAdminSubject$);
+
+    this.isLoggedIn$ = this.isLoggedInSubject$.asObservable();
+
+    this.tokenSubject$.subscribe((value) => {
       this.isLoggedInSubject$.next(!!value);
+      this.api.configuration.accessToken = value;
     });
   }
 
-  canAccess(path: string): boolean {
-    const loggedIn = this.isLoggedIn;
-    if (!loggedIn) {
+  canAccess(path: string, adminRoleNeeded: boolean): boolean {
+    const canAccess = (!adminRoleNeeded || this.isAdmin) && this.isLoggedIn;
+    if (!canAccess) {
       this.router.navigateByUrl(`/login/${path}`);
     }
-    return loggedIn;
+    return canAccess;
   }
 
   login(username: string, password: string, path: string): void {
@@ -52,7 +68,10 @@ export class AuthService {
       })
       .subscribe((response) => {
         const action: Action = response.success
-          ? loginAction({ token: response.authToken })
+          ? loginAction({
+              token: response.authToken,
+              isAdmin: response.isAdmin,
+            })
           : loginFailedAction();
 
         this.store.dispatch(action);
