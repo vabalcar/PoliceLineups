@@ -2,6 +2,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { FormsModule } from "@angular/forms";
 
 import { MatSliderModule } from "@angular/material/slider";
 import { MatCardModule } from "@angular/material/card";
@@ -51,6 +52,7 @@ import { environment } from "src/environments/environment";
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    FormsModule,
     MatSliderModule,
     MatCardModule,
     MatToolbarModule,

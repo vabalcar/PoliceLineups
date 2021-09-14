@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { DefaultService } from "../api/api/default.service";
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -8,22 +9,37 @@ import { AuthService } from "../auth.service";
   styleUrls: ["./register.component.css"],
 })
 export class RegisterComponent implements OnInit {
-  constructor(private auth: AuthService, private router: Router) {}
+  username: string;
+  password: string;
+  passwordAgain: string;
+  fullName: string;
+  isAdmin: boolean;
+
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private api: DefaultService
+  ) {}
 
   ngOnInit(): void {}
 
   register(event: Event): void {
     event.preventDefault();
-    const target = event.target as Element;
-    const username = (target.querySelector("#username") as HTMLInputElement)
-      .value;
-    const password = (target.querySelector("#password") as HTMLInputElement)
-      .value;
-    const passwordAgain = (
-      target.querySelector("#password-again") as HTMLInputElement
-    ).value;
-    const fullName = (target.querySelector("#fullname") as HTMLInputElement)
-      .value;
-    const email = (target.querySelector("#email") as HTMLInputElement).value;
+
+    if (this.password !== this.passwordAgain) {
+      // TODO: notification
+      return;
+    }
+
+    this.api
+      .addUser({
+        username: this.username,
+        password: this.password,
+        name: this.fullName,
+        isAdmin: this.isAdmin,
+      })
+      .subscribe((response) => {
+        // TODO: close registeration form and display notification
+      });
   }
 }
