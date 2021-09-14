@@ -1,13 +1,16 @@
 import {
-  Action,
   ActionReducerMap,
+  createAction,
   createFeatureSelector,
+  createReducer,
   createSelector,
+  on,
+  props,
 } from "@ngrx/store";
 
-// State
-const authReducerName = "authReducer";
+const authFeatureName = "auth";
 
+// States
 export interface AppState {
   auth: AuthState;
 }
@@ -17,7 +20,7 @@ export interface AuthState {
 }
 
 const retrieveSavedAuthState = (): AuthState | undefined => {
-  const serializedState = localStorage.getItem(authReducerName);
+  const serializedState = localStorage.getItem(authFeatureName);
   if (!serializedState) {
     return undefined;
   }
@@ -25,53 +28,39 @@ const retrieveSavedAuthState = (): AuthState | undefined => {
   return JSON.parse(serializedState) as AuthState;
 };
 
-const initialAuthState: AuthState = retrieveSavedAuthState() ?? {};
+// Actions
+export const loginAction = createAction(
+  "[Auth] login",
+  props<{ token: string }>()
+);
+export const loginFailedAction = createAction("[Auth] login failed");
+export const logoutAction = createAction("[Auth] logout");
 
 // State manupilation
+const defaultAuthState: AuthState = {};
+const initialAuthState: AuthState =
+  retrieveSavedAuthState() ?? defaultAuthState;
+
 const updateAuthState = (
   state: AuthState,
   update: { token: string }
 ): AuthState => {
   const updatedState = Object.assign({}, state, update);
-  localStorage.setItem(authReducerName, JSON.stringify(updatedState));
+  localStorage.setItem(authFeatureName, JSON.stringify(updatedState));
   return updatedState;
 };
 
 const deleteSavedAuthState = () => {
-  localStorage.removeItem(authReducerName);
+  localStorage.removeItem(authFeatureName);
+  return initialAuthState;
 };
 
-// Actions
-const LOGIN_ACTION = "login";
-const LOGIN_FAILED_ACTION = "login-failed";
-const LOGOUT_ACTION = "logout";
-
-export class LoginAction implements Action {
-  readonly type = LOGIN_ACTION;
-  constructor(public token: string) {}
-}
-
-export class LoginFailedAction implements Action {
-  readonly type = LOGIN_FAILED_ACTION;
-}
-
-export class LogoutAction implements Action {
-  readonly type = LOGOUT_ACTION;
-}
-
-// Reducers
-const authReducer = (state: AuthState, action: Action) => {
-  switch (action.type) {
-    case LOGIN_ACTION:
-      return updateAuthState(state, { token: (action as LoginAction).token });
-    case LOGIN_FAILED_ACTION:
-    case LOGOUT_ACTION:
-      deleteSavedAuthState();
-      return initialAuthState;
-    default:
-      return initialAuthState;
-  }
-};
+const authReducer = createReducer(
+  initialAuthState,
+  on(loginAction, updateAuthState),
+  on(loginFailedAction, deleteSavedAuthState),
+  on(logoutAction, deleteSavedAuthState)
+);
 
 export const reducers: ActionReducerMap<Record<string, unknown>> = {
   auth: authReducer,
@@ -79,7 +68,7 @@ export const reducers: ActionReducerMap<Record<string, unknown>> = {
 
 // Selectors
 export const selectAuthFeature = createFeatureSelector<AppState, AuthState>(
-  "auth"
+  authFeatureName
 );
 
 export const selectAuthToken = createSelector(

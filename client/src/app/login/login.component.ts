@@ -8,6 +8,8 @@ import { Router } from "@angular/router";
   styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
+  private static readonly redirectedLoginUrlPrefix = "/login";
+
   username: string;
   password: string;
 
@@ -18,13 +20,15 @@ export class LoginComponent implements OnInit {
   login(event: Event): void {
     event.preventDefault();
 
-    const urlPrefix = "/login";
-    const url = this.router.url;
-    const path =
-      url.startsWith(urlPrefix) && url.length !== urlPrefix.length
-        ? url.substring(urlPrefix.length)
-        : "/";
-
+    const path = this.getOriginallyRedirectedPath();
     this.auth.login(this.username, this.password, path);
+  }
+
+  private getOriginallyRedirectedPath() {
+    const url = this.router.url;
+    return url.startsWith(LoginComponent.redirectedLoginUrlPrefix) &&
+      url.length !== LoginComponent.redirectedLoginUrlPrefix.length
+      ? url.substring(LoginComponent.redirectedLoginUrlPrefix.length)
+      : "/";
   }
 }

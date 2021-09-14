@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import { LoginAction, LoginFailedAction, LogoutAction } from "./auth.reducer";
+import { loginAction, loginFailedAction, logoutAction } from "./auth.reducer";
 import { DefaultService } from "./api/api/default.service";
 import { Action } from "@ngrx/store";
 import * as fromAuth from "./auth.reducer";
@@ -11,10 +11,15 @@ import * as fromAuth from "./auth.reducer";
   providedIn: "root",
 })
 export class AuthService {
+  readonly isLoggedIn$;
+
   private token$: Observable<string>;
+  private isLoggedInSubject$: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
 
   get isLoggedIn(): boolean {
-    return this.api.configuration.accessToken !== undefined;
+    return this.isLoggedInSubject$.getValue();
   }
 
   constructor(
@@ -22,15 +27,20 @@ export class AuthService {
     private store: Store<fromAuth.AppState>,
     private api: DefaultService
   ) {
+    this.isLoggedIn$ = this.isLoggedInSubject$.asObservable();
     this.token$ = this.store.select(fromAuth.selectAuthToken);
-
     this.token$.subscribe((value) => {
       this.api.configuration.accessToken = value;
+      this.isLoggedInSubject$.next(!!value);
     });
   }
 
   canAccess(path: string): boolean {
-    return this.isLoggedIn;
+    const loggedIn = this.isLoggedIn;
+    if (!loggedIn) {
+      this.router.navigateByUrl(`/login/${path}`);
+    }
+    return loggedIn;
   }
 
   login(username: string, password: string, path: string): void {
@@ -42,8 +52,8 @@ export class AuthService {
       })
       .subscribe((response) => {
         const action: Action = response.success
-          ? new LoginAction(response.authToken)
-          : new LoginFailedAction();
+          ? loginAction({ token: response.authToken })
+          : loginFailedAction();
 
         this.store.dispatch(action);
         this.router.navigateByUrl(response.path);
@@ -51,6 +61,6 @@ export class AuthService {
   }
 
   logout(): void {
-    this.store.dispatch(new LogoutAction());
+    this.store.dispatch(logoutAction());
   }
 }
