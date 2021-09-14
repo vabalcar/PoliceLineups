@@ -52,7 +52,7 @@ const updateAuthState = (
 
 const deleteSavedAuthState = () => {
   localStorage.removeItem(authFeatureName);
-  return initialAuthState;
+  return defaultAuthState;
 };
 
 const authReducer = createReducer(
