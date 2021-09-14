@@ -5,7 +5,7 @@ import { LoginComponent } from "./login/login.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { PeopleComponent } from "./people/people.component";
 import { PersonComponent } from "./person/person.component";
-import { AuthGuard } from "./auth.guard";
+import { UserAuthGuard } from "./auth.guard";
 import { HomeComponent } from "./home/home.component";
 import { RegisterComponent } from "./register/register.component";
 import { ImportPersonComponent } from "./import-person/import-person.component";
@@ -15,10 +15,14 @@ const routes: Routes = [
   {
     path: "import",
     component: ImportPersonComponent,
-    canActivate: [AuthGuard],
+    canActivate: [UserAuthGuard],
   },
-  { path: "people", component: PeopleComponent, canActivate: [AuthGuard] },
-  { path: "person/:id", component: PersonComponent, canActivate: [AuthGuard] },
+  { path: "people", component: PeopleComponent, canActivate: [UserAuthGuard] },
+  {
+    path: "person/:id",
+    component: PersonComponent,
+    canActivate: [UserAuthGuard],
+  },
   { path: "register", component: RegisterComponent },
   {
     path: "login",
