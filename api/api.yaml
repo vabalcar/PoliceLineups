@@ -248,12 +248,9 @@ components:
           type: string
         password:
           type: string
-        path:
-          type: string
       required:
         - username
         - password
-        - path
     Response:
       type: object
       properties:
@@ -264,8 +261,6 @@ components:
         - $ref: "#/components/schemas/Response"
         - type: object
           properties:
-            path:
-              type: string
             authToken:
               type: string
             isAdmin:

@@ -11,6 +11,8 @@ import * as fromAuth from "./auth.reducer";
   providedIn: "root",
 })
 export class AuthService {
+  private static readonly redirectedLoginUrlPrefix = "/login";
+
   readonly isLoggedIn$: Observable<boolean>;
   readonly isAdmin$: Observable<boolean>;
 
@@ -59,12 +61,12 @@ export class AuthService {
     return canAccess;
   }
 
-  login(username: string, password: string, path: string): void {
+  login(username: string, password: string): void {
+    const targetPath = this.getTargetPath();
     this.api
       .login({
         username,
         password,
-        path,
       })
       .subscribe((response) => {
         const action: Action = response.success
@@ -75,11 +77,19 @@ export class AuthService {
           : loginFailedAction();
 
         this.store.dispatch(action);
-        this.router.navigateByUrl(response.path);
+        this.router.navigateByUrl(targetPath);
       });
   }
 
   logout(): void {
     this.store.dispatch(logoutAction());
+  }
+
+  private getTargetPath() {
+    const url = this.router.url;
+    return url.startsWith(AuthService.redirectedLoginUrlPrefix) &&
+      url.length !== AuthService.redirectedLoginUrlPrefix.length
+      ? url.substring(AuthService.redirectedLoginUrlPrefix.length)
+      : "/";
   }
 }

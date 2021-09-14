@@ -84,7 +84,6 @@ def login(body):  # noqa: E501
         body = AuthRequest.from_dict(connexion.request.get_json())  # noqa: E501
 
     success = False
-    path = '/'
     auth_token = None
     is_admin = False
 
@@ -95,8 +94,7 @@ def login(body):  # noqa: E501
     success = user is not None and check_password_hash(user.password, password)
 
     if success:
-        path = body.path
         auth_token = _generate_auth_token(username)
         is_admin = user.is_admin
 
-    return AuthResponse(success, path, auth_token, is_admin)
+    return AuthResponse(success, auth_token, is_admin)
