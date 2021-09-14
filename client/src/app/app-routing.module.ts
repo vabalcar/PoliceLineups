@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { LoginFailedComponent } from "./login-failed/login-failed.component";
 import { LoginComponent } from "./login/login.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { PeopleComponent } from "./people/people.component";
@@ -9,7 +8,6 @@ import { UserAuthGuard } from "./auth.guard";
 import { HomeComponent } from "./home/home.component";
 import { RegisterComponent } from "./register/register.component";
 import { ImportPersonComponent } from "./import-person/import-person.component";
-import { LogoutComponent } from "./logout/logout.component";
 
 const routes: Routes = [
   {
@@ -29,8 +27,6 @@ const routes: Routes = [
     component: LoginComponent,
     children: [{ path: "**", component: LoginComponent }],
   },
-  { path: "login-failed", component: LoginFailedComponent },
-  { path: "logout", component: LogoutComponent },
   { path: "home", component: HomeComponent },
   { path: "", redirectTo: "/home", pathMatch: "full" },
   { path: "**", component: NotFoundComponent },

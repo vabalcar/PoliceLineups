@@ -25,12 +25,10 @@ import { AppComponent } from "./app.component";
 import { PeopleComponent } from "./people/people.component";
 import { PersonComponent } from "./person/person.component";
 import { LoginComponent } from "./login/login.component";
-import { LoginFailedComponent } from "./login-failed/login-failed.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { RegisterComponent } from "./register/register.component";
 import { ImportPersonComponent } from "./import-person/import-person.component";
 import { HomeComponent } from "./home/home.component";
-import { LogoutComponent } from "./logout/logout.component";
 import { AuthService } from "./auth.service";
 import { environment } from "src/environments/environment";
 
@@ -40,12 +38,10 @@ import { environment } from "src/environments/environment";
     PeopleComponent,
     PersonComponent,
     LoginComponent,
-    LoginFailedComponent,
     NotFoundComponent,
     RegisterComponent,
     ImportPersonComponent,
     HomeComponent,
-    LogoutComponent,
   ],
   imports: [
     BrowserModule,
