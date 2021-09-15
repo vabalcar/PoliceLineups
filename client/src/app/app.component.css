@@ -1,38 +1,40 @@
-/*@import '@angular/material/prebuilt-themes/deeppurple-amber.css';*/
-
-#toolbar-menu-button {
-  width: 60px;
-  height: 60px;
-  margin-right: 12px;
+:host {
+  --tolbar-height: 60px;
 }
 
-.spacer {
-  flex: 1 1 auto;
-}
-
-mat-toolbar {
-  height: 60px;
+#toolbar {
+  height: var(--tolbar-height);
   padding-left: 12px;
 }
 
-mat-toolbar button {
+#toolbar button {
   padding: 0;
 }
 
-mat-drawer-container {
-  height: calc(100% - 60px);
+#toolbar-menu-button {
+  width: var(--tolbar-height);
+  height: var(--tolbar-height);
+  margin-right: 12px;
 }
 
-mat-drawer button {
+#toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+#drawer-container {
+  height: calc(100% - var(--tolbar-height));
+}
+
+#drawer {
+  width: 200px;
+}
+
+#drawer button {
   width: 100%;
   height: 50px;
   text-align: start;
 }
 
-mat-drawer-content {
+#drawer-content {
   padding: 30px;
-}
-
-#drawer {
-  width: 200px;
 }

@@ -1,11 +1,11 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" id="toolbar">
   <button mat-icon-button id="toolbar-menu-button" (click)="drawer.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
   <button mat-button routerLink="/home">
     <h4 class="mat-display-1">Police lineups</h4>
   </button>
-  <span class="spacer"></span>
+  <span id="toolbar-spacer"></span>
   <button mat-button routerLink="/login" *ngIf="!isLoggedIn">
     login
   </button>
@@ -13,7 +13,7 @@
     logout
   </button>
 </mat-toolbar>
-<mat-drawer-container>
+<mat-drawer-container id="drawer-container">
   <mat-drawer #drawer id="drawer" mode="side">
     <div *ngIf="isAdminLoggedIn">
       <mat-label class="mat-caption">Users</mat-label>
@@ -27,7 +27,7 @@
       <mat-divider></mat-divider>
     </div>
   </mat-drawer>
-  <mat-drawer-content>
+  <mat-drawer-content id="drawer-content">
     <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>
