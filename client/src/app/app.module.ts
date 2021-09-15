@@ -12,6 +12,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 import { AppRoutingModule } from "./app-routing.module";
 
@@ -58,6 +59,7 @@ import { environment } from "src/environments/environment";
     MatButtonModule,
     MatIconModule,
     MatInputModule,
+    MatSlideToggleModule,
     StoreModule.forRoot(reducers),
 
     !environment.production ? StoreDevtoolsModule.instrument() : [],

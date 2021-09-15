@@ -1,9 +1,28 @@
-<h1>Register</h1>
+<h1 class="mat-headline">Register</h1>
 <form (submit)="register($event)">
-    <label>Username: </label><input type="text" name="username" [(ngModel)]="username" /><br />
-    <label>Password: </label><input type="password" name="password" [(ngModel)]="password" /><br />
-    <label>Password again: </label><input type="password" name="passwordAgain" [(ngModel)]="passwordAgain" /><br />
-    <label>Full name: </label><input type="text" name="fullName" [(ngModel)]="fullName"/><br />
-    <label>Admin: </label><input type="checkbox" name="isAdmin" [(ngModel)]="isAdmin"/><br />
-    <input type="submit"/>
+    <mat-slide-toggle name="isAdmin" [(ngModel)]="isAdmin">Admin</mat-slide-toggle>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Full name</mat-label>
+            <input matInput type="text" name="fullName" [(ngModel)]="fullName">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput type="text" name="username" [(ngModel)]="username">
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" name="password" [(ngModel)]="password">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Password again</mat-label>
+            <input matInput type="password" name="passwordAgain" [(ngModel)]="passwordAgain">
+        </mat-form-field>
+    </p>
+    <button mat-raised-button color="primary">
+        Register
+    </button>
 </form>
