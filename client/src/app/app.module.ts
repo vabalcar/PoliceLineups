@@ -11,6 +11,7 @@ import { MatListModule } from "@angular/material/list";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
 
 import { AppRoutingModule } from "./app-routing.module";
 
@@ -56,6 +57,7 @@ import { environment } from "src/environments/environment";
     MatSidenavModule,
     MatButtonModule,
     MatIconModule,
+    MatInputModule,
     StoreModule.forRoot(reducers),
 
     !environment.production ? StoreDevtoolsModule.instrument() : [],
