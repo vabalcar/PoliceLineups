@@ -1,7 +1,9 @@
 /*@import '@angular/material/prebuilt-themes/deeppurple-amber.css';*/
 
 #toolbar-menu-button {
-  margin-right: 10px;
+  width: 60px;
+  height: 60px;
+  margin-right: 12px;
 }
 
 .spacer {
@@ -10,6 +12,11 @@
 
 mat-toolbar {
   height: 60px;
+  padding-left: 12px;
+}
+
+mat-toolbar button {
+  padding: 0;
 }
 
 mat-drawer-container {
