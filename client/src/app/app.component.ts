@@ -1,6 +1,4 @@
-import { Component, Inject, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { BASE_PATH } from "./api/variables";
+import { Component, OnInit } from "@angular/core";
 import { AuthService } from "./auth.service";
 
 @Component({
@@ -9,20 +7,14 @@ import { AuthService } from "./auth.service";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
-  showLogout = false;
+  isLoggedIn = false;
+  isAdminLoggedIn = false;
 
-  constructor(
-    @Inject(BASE_PATH) public backend: string,
-    private auth: AuthService,
-    private router: Router
-  ) {}
+  constructor(private auth: AuthService) {}
 
   ngOnInit() {
-    this.auth.isLoggedIn$.subscribe((loggedIn) => (this.showLogout = loggedIn));
-  }
-
-  redirectToLogin() {
-    this.router.navigateByUrl("/login");
+    this.auth.isLoggedIn$.subscribe((loggedIn) => (this.isLoggedIn = loggedIn));
+    this.auth.isAdmin$.subscribe((isAdmin) => (this.isAdminLoggedIn = isAdmin));
   }
 
   logout() {
