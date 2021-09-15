@@ -1,18 +1,31 @@
 /*@import '@angular/material/prebuilt-themes/deeppurple-amber.css';*/
 
-.toolbar {
-  height: 5%;
+#toolbar-menu-button {
+  margin-right: 10px;
 }
 
-.drawer-container {
-  height: 95%;
+.spacer {
+  flex: 1 1 auto;
 }
 
-.drawer-header {
-  margin: 20px;
+mat-toolbar {
+  height: 60px;
+}
+
+mat-drawer-container {
+  height: calc(100% - 60px);
 }
 
 mat-drawer button {
   width: 100%;
+  height: 50px;
   text-align: start;
+}
+
+mat-drawer-content {
+  padding: 30px;
+}
+
+#drawer {
+  width: 200px;
 }

@@ -1,8 +1,9 @@
-<mat-toolbar class="toolbar">
-  <button type="button" mat-icon-button (click)="drawer.toggle()">
+<mat-toolbar color="primary">
+  <button mat-icon-button id="toolbar-menu-button" (click)="drawer.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span class="top-toolbar">Police lineups</span>
+  <span>Police lineups</span>
+  <span class="spacer"></span>
   <button mat-button (click)="redirectToLogin()" *ngIf="!showLogout">
     login
   </button>
@@ -10,14 +11,13 @@
     logout
   </button>
 </mat-toolbar>
-<mat-drawer-container class="drawer-container">
-  <mat-drawer #drawer mode="over">
-      <p class = "drawer-header">Backend: <a href="{{backend}}">{{backend}}</a></p>
-      <button mat-button routerLink="/home" routerLinkActive="active" (click)="drawer.toggle()">Home</button>
-      <button mat-button routerLink="/login" routerLinkActive="active" (click)="drawer.toggle()">Login</button>
-      <button mat-button routerLink="/register" routerLinkActive="active" (click)="drawer.toggle()">Register</button>
-      <button mat-button routerLink="/people" routerLinkActive="active" (click)="drawer.toggle()">People</button>
-      <button mat-button routerLink="/import" routerLinkActive="active" (click)="drawer.toggle()">Import</button>
+<mat-drawer-container>
+  <mat-drawer #drawer id="drawer" mode="side">
+      <button mat-button routerLink="/home" routerLinkActive="active">Home</button>
+      <button mat-button routerLink="/login" routerLinkActive="active">Login</button>
+      <button mat-button routerLink="/register" routerLinkActive="active">Register</button>
+      <button mat-button routerLink="/people" routerLinkActive="active">People</button>
+      <button mat-button routerLink="/import" routerLinkActive="active">Import</button>
   </mat-drawer>
   <mat-drawer-content>
     <router-outlet></router-outlet>
