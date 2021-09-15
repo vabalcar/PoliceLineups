@@ -9,12 +9,16 @@ import { AuthService } from "./auth.service";
 export class AppComponent implements OnInit {
   isLoggedIn = false;
   isAdminLoggedIn = false;
+  userFullName: string;
 
   constructor(private auth: AuthService) {}
 
   ngOnInit() {
     this.auth.isLoggedIn$.subscribe((loggedIn) => (this.isLoggedIn = loggedIn));
     this.auth.isAdmin$.subscribe((isAdmin) => (this.isAdminLoggedIn = isAdmin));
+    this.auth.userFullName$.subscribe(
+      (userFullName) => (this.userFullName = userFullName)
+    );
   }
 
   logout() {

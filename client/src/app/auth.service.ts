@@ -15,6 +15,7 @@ export class AuthService {
 
   readonly isLoggedIn$: Observable<boolean>;
   readonly isAdmin$: Observable<boolean>;
+  readonly userFullName$: Observable<string>;
 
   private readonly token$: Observable<string>;
 
@@ -22,6 +23,8 @@ export class AuthService {
     new BehaviorSubject(false);
   private readonly isAdminSubject$: BehaviorSubject<boolean> =
     new BehaviorSubject(false);
+  private readonly userFullNameSubject$: BehaviorSubject<string> =
+    new BehaviorSubject(null);
   private readonly tokenSubject$: BehaviorSubject<string> = new BehaviorSubject(
     null
   );
@@ -34,6 +37,10 @@ export class AuthService {
     return this.isAdminSubject$.getValue();
   }
 
+  get userFullName(): string {
+    return this.userFullNameSubject$.getValue();
+  }
+
   constructor(
     private router: Router,
     private store: Store<fromAuth.AppState>,
@@ -44,6 +51,9 @@ export class AuthService {
 
     this.isAdmin$ = this.store.select(fromAuth.selectAuthIsAdmin);
     this.isAdmin$.subscribe(this.isAdminSubject$);
+
+    this.userFullName$ = this.store.select(fromAuth.selectAuthUserFullName);
+    this.userFullName$.subscribe(this.userFullNameSubject$);
 
     this.isLoggedIn$ = this.isLoggedInSubject$.asObservable();
 
@@ -73,6 +83,7 @@ export class AuthService {
           ? loginAction({
               token: response.authToken,
               isAdmin: response.isAdmin,
+              userFullName: response.userFullName,
             })
           : loginFailedAction();
 

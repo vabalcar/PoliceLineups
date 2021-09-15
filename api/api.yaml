@@ -265,6 +265,8 @@ components:
               type: string
             isAdmin:
               type: boolean
+            userFullName:
+              type: string
     User:
       type: object
       properties:

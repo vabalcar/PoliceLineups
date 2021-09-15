@@ -86,6 +86,7 @@ def login(body):  # noqa: E501
     success = False
     auth_token = None
     is_admin = False
+    user_full_name = None
 
     username = body.username
     password = body.password
@@ -96,5 +97,6 @@ def login(body):  # noqa: E501
     if success:
         auth_token = _generate_auth_token(username)
         is_admin = user.is_admin
+        user_full_name = user.name
 
-    return AuthResponse(success, auth_token, is_admin)
+    return AuthResponse(success, auth_token, is_admin, user_full_name)

@@ -13,6 +13,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatMenuModule } from "@angular/material/menu";
 
 import { AppRoutingModule } from "./app-routing.module";
 
@@ -60,6 +61,7 @@ import { environment } from "src/environments/environment";
     MatIconModule,
     MatInputModule,
     MatSlideToggleModule,
+    MatMenuModule,
     StoreModule.forRoot(reducers),
 
     !environment.production ? StoreDevtoolsModule.instrument() : [],
