@@ -8,6 +8,7 @@
   <span id="toolbar-spacer"></span>
   <button mat-button [matMenuTriggerFor]="sessionMenu" *ngIf="isLoggedIn">{{userFullName}}</button>
   <mat-menu #sessionMenu="matMenu">
+    <button mat-menu-item routerLink="currentUser/settings">Settings</button>
     <button mat-menu-item (click)="logout()">Logout</button>
   </mat-menu>
   <button mat-button routerLink="/login" *ngIf="!isLoggedIn">Login</button>

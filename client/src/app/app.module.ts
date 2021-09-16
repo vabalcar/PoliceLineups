@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule } from "@angular/forms";
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 import { MatSliderModule } from "@angular/material/slider";
 import { MatCardModule } from "@angular/material/card";
@@ -34,6 +35,7 @@ import { ImportPersonComponent } from "./import-person/import-person.component";
 import { HomeComponent } from "./home/home.component";
 import { AuthService } from "./auth.service";
 import { environment } from "src/environments/environment";
+import { UserSettingsComponent } from "./user-settings/user-settings.component";
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { environment } from "src/environments/environment";
     RegisterComponent,
     ImportPersonComponent,
     HomeComponent,
+    UserSettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +55,7 @@ import { environment } from "src/environments/environment";
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
+    FlexLayoutModule,
     MatSliderModule,
     MatCardModule,
     MatToolbarModule,

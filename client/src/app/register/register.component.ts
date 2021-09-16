@@ -15,11 +15,7 @@ export class RegisterComponent implements OnInit {
   fullName: string;
   isAdmin: boolean;
 
-  constructor(
-    private auth: AuthService,
-    private router: Router,
-    private api: DefaultService
-  ) {}
+  constructor(private api: DefaultService) {}
 
   ngOnInit(): void {}
 
