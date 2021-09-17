@@ -10,23 +10,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-form {
-  margin-bottom: 20px;
-}
-
-form mat-form-field {
-  margin-right: 20px;
-}
-
-form mat-slide-toggle {
-  margin-bottom: 20px;
-}
-
-form p {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
 mat-drawer mat-label {
   display: inline-block;
   margin-top: 16px;
@@ -35,8 +18,13 @@ mat-drawer mat-label {
   opacity: 0.6;
 }
 
-mat-card {
+mat-card,
+form {
   width: fit-content !important;
+}
+
+form mat-form-field {
+  margin-bottom: -16px !important;
 }
 
 .mat-card-simple-header .mat-card-header-text {
