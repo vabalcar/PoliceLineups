@@ -94,6 +94,7 @@ export class AuthService {
 
   logout(): void {
     this.store.dispatch(logoutAction());
+    this.router.navigateByUrl("/home");
   }
 
   private getTargetPath() {
