@@ -1,29 +1,43 @@
 <mat-toolbar color="primary" id="toolbar">
-  <button mat-icon-button id="toolbar-menu-button" (click)="drawer.toggle()">
+  <button mat-icon-button id="toolbar-menu-button" (click)="drawer.toggle()" [disabled]="!isLoggedIn">
     <mat-icon>menu</mat-icon>
   </button>
   <button mat-button routerLink="/home">
     <h4 class="mat-display-1">Police lineups</h4>
   </button>
   <span id="toolbar-spacer"></span>
-  <button mat-button [matMenuTriggerFor]="sessionMenu" *ngIf="isLoggedIn">{{userFullName}}</button>
+  <button mat-button class="button-with-icon-and-text" [matMenuTriggerFor]="sessionMenu" *ngIf="isLoggedIn">
+    <mat-icon>account_circle</mat-icon>{{userFullName}}
+  </button>
   <mat-menu #sessionMenu="matMenu">
-    <button mat-menu-item routerLink="currentUser/settings">Settings</button>
-    <button mat-menu-item (click)="logout()">Logout</button>
+    <button mat-menu-item class="button-with-icon-and-text" routerLink="currentUser/settings">
+      <mat-icon>settings</mat-icon>Settings
+    </button>
+    <button mat-menu-item class="button-with-icon-and-text" (click)="logout()">
+      <mat-icon>logout</mat-icon>Logout
+    </button>
   </mat-menu>
-  <button mat-button routerLink="/login" *ngIf="!isLoggedIn">Login</button>
+  <button mat-button class="button-with-icon-and-text" routerLink="/login" *ngIf="!isLoggedIn">
+    <mat-icon>login</mat-icon>Login
+  </button>
 </mat-toolbar>
 <mat-drawer-container id="drawer-container">
   <mat-drawer #drawer id="drawer" mode="side">
     <div *ngIf="isAdminLoggedIn">
       <mat-label class="mat-caption">Users</mat-label>
-      <button mat-button routerLink="/register">Add user</button>
+      <button class="button-with-icon-and-text" mat-button routerLink="/register">
+        <mat-icon>person_add</mat-icon>Add user
+      </button>
       <mat-divider></mat-divider>
     </div>
     <div *ngIf="isLoggedIn">
       <mat-label class="mat-caption">People</mat-label>
-      <button mat-button routerLink="/people">Search</button>
-      <button mat-button routerLink="/import">Import person</button>
+      <button mat-button class="button-with-icon-and-text" routerLink="/people">
+        <mat-icon>search</mat-icon>Search
+      </button>
+      <button mat-button class="button-with-icon-and-text" routerLink="/import">
+        <mat-icon>add</mat-icon>Import person
+      </button>
       <mat-divider></mat-divider>
     </div>
   </mat-drawer>

@@ -39,3 +39,7 @@ mat-card.form-card mat-card-content {
   margin-top: 8px;
   margin-bottom: -8px;
 }
+
+button.button-with-icon-and-text mat-icon {
+  margin-right: 12px;
+}
