@@ -1,18 +1,20 @@
 <h1 class="mat-headline">Login</h1>
 <form (submit)="login($event)">
-    <p>
-        <mat-form-field appearance="fill">
-            <mat-label>Username</mat-label>
-            <input matInput type="text" name="username" [(ngModel)]="username">
-        </mat-form-field>
-    </p>
-    <p>
-        <mat-form-field appearance="fill">
-            <mat-label>Password</mat-label>
-            <input matInput type="password" name="password" [(ngModel)]="password">
-        </mat-form-field>
-    </p>
-    <button mat-raised-button color="primary">
-        Login
-    </button>
+    <div fxLayout="column" fxLayoutGap="16px">
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
+                <input matInput type="text" name="username" [(ngModel)]="username">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" name="password" [(ngModel)]="password">
+            </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" fxFlexAlign="start">
+            Login
+        </button>
+    </div>
 </form>
