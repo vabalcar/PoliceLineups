@@ -10,8 +10,8 @@ import { loginAction } from "src/app/state/auth/auth.reducer";
   styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
-  username: string;
-  password: string;
+  username?: string;
+  password?: string;
 
   constructor(private store: Store<AppState>) {}
 
@@ -23,5 +23,8 @@ export class LoginComponent implements OnInit {
     this.store.dispatch(
       loginAction({ username: this.username, password: this.password })
     );
+
+    this.username = undefined;
+    this.password = undefined;
   }
 }

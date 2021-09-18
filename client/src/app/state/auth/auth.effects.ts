@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { exhaustMap, map, tap } from "rxjs/operators";
@@ -45,6 +46,23 @@ export class AuthEffects {
     }
   );
 
+  loginFailed$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loginFailedAction),
+        tap(() => {
+          this.snackBar.open("Login failed", "OK", {
+            horizontalPosition: "center",
+            verticalPosition: "bottom",
+            duration: 5 * 1000,
+          });
+        })
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
   logout$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -60,7 +78,8 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private api: DefaultService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   private getTargetPath() {

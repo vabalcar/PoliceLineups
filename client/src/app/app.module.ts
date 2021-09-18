@@ -15,6 +15,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatMenuModule } from "@angular/material/menu";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
@@ -70,6 +71,7 @@ import { AuthEffects } from "./state/auth/auth.effects";
     MatInputModule,
     MatSlideToggleModule,
     MatMenuModule,
+    MatSnackBarModule,
 
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreModule.forRoot(reducers),
