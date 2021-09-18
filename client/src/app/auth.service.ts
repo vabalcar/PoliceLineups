@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, of } from "rxjs";
 import { Store } from "@ngrx/store";
 import { loginAction, loginFailedAction, logoutAction } from "./auth.reducer";
 import { DefaultService } from "./api/api/default.service";
-import { Action } from "@ngrx/store";
 import * as fromAuth from "./auth.reducer";
+import { map, tap } from "rxjs/operators";
+import { AuthResponse } from "./api/model/authResponse";
 
 @Injectable({
   providedIn: "root",
@@ -71,25 +72,31 @@ export class AuthService {
     return canAccess;
   }
 
-  login(username: string, password: string): void {
+  login(username: string, password: string): Observable<boolean> {
     const targetPath = this.getTargetPath();
-    this.api
+    return this.api
       .login({
         username,
         password,
       })
-      .subscribe((response) => {
-        const action: Action = response.success
-          ? loginAction({
+      .pipe(
+        tap((response) => {
+          if (!response.success) {
+            this.store.dispatch(loginFailedAction());
+            return;
+          }
+
+          this.store.dispatch(
+            loginAction({
               token: response.authToken,
               isAdmin: response.isAdmin,
               userFullName: response.userFullName,
             })
-          : loginFailedAction();
-
-        this.store.dispatch(action);
-        this.router.navigateByUrl(targetPath);
-      });
+          );
+          this.router.navigateByUrl(targetPath);
+        })
+      )
+      .pipe(map((response) => response.success));
   }
 
   logout(): void {

@@ -17,6 +17,12 @@ export class LoginComponent implements OnInit {
   login(event: Event): void {
     event.preventDefault();
 
-    this.auth.login(this.username, this.password);
+    this.auth.login(this.username, this.password).subscribe((success) => {
+      if (!success) {
+        console.log(`Login failed`);
+        this.username = undefined;
+        this.password = undefined;
+      }
+    });
   }
 }
