@@ -1,13 +1,13 @@
 <mat-toolbar color="primary" id="toolbar">
-  <button mat-icon-button id="toolbar-menu-button" (click)="drawer.toggle()" [disabled]="!isLoggedIn">
+  <button mat-icon-button id="toolbar-menu-button" (click)="drawer.toggle()" [disabled]="isLoggedOut$ | async">
     <mat-icon>menu</mat-icon>
   </button>
   <button mat-button routerLink="/home">
     <h4 class="mat-display-1">Police lineups</h4>
   </button>
   <span id="toolbar-spacer"></span>
-  <button mat-button class="button-with-icon-and-text" [matMenuTriggerFor]="sessionMenu" *ngIf="isLoggedIn">
-    <mat-icon>account_circle</mat-icon>{{userFullName}}
+  <button mat-button class="button-with-icon-and-text" [matMenuTriggerFor]="sessionMenu" *ngIf="isLoggedIn$ | async">
+    <mat-icon>account_circle</mat-icon>{{userFullName$ | async}}
   </button>
   <mat-menu #sessionMenu="matMenu">
     <button mat-menu-item class="button-with-icon-and-text" routerLink="currentUser/settings">
@@ -17,20 +17,20 @@
       <mat-icon>logout</mat-icon>Logout
     </button>
   </mat-menu>
-  <button mat-button class="button-with-icon-and-text" routerLink="/login" *ngIf="!isLoggedIn">
+  <button mat-button class="button-with-icon-and-text" routerLink="/login" *ngIf="isLoggedOut$ | async">
     <mat-icon>login</mat-icon>Login
   </button>
 </mat-toolbar>
 <mat-drawer-container id="drawer-container">
   <mat-drawer #drawer id="drawer" mode="side">
-    <div *ngIf="isAdminLoggedIn">
+    <div *ngIf="isAdminLoggedIn$ | async">
       <mat-label class="mat-caption">Users</mat-label>
       <button class="button-with-icon-and-text" mat-button routerLink="/register">
         <mat-icon>person_add</mat-icon>Add user
       </button>
       <mat-divider></mat-divider>
     </div>
-    <div *ngIf="isLoggedIn">
+    <div *ngIf="isLoggedIn$ | async">
       <mat-label class="mat-caption">People</mat-label>
       <button mat-button class="button-with-icon-and-text" routerLink="/people">
         <mat-icon>search</mat-icon>Search

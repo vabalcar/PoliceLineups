@@ -16,6 +16,8 @@ export interface AppState {
 }
 
 export interface AuthState {
+  username: string;
+  password: string;
   token: string;
   isAdmin: boolean;
   userFullName: string;
@@ -31,18 +33,34 @@ const retrieveSavedAuthState = (): AuthState | undefined => {
 };
 
 // Actions
-export const loginAction = createAction("[Auth] login", props<AuthState>());
-export const loginFailedAction = createAction("[Auth] login failed");
-export const logoutAction = createAction("[Auth] logout");
+export const loginActionType = "[Auth] login";
+export const loginAction = createAction(
+  loginActionType,
+  props<{ username: string; password: string }>()
+);
+
+export const loginSucessfulActionType = "[Auth] login successful";
+export const loginSuccessfulAction = createAction(
+  loginSucessfulActionType,
+  props<{ token: string; isAdmin: boolean; userFullName: string }>()
+);
+
+export const loginFailedActionType = "[Auth] login failed";
+export const loginFailedAction = createAction(loginFailedActionType);
+
+export const logoutActionType = "[Auth] logout";
+export const logoutAction = createAction(logoutActionType);
 
 // State manupilation
 const defaultAuthState: AuthState = {
+  username: null,
+  password: null,
   token: null,
   isAdmin: false,
   userFullName: null,
 };
 
-const initialAuthState: AuthState =
+export const initialAuthState: AuthState =
   retrieveSavedAuthState() ?? defaultAuthState;
 
 const updateAuthState = (
@@ -54,7 +72,7 @@ const updateAuthState = (
   return updatedState;
 };
 
-const deleteSavedAuthState = () => {
+const resetAuthState = () => {
   localStorage.removeItem(authFeatureName);
   return defaultAuthState;
 };
@@ -62,8 +80,9 @@ const deleteSavedAuthState = () => {
 const authReducer = createReducer(
   initialAuthState,
   on(loginAction, updateAuthState),
-  on(loginFailedAction, deleteSavedAuthState),
-  on(logoutAction, deleteSavedAuthState)
+  on(loginSuccessfulAction, updateAuthState),
+  on(loginFailedAction, resetAuthState),
+  on(logoutAction, resetAuthState)
 );
 
 export const reducers: ActionReducerMap<Record<string, unknown>> = {
@@ -80,9 +99,19 @@ export const selectAuthToken = createSelector(
   (state: AuthState) => state.token
 );
 
+export const selectIsLoggedIn = createSelector(
+  selectAuthFeature,
+  (state: AuthState) => !!state.token
+);
+
+export const selectIsLoggedOut = createSelector(
+  selectAuthFeature,
+  (state: AuthState) => !state.token
+);
+
 export const selectAuthIsAdmin = createSelector(
   selectAuthFeature,
-  (state: AuthState) => state.isAdmin ?? false
+  (state: AuthState) => state.isAdmin
 );
 
 export const selectAuthUserFullName = createSelector(

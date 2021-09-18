@@ -1,15 +1,18 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate } from "@angular/router";
-
-import { AuthService } from "./auth.service";
+import { CanActivate } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+import { AppState, selectAuthIsAdmin } from "./auth.reducer";
 
 @Injectable({
   providedIn: "root",
 })
 export class AdminAuthGuard implements CanActivate {
-  constructor(private auth: AuthService) {}
+  isAdminLoggedIn$ = this.store.select(selectAuthIsAdmin);
 
-  canActivate(next: ActivatedRouteSnapshot): boolean {
-    return this.auth.canAccess(next.url.toString(), true);
+  constructor(private store: Store<AppState>) {}
+
+  canActivate(): Observable<boolean> {
+    return this.isAdminLoggedIn$;
   }
 }

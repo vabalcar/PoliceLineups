@@ -16,14 +16,16 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatMenuModule } from "@angular/material/menu";
 
+import { StoreModule } from "@ngrx/store";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { EffectsModule } from "@ngrx/effects";
+
+import { environment } from "src/environments/environment";
+
 import { AppRoutingModule } from "./app-routing.module";
 
 import { DefaultService } from "./api/api/default.service";
 import { BASE_PATH } from "./api/variables";
-
-import { StoreModule } from "@ngrx/store";
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-import { reducers } from "./auth.reducer";
 
 import { AppComponent } from "./app.component";
 import { PeopleComponent } from "./people/people.component";
@@ -33,9 +35,11 @@ import { NotFoundComponent } from "./not-found/not-found.component";
 import { RegisterComponent } from "./register/register.component";
 import { ImportPersonComponent } from "./import-person/import-person.component";
 import { HomeComponent } from "./home/home.component";
-import { AuthService } from "./auth.service";
-import { environment } from "src/environments/environment";
 import { UserSettingsComponent } from "./user-settings/user-settings.component";
+
+import { reducers } from "./auth.reducer";
+
+import { AuthEffects } from "./auth.effects";
 
 @NgModule({
   declarations: [
@@ -66,9 +70,11 @@ import { UserSettingsComponent } from "./user-settings/user-settings.component";
     MatInputModule,
     MatSlideToggleModule,
     MatMenuModule,
-    StoreModule.forRoot(reducers),
 
     !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreModule.forRoot(reducers),
+
+    EffectsModule.forRoot([AuthEffects]),
   ],
   providers: [
     {
@@ -92,7 +98,6 @@ import { UserSettingsComponent } from "./user-settings/user-settings.component";
       },
     },
     DefaultService,
-    AuthService,
   ],
   bootstrap: [AppComponent],
 })

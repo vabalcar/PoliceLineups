@@ -1,19 +1,18 @@
 import { Injectable } from "@angular/core";
-import {
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-} from "@angular/router";
-
-import { AuthService } from "./auth.service";
+import { CanActivate } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+import { AppState, selectIsLoggedIn } from "./auth.reducer";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserAuthGuard implements CanActivate {
-  constructor(private auth: AuthService) {}
+  isLoggedIn$ = this.store.select(selectIsLoggedIn);
 
-  canActivate(next: ActivatedRouteSnapshot): boolean {
-    return this.auth.canAccess(next.url.toString(), false);
+  constructor(private store: Store<AppState>) {}
+
+  canActivate(): Observable<boolean> {
+    return this.isLoggedIn$;
   }
 }

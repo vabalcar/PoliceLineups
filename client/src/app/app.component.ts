@@ -1,5 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthService } from "./auth.service";
+import { Store } from "@ngrx/store";
+import {
+  AppState,
+  logoutAction,
+  selectAuthIsAdmin,
+  selectAuthUserFullName,
+  selectIsLoggedIn,
+  selectIsLoggedOut,
+} from "./auth.reducer";
 
 @Component({
   selector: "app-root",
@@ -7,21 +15,16 @@ import { AuthService } from "./auth.service";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
-  isLoggedIn = false;
-  isAdminLoggedIn = false;
-  userFullName: string;
+  isLoggedIn$ = this.store.select(selectIsLoggedIn);
+  isLoggedOut$ = this.store.select(selectIsLoggedOut);
+  isAdminLoggedIn$ = this.store.select(selectAuthIsAdmin);
+  userFullName$ = this.store.select(selectAuthUserFullName);
 
-  constructor(private auth: AuthService) {}
+  constructor(private store: Store<AppState>) {}
 
-  ngOnInit() {
-    this.auth.isLoggedIn$.subscribe((loggedIn) => (this.isLoggedIn = loggedIn));
-    this.auth.isAdmin$.subscribe((isAdmin) => (this.isAdminLoggedIn = isAdmin));
-    this.auth.userFullName$.subscribe(
-      (userFullName) => (this.userFullName = userFullName)
-    );
-  }
+  ngOnInit() {}
 
   logout() {
-    this.auth.logout();
+    this.store.dispatch(logoutAction());
   }
 }

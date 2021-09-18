@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthService } from "../auth.service";
+import { Store } from "@ngrx/store";
+import { AppState, loginAction } from "../auth.reducer";
 
 @Component({
   selector: "app-login",
@@ -10,19 +11,15 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
 
-  constructor(private auth: AuthService) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {}
 
   login(event: Event): void {
     event.preventDefault();
 
-    this.auth.login(this.username, this.password).subscribe((success) => {
-      if (!success) {
-        console.log(`Login failed`);
-        this.username = undefined;
-        this.password = undefined;
-      }
-    });
+    this.store.dispatch(
+      loginAction({ username: this.username, password: this.password })
+    );
   }
 }
