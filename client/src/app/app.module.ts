@@ -22,24 +22,24 @@ import { EffectsModule } from "@ngrx/effects";
 
 import { environment } from "src/environments/environment";
 
-import { AppRoutingModule } from "./app-routing.module";
+import { AppRoutingModule } from "./routing/app-routing.module";
 
 import { DefaultService } from "./api/api/default.service";
 import { BASE_PATH } from "./api/variables";
 
-import { AppComponent } from "./app.component";
-import { PeopleComponent } from "./people/people.component";
-import { PersonComponent } from "./person/person.component";
-import { LoginComponent } from "./login/login.component";
-import { NotFoundComponent } from "./not-found/not-found.component";
-import { RegisterComponent } from "./register/register.component";
-import { ImportPersonComponent } from "./import-person/import-person.component";
-import { HomeComponent } from "./home/home.component";
-import { UserSettingsComponent } from "./user-settings/user-settings.component";
+import { AppComponent } from "./components/app.component";
+import { PeopleComponent } from "./components/pages/people/people.component";
+import { PersonComponent } from "./components/pages/person/person.component";
+import { LoginComponent } from "./components/pages/login/login.component";
+import { NotFoundComponent } from "./components/pages/not-found/not-found.component";
+import { RegisterComponent } from "./components/pages/register/register.component";
+import { ImportPersonComponent } from "./components/pages/import-person/import-person.component";
+import { HomeComponent } from "./components/pages/home/home.component";
+import { UserSettingsComponent } from "./components/pages/user-settings/user-settings.component";
 
-import { reducers } from "./auth.reducer";
+import { reducers } from "./state/auth/auth.reducer";
 
-import { AuthEffects } from "./auth.effects";
+import { AuthEffects } from "./state/auth/auth.effects";
 
 @NgModule({
   declarations: [

@@ -2,17 +2,17 @@ import { Injectable } from "@angular/core";
 import { CanActivate } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { AppState, selectAuthIsAdmin } from "./auth.reducer";
+import { AppState, selectIsLoggedIn } from "../../../state/auth/auth.reducer";
 
 @Injectable({
   providedIn: "root",
 })
-export class AdminAuthGuard implements CanActivate {
-  isAdminLoggedIn$ = this.store.select(selectAuthIsAdmin);
+export class UserAuthGuard implements CanActivate {
+  isLoggedIn$ = this.store.select(selectIsLoggedIn);
 
   constructor(private store: Store<AppState>) {}
 
   canActivate(): Observable<boolean> {
-    return this.isAdminLoggedIn$;
+    return this.isLoggedIn$;
   }
 }

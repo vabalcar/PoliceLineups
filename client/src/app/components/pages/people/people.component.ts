@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { DefaultService } from "../api/api/default.service";
-import { Person } from "../api/model/models";
+import { DefaultService } from "../../../api/api/default.service";
+import { Person } from "../../../api/model/models";
 
 @Component({
   selector: "app-people",

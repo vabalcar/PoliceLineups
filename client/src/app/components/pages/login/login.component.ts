@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { AppState, loginAction } from "../auth.reducer";
+import { AppState, loginAction } from "../../../state/auth/auth.reducer";
 
 @Component({
   selector: "app-login",

@@ -1,17 +1,17 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
-import { UserAuthGuard } from "./auth-user.guard";
-import { AdminAuthGuard } from "./auth-admin.guard";
+import { UserAuthGuard } from "./guards/auth-user/auth-user.guard";
+import { AdminAuthGuard } from "./guards/auth-admin/auth-admin.guard";
 
-import { LoginComponent } from "./login/login.component";
-import { NotFoundComponent } from "./not-found/not-found.component";
-import { PeopleComponent } from "./people/people.component";
-import { PersonComponent } from "./person/person.component";
-import { HomeComponent } from "./home/home.component";
-import { RegisterComponent } from "./register/register.component";
-import { ImportPersonComponent } from "./import-person/import-person.component";
-import { UserSettingsComponent } from "./user-settings/user-settings.component";
+import { LoginComponent } from "../components/pages/login/login.component";
+import { NotFoundComponent } from "../components/pages/not-found/not-found.component";
+import { PeopleComponent } from "../components/pages/people/people.component";
+import { PersonComponent } from "../components/pages/person/person.component";
+import { HomeComponent } from "../components/pages/home/home.component";
+import { RegisterComponent } from "../components/pages/register/register.component";
+import { ImportPersonComponent } from "../components/pages/import-person/import-person.component";
+import { UserSettingsComponent } from "../components/pages/user-settings/user-settings.component";
 
 const routes: Routes = [
   {

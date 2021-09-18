@@ -8,7 +8,7 @@ import {
   selectAuthUserFullName,
   selectIsLoggedIn,
   selectIsLoggedOut,
-} from "./auth.reducer";
+} from "../state/auth/auth.reducer";
 
 @Component({
   selector: "app-root",
