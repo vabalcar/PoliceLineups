@@ -17,6 +17,7 @@ export interface AuthState {
   token: string;
   isAdmin: boolean;
   userFullName: string;
+  loginFailedCount: number;
 }
 
 const retrieveSavedAuthState = (): AuthState | undefined => {
@@ -50,6 +51,7 @@ const defaultAuthState: AuthState = {
   token: null,
   isAdmin: false,
   userFullName: null,
+  loginFailedCount: 0,
 };
 
 export const initialAuthState: AuthState =
@@ -72,8 +74,16 @@ const resetAuthState = () => {
 export const authReducer = createReducer(
   initialAuthState,
   on(loginAction, updateAuthState),
-  on(loginSuccessfulAction, updateAuthState),
-  on(loginFailedAction, resetAuthState),
+  on(loginSuccessfulAction, (state, update) => {
+    const newState = updateAuthState(state, update);
+    newState.loginFailedCount = 0;
+    return newState;
+  }),
+  on(loginFailedAction, (state) =>
+    updateAuthState(state, {
+      loginFailedCount: state.loginFailedCount + 1,
+    })
+  ),
   on(logoutAction, resetAuthState)
 );
 
@@ -105,4 +115,9 @@ export const selectAuthIsAdmin = createSelector(
 export const selectAuthUserFullName = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.userFullName
+);
+
+export const selectLoginFailedCount = createSelector(
+  selectAuthFeature,
+  (state: AuthState) => state.loginFailedCount
 );

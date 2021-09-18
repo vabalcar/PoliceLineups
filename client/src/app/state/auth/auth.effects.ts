@@ -54,7 +54,7 @@ export class AuthEffects {
           this.snackBar.open("Login failed", "OK", {
             horizontalPosition: "center",
             verticalPosition: "bottom",
-            duration: 5 * 1000,
+            duration: 5 * 1000, // miliseconds
           });
         })
       ),
