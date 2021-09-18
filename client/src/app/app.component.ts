@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
+import { tap } from "rxjs/operators";
 import {
   AppState,
   logoutAction,
@@ -16,9 +17,17 @@ import {
 })
 export class AppComponent implements OnInit {
   isLoggedIn$ = this.store.select(selectIsLoggedIn);
-  isLoggedOut$ = this.store.select(selectIsLoggedOut);
+  isLoggedOut$ = this.store.select(selectIsLoggedOut).pipe(
+    tap((isLoggedOut) => {
+      if (this.drawerOpened && isLoggedOut) {
+        this.drawerOpened = false;
+      }
+    })
+  );
   isAdminLoggedIn$ = this.store.select(selectAuthIsAdmin);
   userFullName$ = this.store.select(selectAuthUserFullName);
+
+  drawerOpened = false;
 
   constructor(private store: Store<AppState>) {}
 

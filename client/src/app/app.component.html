@@ -22,7 +22,7 @@
   </button>
 </mat-toolbar>
 <mat-drawer-container id="drawer-container">
-  <mat-drawer #drawer id="drawer" mode="side">
+  <mat-drawer #drawer id="drawer" mode="side" [(opened)]="drawerOpened">
     <div *ngIf="isAdminLoggedIn$ | async">
       <mat-label class="mat-caption">Users</mat-label>
       <button class="button-with-icon-and-text" mat-button routerLink="/register">
