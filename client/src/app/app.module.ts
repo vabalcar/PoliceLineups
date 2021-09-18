@@ -37,7 +37,7 @@ import { ImportPersonComponent } from "./components/pages/import-person/import-p
 import { HomeComponent } from "./components/pages/home/home.component";
 import { UserSettingsComponent } from "./components/pages/user-settings/user-settings.component";
 
-import { reducers } from "./state/auth/auth.reducer";
+import { reducers } from "./state/app.reducer";
 
 import { AuthEffects } from "./state/auth/auth.effects";
 

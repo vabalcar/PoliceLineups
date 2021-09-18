@@ -1,5 +1,4 @@
 import {
-  ActionReducerMap,
   createAction,
   createFeatureSelector,
   createReducer,
@@ -7,14 +6,11 @@ import {
   on,
   props,
 } from "@ngrx/store";
+import { AppState } from "../app.reducer";
 
-const authFeatureName = "auth";
+export const authFeatureName = "auth";
 
 // States
-export interface AppState {
-  auth: AuthState;
-}
-
 export interface AuthState {
   username: string;
   password: string;
@@ -33,23 +29,19 @@ const retrieveSavedAuthState = (): AuthState | undefined => {
 };
 
 // Actions
-export const loginActionType = "[Auth] login";
 export const loginAction = createAction(
-  loginActionType,
+  "[Auth] login",
   props<{ username: string; password: string }>()
 );
 
-export const loginSucessfulActionType = "[Auth] login successful";
 export const loginSuccessfulAction = createAction(
-  loginSucessfulActionType,
+  "[Auth] login successful",
   props<{ token: string; isAdmin: boolean; userFullName: string }>()
 );
 
-export const loginFailedActionType = "[Auth] login failed";
-export const loginFailedAction = createAction(loginFailedActionType);
+export const loginFailedAction = createAction("[Auth] login failed");
 
-export const logoutActionType = "[Auth] logout";
-export const logoutAction = createAction(logoutActionType);
+export const logoutAction = createAction("[Auth] logout");
 
 // State manupilation
 const defaultAuthState: AuthState = {
@@ -77,17 +69,13 @@ const resetAuthState = () => {
   return defaultAuthState;
 };
 
-const authReducer = createReducer(
+export const authReducer = createReducer(
   initialAuthState,
   on(loginAction, updateAuthState),
   on(loginSuccessfulAction, updateAuthState),
   on(loginFailedAction, resetAuthState),
   on(logoutAction, resetAuthState)
 );
-
-export const reducers: ActionReducerMap<Record<string, unknown>> = {
-  auth: authReducer,
-};
 
 // Selectors
 export const selectAuthFeature = createFeatureSelector<AppState, AuthState>(

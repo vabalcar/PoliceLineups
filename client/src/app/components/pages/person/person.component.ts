@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { DefaultService } from "../../../api/api/default.service";
-import { Person } from "../../../api/model/models";
+
+import { DefaultService } from "src/app/api/api/default.service";
+import { Person } from "src/app/api/model/models";
 
 @Component({
   selector: "app-person",

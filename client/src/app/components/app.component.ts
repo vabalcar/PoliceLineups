@@ -1,14 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { tap } from "rxjs/operators";
+
+import { AppState } from "src/app/state/app.reducer";
 import {
-  AppState,
   logoutAction,
   selectAuthIsAdmin,
   selectAuthUserFullName,
   selectIsLoggedIn,
   selectIsLoggedOut,
-} from "../state/auth/auth.reducer";
+} from "src/app/state/auth/auth.reducer";
 
 @Component({
   selector: "app-root",

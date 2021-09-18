@@ -5,7 +5,6 @@ import { exhaustMap, map, tap } from "rxjs/operators";
 import { DefaultService } from "../../api/api/default.service";
 import {
   loginAction,
-  loginActionType,
   loginFailedAction,
   loginSuccessfulAction,
   logoutAction,

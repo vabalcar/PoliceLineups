@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { DefaultService } from "../../../api/api/default.service";
+
+import { DefaultService } from "src/app/api/api/default.service";
 
 @Component({
   selector: "app-user-settings",

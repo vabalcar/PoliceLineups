@@ -2,7 +2,9 @@ import { Injectable } from "@angular/core";
 import { CanActivate } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { AppState, selectAuthIsAdmin } from "../../../state/auth/auth.reducer";
+
+import { AppState } from "src/app/state/app.reducer";
+import { selectAuthIsAdmin } from "src/app/state/auth/auth.reducer";
 
 @Injectable({
   providedIn: "root",
