@@ -16,6 +16,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatTableModule } from "@angular/material/table";
 
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
@@ -41,6 +42,9 @@ import { UserSettingsComponent } from "./components/pages/user-settings/user-set
 import { reducers } from "./state/app.reducer";
 
 import { AuthEffects } from "./state/auth/auth.effects";
+import { UsersListComponent } from "./components/pages/users-list/users-list.component";
+import { MatSortModule } from "@angular/material/sort";
+import { UsersListEffects } from "./state/users-list/users-list.effects";
 
 @NgModule({
   declarations: [
@@ -53,6 +57,7 @@ import { AuthEffects } from "./state/auth/auth.effects";
     ImportPersonComponent,
     HomeComponent,
     UserSettingsComponent,
+    UsersListComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,11 +77,15 @@ import { AuthEffects } from "./state/auth/auth.effects";
     MatSlideToggleModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatTableModule,
+    MatSortModule,
 
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreModule.forRoot(reducers),
 
     EffectsModule.forRoot([AuthEffects]),
+
+    EffectsModule.forFeature([UsersListEffects]),
   ],
   providers: [
     {

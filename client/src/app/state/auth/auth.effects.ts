@@ -2,13 +2,16 @@ import { Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
 import { exhaustMap, map, tap } from "rxjs/operators";
-import { DefaultService } from "../../api/api/default.service";
+import { DefaultService } from "src/app/api/api/default.service";
+import { AppState } from "../app.reducer";
 import {
   loginAction,
   loginFailedAction,
   loginSuccessfulAction,
   logoutAction,
+  selectAuthToken,
 } from "./auth.reducer";
 
 @Injectable()
@@ -23,6 +26,7 @@ export class AuthEffects {
             map((authResponse) =>
               authResponse.success
                 ? loginSuccessfulAction({
+                    username: action.username,
                     token: authResponse.authToken,
                     userFullName: authResponse.userFullName,
                     isAdmin: !!authResponse.isAdmin,
@@ -38,7 +42,6 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(loginSuccessfulAction),
-        tap((action) => (this.api.configuration.accessToken = action.token)),
         tap(() => this.router.navigateByUrl(this.getTargetPath()))
       ),
     {
@@ -67,7 +70,6 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(logoutAction),
-        tap(() => (this.api.configuration.accessToken = undefined)),
         tap(() => this.router.navigateByUrl("/"))
       ),
     {
@@ -75,11 +77,16 @@ export class AuthEffects {
     }
   );
 
+  bindTokenToInfrastructure = this.store
+    .select(selectAuthToken)
+    .subscribe((token) => (this.api.configuration.accessToken = token));
+
   constructor(
     private actions$: Actions,
     private api: DefaultService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private store: Store<AppState>
   ) {}
 
   private getTargetPath() {

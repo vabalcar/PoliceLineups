@@ -7,85 +7,22 @@ import {
   props,
 } from "@ngrx/store";
 import { AppState } from "../app.reducer";
+import {
+  updateSavedFeatureState,
+  getSavedFeatureState,
+  deleteSavedFeatureState,
+} from "../utils/reducer.utils";
 
 export const authFeatureName = "auth";
 
-// States
+// State
 export interface AuthState {
   username: string;
-  password: string;
   token: string;
   isAdmin: boolean;
   userFullName: string;
   loginFailedCount: number;
 }
-
-const retrieveSavedAuthState = (): AuthState | undefined => {
-  const serializedState = localStorage.getItem(authFeatureName);
-  if (!serializedState) {
-    return undefined;
-  }
-
-  return JSON.parse(serializedState) as AuthState;
-};
-
-// Actions
-export const loginAction = createAction(
-  "[Auth] login",
-  props<{ username: string; password: string }>()
-);
-
-export const loginSuccessfulAction = createAction(
-  "[Auth] login successful",
-  props<{ token: string; isAdmin: boolean; userFullName: string }>()
-);
-
-export const loginFailedAction = createAction("[Auth] login failed");
-
-export const logoutAction = createAction("[Auth] logout");
-
-// State manupilation
-const defaultAuthState: AuthState = {
-  username: null,
-  password: null,
-  token: null,
-  isAdmin: false,
-  userFullName: null,
-  loginFailedCount: 0,
-};
-
-export const initialAuthState: AuthState =
-  retrieveSavedAuthState() ?? defaultAuthState;
-
-const updateAuthState = (
-  state: AuthState,
-  update: Partial<AuthState>
-): AuthState => {
-  const updatedState = Object.assign({}, state, update);
-  localStorage.setItem(authFeatureName, JSON.stringify(updatedState));
-  return updatedState;
-};
-
-const resetAuthState = () => {
-  localStorage.removeItem(authFeatureName);
-  return defaultAuthState;
-};
-
-export const authReducer = createReducer(
-  initialAuthState,
-  on(loginAction, updateAuthState),
-  on(loginSuccessfulAction, (state, update) => {
-    const newState = updateAuthState(state, update);
-    newState.loginFailedCount = 0;
-    return newState;
-  }),
-  on(loginFailedAction, (state) =>
-    updateAuthState(state, {
-      loginFailedCount: state.loginFailedCount + 1,
-    })
-  ),
-  on(logoutAction, resetAuthState)
-);
 
 // Selectors
 export const selectAuthFeature = createFeatureSelector<AppState, AuthState>(
@@ -120,4 +57,52 @@ export const selectAuthUserFullName = createSelector(
 export const selectLoginFailedCount = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.loginFailedCount
+);
+
+// Actions
+export const loginAction = createAction(
+  "[Auth] login",
+  props<{ username: string; password: string }>()
+);
+
+export const loginSuccessfulAction = createAction(
+  "[Auth] login successful",
+  props<Pick<AuthState, "username" | "token" | "userFullName" | "isAdmin">>()
+);
+
+export const loginFailedAction = createAction("[Auth] login failed");
+
+export const logoutAction = createAction("[Auth] logout");
+
+// State manupilation
+const defaultState: AuthState = {
+  username: null,
+  token: null,
+  isAdmin: false,
+  userFullName: null,
+  loginFailedCount: 0,
+};
+
+export const initialState: AuthState =
+  getSavedFeatureState<AuthState>(authFeatureName) ?? defaultState;
+
+const updateState = (state: AuthState, ...updates: Partial<AuthState>[]) =>
+  updateSavedFeatureState(authFeatureName, state, ...updates);
+
+const resetState = () => {
+  deleteSavedFeatureState(authFeatureName);
+  return defaultState;
+};
+
+export const authReducer = createReducer(
+  initialState,
+  on(loginSuccessfulAction, (state, actionProps) =>
+    updateState(state, actionProps, { loginFailedCount: 0 })
+  ),
+  on(loginFailedAction, (state) =>
+    updateState(state, {
+      loginFailedCount: state.loginFailedCount + 1,
+    })
+  ),
+  on(logoutAction, resetState)
 );

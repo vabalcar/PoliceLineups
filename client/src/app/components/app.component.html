@@ -25,6 +25,9 @@
   <mat-drawer #drawer id="drawer" mode="side" [(opened)]="drawerOpened">
     <div *ngIf="isAdminLoggedIn$ | async">
       <mat-label class="mat-caption">Users</mat-label>
+      <button class="button-with-icon-and-text" mat-button routerLink="/users">
+        <mat-icon>people</mat-icon>Users list
+      </button>
       <button class="button-with-icon-and-text" mat-button routerLink="/register">
         <mat-icon>person_add</mat-icon>Add user
       </button>

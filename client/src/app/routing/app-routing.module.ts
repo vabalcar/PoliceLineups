@@ -12,8 +12,24 @@ import { HomeComponent } from "../components/pages/home/home.component";
 import { RegisterComponent } from "../components/pages/register/register.component";
 import { ImportPersonComponent } from "../components/pages/import-person/import-person.component";
 import { UserSettingsComponent } from "../components/pages/user-settings/user-settings.component";
+import { UsersListComponent } from "../components/pages/users-list/users-list.component";
 
 const routes: Routes = [
+  {
+    path: "register",
+    component: RegisterComponent,
+    canActivate: [AdminAuthGuard],
+  },
+  {
+    path: "users",
+    component: UsersListComponent,
+    canActivate: [AdminAuthGuard],
+  },
+  {
+    path: "currentUser/settings",
+    component: UserSettingsComponent,
+    canActivate: [UserAuthGuard],
+  },
   {
     path: "import",
     component: ImportPersonComponent,
@@ -23,16 +39,6 @@ const routes: Routes = [
   {
     path: "person/:id",
     component: PersonComponent,
-    canActivate: [UserAuthGuard],
-  },
-  {
-    path: "register",
-    component: RegisterComponent,
-    canActivate: [AdminAuthGuard],
-  },
-  {
-    path: "currentUser/settings",
-    component: UserSettingsComponent,
     canActivate: [UserAuthGuard],
   },
   {
