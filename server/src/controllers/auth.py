@@ -9,11 +9,10 @@ from werkzeug.exceptions import Unauthorized
 from jose import JWTError, jwt
 
 from swagger_server.models import AuthRequest, AuthResponse
-from swagger_server.models.user import User
 
 from police_lineups.mysql.db import DB
 
-JWT_ISSUER = 'policelineups'
+JWT_ISSUER = 'police_lineups'
 JWT_SECRET = secrets.token_urlsafe(32)
 JWT_LIFETIME_SECONDS = 600
 JWT_ALGORITHM = 'HS256'  # https://en.wikipedia.org/wiki/HMAC
@@ -23,13 +22,14 @@ def _current_timestamp() -> int:
     return int(time.time())
 
 
-def _generate_auth_token(username) -> str:
+def _generate_auth_token(username: str, is_admin: bool) -> str:
     timestamp = _current_timestamp()
     auth_payload = {
         "iss": JWT_ISSUER,
         "iat": int(timestamp),
         "exp": int(timestamp + JWT_LIFETIME_SECONDS),
-        "sub": username,
+        "username": username,
+        "is_admin": is_admin
     }
 
     return jwt.encode(auth_payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
@@ -42,16 +42,11 @@ def _decode_auth_token(token) -> Mapping:
         raise Unauthorized from auth_error
 
 
-def _authorize_user_by_token_payload(token_payload) -> User:
-    username_from_payload = token_payload["sub"]
-    authorized_user = DB().users.find_one(username=username_from_payload)
-    if authorized_user is None:
-        raise Unauthorized
+def _authorize_user_by_token_payload(token_payload: Mapping) -> None:
+    authorized_user_name = token_payload.get("username", None)
 
     connexion.request.authorization = Authorization(
-        "bearer", dict(username=authorized_user.username))
-
-    return authorized_user
+        "bearer", dict(username=authorized_user_name))
 
 
 def authorize_user_by_token(token) -> Mapping:
@@ -63,8 +58,9 @@ def authorize_user_by_token(token) -> Mapping:
 
 def authorize_admin_by_token(token) -> Mapping:
     token_payload = _decode_auth_token(token)
-    authorized_user = _authorize_user_by_token_payload(token_payload)
-    if not authorized_user.is_admin:
+
+    _authorize_user_by_token_payload(token_payload)
+    if not token_payload.get("is_admin", False):
         raise Unauthorized
 
     return token_payload
@@ -95,8 +91,8 @@ def login(body):  # noqa: E501
     success = user is not None and check_password_hash(user.password, password)
 
     if success:
-        auth_token = _generate_auth_token(username)
         is_admin = user.is_admin
+        auth_token = _generate_auth_token(username, is_admin)
         user_full_name = user.name
 
     return AuthResponse(success, auth_token, is_admin, user_full_name)

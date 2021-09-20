@@ -14,20 +14,28 @@ def foldl(func, acc, xs):
 
 class MysqlDBConnector(metaclass=Singleton):
 
-    def __init__(self):
-        self.db_config = None
+    @ property
+    def db(self):
+        return self._db
 
-    def load_db_config(self, db_config_path, *db_config_path_children):
+    def __init__(self) -> None:
+        self.db_config = None
+        self._db = None
+
+    def load_db_config(self, db_config_path, *db_config_path_children) -> None:
         self.db_config = parse_json_file(db_config_path, *db_config_path_children)
 
-    def connect(self):
-        return mysql.connector.connect(
+    def connect(self) -> None:
+        self._db = mysql.connector.connect(
             host=self.db_config['host'],
             user=self.db_config['user'],
             passwd=self.db_config['password'],
             database=self.db_config['db'],
             port=self.db_config['port']
         ) if self.db_config is not None else None
+
+    def disconnect(self) -> None:
+        self.db.close()
 
 
 class MysqlAnalyzer:
@@ -227,7 +235,7 @@ class MysqlDBTable(Generic[T], metaclass=Singleton):
 
 
 def query_db(query: str, row_processor=None) -> list:
-    db = MysqlDBConnector().connect()
+    db = MysqlDBConnector().db
 
     db_cursor = db.cursor()
     db_cursor.execute(query)
@@ -237,20 +245,16 @@ def query_db(query: str, row_processor=None) -> list:
         result = row_processor(row) if row_processor is not None else row
         results.append(result)
 
-    db.close()
-
     return results
 
 
 def update_db(query) -> int:
-    db = MysqlDBConnector().connect()
+    db = MysqlDBConnector().db
 
     db_cursor = db.cursor()
     db_cursor.execute(query)
     db.commit()
 
     effects = db_cursor.rowcount
-
-    db.close()
 
     return effects
