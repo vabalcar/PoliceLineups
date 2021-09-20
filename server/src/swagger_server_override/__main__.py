@@ -14,7 +14,6 @@ def main():
     # parse configuration from configuration folder
     server_config = parse_json_file('..', '..', 'config', 'server.json')
     MysqlDBConnector().load_db_config('..', '..', 'config', 'db.json')
-    MysqlDBConnector().connect()
 
     host = server_config.get('host', DEFAULT_HOST)
     if len(host) == 0:
@@ -26,6 +25,9 @@ def main():
         port = DEFAULT_PORT
 
     is_dev_mode = server_config.get('dev', DEFAULT_IS_DEV_MODE)
+
+    # connect to DB
+    MysqlDBConnector().connect()
 
     # setup the server
     app = connexion.App(__name__, specification_dir='./swagger/')
