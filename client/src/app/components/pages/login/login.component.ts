@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { tap } from "rxjs/operators";
 
 import { AppState } from "src/app/state/app.reducer";
 import {
@@ -30,8 +29,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  login(event: Event): void {
-    event.preventDefault();
+  login(): void {
+    if (!this.username || !this.password) {
+      return;
+    }
 
     this.store.dispatch(
       loginAction({ username: this.username, password: this.password })
