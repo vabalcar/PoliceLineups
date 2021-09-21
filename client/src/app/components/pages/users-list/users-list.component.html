@@ -17,6 +17,6 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedTableColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedTableColumns;" class="clickable-row" routerLink="/user/{{row.username}}"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedTableColumns;" class="clickable-row" routerLink="/user/{{row.username}}/settings"></tr>
     </table>
 </div>

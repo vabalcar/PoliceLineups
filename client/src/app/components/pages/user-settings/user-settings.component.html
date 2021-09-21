@@ -1,4 +1,8 @@
-<h1 class="mat-headline">Settings</h1>
+<h1 class="mat-headline">
+    Settings
+    <span *ngIf="isNotEditingSelf$ | async">of user {{editingUser$ | async}}</span>
+</h1>
+
 <h2 class="mat-title">Update account</h2>
 <div fxLayout="row wrap" fxLayoutGap="16px">
     <mat-card class="form-card">
@@ -8,11 +12,11 @@
         <mat-card-content>
             <mat-form-field appearance="outline">
                 <mat-label>Full name</mat-label>
-                <input matInput type="text" name="fullName" [(ngModel)]="fullName">
+                <input required matInput type="text" name="fullName" [(ngModel)]="fullName">
             </mat-form-field>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button color="accent">Update</button>
+            <button mat-button color="accent" (click)="updateUserFullName()">Update</button>
         </mat-card-actions>
     </mat-card>
 
@@ -24,18 +28,24 @@
             <div fxLayout="row" fxLayoutGap="16px">
                 <mat-form-field appearance="outline">
                     <mat-label>Password</mat-label>
-                    <input matInput type="password" name="password" [(ngModel)]="password">
+                    <input required matInput type="password" name="password" [(ngModel)]="password">
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Password again</mat-label>
-                    <input matInput type="password" name="passwordAgain" [(ngModel)]="passwordAgain">
+                    <input required matInput type="password" name="passwordAgain" [(ngModel)]="passwordAgain">
                 </mat-form-field>
             </div>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button color="accent">Update</button>
+            <button mat-button color="accent" (click)="updateUserPassword()">Update</button>
         </mat-card-actions>
     </mat-card>
 </div>
+
 <h2 class="mat-title">Delete account</h2>
-<button mat-raised-button color="warn">Delete your account</button>
+<button mat-raised-button color="warn">
+    Delete
+    <span *ngIf="isEditingSelf$ | async">your</span>
+    account
+    <span *ngIf="isNotEditingSelf$ | async">{{editingUser$ | async}}</span>
+</button>
