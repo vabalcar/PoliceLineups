@@ -52,6 +52,18 @@ def get_user(username):  # noqa: E501
     return DB().users.find_one(username=username)
 
 
+def get_current_user():  # noqa: E501
+    """Returns a user
+
+     # noqa: E501
+
+
+    :rtype: User
+    """
+
+    return get_user(connexion.request.authorization.username)
+
+
 def add_user(body):  # noqa: E501
     """Adds a user
 
@@ -94,20 +106,35 @@ def update_user(body, username):  # noqa: E501
     :rtype: Response
     """
     if connexion.request.is_json:
-        new_values = User.from_dict(connexion.request.get_json())  # noqa: E501
+        update = User.from_dict(connexion.request.get_json())  # noqa: E501
     elif isinstance(body, User):
-        new_values = body
+        update = body
 
-    success = False
+    if update is None:
+        return Response(True)
 
-    if new_values is None:
-        return Response(success)
+    if update.password is not None:
+        update.password = generate_password_hash(update.password)
 
-    success = new_values.get(username) != ROOT_USERNAME \
-        and username != ROOT_USERNAME \
-        and DB().users.update_one(new_values, username=username)
+    success = update.username is None \
+        and (username is not ROOT_USERNAME or not update.is_admin) \
+        and DB().users.update_one(update, username=username)
 
     return Response(success)
+
+
+def update_current_user(body):  # noqa: E501
+    """Updates a user
+
+     # noqa: E501
+
+    :param body: update of user
+    :type body: dict | bytes
+
+    :rtype: Response
+    """
+
+    return update_user(body, connexion.request.authorization.username)
 
 
 def remove_user(username):  # noqa: E501
@@ -123,3 +150,15 @@ def remove_user(username):  # noqa: E501
 
     success = username != ROOT_USERNAME and DB().users.delete_one(username=username)
     return Response(success)
+
+
+def remove_current_user():  # noqa: E501
+    """Removes a user
+
+     # noqa: E501
+
+
+    :rtype: Response
+    """
+
+    return remove_user(connexion.request.authorization.username)

@@ -7,6 +7,7 @@ import {
   props,
 } from "@ngrx/store";
 import { AppState } from "../app.reducer";
+import { userFullNameUpdateSucessful } from "../user-update/user-update.reducer";
 import {
   updateSavedFeatureState,
   getSavedFeatureState,
@@ -47,6 +48,11 @@ export const selectIsLoggedOut = createSelector(
 export const selectAuthIsAdmin = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.isAdmin
+);
+
+export const selectUsername = createSelector(
+  selectAuthFeature,
+  (state: AuthState) => state.username
 );
 
 export const selectAuthUserFullName = createSelector(
@@ -104,5 +110,6 @@ export const authReducer = createReducer(
       loginFailedCount: state.loginFailedCount + 1,
     })
   ),
+  on(userFullNameUpdateSucessful, updateState),
   on(logoutAction, resetState)
 );

@@ -45,6 +45,7 @@ import { AuthEffects } from "./state/auth/auth.effects";
 import { UsersListComponent } from "./components/pages/users-list/users-list.component";
 import { MatSortModule } from "@angular/material/sort";
 import { UsersListEffects } from "./state/users-list/users-list.effects";
+import { UserUpdateEffects } from "./state/user-update/user-update.effects";
 
 @NgModule({
   declarations: [
@@ -84,8 +85,7 @@ import { UsersListEffects } from "./state/users-list/users-list.effects";
     StoreModule.forRoot(reducers),
 
     EffectsModule.forRoot([AuthEffects]),
-
-    EffectsModule.forFeature([UsersListEffects]),
+    EffectsModule.forFeature([UsersListEffects, UserUpdateEffects]),
   ],
   providers: [
     {
