@@ -4,6 +4,27 @@ import { ActivatedRoute } from "@angular/router";
 import { DefaultService } from "src/app/api/api/default.service";
 import { Person } from "src/app/api/model/models";
 
+interface IPersonFeature {
+  name: string;
+  value: string;
+}
+
+const isUppercase = (s: string): boolean => s?.toUpperCase() === s;
+
+const parseFeature = (feature: string): IPersonFeature => {
+  const featureDescriptions = feature.split(" ");
+
+  const featureName: string = featureDescriptions
+    .filter(isUppercase)
+    .reduce((prev, curr) => `${prev} ${curr}`);
+
+  const featureValue: string = featureDescriptions.find(
+    (description) => !isUppercase(description)
+  );
+
+  return { name: featureName, value: featureValue };
+};
+
 @Component({
   selector: "app-person",
   templateUrl: "./person.component.html",
@@ -11,45 +32,16 @@ import { Person } from "src/app/api/model/models";
 })
 export class PersonComponent implements OnInit {
   person: Person;
-  features: Array<any>;
+  features: IPersonFeature[];
 
-  constructor(private route: ActivatedRoute, private api: DefaultService) {
-    this.person = {} as Person;
-  }
-
-  static isUppercase(s: string): boolean {
-    return s.toUpperCase() === s;
-  }
-
-  static parseFeature(feature: string) {
-    const featureDesc = feature.split(" ");
-    let featureName = "";
-    let featureValue = "";
-
-    for (var i = 0; i < featureDesc.length; ++i) {
-      if (PersonComponent.isUppercase(featureDesc[i])) {
-        if (featureName.length === 0) {
-          featureName = featureDesc[i];
-        } else {
-          featureName += ` ${featureDesc[i]}`;
-        }
-      } else {
-        if (featureValue.length === 0) {
-          featureValue = featureDesc[i];
-        } else {
-          featureValue += ` ${featureDesc[i]}`;
-        }
-      }
-    }
-
-    return { name: featureName, value: featureValue };
-  }
+  constructor(private route: ActivatedRoute, private api: DefaultService) {}
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get("id");
-    this.api.getPerson(id).subscribe((p) => {
-      this.features = p.features.split(",").map(PersonComponent.parseFeature);
-      this.person = p;
+    this.api.getPerson(id).subscribe((person) => {
+      this.features = person.features.split(",").map(parseFeature);
+      person.features = undefined;
+      this.person = person;
     });
   }
 }
