@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  --hover-select-color: #494949;
+  --user-interaction-color: #494949;
 }
 
 ::-webkit-scrollbar {
@@ -70,6 +70,17 @@ table {
 }
 
 .clickable-row:hover {
-  background: var(--hover-select-color);
+  background: var(--user-interaction-color);
   cursor: pointer;
+}
+
+.dropzone {
+  display: table;
+  background-color: #424242;
+}
+
+.dropzone .dropzone-content {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }

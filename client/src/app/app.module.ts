@@ -17,6 +17,7 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatTableModule } from "@angular/material/table";
+import { MatSelectModule } from "@angular/material/select";
 
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
@@ -46,6 +47,7 @@ import { UsersListComponent } from "./components/pages/users-list/users-list.com
 import { MatSortModule } from "@angular/material/sort";
 import { UsersListEffects } from "./state/users-list/users-list.effects";
 import { UserUpdateEffects } from "./state/user-update/user-update.effects";
+import { DropZoneDirective } from "./directives/drop-zone.directive";
 
 @NgModule({
   declarations: [
@@ -59,6 +61,7 @@ import { UserUpdateEffects } from "./state/user-update/user-update.effects";
     HomeComponent,
     UserSettingsComponent,
     UsersListComponent,
+    DropZoneDirective,
   ],
   imports: [
     BrowserModule,
@@ -80,6 +83,7 @@ import { UserUpdateEffects } from "./state/user-update/user-update.effects";
     MatSnackBarModule,
     MatTableModule,
     MatSortModule,
+    MatSelectModule,
 
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreModule.forRoot(reducers),
