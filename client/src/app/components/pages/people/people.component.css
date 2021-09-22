@@ -8,3 +8,13 @@ mat-list-item span {
   margin-left: 20pt;
   margin-right: 20pt;
 }
+
+.person-card {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.photo {
+  height: 100px;
+  object-fit: contain;
+}

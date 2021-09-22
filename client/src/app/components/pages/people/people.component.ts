@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
+import { map, take } from "rxjs/operators";
 
 import { DefaultService } from "src/app/api/api/default.service";
-import { Person } from "src/app/api/model/models";
+
+const PEOPLE_LIMIT = 30;
 
 @Component({
   selector: "app-people",
@@ -9,11 +11,11 @@ import { Person } from "src/app/api/model/models";
   styleUrls: ["./people.component.css"],
 })
 export class PeopleComponent implements OnInit {
-  people: Person[];
+  people = this.api
+    .getPeople()
+    .pipe(map((people) => people.slice(0, PEOPLE_LIMIT)));
 
   constructor(private api: DefaultService) {}
 
-  ngOnInit() {
-    this.api.getPeople().subscribe((p) => (this.people = p));
-  }
+  ngOnInit() {}
 }

@@ -1,8 +1,12 @@
 <h2>People</h2>
-<mat-nav-list>
-  <mat-list-item *ngFor="let p of people">
-    <img matlListAvatar src="assets/media/photos/{{p.pid}}.jpg" />
-    <span>{{p.name}}</span>
-    <button mat-button routerLink="/person/{{p.id}}" routerLinkActive="active">More</button>
-  </mat-list-item>
-</mat-nav-list>
+  <div fxLayout="row wrap" fxLayoutGap="8px">
+    <div *ngFor="let person of (people | async)">
+      <mat-card class="person-card">
+        <div fxLayout="column" fxLayoutGap="16px">
+          <img matlListAvatar class="photo" src="assets/media/photos/{{person.pid}}.jpg" />
+          <span>{{person.name}}</span>
+          <button mat-button routerLink="/person/{{person.id}}">More</button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
