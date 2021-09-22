@@ -2,11 +2,10 @@ export const updateState = <TState>(
   state: TState,
   ...updates: Partial<TState>[]
 ): TState => {
-  let updatedState = state;
-  for (const update of updates) {
-    updatedState = Object.assign({}, updatedState, update);
-  }
-  return updatedState;
+  const update = updates.reduce((accumulatedUpdate, nextUpdate) =>
+    Object.assign({}, accumulatedUpdate, nextUpdate)
+  );
+  return Object.assign({}, state, update);
 };
 
 export const updateSavedFeatureState = <TState>(
@@ -19,7 +18,9 @@ export const updateSavedFeatureState = <TState>(
   return updatedState;
 };
 
-export const getSavedFeatureState = <TState>(featureName: string): TState => {
+export const getSavedFeatureState = <TState>(
+  featureName: string
+): TState | undefined => {
   const serializedState = localStorage.getItem(featureName);
   return serializedState && (JSON.parse(serializedState) as TState);
 };
