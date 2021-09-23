@@ -4,16 +4,16 @@ import { Routes, RouterModule } from "@angular/router";
 import { UserAuthGuard } from "./guards/auth-user/auth-user.guard";
 import { AdminAuthGuard } from "./guards/auth-admin/auth-admin.guard";
 
-import { LoginComponent } from "../components/pages/login/login.component";
+import { LoginComponent } from "../components/pages/users/login/login.component";
 import { NotFoundComponent } from "../components/pages/not-found/not-found.component";
-import { PeopleComponent } from "../components/pages/people/people.component";
-import { PersonComponent } from "../components/pages/person/person.component";
+import { PeopleComponent } from "../components/pages/people/people/people.component";
+import { PersonComponent } from "../components/pages/people/person/person.component";
 import { HomeComponent } from "../components/pages/home/home.component";
-import { RegisterComponent } from "../components/pages/register/register.component";
-import { ImportPersonComponent } from "../components/pages/import-person/import-person.component";
-import { UserSettingsComponent } from "../components/pages/user-settings/user-settings.component";
-import { UsersListComponent } from "../components/pages/users-list/users-list.component";
-import { NotAuthorizedComponent } from "../components/pages/not-authorized/not-authorized.component";
+import { RegisterComponent } from "../components/pages/users/register/register.component";
+import { ImportPersonComponent } from "../components/pages/people/import-person/import-person.component";
+import { UserSettingsComponent } from "../components/pages/users/user-settings/user-settings.component";
+import { UsersListComponent } from "../components/pages/users/users-list/users-list.component";
+import { NotAuthorizedComponent } from "../components/pages/users/not-authorized/not-authorized.component";
 
 const routes: Routes = [
   {

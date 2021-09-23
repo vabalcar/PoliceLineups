@@ -18,6 +18,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatTableModule } from "@angular/material/table";
 import { MatSelectModule } from "@angular/material/select";
+import { MatSortModule } from "@angular/material/sort";
 
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
@@ -31,24 +32,24 @@ import { DefaultService } from "./api/api/default.service";
 import { BASE_PATH } from "./api/variables";
 
 import { AppComponent } from "./components/app.component";
-import { PeopleComponent } from "./components/pages/people/people.component";
-import { PersonComponent } from "./components/pages/person/person.component";
-import { LoginComponent } from "./components/pages/login/login.component";
+import { PeopleComponent } from "./components/pages/people/people/people.component";
+import { PersonComponent } from "./components/pages/people/person/person.component";
+import { LoginComponent } from "./components/pages/users/login/login.component";
 import { NotFoundComponent } from "./components/pages/not-found/not-found.component";
-import { RegisterComponent } from "./components/pages/register/register.component";
-import { ImportPersonComponent } from "./components/pages/import-person/import-person.component";
+import { RegisterComponent } from "./components/pages/users/register/register.component";
+import { ImportPersonComponent } from "./components/pages/people/import-person/import-person.component";
 import { HomeComponent } from "./components/pages/home/home.component";
-import { UserSettingsComponent } from "./components/pages/user-settings/user-settings.component";
+import { UserSettingsComponent } from "./components/pages/users/user-settings/user-settings.component";
+import { UsersListComponent } from "./components/pages/users/users-list/users-list.component";
+import { NotAuthorizedComponent } from "./components/pages/users/not-authorized/not-authorized.component";
+
+import { DropZoneDirective } from "./directives/drop-zone.directive";
 
 import { reducers } from "./state/app.reducer";
 
 import { AuthEffects } from "./state/auth/auth.effects";
-import { UsersListComponent } from "./components/pages/users-list/users-list.component";
-import { MatSortModule } from "@angular/material/sort";
 import { UsersListEffects } from "./state/users-list/users-list.effects";
 import { UserUpdateEffects } from "./state/user-update/user-update.effects";
-import { DropZoneDirective } from "./directives/drop-zone.directive";
-import { NotAuthorizedComponent } from "./components/pages/not-authorized/not-authorized.component";
 
 @NgModule({
   declarations: [
