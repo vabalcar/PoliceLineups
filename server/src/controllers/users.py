@@ -11,7 +11,7 @@ from swagger_server.models.response import Response
 from police_lineups.mysql.db import DB
 
 ROOT_USERNAME = 'root'
-ROOT_DEFAULT_NAME = 'root'
+ROOT_DEFAULT_NAME = 'Root'
 ROOT_DEFAULT_PASSWORD = '1234'
 
 
