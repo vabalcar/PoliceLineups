@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { tap } from "rxjs/operators";
 
@@ -16,7 +16,7 @@ import {
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   isLoggedIn$ = this.store.select(selectIsLoggedIn);
   isLoggedOut$ = this.store.select(selectIsLoggedOut).pipe(
     tap((isLoggedOut) => {
@@ -31,8 +31,6 @@ export class AppComponent implements OnInit {
   drawerOpened = false;
 
   constructor(private store: Store<AppState>) {}
-
-  ngOnInit() {}
 
   logout() {
     this.store.dispatch(logoutAction());

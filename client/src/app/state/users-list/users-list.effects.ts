@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { of } from "rxjs";
 import { exhaustMap, map } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
-import { User } from "src/app/api/model/user";
 import {
   loadUsersListAction,
   usersListLoadedAction,

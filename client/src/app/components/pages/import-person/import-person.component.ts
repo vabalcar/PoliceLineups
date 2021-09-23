@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { FileHandle } from "src/app/directives/drop-zone.directive";
 
 interface INationality {
@@ -11,7 +11,7 @@ interface INationality {
   templateUrl: "./import-person.component.html",
   styleUrls: ["./import-person.component.css"],
 })
-export class ImportPersonComponent implements OnInit {
+export class ImportPersonComponent {
   name: string;
   born: Date;
   nationality: string;
@@ -25,10 +25,6 @@ export class ImportPersonComponent implements OnInit {
     { name: "argentinian", value: "Argentinian" },
     { name: "australian", value: "Australian" },
   ];
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   import(): void {}
 

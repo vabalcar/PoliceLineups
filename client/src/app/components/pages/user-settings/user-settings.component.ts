@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { BehaviorSubject, zip } from "rxjs";
@@ -13,9 +13,8 @@ import {
 @Component({
   selector: "app-user-settings",
   templateUrl: "./user-settings.component.html",
-  styleUrls: ["./user-settings.component.css"],
 })
-export class UserSettingsComponent implements OnInit {
+export class UserSettingsComponent {
   loggedInUser$ = this.store.select(selectUsername);
 
   editingUser$ = new BehaviorSubject<string | undefined>(undefined);
@@ -45,8 +44,6 @@ export class UserSettingsComponent implements OnInit {
   isAdmin: boolean;
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
-
-  ngOnInit(): void {}
 
   updateUserFullName(): void {
     const targetUser = this.editingUser$.getValue();

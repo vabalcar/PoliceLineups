@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 
 import { AppState } from "src/app/state/app.reducer";
@@ -10,9 +10,8 @@ import {
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   username?: string;
   password?: string;
 
@@ -26,8 +25,6 @@ export class LoginComponent implements OnInit {
     });
 
   constructor(private store: Store<AppState>) {}
-
-  ngOnInit(): void {}
 
   login(): void {
     if (!this.username || !this.password) {

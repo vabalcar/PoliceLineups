@@ -1,13 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 
 import { DefaultService } from "src/app/api/api/default.service";
 
 @Component({
   selector: "app-register",
   templateUrl: "./register.component.html",
-  styleUrls: ["./register.component.css"],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   username: string;
   password: string;
   passwordAgain: string;
@@ -15,8 +14,6 @@ export class RegisterComponent implements OnInit {
   isAdmin: boolean;
 
   constructor(private api: DefaultService) {}
-
-  ngOnInit(): void {}
 
   register(event: Event): void {
     event.preventDefault();

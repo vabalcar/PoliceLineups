@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { User } from "src/app/api/model/user";
 import { AppState } from "src/app/state/app.reducer";
@@ -14,7 +13,6 @@ import {
 @Component({
   selector: "app-users-list",
   templateUrl: "./users-list.component.html",
-  styleUrls: ["./users-list.component.css"],
 })
 export class UsersListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
