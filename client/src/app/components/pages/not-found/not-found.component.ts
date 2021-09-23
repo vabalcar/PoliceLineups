@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 
 @Component({
@@ -6,12 +6,8 @@ import { Router } from "@angular/router";
   templateUrl: "./not-found.component.html",
   styleUrls: ["./not-found.component.css"],
 })
-export class NotFoundComponent implements OnInit {
-  url: string;
+export class NotFoundComponent {
+  readonly url = this.router.url;
 
   constructor(private router: Router) {}
-
-  ngOnInit(): void {
-    this.url = this.router.url;
-  }
 }
