@@ -13,6 +13,7 @@ import { RegisterComponent } from "../components/pages/register/register.compone
 import { ImportPersonComponent } from "../components/pages/import-person/import-person.component";
 import { UserSettingsComponent } from "../components/pages/user-settings/user-settings.component";
 import { UsersListComponent } from "../components/pages/users-list/users-list.component";
+import { NotAuthorizedComponent } from "../components/pages/not-authorized/not-authorized.component";
 
 const routes: Routes = [
   {
@@ -53,6 +54,7 @@ const routes: Routes = [
   },
   { path: "home", component: HomeComponent },
   { path: "", redirectTo: "/home", pathMatch: "full" },
+  { path: "not-authorized", component: NotAuthorizedComponent },
   { path: "**", component: NotFoundComponent },
 ];
 

@@ -48,6 +48,7 @@ import { MatSortModule } from "@angular/material/sort";
 import { UsersListEffects } from "./state/users-list/users-list.effects";
 import { UserUpdateEffects } from "./state/user-update/user-update.effects";
 import { DropZoneDirective } from "./directives/drop-zone.directive";
+import { NotAuthorizedComponent } from "./components/pages/not-authorized/not-authorized.component";
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { DropZoneDirective } from "./directives/drop-zone.directive";
     UserSettingsComponent,
     UsersListComponent,
     DropZoneDirective,
+    NotAuthorizedComponent,
   ],
   imports: [
     BrowserModule,
