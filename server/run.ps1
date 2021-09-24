@@ -4,11 +4,10 @@ param (
     [switch] $NoRun
 )
 
-if ($Dev) {
-    . (Join-Path '..' 'pwsh' 'libs' 'json.ps1')
-    $serverConfigFile = Join-Path '..' 'config' 'server.json'
-    Update-JsonObject -Path $serverConfigFile -Attribute 'dev' -Value $true | Out-Null
-}
+. (Join-Path '..' 'pwsh' 'libs' 'json.ps1')
+
+$serverConfigFile = Join-Path '..' 'config' 'server.json'
+Update-JsonObject -Path $serverConfigFile -Attribute 'dev' -Value $Dev | Out-Null
 
 if ($NoRun) {
     exit

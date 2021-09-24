@@ -4,15 +4,10 @@ param (
     [switch] $NoRun
 )
 
-$clientConfigFile = Join-Path '..' 'config' 'client.json'
+. (Join-Path '..' 'pwsh' 'libs' 'json.ps1')
 
-if ($Dev) {
-    . (Join-Path '..' 'pwsh' 'libs' 'json.ps1')
-    $clientConfig = Update-JsonObject -Path $clientConfigFile -Attribute 'dev' -Value $true
-}
-else {
-    $clientConfig = Get-Content $clientConfigFile | ConvertFrom-Json
-}
+$clientConfigFile = Join-Path '..' 'config' 'client.json'
+$clientConfig = Update-JsonObject -Path $clientConfigFile -Attribute 'dev' -Value $Dev
 
 if ($NoRun) {
     exit
