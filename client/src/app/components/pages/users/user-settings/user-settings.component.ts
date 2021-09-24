@@ -17,8 +17,8 @@ import {
 export class UserSettingsComponent {
   loggedInUser$ = this.store.select(selectUsername);
 
-  editingUser$ = new BehaviorSubject<string | undefined>(undefined);
-  editingUserSubscription = zip(
+  editedUser$ = new BehaviorSubject<string | undefined>(undefined);
+  editedUserSubscription = zip(
     this.loggedInUser$,
     this.route.paramMap.pipe(map((params) => params.get("username")))
   )
@@ -28,9 +28,9 @@ export class UserSettingsComponent {
           editingUserFromRoute ?? loggedInUser
       )
     )
-    .subscribe(this.editingUser$);
+    .subscribe(this.editedUser$);
 
-  isEditingSelf$ = zip(this.loggedInUser$, this.editingUser$).pipe(
+  isEditingSelf$ = zip(this.loggedInUser$, this.editedUser$).pipe(
     map(([loggedInUser, editingUser]) => loggedInUser === editingUser)
   );
 
@@ -46,7 +46,7 @@ export class UserSettingsComponent {
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
 
   updateUserFullName(): void {
-    const targetUser = this.editingUser$.getValue();
+    const targetUser = this.editedUser$.getValue();
     if (targetUser === undefined || !this.fullName) {
       return;
     }
@@ -61,7 +61,7 @@ export class UserSettingsComponent {
   }
 
   updateUserPassword(): void {
-    const targetUser = this.editingUser$.getValue();
+    const targetUser = this.editedUser$.getValue();
     if (targetUser === undefined || !this.password) {
       return;
     }

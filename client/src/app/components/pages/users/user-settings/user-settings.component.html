@@ -1,6 +1,6 @@
 <h1 class="mat-headline">
     Settings
-    <span *ngIf="isNotEditingSelf$ | async">of user {{editingUser$ | async}}</span>
+    <span *ngIf="isNotEditingSelf$ | async">of user {{editedUser$ | async}}</span>
 </h1>
 
 <h2 class="mat-title">Update account</h2>
@@ -47,5 +47,5 @@
     Delete
     <span *ngIf="isEditingSelf$ | async">your</span>
     account
-    <span *ngIf="isNotEditingSelf$ | async">{{editingUser$ | async}}</span>
+    <span *ngIf="isNotEditingSelf$ | async">{{editedUser$ | async}}</span>
 </button>
