@@ -1,6 +1,13 @@
 import { FormControl, ValidationErrors } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
-import { BehaviorSubject, combineLatest, merge, Observable, of } from "rxjs";
+import {
+  BehaviorSubject,
+  combineLatest,
+  merge,
+  Observable,
+  of,
+  Subscription,
+} from "rxjs";
 import { filter, first, map, share } from "rxjs/operators";
 
 export const firstValueFrom = <T>(observable: Observable<T>): Promise<T> =>
@@ -70,13 +77,14 @@ export class ObservableFormControl<T> extends FormControl {
   readonly value$: Observable<T>;
 
   private readonly valueSubject$: BehaviorSubject<T>;
+  private readonly defaultValueSubscription: Subscription;
 
   get currentValue(): T {
     return this.value;
   }
 
   constructor(
-    value$?: Observable<T>,
+    defaultvalue$?: Observable<T>,
     translateValidationError?: (
       validationError: ValidationError
     ) => string | undefined
@@ -106,7 +114,12 @@ export class ObservableFormControl<T> extends FormControl {
     this.valueChanges.subscribe(this.valueSubject$);
     this.value$ = this.valueSubject$.asObservable().pipe(share());
 
-    value$?.subscribe((value) => this.setValue(value));
+    this.defaultValueSubscription = defaultvalue$
+      ?.pipe(filter((value) => value !== undefined && value !== null))
+      .subscribe((value) => {
+        this.setValue(value);
+        this.defaultValueSubscription?.unsubscribe();
+      });
   }
 
   private static getFirstValidationError(

@@ -74,6 +74,25 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Response"
+  /validation/user:
+    patch:
+      summary: Validated an update of a user
+      x-openapi-router-controller: controllers.users
+      operationId: validateUserUpdate
+      requestBody:
+        description: update of a user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: validation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResponse"
   /user/{username}:
     get:
       summary: Returns a user
@@ -302,6 +321,13 @@ components:
       properties:
         success:
           type: boolean
+    ValidationResponse:
+      allOf:
+        - $ref: "#/components/schemas/Response"
+        - type: object
+          properties:
+            validationError:
+              type: string
     AuthResponse:
       allOf:
         - $ref: "#/components/schemas/Response"

@@ -11,8 +11,10 @@ import {
 import {
   loadUserToUpdate,
   selectEditedUserInfo,
+  selectUserFullnameUpdateValidationError,
   updateUserFullName,
   updateUserPassword,
+  validateUserFullnameUpdate,
 } from "src/app/state/user-update/user-update.reducer";
 import {
   ErrorPublisher,
@@ -73,9 +75,10 @@ export class UserSettingsComponent implements OnInit {
         }
       }
     );
-    this.fullNameUpdateErrorPublisher = new ErrorPublisher([
-      this.fullNameFormControl.validationError$,
-    ]);
+    this.fullNameUpdateErrorPublisher = new ErrorPublisher(
+      [this.fullNameFormControl.validationError$],
+      [this.store.select(selectUserFullnameUpdateValidationError)]
+    );
 
     this.passwordFormControl = new ObservableFormControl(
       undefined,
@@ -114,6 +117,10 @@ export class UserSettingsComponent implements OnInit {
           })
         )
       );
+
+    this.fullNameFormControl.value$.subscribe((value) =>
+      this.store.dispatch(validateUserFullnameUpdate({ newFullName: value }))
+    );
   }
 
   fullNameUpdateDisabled(): boolean {

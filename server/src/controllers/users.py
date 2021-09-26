@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash
 
 from swagger_server.models.user import User
 from swagger_server.models.response import Response
+from swagger_server.models.validation_response import ValidationResponse
 
 from police_lineups.mysql.db import DB
 
@@ -91,6 +92,51 @@ def add_user(body):  # noqa: E501
         success = DB().users.insert_one(user)
 
     return Response(success)
+
+
+def validate_password(password: str):
+    password_len = len(password)
+
+    if password_len == 0:
+        return "Password is empty"
+
+    if password_len > 16:
+        return "Password is too long"
+
+    return None
+
+
+def validate_user_full_name(user_full_name: str):
+    user_full_name_len = len(user_full_name)
+
+    if user_full_name_len == 0:
+        return "Full name is empty"
+
+    return None
+
+
+def validate_user_update(body):  # noqa: E501
+    """Validated an update of a user
+
+     # noqa: E501
+
+    :param body: update of a user
+    :type body: dict | bytes
+
+    :rtype: Response
+    """
+    if connexion.request.is_json:
+        body = User.from_dict(connexion.request.get_json())  # noqa: E501
+
+    error = None
+
+    if body.password is not None:
+        error = validate_password(body.password)
+
+    if body.name is not None:
+        error = validate_user_full_name(body.name)
+
+    return ValidationResponse(success=True, validation_error=error)
 
 
 def update_user(body, username):  # noqa: E501

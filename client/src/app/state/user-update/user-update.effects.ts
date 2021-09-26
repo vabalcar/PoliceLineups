@@ -9,9 +9,11 @@ import {
   updateUserFullName,
   updateUserPassword,
   userFullNameUpdateSucessful,
+  userFullnameUpdateValidated,
   userToUpdateLoaded,
   userUpdateFailed,
   userUpdatePasswordSuccessful,
+  validateUserFullnameUpdate,
 } from "./user-update.reducer";
 
 @Injectable()
@@ -85,6 +87,21 @@ export class UserUpdateEffects {
                   userFullName: action.newFullName,
                 })
               : userUpdateFailed()
+          )
+        )
+      )
+    )
+  );
+
+  validateFullnameUpdate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(validateUserFullnameUpdate),
+      exhaustMap((action) =>
+        this.api.validateUserUpdate({ name: action.newFullName }).pipe(
+          map((response) =>
+            userFullnameUpdateValidated({
+              userFullNameUpdateValidationError: response.validationError,
+            })
           )
         )
       )

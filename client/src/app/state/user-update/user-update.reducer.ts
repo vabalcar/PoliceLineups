@@ -16,6 +16,7 @@ export const userUpdateFeatureKey = "userUpdate";
 // State
 export interface UserUpdateState extends IUserInfo {
   success?: boolean;
+  userFullNameUpdateValidationError?: string;
 }
 
 // Selectors
@@ -27,6 +28,11 @@ export const selectUserUpdateFeature = createFeatureSelector<
 export const selectUserUpdateSuccess = createSelector(
   selectUserUpdateFeature,
   (state: UserUpdateState) => state.success
+);
+
+export const selectUserFullnameUpdateValidationError = createSelector(
+  selectUserUpdateFeature,
+  (state: UserUpdateState) => state.userFullNameUpdateValidationError
 );
 
 export const selectEditedUserInfo = createUserInfoSelector(
@@ -42,6 +48,16 @@ export const loadUserToUpdate = createAction(
 export const userToUpdateLoaded = createAction(
   "[User update] load user successful",
   props<Pick<UserUpdateState, "username" | "userFullName">>()
+);
+
+export const validateUserFullnameUpdate = createAction(
+  "[User update] validate user full name update",
+  props<{ newFullName: string }>()
+);
+
+export const userFullnameUpdateValidated = createAction(
+  "[User update] user full name update validated",
+  props<Pick<UserUpdateState, "userFullNameUpdateValidationError">>()
 );
 
 export const updateUserFullName = createAction(
@@ -74,6 +90,7 @@ export const userUpdateReducer = createReducer(
   initialState,
   on(loadUserToUpdate, () => initialState),
   on(userToUpdateLoaded, updateState),
+  on(userFullnameUpdateValidated, updateState),
   on(userUpdateFailed, (state) =>
     updateState(state, {
       success: false,
