@@ -13,15 +13,19 @@ import {
   getSavedFeatureState,
   deleteSavedFeatureState,
 } from "../utils/reducer.utils";
+import { createUserInfoSelector } from "../utils/users.utils";
 
 export const authFeatureName = "auth";
 
-// State
-export interface AuthState {
+export interface IUserInfo {
   username: string;
-  token: string;
   isAdmin: boolean;
   userFullName: string;
+}
+
+// State
+export interface AuthState extends IUserInfo {
+  token: string;
   loginFailedCount: number;
 }
 
@@ -45,17 +49,17 @@ export const selectIsLoggedOut = createSelector(
   (state: AuthState) => !state.token
 );
 
-export const selectAuthIsAdmin = createSelector(
+export const selectCurrentUserIsAdmin = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.isAdmin
 );
 
-export const selectUsername = createSelector(
+export const selectCurrentUserUsername = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.username
 );
 
-export const selectAuthUserFullName = createSelector(
+export const selectCurrentUserFullName = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.userFullName
 );
@@ -64,6 +68,8 @@ export const selectLoginFailedCount = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.loginFailedCount
 );
+
+export const selectCurrentUserInfo = createUserInfoSelector(selectAuthFeature);
 
 // Actions
 export const loginAction = createAction(

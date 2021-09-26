@@ -7,12 +7,14 @@ import {
   props,
 } from "@ngrx/store";
 import { AppState } from "../app.reducer";
-import { AuthState } from "../auth/auth.reducer";
+import { IUserInfo } from "../auth/auth.reducer";
+import { updateState } from "../utils/reducer.utils";
+import { createUserInfoSelector } from "../utils/users.utils";
 
 export const userUpdateFeatureKey = "userUpdate";
 
 // State
-export interface UserUpdateState {
+export interface UserUpdateState extends IUserInfo {
   success?: boolean;
 }
 
@@ -27,38 +29,64 @@ export const selectUserUpdateSuccess = createSelector(
   (state: UserUpdateState) => state.success
 );
 
-// Actions
-export const updateUserFullNameAction = createAction(
-  "[User update] update user full name",
-  props<{ selfUpdate: boolean; targetUsername?: string; newFullName: string }>()
+export const selectEditedUserInfo = createUserInfoSelector(
+  selectUserUpdateFeature
 );
 
-export const updateUserPasswordAction = createAction(
+// Actions
+export const loadUserToUpdate = createAction(
+  "[User update] load user",
+  props<{ targetUsername?: string }>()
+);
+
+export const userToUpdateLoaded = createAction(
+  "[User update] load user successful",
+  props<Pick<UserUpdateState, "username" | "userFullName">>()
+);
+
+export const updateUserFullName = createAction(
+  "[User update] update user full name",
+  props<{ targetUsername?: string; newFullName: string }>()
+);
+
+export const updateUserPassword = createAction(
   "[User update] update password",
-  props<{ selfUpdate: boolean; targetUsername?: string; newPassword: string }>()
+  props<{ targetUsername?: string; newPassword: string }>()
 );
 
 export const userUpdateFailed = createAction("[User update] failed");
-export const userUpdateSuccessful = createAction("[User update] successful");
+export const userUpdatePasswordSuccessful = createAction(
+  "[User update] password successful"
+);
 export const userFullNameUpdateSucessful = createAction(
   "[User update] fullname successful",
-  props<Pick<AuthState, "userFullName">>()
+  props<Pick<UserUpdateState, "userFullName">>()
 );
 
 // State manipulation
-export const initialState: UserUpdateState = {};
+export const initialState: UserUpdateState = {
+  username: null,
+  userFullName: null,
+  isAdmin: false,
+};
 
 export const userUpdateReducer = createReducer(
   initialState,
-  on(updateUserFullNameAction, () => initialState),
-  on(updateUserPasswordAction, () => initialState),
-  on(userUpdateFailed, () => ({
-    success: false,
-  })),
-  on(userUpdateSuccessful, () => ({
-    success: true,
-  })),
-  on(userFullNameUpdateSucessful, () => ({
-    success: true,
-  }))
+  on(loadUserToUpdate, () => initialState),
+  on(userToUpdateLoaded, updateState),
+  on(userUpdateFailed, (state) =>
+    updateState(state, {
+      success: false,
+    })
+  ),
+  on(userUpdatePasswordSuccessful, (state) =>
+    updateState(state, {
+      success: true,
+    })
+  ),
+  on(userFullNameUpdateSucessful, (state, action) =>
+    updateState(state, action, {
+      success: true,
+    })
+  )
 );

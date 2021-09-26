@@ -5,8 +5,8 @@ import { tap } from "rxjs/operators";
 import { AppState } from "src/app/state/app.reducer";
 import {
   logoutAction,
-  selectAuthIsAdmin,
-  selectAuthUserFullName,
+  selectCurrentUserIsAdmin,
+  selectCurrentUserFullName,
   selectIsLoggedIn,
   selectIsLoggedOut,
 } from "src/app/state/auth/auth.reducer";
@@ -25,8 +25,8 @@ export class AppComponent {
       }
     })
   );
-  isAdminLoggedIn$ = this.store.select(selectAuthIsAdmin);
-  userFullName$ = this.store.select(selectAuthUserFullName);
+  isAdminLoggedIn$ = this.store.select(selectCurrentUserIsAdmin);
+  userFullName$ = this.store.select(selectCurrentUserFullName);
 
   drawerOpened = false;
 

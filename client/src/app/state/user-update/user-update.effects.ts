@@ -1,22 +1,53 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { exhaustMap, map } from "rxjs/operators";
+import { Store } from "@ngrx/store";
+import { exhaustMap, map, mergeMap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
+import { selectCurrentUserInfo, IUserInfo } from "../auth/auth.reducer";
 import {
-  updateUserFullNameAction,
-  updateUserPasswordAction,
+  loadUserToUpdate,
+  updateUserFullName,
+  updateUserPassword,
   userFullNameUpdateSucessful,
+  userToUpdateLoaded,
   userUpdateFailed,
-  userUpdateSuccessful,
+  userUpdatePasswordSuccessful,
 } from "./user-update.reducer";
 
 @Injectable()
 export class UserUpdateEffects {
+  loadUserToUpdate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadUserToUpdate),
+      mergeMap((action) =>
+        (!action.targetUsername
+          ? this.store.select(selectCurrentUserInfo)
+          : this.api.getUser(action.targetUsername).pipe(
+              map(
+                (response) =>
+                  ({
+                    username: response.username,
+                    userFullName: response.name,
+                    isAdmin: response.isAdmin,
+                  } as IUserInfo)
+              )
+            )
+        ).pipe(
+          map((userInfo) =>
+            userToUpdateLoaded({
+              ...userInfo,
+            })
+          )
+        )
+      )
+    )
+  );
+
   updatePassword$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateUserPasswordAction),
+      ofType(updateUserPassword),
       exhaustMap((action) =>
-        (action.selfUpdate
+        (!action.targetUsername
           ? this.api.updateCurrentUser({ password: action.newPassword })
           : this.api.updateUser(
               {
@@ -26,7 +57,9 @@ export class UserUpdateEffects {
             )
         ).pipe(
           map((response) =>
-            response.success ? userUpdateSuccessful() : userUpdateFailed()
+            response.success
+              ? userUpdatePasswordSuccessful()
+              : userUpdateFailed()
           )
         )
       )
@@ -35,9 +68,9 @@ export class UserUpdateEffects {
 
   updateFullName$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateUserFullNameAction),
+      ofType(updateUserFullName),
       exhaustMap((action) =>
-        (action.selfUpdate
+        (!action.targetUsername
           ? this.api.updateCurrentUser({ name: action.newFullName })
           : this.api.updateUser(
               {
@@ -58,5 +91,9 @@ export class UserUpdateEffects {
     )
   );
 
-  constructor(private actions$: Actions, private api: DefaultService) {}
+  constructor(
+    private actions$: Actions,
+    private api: DefaultService,
+    private store: Store
+  ) {}
 }

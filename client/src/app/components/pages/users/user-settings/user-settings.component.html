@@ -1,51 +1,63 @@
-<h1 class="mat-headline">
-    Settings
-    <span *ngIf="isNotEditingSelf$ | async">of user {{editedUser$ | async}}</span>
-</h1>
+<ng-container *ngrxLet="targetUserData$ as targetUserData">
+    <h1 class="mat-headline">
+        Settings
+        <span *ngIf="!targetUserData.isEditingSelf">of user {{targetUserData.targetUserUsername}}</span>
+    </h1>
 
-<h2 class="mat-title">Update account</h2>
-<div fxLayout="row wrap" fxLayoutGap="16px">
-    <mat-card class="form-card">
-        <mat-card-header class="mat-card-simple-header">
-            <mat-card-title>Full name</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <mat-form-field appearance="outline">
-                <mat-label>Full name</mat-label>
-                <input required matInput type="text" name="fullName" [(ngModel)]="fullName">
-            </mat-form-field>
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-button color="accent" (click)="updateUserFullName()">Update</button>
-        </mat-card-actions>
-    </mat-card>
-
-    <mat-card class="form-card">
-        <mat-card-header class="mat-card-simple-header">
-            <mat-card-title>Password</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <div fxLayout="row" fxLayoutGap="16px">
+    <h2 class="mat-title">Update account</h2>
+    <div fxLayout="row wrap" fxLayoutGap="16px">
+        <mat-card class="form-card">
+            <mat-card-header class="mat-card-simple-header">
+                <mat-card-title>Full name</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
                 <mat-form-field appearance="outline">
-                    <mat-label>Password</mat-label>
-                    <input required matInput type="password" name="password" [(ngModel)]="password">
+                    <mat-label>Full name</mat-label>
+                    <input required matInput type="text" name="fullName" [formControl]="fullNameFormControl" [errorStateMatcher]="fullNameUpdateErrorPublisher">
+                    <mat-error>
+                        {{fullNameUpdateErrorPublisher.error$ | ngrxPush }}
+                    </mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Password again</mat-label>
-                    <input required matInput type="password" name="passwordAgain" [(ngModel)]="passwordAgain">
-                </mat-form-field>
-            </div>
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-button color="accent" (click)="updateUserPassword()">Update</button>
-        </mat-card-actions>
-    </mat-card>
-</div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button color="accent" [disabled]="fullNameUpdateDisabled()" (click)="updateUserFullName()">
+                    Update
+                </button>
+            </mat-card-actions>
+        </mat-card>
 
-<h2 class="mat-title">Delete account</h2>
-<button mat-raised-button color="warn">
-    Delete
-    <span *ngIf="isEditingSelf$ | async">your</span>
-    account
-    <span *ngIf="isNotEditingSelf$ | async">{{editedUser$ | async}}</span>
-</button>
+        <mat-card class="form-card">
+            <mat-card-header class="mat-card-simple-header">
+                <mat-card-title>Password</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div fxLayout="row" fxLayoutGap="16px">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input required minlength="4" matInput type="password" name="password" [formControl]="passwordFormControl" [errorStateMatcher]="passwordUpdateErrorPublisher">
+                        <mat-error>
+                            {{passwordUpdateErrorPublisher.error$ | ngrxPush }}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Password again</mat-label>
+                        <input required matInput type="password" name="passwordAgain" [formControl]="passwordAgainFormControl" [errorStateMatcher]="passwordUpdateErrorPublisher">
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-button color="accent" [disabled]="passwordUpdateDisabled()" (click)="updateUserPassword()">
+                    Update
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <h2 class="mat-title">Delete account</h2>
+    <button mat-raised-button color="warn">
+        Delete
+        <span *ngIf="targetUserData.isEditingSelf">your</span>
+        account
+        <span *ngIf="!targetUserData.isEditingSelf">{{targetUserData.targetUserUsername}}</span>
+    </button>
+</ng-container>

@@ -5,14 +5,14 @@ import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
 import { AppState } from "src/app/state/app.reducer";
-import { selectAuthIsAdmin } from "src/app/state/auth/auth.reducer";
+import { selectCurrentUserIsAdmin } from "src/app/state/auth/auth.reducer";
 
 @Injectable({
   providedIn: "root",
 })
 export class AdminAuthGuard implements CanActivate {
   isAdminLoggedIn$ = this.store
-    .select(selectAuthIsAdmin)
+    .select(selectCurrentUserIsAdmin)
     .pipe(
       tap(
         (authorized) =>
