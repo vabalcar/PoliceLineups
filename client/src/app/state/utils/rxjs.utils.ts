@@ -117,8 +117,10 @@ export class ObservableFormControl<T> extends FormControl {
     this.defaultValueSubscription = defaultvalue$
       ?.pipe(filter((value) => value !== undefined && value !== null))
       .subscribe((value) => {
-        this.setValue(value);
-        this.defaultValueSubscription?.unsubscribe();
+        if (this.pristine) {
+          this.setValue(value);
+        }
+        this.defaultValueSubscription.unsubscribe();
       });
   }
 
