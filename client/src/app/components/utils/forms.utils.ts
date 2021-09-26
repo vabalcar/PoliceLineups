@@ -8,10 +8,7 @@ import {
   of,
   Subscription,
 } from "rxjs";
-import { filter, first, map, share } from "rxjs/operators";
-
-export const firstValueFrom = <T>(observable: Observable<T>): Promise<T> =>
-  observable.pipe(first()).toPromise();
+import { filter, map, share } from "rxjs/operators";
 
 export class ErrorPublisher implements ErrorStateMatcher {
   readonly error$: Observable<string | null>;

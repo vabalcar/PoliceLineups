@@ -20,7 +20,7 @@ import {
   ErrorPublisher,
   MinLengthValidationErrorProps,
   ObservableFormControl,
-} from "src/app/state/utils/rxjs.utils";
+} from "src/app/components/utils/forms.utils";
 
 @Component({
   selector: "app-user-settings",
