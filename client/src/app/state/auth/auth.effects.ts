@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import {
@@ -9,13 +8,13 @@ import {
   OnInitEffects,
 } from "@ngrx/effects";
 import { Action, Store } from "@ngrx/store";
-import { of } from "rxjs";
-import { catchError, exhaustMap, filter, map, tap } from "rxjs/operators";
+import { exhaustMap, filter, map, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { AppState } from "../app.reducer";
 import { convertToLocalDateTime } from "../utils/date.utils";
 import { catchBeError } from "../utils/errors.utils";
+import { HttpStatusCode } from "../utils/http-status-code.utils";
 import {
   loginAction,
   loginFailedAction,
@@ -94,11 +93,7 @@ export class AuthEffects implements OnInitEffects {
           tap((action) =>
             this.scheduleAuthRenewal(action.tokenExpirationDatetime)
           ),
-          catchError((error, caught) =>
-            error instanceof HttpErrorResponse && error.status === 401
-              ? of(logoutAction())
-              : caught
-          ),
+          catchBeError(HttpStatusCode.Unauthorized, () => logoutAction()),
           catchBeError()
         )
       )
@@ -121,14 +116,17 @@ export class AuthEffects implements OnInitEffects {
       this.actions$.pipe(
         ofType(logoutAction),
         tap(() => this.cancelScheduledAuthRenewal()),
-        tap(() => this.router.navigateByUrl("/"))
+        tap(() => this.router.navigateByUrl("/")),
+        tap(() =>
+          this.notifications.showNotification("You have been logged out")
+        )
       ),
     {
       dispatch: false,
     }
   );
 
-  bindTokenToInfrastructure = this.store
+  setTokenForApiCalls = this.store
     .select(selectAuthToken)
     .subscribe((token) => (this.api.configuration.accessToken = token));
 
