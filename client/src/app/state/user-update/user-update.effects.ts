@@ -4,6 +4,7 @@ import { Store } from "@ngrx/store";
 import { exhaustMap, map, mergeMap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { selectCurrentUserInfo, IUserInfo } from "../auth/auth.reducer";
+import { catchBeError } from "../utils/errors.utils";
 import {
   loadUserToUpdate,
   updateUserFullName,
@@ -39,7 +40,8 @@ export class UserUpdateEffects {
             userToUpdateLoaded({
               ...userInfo,
             })
-          )
+          ),
+          catchBeError()
         )
       )
     )
@@ -62,7 +64,8 @@ export class UserUpdateEffects {
             response.success
               ? userUpdatePasswordSuccessful()
               : userUpdateFailed()
-          )
+          ),
+          catchBeError()
         )
       )
     )
@@ -87,7 +90,8 @@ export class UserUpdateEffects {
                   userFullName: action.newFullName,
                 })
               : userUpdateFailed()
-          )
+          ),
+          catchBeError()
         )
       )
     )
@@ -102,7 +106,8 @@ export class UserUpdateEffects {
             userFullnameUpdateValidated({
               userFullNameUpdateValidationError: response.validationError,
             })
-          )
+          ),
+          catchBeError()
         )
       )
     )

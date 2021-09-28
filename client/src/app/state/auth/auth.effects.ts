@@ -1,6 +1,5 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import {
   Actions,
@@ -11,17 +10,12 @@ import {
 } from "@ngrx/effects";
 import { Action, Store } from "@ngrx/store";
 import { of } from "rxjs";
-import {
-  catchError,
-  exhaustMap,
-  filter,
-  map,
-  mergeMap,
-  tap,
-} from "rxjs/operators";
+import { catchError, exhaustMap, filter, map, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
+import { NotificationsService } from "src/app/services/notifications.service";
 import { AppState } from "../app.reducer";
 import { convertToLocalDateTime } from "../utils/date.utils";
+import { catchBeError } from "../utils/errors.utils";
 import {
   loginAction,
   loginFailedAction,
@@ -54,7 +48,8 @@ export class AuthEffects implements OnInitEffects {
                     isAdmin: !!authResponse.isAdmin,
                   })
                 : loginFailedAction()
-            )
+            ),
+            catchBeError()
           )
       )
     )
@@ -103,7 +98,8 @@ export class AuthEffects implements OnInitEffects {
             error instanceof HttpErrorResponse && error.status === 401
               ? of(logoutAction())
               : caught
-          )
+          ),
+          catchBeError()
         )
       )
     )
@@ -113,13 +109,7 @@ export class AuthEffects implements OnInitEffects {
     () =>
       this.actions$.pipe(
         ofType(loginFailedAction),
-        tap(() => {
-          this.snackBar.open("Login failed", "OK", {
-            horizontalPosition: "center",
-            verticalPosition: "bottom",
-            duration: 5 * 1000, // miliseconds
-          });
-        })
+        tap(() => this.notifications.showNotification("Login failed"))
       ),
     {
       dispatch: false,
@@ -148,8 +138,8 @@ export class AuthEffects implements OnInitEffects {
     private actions$: Actions,
     private api: DefaultService,
     private router: Router,
-    private snackBar: MatSnackBar,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private notifications: NotificationsService
   ) {}
 
   ngrxOnInitEffects(): Action {

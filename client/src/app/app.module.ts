@@ -51,6 +51,7 @@ import { reducers } from "./state/app.reducer";
 import { AuthEffects } from "./state/auth/auth.effects";
 import { UsersListEffects } from "./state/users-list/users-list.effects";
 import { UserUpdateEffects } from "./state/user-update/user-update.effects";
+import { AppEffects } from "./state/app.effects";
 
 @NgModule({
   declarations: [
@@ -94,7 +95,7 @@ import { UserUpdateEffects } from "./state/user-update/user-update.effects";
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreModule.forRoot(reducers),
 
-    EffectsModule.forRoot(),
+    EffectsModule.forRoot([AppEffects]),
     EffectsModule.forFeature([
       AuthEffects,
       UsersListEffects,

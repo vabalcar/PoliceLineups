@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { exhaustMap, map } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
+import { catchBeError } from "../utils/errors.utils";
 import {
   loadUsersListAction,
   usersListLoadedAction,
@@ -13,9 +14,10 @@ export class UsersListEffects {
     this.actions$.pipe(
       ofType(loadUsersListAction),
       exhaustMap(() =>
-        this.api
-          .getUsers()
-          .pipe(map((response) => usersListLoadedAction({ users: response })))
+        this.api.getUsers().pipe(
+          map((response) => usersListLoadedAction({ users: response })),
+          catchBeError()
+        )
       )
     )
   );
