@@ -1,21 +1,40 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { Store } from "@ngrx/store";
-import { exhaustMap, map, tap } from "rxjs/operators";
+import {
+  Actions,
+  concatLatestFrom,
+  createEffect,
+  ofType,
+  OnInitEffects,
+} from "@ngrx/effects";
+import { Action, Store } from "@ngrx/store";
+import { of } from "rxjs";
+import {
+  catchError,
+  exhaustMap,
+  filter,
+  map,
+  mergeMap,
+  tap,
+} from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { AppState } from "../app.reducer";
+import { convertToLocalDateTime } from "../utils/date.utils";
 import {
   loginAction,
   loginFailedAction,
   loginSuccessfulAction,
   logoutAction,
+  renewInitTokenAction,
+  renewTokenAction,
   selectAuthToken,
+  tokenRenewed,
 } from "./auth.reducer";
 
 @Injectable()
-export class AuthEffects {
+export class AuthEffects implements OnInitEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loginAction),
@@ -28,6 +47,9 @@ export class AuthEffects {
                 ? loginSuccessfulAction({
                     username: action.username,
                     token: authResponse.authToken,
+                    tokenExpirationDatetime: convertToLocalDateTime(
+                      authResponse.tokenExpirationDatetime
+                    ),
                     userFullName: authResponse.userFullName,
                     isAdmin: !!authResponse.isAdmin,
                   })
@@ -42,11 +64,49 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(loginSuccessfulAction),
+        tap((action) =>
+          this.scheduleAuthRenewal(action.tokenExpirationDatetime)
+        ),
         tap(() => this.router.navigateByUrl(this.getTargetPath()))
       ),
     {
       dispatch: false,
     }
+  );
+
+  renewInitAuthToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(renewInitTokenAction),
+      concatLatestFrom(() => this.store.select(selectAuthToken)),
+      filter(([, token]) => !!token),
+      map(() => renewTokenAction())
+    )
+  );
+
+  renewAuthToken$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(renewTokenAction),
+      exhaustMap(() =>
+        this.api.renewAuthToken().pipe(
+          map((response) =>
+            tokenRenewed({
+              token: response.authToken,
+              tokenExpirationDatetime: convertToLocalDateTime(
+                response.tokenExpirationDatetime
+              ),
+            })
+          ),
+          tap((action) =>
+            this.scheduleAuthRenewal(action.tokenExpirationDatetime)
+          ),
+          catchError((error, caught) =>
+            error instanceof HttpErrorResponse && error.status === 401
+              ? of(logoutAction())
+              : caught
+          )
+        )
+      )
+    )
   );
 
   loginFailed$ = createEffect(
@@ -70,6 +130,7 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(logoutAction),
+        tap(() => this.cancelScheduledAuthRenewal()),
         tap(() => this.router.navigateByUrl("/"))
       ),
     {
@@ -81,6 +142,8 @@ export class AuthEffects {
     .select(selectAuthToken)
     .subscribe((token) => (this.api.configuration.accessToken = token));
 
+  private authRenewalTaskId: number | undefined;
+
   constructor(
     private actions$: Actions,
     private api: DefaultService,
@@ -89,6 +152,10 @@ export class AuthEffects {
     private store: Store<AppState>
   ) {}
 
+  ngrxOnInitEffects(): Action {
+    return renewInitTokenAction();
+  }
+
   private getTargetPath() {
     const redirectedLoginUrlPrefix = "/login";
     const url = this.router.url;
@@ -96,5 +163,36 @@ export class AuthEffects {
       url.length !== redirectedLoginUrlPrefix.length
       ? url.substring(redirectedLoginUrlPrefix.length)
       : "/";
+  }
+
+  private countAuthRenewalDelayByTokenExpirationDateTime(
+    tokenExpirationDatetime: Date
+  ): number {
+    const now = new Date();
+    const authRenewalDelay =
+      (tokenExpirationDatetime.getTime() - now.getTime()) / 2;
+    return authRenewalDelay > 0 ? authRenewalDelay : 0;
+  }
+
+  private cancelScheduledAuthRenewal(): void {
+    if (!this.authRenewalTaskId) {
+      return;
+    }
+
+    window.clearTimeout(this.authRenewalTaskId);
+    this.authRenewalTaskId = undefined;
+  }
+
+  private scheduleAuthRenewal(tokenExpirationDatetime: Date): void {
+    this.cancelScheduledAuthRenewal();
+
+    const authRenewalDelay =
+      this.countAuthRenewalDelayByTokenExpirationDateTime(
+        tokenExpirationDatetime
+      );
+    this.authRenewalTaskId = window.setTimeout(
+      () => this.store.dispatch(renewTokenAction()),
+      authRenewalDelay
+    );
   }
 }

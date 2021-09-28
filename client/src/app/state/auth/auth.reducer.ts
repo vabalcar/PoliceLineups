@@ -1,3 +1,4 @@
+import { createEffect } from "@ngrx/effects";
 import {
   createAction,
   createFeatureSelector,
@@ -26,6 +27,7 @@ export interface IUserInfo {
 // State
 export interface AuthState extends IUserInfo {
   token: string;
+  tokenExpirationDatetime: Date;
   loginFailedCount: number;
 }
 
@@ -79,7 +81,25 @@ export const loginAction = createAction(
 
 export const loginSuccessfulAction = createAction(
   "[Auth] login successful",
-  props<Pick<AuthState, "username" | "token" | "userFullName" | "isAdmin">>()
+  props<
+    Pick<
+      AuthState,
+      | "username"
+      | "token"
+      | "tokenExpirationDatetime"
+      | "userFullName"
+      | "isAdmin"
+    >
+  >()
+);
+
+export const renewInitTokenAction = createAction("[Auth] renew init token");
+
+export const renewTokenAction = createAction("[Auth] renew token");
+
+export const tokenRenewed = createAction(
+  "[Auth] token renewed",
+  props<Pick<AuthState, "token" | "tokenExpirationDatetime">>()
 );
 
 export const loginFailedAction = createAction("[Auth] login failed");
@@ -90,6 +110,7 @@ export const logoutAction = createAction("[Auth] logout");
 const defaultState: AuthState = {
   username: null,
   token: null,
+  tokenExpirationDatetime: null,
   isAdmin: false,
   userFullName: null,
   loginFailedCount: 0,
@@ -111,6 +132,7 @@ export const authReducer = createReducer(
   on(loginSuccessfulAction, (state, actionProps) =>
     updateState(state, actionProps, { loginFailedCount: 0 })
   ),
+  on(tokenRenewed, updateState),
   on(loginFailedAction, (state) =>
     updateState(state, {
       loginFailedCount: state.loginFailedCount + 1,

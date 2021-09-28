@@ -7,7 +7,7 @@ servers:
 security:
   - JwtAuthUser: []
 paths:
-  /login:
+  /authorization:
     post:
       summary: Logins registered userUser
       x-openapi-router-controller: controllers.auth
@@ -27,6 +27,17 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthResponse"
+    patch:
+      summary: Renews auth token
+      x-openapi-router-controller: controllers.auth
+      operationId: renewAuthToken
+      responses:
+        "200":
+          description: token renewal result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthTokenRenewalResponse"
   /init/rootUser:
     get:
       summary: Inits root user
@@ -328,6 +339,16 @@ components:
           properties:
             validationError:
               type: string
+    AuthTokenRenewalResponse:
+      allOf:
+        - $ref: "#/components/schemas/Response"
+        - type: object
+          properties:
+            authToken:
+              type: string
+            tokenExpirationDatetime:
+              type: string
+              format: date-time
     AuthResponse:
       allOf:
         - $ref: "#/components/schemas/Response"
@@ -335,6 +356,9 @@ components:
           properties:
             authToken:
               type: string
+            tokenExpirationDatetime:
+              type: string
+              format: date-time
             isAdmin:
               type: boolean
             userFullName:
