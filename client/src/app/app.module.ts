@@ -94,8 +94,12 @@ import { UserUpdateEffects } from "./state/user-update/user-update.effects";
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreModule.forRoot(reducers),
 
-    EffectsModule.forRoot([AuthEffects]),
-    EffectsModule.forFeature([UsersListEffects, UserUpdateEffects]),
+    EffectsModule.forRoot(),
+    EffectsModule.forFeature([
+      AuthEffects,
+      UsersListEffects,
+      UserUpdateEffects,
+    ]),
   ],
   providers: [
     {
