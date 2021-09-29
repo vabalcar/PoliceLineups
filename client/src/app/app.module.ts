@@ -75,7 +75,7 @@ import { AppEffects } from "./state/app.effects";
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
+
     MatSliderModule,
     MatCardModule,
     MatToolbarModule,
@@ -91,9 +91,12 @@ import { AppEffects } from "./state/app.effects";
     MatSortModule,
     MatSelectModule,
 
+    FlexLayoutModule,
+
     ReactiveComponentModule,
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
+
     StoreModule.forRoot(reducers),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     EffectsModule.forRoot([AppEffects]),
     EffectsModule.forFeature([
