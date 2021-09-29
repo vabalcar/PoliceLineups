@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { exhaustMap, map, mergeMap } from "rxjs/operators";
+import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { selectCurrentUserInfo, IUserInfo } from "../auth/auth.reducer";
 import { catchBeError } from "../utils/errors.utils";
@@ -100,7 +100,7 @@ export class UserUpdateEffects {
   validateFullnameUpdate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(validateUserFullnameUpdate),
-      exhaustMap((action) =>
+      mergeMap((action) =>
         this.api.validateUserUpdate({ name: action.newFullName }).pipe(
           map((response) =>
             userFullnameUpdateValidated({

@@ -119,7 +119,9 @@ export class UserSettingsComponent implements OnInit {
       );
 
     this.fullNameFormControl.value$.subscribe((value) =>
-      this.store.dispatch(validateUserFullnameUpdate({ newFullName: value }))
+      this.store.dispatch(
+        validateUserFullnameUpdate({ newFullName: value ?? "" })
+      )
     );
   }
 
