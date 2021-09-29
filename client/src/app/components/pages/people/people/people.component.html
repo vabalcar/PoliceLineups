@@ -1,6 +1,6 @@
 <h2>People</h2>
   <div fxLayout="row wrap" fxLayoutGap="8px">
-    <div *ngFor="let person of (people | async)">
+    <div *ngFor="let person of (people | ngrxPush)">
       <mat-card class="person-card">
         <div fxLayout="column" fxLayoutGap="16px">
           <img matlListAvatar class="photo" src="assets/media/photos/{{person.pid}}.jpg" />

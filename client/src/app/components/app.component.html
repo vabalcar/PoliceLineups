@@ -1,50 +1,52 @@
-<mat-toolbar color="primary" id="toolbar">
-  <button mat-icon-button id="toolbar-menu-button" (click)="drawer.toggle()" [disabled]="isLoggedOut$ | async">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <button mat-button routerLink="/home">
-    <h4 class="mat-display-1">Police lineups</h4>
-  </button>
-  <span id="toolbar-spacer"></span>
-  <button mat-button class="button-with-icon-and-text" [matMenuTriggerFor]="sessionMenu" *ngIf="isLoggedIn$ | async">
-    <mat-icon>account_circle</mat-icon>{{userFullName$ | async}}
-  </button>
-  <mat-menu #sessionMenu="matMenu">
-    <button mat-menu-item class="button-with-icon-and-text" routerLink="currentUser/settings">
-      <mat-icon>settings</mat-icon>Settings
+<ng-container *ngrxLet="isLoggedIn$ as isLoggedIn">
+  <mat-toolbar color="primary" id="toolbar">
+    <button mat-icon-button id="toolbar-menu-button" (click)="drawer.toggle()" [disabled]="!isLoggedIn">
+      <mat-icon>menu</mat-icon>
     </button>
-    <button mat-menu-item class="button-with-icon-and-text" (click)="logout()">
-      <mat-icon>logout</mat-icon>Logout
+    <button mat-button routerLink="/home">
+      <h4 class="mat-display-1">Police lineups</h4>
     </button>
-  </mat-menu>
-  <button mat-button class="button-with-icon-and-text" routerLink="/login" *ngIf="isLoggedOut$ | async">
-    <mat-icon>login</mat-icon>Login
-  </button>
-</mat-toolbar>
-<mat-drawer-container id="drawer-container">
-  <mat-drawer #drawer id="drawer" mode="side" [(opened)]="drawerOpened">
-    <div *ngIf="isAdminLoggedIn$ | async">
-      <mat-label class="mat-caption">Users</mat-label>
-      <button class="button-with-icon-and-text" mat-button routerLink="/users">
-        <mat-icon>people</mat-icon>Users list
+    <span id="toolbar-spacer"></span>
+    <button mat-button class="button-with-icon-and-text" [matMenuTriggerFor]="sessionMenu" *ngIf="isLoggedIn">
+      <mat-icon>account_circle</mat-icon>{{fullName$ | ngrxPush}}
+    </button>
+    <mat-menu #sessionMenu="matMenu">
+      <button mat-menu-item class="button-with-icon-and-text" routerLink="currentUser/settings">
+        <mat-icon>settings</mat-icon>Settings
       </button>
-      <button class="button-with-icon-and-text" mat-button routerLink="/register">
-        <mat-icon>person_add</mat-icon>Add user
+      <button mat-menu-item class="button-with-icon-and-text" (click)="logout()">
+        <mat-icon>logout</mat-icon>Logout
       </button>
-      <mat-divider></mat-divider>
-    </div>
-    <div *ngIf="isLoggedIn$ | async">
-      <mat-label class="mat-caption">People</mat-label>
-      <button mat-button class="button-with-icon-and-text" routerLink="/people">
-        <mat-icon>search</mat-icon>Search
-      </button>
-      <button mat-button class="button-with-icon-and-text" routerLink="/import">
-        <mat-icon>add</mat-icon>Import person
-      </button>
-      <mat-divider></mat-divider>
-    </div>
-  </mat-drawer>
-  <mat-drawer-content id="drawer-content">
-    <router-outlet></router-outlet>
-  </mat-drawer-content>
-</mat-drawer-container>
+    </mat-menu>
+    <button mat-button class="button-with-icon-and-text" routerLink="/login" *ngIf="!isLoggedIn">
+      <mat-icon>login</mat-icon>Login
+    </button>
+  </mat-toolbar>
+  <mat-drawer-container id="drawer-container">
+    <mat-drawer #drawer id="drawer" mode="side" [(opened)]="drawerOpened">
+      <div *ngIf="isAdmin$ | ngrxPush">
+        <mat-label class="mat-caption">Users</mat-label>
+        <button class="button-with-icon-and-text" mat-button routerLink="/users">
+          <mat-icon>people</mat-icon>Users list
+        </button>
+        <button class="button-with-icon-and-text" mat-button routerLink="/register">
+          <mat-icon>person_add</mat-icon>Add user
+        </button>
+        <mat-divider></mat-divider>
+      </div>
+      <div *ngIf="isLoggedIn">
+        <mat-label class="mat-caption">People</mat-label>
+        <button mat-button class="button-with-icon-and-text" routerLink="/people">
+          <mat-icon>search</mat-icon>Search
+        </button>
+        <button mat-button class="button-with-icon-and-text" routerLink="/import">
+          <mat-icon>add</mat-icon>Import person
+        </button>
+        <mat-divider></mat-divider>
+      </div>
+    </mat-drawer>
+    <mat-drawer-content id="drawer-content">
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</ng-container>

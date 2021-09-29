@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
 import { AppState } from "src/app/state/app.reducer";
@@ -8,7 +9,6 @@ import {
   selectCurrentUserIsAdmin,
   selectCurrentUserFullName,
   selectIsLoggedIn,
-  selectIsLoggedOut,
 } from "src/app/state/auth/auth.reducer";
 
 @Component({
@@ -17,20 +17,24 @@ import {
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  isLoggedIn$ = this.store.select(selectIsLoggedIn);
-  isLoggedOut$ = this.store.select(selectIsLoggedOut).pipe(
-    tap((isLoggedOut) => {
-      if (this.drawerOpened && isLoggedOut) {
-        this.drawerOpened = false;
-      }
-    })
-  );
-  isAdminLoggedIn$ = this.store.select(selectCurrentUserIsAdmin);
-  userFullName$ = this.store.select(selectCurrentUserFullName);
-
   drawerOpened = false;
 
-  constructor(private store: Store<AppState>) {}
+  readonly isLoggedIn$: Observable<boolean>;
+  readonly isAdmin$: Observable<boolean>;
+  readonly fullName$: Observable<string>;
+
+  constructor(private store: Store<AppState>) {
+    this.isLoggedIn$ = this.store.select(selectIsLoggedIn).pipe(
+      tap((isLoggedIn) => {
+        if (!isLoggedIn && this.drawerOpened) {
+          this.drawerOpened = false;
+        }
+      })
+    );
+
+    this.isAdmin$ = this.store.select(selectCurrentUserIsAdmin);
+    this.fullName$ = this.store.select(selectCurrentUserFullName);
+  }
 
   logout() {
     this.store.dispatch(logoutAction());

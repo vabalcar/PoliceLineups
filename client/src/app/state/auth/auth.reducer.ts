@@ -46,11 +46,6 @@ export const selectIsLoggedIn = createSelector(
   (state: AuthState) => !!state.token
 );
 
-export const selectIsLoggedOut = createSelector(
-  selectAuthFeature,
-  (state: AuthState) => !state.token
-);
-
 export const selectCurrentUserIsAdmin = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.isAdmin
