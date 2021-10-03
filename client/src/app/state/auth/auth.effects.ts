@@ -150,7 +150,7 @@ export class AuthEffects implements OnInitEffects {
     const now = new Date();
     const authRenewalDelay =
       (tokenExpirationDatetime.getTime() - now.getTime()) / 2;
-    return authRenewalDelay > 0 ? authRenewalDelay : 0;
+    return Math.max(authRenewalDelay, 0);
   }
 
   private cancelScheduledAuthRenewal(): void {
