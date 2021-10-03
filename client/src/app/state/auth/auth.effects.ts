@@ -61,7 +61,7 @@ export class AuthEffects implements OnInitEffects {
         tap((action) =>
           this.scheduleAuthRenewal(action.tokenExpirationDatetime)
         ),
-        tap(() => this.router.navigateByUrl(this.getTargetPath()))
+        tap(() => this.router.navigateByUrl("/"))
       ),
     {
       dispatch: false,
@@ -142,15 +142,6 @@ export class AuthEffects implements OnInitEffects {
 
   ngrxOnInitEffects(): Action {
     return renewInitTokenAction();
-  }
-
-  private getTargetPath() {
-    const redirectedLoginUrlPrefix = "/login";
-    const url = this.router.url;
-    return url.startsWith(redirectedLoginUrlPrefix) &&
-      url.length !== redirectedLoginUrlPrefix.length
-      ? url.substring(redirectedLoginUrlPrefix.length)
-      : "/";
   }
 
   private countAuthRenewalDelayByTokenExpirationDateTime(
