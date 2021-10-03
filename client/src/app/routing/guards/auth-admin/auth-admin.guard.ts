@@ -1,28 +1,16 @@
 import { Injectable } from "@angular/core";
-import { CanActivate, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
 
 import { AppState } from "src/app/state/app.reducer";
 import { selectCurrentUserIsAdmin } from "src/app/state/auth/auth.reducer";
+import { ObservableAuthGuard } from "../auth-observable.guard";
 
 @Injectable({
   providedIn: "root",
 })
-export class AdminAuthGuard implements CanActivate {
-  isAdminLoggedIn$ = this.store
-    .select(selectCurrentUserIsAdmin)
-    .pipe(
-      tap(
-        (authorized) =>
-          !authorized && this.router.navigateByUrl("/not-authorized")
-      )
-    );
-
-  constructor(private store: Store<AppState>, private router: Router) {}
-
-  canActivate(): Observable<boolean> {
-    return this.isAdminLoggedIn$;
+export class AdminAuthGuard extends ObservableAuthGuard {
+  constructor(protected router: Router, private store: Store<AppState>) {
+    super(router, store.select(selectCurrentUserIsAdmin));
   }
 }
