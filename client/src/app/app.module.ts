@@ -21,6 +21,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from "@angular/material/sort";
 
 import { StoreModule } from "@ngrx/store";
+import { StoreRouterConnectingModule } from "@ngrx/router-store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { EffectsModule } from "@ngrx/effects";
 import { ReactiveComponentModule } from "@ngrx/component";
@@ -96,6 +97,7 @@ import { AppEffects } from "./state/app.effects";
     ReactiveComponentModule,
 
     StoreModule.forRoot(reducers),
+    StoreRouterConnectingModule.forRoot(),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     EffectsModule.forRoot([AppEffects]),

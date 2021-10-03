@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from "@angular/common/http";
+import { routerReducer } from "@ngrx/router-store";
 import { ActionReducerMap, createAction, props } from "@ngrx/store";
 
 import { authReducer, AuthState } from "./auth/auth.reducer";
@@ -23,6 +24,7 @@ export const beFailed = createAction(
 );
 
 export const reducers: ActionReducerMap<Record<string, unknown>> = {
+  router: routerReducer,
   auth: authReducer,
   usersList: usersListReducer,
   userUpdate: userUpdateReducer,
