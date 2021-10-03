@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { routerReducer } from "@ngrx/router-store";
+import { routerReducer, RouterState } from "@ngrx/router-store";
 import { ActionReducerMap, createAction, props } from "@ngrx/store";
 
 import { authReducer, AuthState } from "./auth/auth.reducer";
@@ -13,6 +13,7 @@ import {
 } from "./users-list/users-list.reducer";
 
 export interface AppState {
+  router: RouterState;
   auth: AuthState;
   usersList: UsersListState;
   userUpdate: UserUpdateState;
