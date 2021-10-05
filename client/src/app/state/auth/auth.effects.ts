@@ -25,6 +25,7 @@ import {
   selectAuthToken,
   tokenRenewed,
 } from "./auth.reducer";
+import { AuthTokenRenewalScheduler } from "./auth.utils";
 
 @Injectable()
 export class AuthEffects implements OnInitEffects {
@@ -59,7 +60,9 @@ export class AuthEffects implements OnInitEffects {
       this.actions$.pipe(
         ofType(loginSuccessfulAction),
         tap((action) =>
-          this.scheduleAuthRenewal(action.tokenExpirationDatetime)
+          this.authTokenRenewalScheduler.scheduleAuthRenewal(
+            action.tokenExpirationDatetime
+          )
         ),
         tap(() => this.router.navigateByUrl("/"))
       ),
@@ -91,7 +94,9 @@ export class AuthEffects implements OnInitEffects {
             })
           ),
           tap((action) =>
-            this.scheduleAuthRenewal(action.tokenExpirationDatetime)
+            this.authTokenRenewalScheduler.scheduleAuthRenewal(
+              action.tokenExpirationDatetime
+            )
           ),
           catchBeError(HttpStatusCode.Unauthorized, () => logoutAction()),
           catchBeError()
@@ -115,7 +120,7 @@ export class AuthEffects implements OnInitEffects {
     () =>
       this.actions$.pipe(
         ofType(logoutAction),
-        tap(() => this.cancelScheduledAuthRenewal()),
+        tap(() => this.authTokenRenewalScheduler.cancelScheduledAuthRenewal()),
         tap(() => this.router.navigateByUrl("/")),
         tap(() =>
           this.notifications.showNotification("You have been logged out")
@@ -130,7 +135,7 @@ export class AuthEffects implements OnInitEffects {
     .select(selectAuthToken)
     .subscribe((token) => (this.api.configuration.accessToken = token));
 
-  private authRenewalTaskId: number | undefined;
+  private authTokenRenewalScheduler: AuthTokenRenewalScheduler;
 
   constructor(
     private actions$: Actions,
@@ -138,40 +143,11 @@ export class AuthEffects implements OnInitEffects {
     private router: Router,
     private store: Store<AppState>,
     private notifications: NotificationsService
-  ) {}
+  ) {
+    this.authTokenRenewalScheduler = new AuthTokenRenewalScheduler(store);
+  }
 
   ngrxOnInitEffects(): Action {
     return renewInitTokenAction();
-  }
-
-  private countAuthRenewalDelayByTokenExpirationDateTime(
-    tokenExpirationDatetime: Date
-  ): number {
-    const now = new Date();
-    const authRenewalDelay =
-      (tokenExpirationDatetime.getTime() - now.getTime()) / 2;
-    return Math.max(authRenewalDelay, 0);
-  }
-
-  private cancelScheduledAuthRenewal(): void {
-    if (!this.authRenewalTaskId) {
-      return;
-    }
-
-    window.clearTimeout(this.authRenewalTaskId);
-    this.authRenewalTaskId = undefined;
-  }
-
-  private scheduleAuthRenewal(tokenExpirationDatetime: Date): void {
-    this.cancelScheduledAuthRenewal();
-
-    const authRenewalDelay =
-      this.countAuthRenewalDelayByTokenExpirationDateTime(
-        tokenExpirationDatetime
-      );
-    this.authRenewalTaskId = window.setTimeout(
-      () => this.store.dispatch(renewTokenAction()),
-      authRenewalDelay
-    );
   }
 }
