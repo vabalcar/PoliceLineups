@@ -2,14 +2,12 @@
 Controller for working with users.
 """
 import connexion
-
 from werkzeug.security import generate_password_hash
 
-from swagger_server.models.user import User
-from swagger_server.models.response import Response
-from swagger_server.models.validation_response import ValidationResponse
+from swagger_server.models import User, Response, ValidationResponse
 
-from police_lineups.mysql.db import DB
+from police_lineups.db.scheme import DbUser
+from police_lineups.utils.swagger import clear_model_update
 
 ROOT_USERNAME = 'root'
 ROOT_DEFAULT_NAME = 'Root'
@@ -23,7 +21,9 @@ def init_root_user():
         name=ROOT_DEFAULT_NAME,
         is_admin=True
     )
+
     success = add_user(root_user).success
+
     return Response(success)
 
 
@@ -36,7 +36,9 @@ def get_users():  # noqa: E501
     :rtype: List[User]
     """
 
-    return DB().users.content()
+    return [
+        User(username=db_user.username, name=db_user.name, is_admin=db_user.is_admin)
+        for db_user in DbUser.select()]
 
 
 def get_user(username):  # noqa: E501
@@ -50,7 +52,11 @@ def get_user(username):  # noqa: E501
     :rtype: User
     """
 
-    return DB().users.find_one(username=username)
+    db_user: DbUser = DbUser.get_by_id(username)
+    return User(
+        username=db_user.username,
+        name=db_user.name,
+        is_admin=db_user.is_admin)
 
 
 def get_current_user():  # noqa: E501
@@ -88,8 +94,9 @@ def add_user(body):  # noqa: E501
 
     user.password = generate_password_hash(user.password)
 
-    if not DB().users.contains(username=user.username):
-        success = DB().users.insert_one(user)
+    if DbUser.get_or_none(DbUser.username == user.username) is None:
+        DbUser.create(**user.to_dict())
+        success = True
 
     return Response(success)
 
@@ -162,9 +169,12 @@ def update_user(body, username):  # noqa: E501
     if update.password is not None:
         update.password = generate_password_hash(update.password)
 
-    success = update.username is None \
-        and (username is not ROOT_USERNAME or not update.is_admin) \
-        and DB().users.update_one(update, username=username)
+    success = False
+
+    if update.username is None \
+            and (username is not ROOT_USERNAME or not update.is_admin):
+        success = DbUser.update(**clear_model_update(update)).where(DbUser.username ==
+                                                                    username).execute() == 1
 
     return Response(success)
 
@@ -194,7 +204,11 @@ def remove_user(username):  # noqa: E501
     :rtype: object
     """
 
-    success = username != ROOT_USERNAME and DB().users.delete_one(username=username)
+    success = False
+
+    if username != ROOT_USERNAME:
+        success = DbUser.delete_by_id(username) == 1
+
     return Response(success)
 
 

@@ -1,5 +1,5 @@
-import json
 import os
+from Lib import json
 
 
 def parse_json_file(path, *path_children):
@@ -10,5 +10,5 @@ def parse_json_file(path, *path_children):
     if path_children:
         path = os.path.join(path, *path_children)
 
-    with open(path) as db_config_file:
+    with open(path, encoding="UTF-8") as db_config_file:
         return json.load(db_config_file)

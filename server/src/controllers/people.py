@@ -3,10 +3,10 @@ Controller for working with people.
 """
 import connexion
 
-from swagger_server.models.person import Person
-from swagger_server.models.response import Response
+from swagger_server.models import Person, Response
 
-from police_lineups.mysql.db import DB
+from police_lineups.db.scheme import DbPerson
+from police_lineups.utils.swagger import clear_model_update
 
 
 def get_people():  # noqa: E501
@@ -16,7 +16,14 @@ def get_people():  # noqa: E501
     :rtype: None
     """
 
-    return DB().people.content()
+    return [
+        Person(id=db_person.id,
+               pid=db_person.pid,
+               name=db_person.name,
+               born=db_person.born,
+               nationality=db_person.nationality,
+               features=db_person.features)
+        for db_person in DbPerson.select()]
 
 
 def get_person(id):  # noqa: E501
@@ -29,7 +36,14 @@ def get_person(id):  # noqa: E501
     :rtype: Person
     """
 
-    return DB().people.find_one(id=id)
+    db_person: DbPerson = DbPerson.get_by_id(id)
+    return Person(
+        id=db_person.id,
+        pid=db_person.pid,
+        name=db_person.name,
+        born=db_person.born,
+        nationality=db_person.nationality,
+        features=db_person.features)
 
 
 def add_person(body):  # noqa: E501
@@ -50,8 +64,9 @@ def add_person(body):  # noqa: E501
     if person is None:
         return Response(success)
 
-    if not DB().people.contains(id=person.id):
-        success = DB().people.insert_one(person)
+    if DbPerson.get_or_none(DbPerson.id == person.id) is None:
+        DbPerson.create(**person.to_dict())
+        success = True
 
     return Response(success)
 
@@ -69,10 +84,14 @@ def update_person(body, id):  # noqa: E501
     :rtype: Response
     """
     if connexion.request.is_json:
-        new_values = Person.from_dict(connexion.request.get_json())  # noqa: E501
+        update = Person.from_dict(connexion.request.get_json())  # noqa: E501
 
-    success = new_values is not None \
-        and DB().people.update_one(new_values, id=id)
+    success = False
+
+    if update is not None:
+        success = DbPerson.update(**clear_model_update(update)
+                                  ).where(DbPerson.id == id).execute() == 1
+
     return Response(success)
 
 
@@ -86,5 +105,5 @@ def remove_person(id):  # noqa: E501
 
     :rtype: Response
     """
-    success = DB().people.delete_one(id=id)
+    success = DbPerson.delete_by_id(id) == 1
     return Response(success)

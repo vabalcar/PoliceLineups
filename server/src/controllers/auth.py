@@ -1,17 +1,17 @@
-from datetime import datetime
-import secrets
 import time
+import secrets
+from datetime import datetime
 from typing import Mapping, Tuple
-import connexion
 
+import connexion
+from jose import JWTError, jwt
 from werkzeug.security import check_password_hash
 from werkzeug.datastructures import Authorization
 from werkzeug.exceptions import Unauthorized
-from jose import JWTError, jwt
 
 from swagger_server.models import AuthRequest, AuthResponse, AuthTokenRenewalResponse
 
-from police_lineups.mysql.db import DB
+from police_lineups.db.scheme import DbUser
 
 JWT_ISSUER = 'police_lineups'
 JWT_SECRET = secrets.token_urlsafe(32)
@@ -92,13 +92,13 @@ def login(body):  # noqa: E501
     username = body.username
     password = body.password
 
-    user = DB().users.find_one(username=username)
-    success = user is not None and check_password_hash(user.password, password)
+    db_user = DbUser.get_by_id(username)
+    success = db_user is not None and check_password_hash(db_user.password, password)
 
     if success:
-        is_admin = user.is_admin
+        is_admin = db_user.is_admin
         (auth_token, auth_token_expiration_datetime) = _generate_auth_token(username, is_admin)
-        user_full_name = user.name
+        user_full_name = db_user.name
 
     return AuthResponse(
         success=success,
@@ -118,10 +118,10 @@ def renew_auth_token():  # noqa: E501
     """
 
     username = connexion.request.authorization.username
-    user = DB().users.find_one(username=username)
-    if user is None:
+    db_user = DbUser.get_by_id(username)
+    if db_user is None:
         return AuthTokenRenewalResponse(success=False)
-    is_admin = user.is_admin
+    is_admin = db_user.is_admin
 
     (auth_token, auth_token_expiration_datetime) = _generate_auth_token(username, is_admin)
 
