@@ -1,11 +1,11 @@
 from peewee import AutoField, BooleanField, CharField, IntegerField, Model, TextField
 
-from police_lineups.db.connector import DBConnector
+from police_lineups.singletons.db import DB
 
 
 class BaseModel(Model):
     class Meta:
-        database = DBConnector().database
+        database = DB().current
 
 
 class DbUser(BaseModel):
@@ -31,5 +31,5 @@ class DbPerson(BaseModel):
 
 
 def prepare_database():
-    with DBConnector().database as database:
+    with DB().current as database:
         database.create_tables([DbUser, DbPerson])

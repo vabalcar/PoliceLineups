@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
-import signal
-import sys
-import runpy
+from police_lineups.db.scheme import prepare_database
+from police_lineups.singletons.configuration import Configuration
+from police_lineups.singletons.server import Server
 
 
-def on_ctrlc(signal, frame):
-    sys.exit(0)
+def main():
+    prepare_database()
+
+    Server().current.run(
+        port=Configuration().server.port,
+        host=Configuration().server.host,
+        debug=Configuration().server.is_dev_mode)
 
 
-signal.signal(signal.SIGINT, on_ctrlc)
-runpy.run_module('swagger_server', run_name='__main__', alter_sys=True)
+if __name__ == '__main__':
+    main()

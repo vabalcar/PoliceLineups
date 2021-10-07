@@ -9,7 +9,7 @@
       "type": "python",
       "request": "launch",
       "cwd": "${workspaceFolder}/src",
-      "module": "swagger_server",
+      "program": "app.py",
       "linux": {
         "python": "${workspaceFolder}/server-env/bin/python"
       },
