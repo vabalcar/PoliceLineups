@@ -1,1 +1,2 @@
+Flask-Cors==3.0.10
 swagger-ui-bundle~=0.0.9
