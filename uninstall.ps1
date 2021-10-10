@@ -3,7 +3,6 @@
 
 [Executor]::ExecuteParallelly(@(
         @{Script = 'uninstall.ps1'; WD = 'api' },
-        @{Script = 'uninstall.ps1'; WD = 'db' },
         @{Script = 'uninstall.ps1'; WD = 'server' },
         @{Script = 'uninstall.ps1'; WD = 'client' }
     ))

@@ -13,6 +13,8 @@ if ($NoRun) {
     exit
 }
 
+& (Join-Path '.' 'run-db.ps1')
+
 & (Join-Path '.' 'activate.ps1')
 
 'Running server...' | Out-Host

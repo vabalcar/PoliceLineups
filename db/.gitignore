@@ -1,5 +1,0 @@
-/data/*
-!/data/init
-/install-info.json
-/src/admin-user.sql
-/src/constants.sql

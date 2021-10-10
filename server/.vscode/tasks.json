@@ -39,8 +39,25 @@
       "problemMatcher": []
     },
     {
+      "label": "Run DB",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "pwsh",
+      "args": ["-NoLogo", "-File", "run-db.ps1"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "echo": false
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Prepare server debugging",
-      "dependsOn": ["Install server"],
+      "dependsOn": ["Install server", "Run DB"],
       "type": "shell",
       "options": {
         "cwd": "${workspaceFolder}"
@@ -58,7 +75,7 @@
     },
     {
       "label": "Run server",
-      "dependsOn": ["Install server"],
+      "dependsOn": ["Install server", "Run DB"],
       "type": "shell",
       "options": {
         "cwd": "${workspaceFolder}"
