@@ -1,0 +1,1 @@
+swagger-ui-bundle~=0.0.9

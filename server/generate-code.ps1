@@ -1,5 +1,5 @@
 #!/usr/bin/pwsh
-function Get-ReqRenamePattern { process { "swagger-$_" } }
+function ConvertTo-SwaggerRequirementsFileName { process { "swagger-$_" } }
 
 $srcDir = 'src'
 
@@ -7,6 +7,6 @@ $srcDir = 'src'
 
 Copy-Item  -Recurse -Force -Path (Join-Path $srcDir 'swagger_server_override' '*') -Destination (Join-Path $srcDir 'swagger_server')
 
-$whitelistedRequirements = Get-Content 'apiGenerationWhitelist.json' | ConvertFrom-Json | Where-Object { $_ -Match '^.*requirements\.txt$' }
-$whitelistedRequirements | Get-ReqRenamePattern | Remove-Item -ErrorAction Ignore
-$whitelistedRequirements | ForEach-Object { Move-Item -Path (Join-Path $srcDir $_) -Destination ($_ | Get-ReqRenamePattern) }
+$whitelistedRequirementFiles = Get-Content 'apiGenerationWhitelist.json' | ConvertFrom-Json | Where-Object { $_ -Match '^.*requirements\.txt$' }
+$whitelistedRequirementFiles | ConvertTo-SwaggerRequirementsFileName | Remove-Item -ErrorAction Ignore
+$whitelistedRequirementFiles | ForEach-Object { Move-Item -Path (Join-Path $srcDir $_) -Destination ($_ | ConvertTo-SwaggerRequirementsFileName) }

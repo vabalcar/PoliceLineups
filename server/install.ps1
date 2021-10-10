@@ -1,8 +1,19 @@
 #!/usr/bin/pwsh
 & (Join-Path '.' 'activate.ps1')
 
-'Installing server...' | Out-Host
-& pip install -r requirements.txt
-'done.' | Out-Host
+$REQUREMENTS_LOCK_FILE = 'requirements.txt'
 
+'Installing server...' | Out-Host
+"Installing requirements from requirements-lock file $REQUREMENTS_LOCK_FILE..." | Out-Host
+& pip install -r $REQUREMENTS_LOCK_FILE
+
+Get-ChildItem -Path (Join-Path '.' '*requirements.txt') -Exclude $REQUREMENTS_LOCK_FILE | ForEach-Object {
+    "Installing requirements from $($_.Name)..." | Out-Host
+    & pip install -r $_
+}
+
+"Updating requirements-lock file $REQUREMENTS_LOCK_FILE..." | Out-Host
+& pip freeze > $REQUREMENTS_LOCK_FILE
+
+'done.' | Out-Host
 & deactivate
