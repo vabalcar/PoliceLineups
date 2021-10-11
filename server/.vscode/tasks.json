@@ -58,18 +58,9 @@
     {
       "label": "Prepare server debugging",
       "dependsOn": ["Install server", "Run DB"],
-      "type": "shell",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "command": "pwsh",
-      "args": ["-NoLogo", "-File", "run.ps1", "-Dev", "-NoRun"],
       "group": "build",
       "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true,
-        "echo": false
+        "reveal": "never"
       },
       "problemMatcher": []
     },

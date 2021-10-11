@@ -10,6 +10,7 @@
       "request": "launch",
       "cwd": "${workspaceFolder}/src",
       "program": "app.py",
+      "args": ["--dev"],
       "linux": {
         "python": "${workspaceFolder}/server-env/bin/python"
       },

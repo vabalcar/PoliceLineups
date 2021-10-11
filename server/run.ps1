@@ -1,17 +1,7 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Dev,
-    [switch] $NoRun
+    [switch] $Dev
 )
-
-. (Join-Path '..' 'pwsh' 'libs' 'json.ps1')
-
-$serverConfigFile = Join-Path '..' 'config' 'server.json'
-Update-JsonObject -Path $serverConfigFile -Attribute 'dev' -Value $Dev | Out-Null
-
-if ($NoRun) {
-    exit
-}
 
 & (Join-Path '.' 'run-db.ps1')
 
@@ -21,7 +11,12 @@ if ($NoRun) {
 $originalWD = Get-Location
 try {
     Set-Location -Path 'src'
-    & python 'app.py'
+    if ($Dev) {
+        & python app.py --dev
+    }
+    else {
+        & python app.py
+    }
 }
 finally {
     'stopped.' | Out-Host

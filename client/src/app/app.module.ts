@@ -113,7 +113,7 @@ import { AppEffects } from "./state/app.effects";
       useFactory: () => {
         const serverConfig = require("../../../config/server.json");
 
-        const dev: boolean = serverConfig.dev;
+        const dev = !environment.production;
         const serverScheme: string = dev
           ? serverConfig.schema
           : serverConfig.outSchema;
