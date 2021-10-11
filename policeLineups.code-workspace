@@ -5,12 +5,16 @@
       "name": "Root"
     },
     {
-      "path": "server",
-      "name": "Server"
+      "path": "api",
+      "name": "Api"
     },
     {
       "path": "client",
       "name": "Client"
+    },
+    {
+      "path": "server",
+      "name": "Server"
     }
   ],
   "settings": {
