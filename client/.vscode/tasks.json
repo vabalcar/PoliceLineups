@@ -17,8 +17,7 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": []
+      }
     },
     {
       "label": "Install client",
@@ -35,8 +34,7 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": []
+      }
     },
     {
       "label": "Run client",

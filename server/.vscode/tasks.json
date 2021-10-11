@@ -17,8 +17,7 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": []
+      }
     },
     {
       "label": "Install server",
@@ -35,8 +34,7 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": []
+      }
     },
     {
       "label": "Run DB",
@@ -52,8 +50,7 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": []
+      }
     },
     {
       "label": "Prepare server debugging",
@@ -61,8 +58,7 @@
       "group": "build",
       "presentation": {
         "reveal": "never"
-      },
-      "problemMatcher": []
+      }
     },
     {
       "label": "Run server",
@@ -82,8 +78,7 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": []
+      }
     }
   ]
 }

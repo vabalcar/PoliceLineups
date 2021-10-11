@@ -17,8 +17,7 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": []
+      }
     },
     {
       "label": "Install API",
@@ -34,8 +33,7 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": []
+      }
     },
     {
       "label": "Generate code",
@@ -52,8 +50,7 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": []
+      }
     },
     {
       "label": "Install everything",
@@ -70,8 +67,7 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": []
+      }
     },
     {
       "label": "Run everything",
@@ -91,8 +87,7 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": []
+      }
     }
   ]
 }
