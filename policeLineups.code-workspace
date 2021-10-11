@@ -1,15 +1,24 @@
 {
   "folders": [
     {
-      "path": "."
+      "path": ".",
+      "name": "Root"
+    },
+    {
+      "path": "server",
+      "name": "Server"
+    },
+    {
+      "path": "client",
+      "name": "Client"
     }
   ],
   "settings": {
     "files.exclude": {
-      "**/.git": true,
-      "client": true,
-      "server": true,
-      "db": true
+      ".git": true,
+      "**/node_modules": true,
+      "**/server-env": true,
+      "**/server-env-win": true
     }
   }
 }

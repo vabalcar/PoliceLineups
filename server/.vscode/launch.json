@@ -18,14 +18,6 @@
         "python": "${workspaceFolder}\\server-env-win\\Scripts\\python.exe"
       },
       "preLaunchTask": "Prepare server debugging"
-    },
-    {
-      "name": "Debug current PowerShell script",
-      "type": "PowerShell",
-      "request": "launch",
-      "script": "${file}",
-      "args": [],
-      "cwd": "${file}"
     }
   ]
 }

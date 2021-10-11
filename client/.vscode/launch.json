@@ -27,14 +27,6 @@
       "url": "http://localhost:4666",
       "webRoot": "${workspaceFolder}",
       "preLaunchTask": "Run client"
-    },
-    {
-      "name": "Debug current PowerShell script",
-      "type": "PowerShell",
-      "request": "launch",
-      "script": "${file}",
-      "args": [],
-      "cwd": "${file}"
     }
   ]
 }
