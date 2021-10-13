@@ -1,8 +1,9 @@
 from peewee import Database
 from playhouse.pool import PooledMySQLDatabase
 
-from police_lineups.singletons.configuration import Configuration
-from police_lineups.utils.singleton import Singleton
+from police_lineups.utils import Singleton
+
+from .configuration import Configuration
 
 
 class DB(metaclass=Singleton):

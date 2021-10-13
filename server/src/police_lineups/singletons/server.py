@@ -2,10 +2,11 @@ import connexion
 from connexion.apps.flask_app import FlaskApp
 from flask_cors import CORS
 
-from swagger_server import encoder
+from swagger_server.encoder import JSONEncoder
 
-from police_lineups.singletons.db import DB
-from police_lineups.utils.singleton import Singleton
+from police_lineups.utils import Singleton
+
+from .db import DB
 
 
 class Server(metaclass=Singleton):
@@ -17,7 +18,7 @@ class Server(metaclass=Singleton):
     def __init__(self) -> None:
         self._app = connexion.App(__name__, specification_dir='../../swagger_server/swagger/')
         CORS(self._app.app)
-        self._app.app.json_encoder = encoder.JSONEncoder
+        self._app.app.json_encoder = JSONEncoder
         self._app.add_api('swagger.yaml')
 
         @self._app.app.before_request

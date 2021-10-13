@@ -5,8 +5,8 @@ import connexion
 
 from swagger_server.models import Person, Response
 
-from police_lineups.db.scheme import DbPerson
-from police_lineups.utils.swagger import clear_model_update
+from police_lineups.db_scheme import DbPerson
+from police_lineups.utils import clear_model_update
 
 
 def get_people():  # noqa: E501

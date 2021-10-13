@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-from police_lineups.db.scheme import prepare_database
-from police_lineups.singletons.configuration import Configuration
-from police_lineups.singletons.server import Server
+from police_lineups.db_scheme import prepare_db
+from police_lineups.singletons import Configuration, Server
 
 
 def main():
-    prepare_database()
+    prepare_db()
 
     Server().current.run(
         port=Configuration().server.port,

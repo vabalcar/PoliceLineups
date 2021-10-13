@@ -11,7 +11,7 @@ from werkzeug.exceptions import Unauthorized
 
 from swagger_server.models import AuthRequest, AuthResponse, AuthTokenRenewalResponse
 
-from police_lineups.db.scheme import DbUser
+from police_lineups.db_scheme import DbUser
 
 JWT_ISSUER = 'police_lineups'
 JWT_SECRET = secrets.token_urlsafe(32)

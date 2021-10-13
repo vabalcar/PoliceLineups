@@ -6,8 +6,8 @@ from werkzeug.security import generate_password_hash
 
 from swagger_server.models import User, Response, ValidationResponse
 
-from police_lineups.db.scheme import DbUser
-from police_lineups.utils.swagger import clear_model_update
+from police_lineups.db_scheme import DbUser
+from police_lineups.utils import clear_model_update
 
 ROOT_USERNAME = 'root'
 ROOT_DEFAULT_NAME = 'Root'

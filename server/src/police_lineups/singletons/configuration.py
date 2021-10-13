@@ -1,10 +1,9 @@
 from os import path
 
-from police_lineups.configurations.db import DBConfiguration
-from police_lineups.configurations.server import ServerConfiguration
-from police_lineups.singletons.program_arguments import ProgramArguments
-from police_lineups.utils.singleton import Singleton
-from police_lineups.utils.json import parse_json_file
+from police_lineups.configurations import DBConfiguration, ServerConfiguration
+from police_lineups.utils import parse_json_file, Singleton
+
+from .program_arguments import ProgramArguments
 
 
 class Configuration(metaclass=Singleton):
@@ -22,4 +21,6 @@ class Configuration(metaclass=Singleton):
         config_dir = path.join('..', '..', 'config', environment)
 
         self._db_configuration = DBConfiguration(parse_json_file(config_dir, 'db.json'))
-        self._server_configuration = ServerConfiguration(parse_json_file(config_dir, 'server.json'))
+        self._server_configuration = ServerConfiguration(
+            parse_json_file(config_dir, 'server.json'),
+            ProgramArguments().is_debug_mode)

@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from police_lineups.utils.singleton import Singleton
+from police_lineups.utils import Singleton
 
 
 class ProgramArguments(metaclass=Singleton):
