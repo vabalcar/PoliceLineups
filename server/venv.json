@@ -1,4 +1,5 @@
 {
   "name": "server-env",
-  "nameOnWindows": "server-env-win"
+  "nameOnWindows": "server-env-win",
+  "requirementsLockFile": "requirements.lock"
 }

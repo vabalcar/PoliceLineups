@@ -1,16 +1,16 @@
 #!/usr/bin/pwsh
 'Updating server...' | Out-Host
 
-$REQUREMENTS_LOCK_FILE = 'requirements.txt'
+$venvInfo = Get-Content 'venv.json' | ConvertFrom-Json
+$requirementsLockFile = $venvInfo.requirementsLockFile
 
-$reqirementsLockFilePath = Join-Path '.' $REQUREMENTS_LOCK_FILE
+$reqirementsLockFilePath = Join-Path '.' $requirementsLockFile
 
 if (Test-Path -PathType Leaf -Path $reqirementsLockFilePath) {
-    "Removing requirements-lock file $REQUREMENTS_LOCK_FILE..." | Out-Host
+    "Removing requirements-lock file $requirementsLockFile..." | Out-Host
     Remove-Item -Path $reqirementsLockFilePath
 }
 
-$venvInfo = Get-Content 'venv.json' | ConvertFrom-Json
 $venvName = $IsWindows ? $venvInfo.nameOnWindows : $venvInfo.name
 $venvPath = (Join-Path '.' $venvName)
 
@@ -19,6 +19,6 @@ if (Test-Path -PathType Container -Path $venvPath) {
     Remove-Item -Recurse -Path $venvPath
 }
 
-& (Join-Path '.' 'install.ps1')
+& (Join-Path '.' 'install.ps1') -RequirementsLockFile $requirementsLockFile
 
 'done.' | Out-Host
