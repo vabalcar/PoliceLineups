@@ -20,9 +20,13 @@
   "settings": {
     "files.exclude": {
       ".git": true,
+      "api": true,
+      "client": true,
       "**/node_modules": true,
+      "server": true,
       "**/server-env": true,
-      "**/server-env-win": true
+      "**/server-env-win": true,
+      "**/__pycache__": true
     }
   }
 }
