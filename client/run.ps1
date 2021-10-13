@@ -1,21 +1,15 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Dev
+    [switch] $Debug
 )
 
 'Running client...' | Out-Host
 
-$clientConfig = Get-Content (Join-Path '..' 'config' 'client.json') | ConvertFrom-Json
+$environment = $Debug ? 'debug' : 'production'
+$clientConfiguration = Get-Content (Join-Path '..' 'config' $environment 'client.json') | ConvertFrom-Json
 
 try {
-    if ($Dev) {
-        & ng serve --host $($clientConfig.host) --port $($clientConfig.port)
-    }
-    else {
-        $clientOutPort = $clientConfig.outPort -eq 80 ? '' : ":${$clientConfig.outPort}"
-        $publicHost = "$($clientConfig.schema)://$($clientConfig.outHost)$($clientOutPort)$($clientConfig.outBasePath)/"
-        & ng serve --host $($clientConfig.host) --port $($clientConfig.port) --publicHost=$publicHost --configuration production
-    }
+    & ng serve --host $($clientConfiguration.host) --port $($clientConfiguration.port)
 }
 finally {
     'stopped.' | Out-Host

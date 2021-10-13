@@ -2,9 +2,5 @@
   "schema": "http",
   "host": "127.0.0.1",
   "port": 8080,
-  "basePath": "/v1",
-  "outSchema": "http",
-  "outHost": "127.0.0.1",
-  "outPort": 8080,
-  "outBasePath": "/v1"
+  "basePath": "/v1"
 }

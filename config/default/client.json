@@ -1,10 +1,4 @@
 {
-  "schema": "http",
   "host": "127.0.0.1",
-  "port": 4666,
-  "basePath": "/",
-  "outSchema": "http",
-  "outHost": "127.0.0.1",
-  "outPort": 4666,
-  "outBasePath": "/"
+  "port": 4666
 }

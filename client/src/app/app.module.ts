@@ -27,7 +27,6 @@ import { EffectsModule } from "@ngrx/effects";
 import { ReactiveComponentModule } from "@ngrx/component";
 
 import { environment } from "src/environments/environment";
-import serverConfig from "../../../config/server.json";
 
 import { AppRoutingModule } from "./routing/app-routing.module";
 
@@ -111,23 +110,8 @@ import { AppEffects } from "./state/app.effects";
   providers: [
     {
       provide: BASE_PATH,
-      useFactory: () => {
-        const dev = !environment.production;
-        const serverScheme: string = dev
-          ? serverConfig.schema
-          : serverConfig.outSchema;
-        const serverHost: string = dev
-          ? serverConfig.host
-          : serverConfig.outHost;
-        let serverPort: number | string = dev
-          ? serverConfig.port
-          : serverConfig.outPort;
-        serverPort = serverPort === 80 ? "" : `:${serverPort}`;
-        const serverBasePath: string = dev
-          ? serverConfig.basePath
-          : serverConfig.outBasePath;
-        return `${serverScheme}://${serverHost}${serverPort}${serverBasePath}`;
-      },
+      useFactory: () =>
+        `${environment.server.schema}://${environment.server.host}:${environment.server.port}${environment.server.basePath}`,
     },
     DefaultService,
   ],

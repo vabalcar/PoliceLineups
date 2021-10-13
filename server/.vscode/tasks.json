@@ -59,26 +59,6 @@
       "presentation": {
         "reveal": "never"
       }
-    },
-    {
-      "label": "Run server",
-      "dependsOn": ["Install server", "Run DB"],
-      "type": "shell",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "command": "pwsh",
-      "args": ["-NoLogo", "-File", "run.ps1", "-Dev"],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true,
-        "echo": false
-      }
     }
   ]
 }

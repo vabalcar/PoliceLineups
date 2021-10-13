@@ -1,6 +1,6 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Dev
+    [switch] $Debug
 )
 
 & (Join-Path '.' 'run-db.ps1')
@@ -11,8 +11,8 @@ param (
 $originalWD = Get-Location
 try {
     Set-Location -Path 'src'
-    if ($Dev) {
-        & python app.py --dev
+    if ($Debug) {
+        & python app.py --debug
     }
     else {
         & python app.py
