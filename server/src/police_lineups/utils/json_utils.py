@@ -1,5 +1,5 @@
 import os
-from Lib import json
+import json
 
 
 def parse_json_file(path, *path_children):

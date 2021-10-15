@@ -6,15 +6,16 @@
       "name": "Debug server",
       "type": "python",
       "request": "launch",
-      "cwd": "${workspaceFolder}/src",
-      "program": "app.py",
-      "args": ["--debug"],
       "linux": {
-        "python": "${workspaceFolder}/server-env/bin/python"
+        "python": "${workspaceFolder}/server-env/bin/python",
+        "cwd": "${workspaceFolder}/src"
       },
       "windows": {
-        "python": "${workspaceFolder}\\server-env-win\\Scripts\\python.exe"
+        "python": "${workspaceFolder}\\server-env-win\\Scripts\\python.exe",
+        "cwd": "${workspaceFolder}\\src"
       },
+      "program": "app.py",
+      "args": ["--debug"],
       "preLaunchTask": "Prepare server debugging"
     }
   ]

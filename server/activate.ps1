@@ -5,7 +5,12 @@ $activationScript = $IsWindows ? (Join-Path '.' $venvName 'Scripts' 'Activate.ps
 
 if (!(Test-Path -PathType Leaf $activationScript)) {
     "Creating virtual environment '$venvName'" | Out-Host
-    & virtualenv $venvName
+    if ($IsWindows) {
+        & python -m venv $venvName
+    }
+    else {
+        & python3.9 -m venv $venvName
+    }
 }
 
 & $activationScript
