@@ -1,4 +1,13 @@
 #!/usr/bin/pwsh
+
+function Test-ExecutionPolicy {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)] [string] $ExecutionPolicy
+    )
+    return ($ExecutionPolicy -ne 'Restricted') -and ($ExecutionPolicy -ne 'AllSigned')
+}
+
 function Test-Executable {
     [CmdletBinding()]
     param (
@@ -19,7 +28,7 @@ function Test-Environment {
     $environmentDescription = Import-Csv -Path $EnvironmentDescriptionFile -Delimiter ';'
     foreach ($executableDescription in $environmentDescription) {
         if (!(Test-Executable -Executable $executableDescription.executable)) {
-            "$($executableDescription.name) is missing in the environment. Please visit $($executableDescription.installWebsite) and install it." | Out-Host
+            "$($executableDescription.name) is missing in the environment. Please visit $($executableDescription.installWebsite) for more information and install it." | Out-Host
             if ($isTestedEnvironmentReady) {
                 $isTestedEnvironmentReady = $false
             }
@@ -29,7 +38,15 @@ function Test-Environment {
     return $isTestedEnvironmentReady
 }
 
-$isEnvironmentReady = Test-Environment -EnvironmentDescriptionFile 'environment-common.csv'
+$isEnvironmentReady = $true
+
+$currentExecutionPolicy = Get-ExecutionPolicy
+if (!(Test-ExecutionPolicy -ExecutionPolicy $currentExecutionPolicy)) {
+    "PowerShell execution policy is '$currentExecutionPolicy' which is BAD. Please repair it." | Out-Host
+    $isEnvironmentReady = $false
+}
+
+$isEnvironmentReady = $isEnvironmentReady -and (Test-Environment -EnvironmentDescriptionFile 'environment-common.csv')
 if ($IsWindows) {
     $isEnvironmentReady = $isEnvironmentReady -and (Test-Environment -EnvironmentDescriptionFile 'environment-windows.csv')
 }
@@ -37,9 +54,9 @@ else {
     $isEnvironmentReady = $isEnvironmentReady -and (Test-Environment -EnvironmentDescriptionFile 'environment-linux.csv')
 }
 
-if (!$isEnvironmentReady) {
-    'Evironment is not ready. Please follow instructions above and try again.' | Out-Host
+if ($isEnvironmentReady) {
+    'Environment is ready.' | Out-Host
 }
 else {
-    'Environment is ready.' | Out-Host
+    'Evironment is not ready. Please follow instructions above and try again.' | Out-Host
 }
