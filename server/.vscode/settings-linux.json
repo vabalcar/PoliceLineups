@@ -1,6 +1,6 @@
 {
-  "python.pythonPath": ".venv_windows\\Scripts\\python.exe",
-  "python.linting.pylintPath": ".venv_windows\\Scripts\\pylint.exe",
+  "python.pythonPath": ".venv_linux/bin/python",
+  "python.linting.pylintPath": ".venv_linux/bin/pylint",
   "python.linting.pylintArgs": [
     "--variable-rgx",
     "^[a-z][a-z0-9]*(_[a-z0-9]+)*$",

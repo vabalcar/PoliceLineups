@@ -7,11 +7,11 @@
       "type": "python",
       "request": "launch",
       "linux": {
-        "python": "${workspaceFolder}/server-env/bin/python",
+        "python": "${workspaceFolder}/.venv_linux/bin/python",
         "cwd": "${workspaceFolder}/src"
       },
       "windows": {
-        "python": "${workspaceFolder}\\server-env-win\\Scripts\\python.exe",
+        "python": "${workspaceFolder}\\.venv_windows\\Scripts\\python.exe",
         "cwd": "${workspaceFolder}\\src"
       },
       "program": "app.py",

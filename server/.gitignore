@@ -1,7 +1,7 @@
 **/__pycache__
 
-/server-env
-/server-env-win
+/.venv_linux
+/.venv_windows
 
 /generated
 /src/swagger_server

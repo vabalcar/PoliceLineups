@@ -1,5 +1,5 @@
 {
-  "name": "server-env",
-  "nameOnWindows": "server-env-win",
+  "nameOnLinux": ".venv_linux",
+  "nameOnWindows": ".venv_windows",
   "requirementsLockFile": "requirements.lock"
 }
