@@ -14,16 +14,16 @@ if (!$RequirementsLockFile) {
 
 if (Test-Path -PathType Leaf -Path (Join-Path '.' $RequirementsLockFile)) {
     "Installing requirements from requirements-lock file $RequirementsLockFile..." | Out-Host
-    & pip install -r $RequirementsLockFile
+    & python -m pip install -r $RequirementsLockFile
 }
 else {
     Get-ChildItem -Path (Join-Path '.' '*requirements.txt') -Exclude $RequirementsLockFile | ForEach-Object {
         "Installing requirements from $($_.Name)..." | Out-Host
-        & pip install -r $_
+        & python -m pip install -r $_
     }
 
     "Updating requirements-lock file $RequirementsLockFile..." | Out-Host
-    & pip freeze > $RequirementsLockFile
+    & python -m pip freeze > $RequirementsLockFile
 }
 
 'done.' | Out-Host

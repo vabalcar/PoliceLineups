@@ -1,0 +1,4 @@
+name;executable;installWebsite
+Python;python3.9;https://www.python.org/downloads/
+Sudo;sudo;https://linux.die.net/man/8/sudo
+Service;service;https://linux.die.net/man/8/service
