@@ -46,10 +46,7 @@
       },
       "command": "pwsh",
       "args": ["-NoLogo", "-File", "run.ps1", "-Debug"],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "group": "build",
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",

@@ -4,14 +4,44 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Check environment",
+      "label": "Test environment",
       "type": "shell",
-      "options": {
-        "cwd": "${workspaceFolder}\\environment"
+      "windows": {
+        "options": {
+          "cwd": "${workspaceFolder}\\environment"
+        }
+      },
+      "linux": {
+        "options": {
+          "cwd": "${workspaceFolder}/environment"
+        }
       },
       "command": "pwsh",
-      "args": ["-NoLogo", "-File", "check-environment.ps1"],
+      "args": ["-NoLogo", "-File", "test-environment.ps1"],
       "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "echo": false
+      }
+    },
+    {
+      "label": "Repair PowerShell execution policy",
+      "type": "shell",
+      "windows": {
+        "options": {
+          "cwd": "${workspaceFolder}\\environment"
+        }
+      },
+      "linux": {
+        "options": {
+          "cwd": "${workspaceFolder}/environment"
+        }
+      },
+      "command": "pwsh",
+      "args": ["-NoLogo", "-File", "repair-pwsh-execution-policy.ps1"],
+      "group": "build",
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
@@ -22,66 +52,19 @@
     {
       "label": "Install API",
       "type": "shell",
-      "options": {
-        "cwd": "${workspaceFolder}\\api"
+      "windows": {
+        "options": {
+          "cwd": "${workspaceFolder}\\api"
+        }
+      },
+      "linux": {
+        "options": {
+          "cwd": "${workspaceFolder}/api"
+        }
       },
       "command": "pwsh",
       "args": ["-NoLogo", "-File", "install.ps1"],
       "group": "build",
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true,
-        "echo": false
-      }
-    },
-    {
-      "label": "Generate code",
-      "dependsOn": ["Install API"],
-      "type": "shell",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "command": "pwsh",
-      "args": ["-NoLogo", "-File", "generate-code.ps1"],
-      "group": "build",
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true,
-        "echo": false
-      }
-    },
-    {
-      "label": "Install everything",
-      "dependsOn": ["Generate code"],
-      "type": "shell",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "command": "pwsh",
-      "args": ["-NoLogo", "-File", "install.ps1"],
-      "group": "build",
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true,
-        "echo": false
-      }
-    },
-    {
-      "label": "Run everything",
-      "dependsOn": ["Install everything"],
-      "type": "shell",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "command": "pwsh",
-      "args": ["-NoLogo", "-File", "run.ps1"],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
