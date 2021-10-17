@@ -1,7 +1,11 @@
 #!/usr/bin/pwsh
-. (Join-Path '.' 'pwsh' 'libs' 'script-executing.ps1')
+param (
+    [switch] $Debug
+)
 
-[Executor]::ExecuteParallelly(@(
+. (Join-Path '.' 'utils' 'script-executor.ps1')
+
+[Executor]::ExecuteParallelly($Debug, @(
         @{Script = 'uninstall.ps1'; WD = 'api' },
         @{Script = 'uninstall.ps1'; WD = 'server' },
         @{Script = 'uninstall.ps1'; WD = 'client' }

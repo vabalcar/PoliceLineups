@@ -1,7 +1,13 @@
 #!/usr/bin/pwsh
-. (Join-Path '.' 'pwsh' 'libs' 'script-executing.ps1')
+param (
+    [switch] $Debug
+)
+
+. (Join-Path '.' 'utils' 'script-executor.ps1')
+
+$commonArgs = $Debug ? @('-Debug') : @()
 
 [Executor]::ExecuteSequentially(@(
-        @{Script = 'build.ps1' },
-        @{Script = 'run.ps1' }
+        @{Script = 'build.ps1'; ArgumentList = $commonArgs },
+        @{Script = 'run.ps1'; ArgumentList = $commonArgs }
     ))

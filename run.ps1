@@ -1,8 +1,13 @@
 #!/usr/bin/pwsh
-. (Join-Path '.' 'pwsh' 'libs' 'script-executing.ps1')
-$wrapper = (Join-Path '..' 'pwsh' 'libs' 'terminal-wrapper.ps1')
+param (
+    [switch] $Debug
+)
 
-[Executor]::ExecuteParallelly(@(
-        @{Script = 'run.ps1'; WD = 'server'; isExternal = $true; Wrapper = $wrapper },
-        @{Script = 'run.ps1'; WD = 'client'; isExternal = $true; Wrapper = $wrapper }
+. (Join-Path '.' 'utils' 'script-executor.ps1')
+
+$commonArgs = $Debug ? @('-Debug') : @()
+
+[Executor]::ExecuteExternally(@(
+        @{Script = 'run.ps1'; WD = 'server'; ArgumentList = $commonArgs },
+        @{Script = 'run.ps1'; WD = 'client'; ArgumentList = $commonArgs }
     ))

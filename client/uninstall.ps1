@@ -1,4 +1,4 @@
 #!/usr/bin/pwsh
-. (Join-Path '..' 'pwsh' 'libs' 'git.ps1')
+. (Join-Path '..' 'utils' 'git.ps1')
 
 Remove-GitIgnoredFiles -CleanIgnoreFile '.cleanignore'

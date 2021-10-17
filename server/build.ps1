@@ -1,7 +1,11 @@
 #!/usr/bin/pwsh
-. (Join-Path '..' 'pwsh' 'libs' 'script-executing.ps1')
+param (
+    [switch] $Debug
+)
 
-[Executor]::ExecuteParallelly(@(
+. (Join-Path '..' 'utils' 'script-executor.ps1')
+
+[Executor]::ExecuteParallelly($Debug, @(
         @{Script = 'generate-code.ps1' },
         @{Script = 'install.ps1' }
     ))
