@@ -1,0 +1,425 @@
+openapi: 3.0.2
+info:
+  title: Police lineups
+  version: "1.0"
+servers:
+- url: http://127.0.0.1:8080/v1
+security:
+- JwtAuthUser: []
+paths:
+  /authorization:
+    post:
+      summary: Logins registered userUser
+      operationId: login
+      requestBody:
+        description: AuthRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+        required: true
+      responses:
+        "200":
+          description: login result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+      security: []
+      x-openapi-router-controller: controllers.auth
+    patch:
+      summary: Renews auth token
+      operationId: renew_auth_token
+      responses:
+        "200":
+          description: token renewal result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenRenewalResponse'
+      x-openapi-router-controller: controllers.auth
+  /init/rootUser:
+    get:
+      summary: Inits root user
+      operationId: init_root_user
+      responses:
+        "200":
+          description: root user initialization result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      security: []
+      x-openapi-router-controller: controllers.users
+  /users:
+    get:
+      summary: Returns all users
+      operationId: get_users
+      responses:
+        "200":
+          description: a JSON array of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+                x-content-type: application/json
+      security:
+      - JwtAuthAdmin: []
+      x-openapi-router-controller: controllers.users
+    post:
+      summary: Adds a user
+      operationId: add_user
+      requestBody:
+        description: a user to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: addition result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      security:
+      - JwtAuthAdmin: []
+      x-openapi-router-controller: controllers.users
+  /validation/user:
+    patch:
+      summary: Validated an update of a user
+      operationId: validate_user_update
+      requestBody:
+        description: update of a user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResponse'
+      x-openapi-router-controller: controllers.users
+  /user/{username}:
+    get:
+      summary: Returns a user
+      operationId: get_user
+      parameters:
+      - name: username
+        in: path
+        description: username of a userUser
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: a JSON object describing the User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+      - JwtAuthAdmin: []
+      x-openapi-router-controller: controllers.users
+    delete:
+      summary: Removes a user
+      operationId: remove_user
+      parameters:
+      - name: username
+        in: path
+        description: a username of a user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: removal result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      security:
+      - JwtAuthAdmin: []
+      x-openapi-router-controller: controllers.users
+    patch:
+      summary: Updates a user
+      operationId: update_user
+      parameters:
+      - name: username
+        in: path
+        description: username of a user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: update of user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: update result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      security:
+      - JwtAuthAdmin: []
+      x-openapi-router-controller: controllers.users
+  /currentUser:
+    get:
+      summary: Returns a user
+      operationId: get_current_user
+      responses:
+        "200":
+          description: a JSON object describing the User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      x-openapi-router-controller: controllers.users
+    delete:
+      summary: Removes a user
+      operationId: remove_current_user
+      responses:
+        "200":
+          description: removal result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: controllers.users
+    patch:
+      summary: Updates a user
+      operationId: update_current_user
+      requestBody:
+        description: update of user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: update result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: controllers.users
+  /people:
+    get:
+      summary: Returns a list of people
+      operationId: get_people
+      responses:
+        "200":
+          description: a JSON array of people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+                x-content-type: application/json
+      x-openapi-router-controller: controllers.people
+    post:
+      summary: Adds a person
+      operationId: add_person
+      requestBody:
+        description: a person to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+        required: true
+      responses:
+        "200":
+          description: addition result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: controllers.people
+  /person/{id}:
+    get:
+      summary: Returns a person
+      operationId: get_person
+      parameters:
+      - name: id
+        in: path
+        description: ID of the person
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: the person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+      x-openapi-router-controller: controllers.people
+    delete:
+      summary: Removes a person
+      operationId: remove_person
+      parameters:
+      - name: id
+        in: path
+        description: ID of a person
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: removal result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: controllers.people
+    patch:
+      summary: Updates a person
+      operationId: update_person
+      parameters:
+      - name: id
+        in: path
+        description: name of a person
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: a person to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+        required: true
+      responses:
+        "200":
+          description: update result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: controllers.people
+components:
+  schemas:
+    AuthRequest:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Response:
+      type: object
+      properties:
+        success:
+          type: boolean
+      example:
+        success: true
+    ValidationResponse:
+      allOf:
+      - $ref: '#/components/schemas/Response'
+      - type: object
+        properties:
+          validationError:
+            type: string
+    AuthTokenRenewalResponse:
+      allOf:
+      - $ref: '#/components/schemas/Response'
+      - type: object
+        properties:
+          authToken:
+            type: string
+          tokenExpirationDatetime:
+            type: string
+            format: date-time
+    AuthResponse:
+      allOf:
+      - $ref: '#/components/schemas/Response'
+      - type: object
+        properties:
+          authToken:
+            type: string
+          tokenExpirationDatetime:
+            type: string
+            format: date-time
+          isAdmin:
+            type: boolean
+          userFullName:
+            type: string
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        isAdmin:
+          type: boolean
+      example:
+        password: password
+        name: name
+        isAdmin: true
+        username: username
+    Person:
+      type: object
+      properties:
+        id:
+          type: integer
+        pid:
+          type: string
+        name:
+          type: string
+        born:
+          type: integer
+        nationality:
+          type: string
+        features:
+          type: string
+      example:
+        features: features
+        nationality: nationality
+        born: 6
+        name: name
+        pid: pid
+        id: 0
+  securitySchemes:
+    JwtAuthUser:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: swagger_server.controllers.authorization_controller.check_JwtAuthUser
+    JwtAuthAdmin:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: swagger_server.controllers.authorization_controller.check_JwtAuthAdmin
+

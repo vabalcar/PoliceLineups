@@ -2,5 +2,3 @@
 
 /.venv_linux
 /.venv_windows
-
-/src/swagger_server
