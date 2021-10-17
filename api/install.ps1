@@ -3,7 +3,7 @@ $swaggerCLIName = 'swagger-codegen-cli'
 $outFile = "$swaggerCLIName.jar"
 
 if (Test-Path -PathType Leaf $outFile) {
-    'Swagger already installed.' | Out-Host
+    'Swagger codegen has been already installed' | Out-Host
     exit
 }
 

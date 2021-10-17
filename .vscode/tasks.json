@@ -48,29 +48,6 @@
         "clear": true,
         "echo": false
       }
-    },
-    {
-      "label": "Install API",
-      "type": "shell",
-      "windows": {
-        "options": {
-          "cwd": "${workspaceFolder}\\api"
-        }
-      },
-      "linux": {
-        "options": {
-          "cwd": "${workspaceFolder}/api"
-        }
-      },
-      "command": "pwsh",
-      "args": ["-NoLogo", "-File", "install.ps1"],
-      "group": "build",
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "clear": true,
-        "echo": false
-      }
     }
   ]
 }
