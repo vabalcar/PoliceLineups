@@ -74,9 +74,5 @@ function Remove-GitIgnoredFiles {
         return $true
     }
     | Where-Object { !$cleanIgnoreFiles.Contains($_) }
-    | ForEach-Object {
-        "Removing $_" | Out-Host
-        $_
-    }
-    | Remove-Item -Recurse -Force
+    | Remove-Item -Recurse -Force -Verbose
 }
