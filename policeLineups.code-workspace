@@ -19,14 +19,16 @@
   ],
   "settings": {
     "files.exclude": {
+      "**/.swagger-tmp": true,
       ".git": true,
       "api": true,
+      "**/swagger-codegen-cli.jar": true,
       "client": true,
       "**/node_modules": true,
       "server": true,
-      "**/server-env": true,
-      "**/server-env-win": true,
-      "**/__pycache__": true
+      "**/__pycache__": true,
+      "**/.venv_linux": true,
+      "**/.venv_windows": true
     }
   }
 }

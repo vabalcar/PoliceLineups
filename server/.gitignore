@@ -3,5 +3,4 @@
 /.venv_linux
 /.venv_windows
 
-/generated
 /src/swagger_server
