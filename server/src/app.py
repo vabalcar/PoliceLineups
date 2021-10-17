@@ -7,8 +7,8 @@ def main():
     prepare_db()
 
     Server().current.run(
-        port=Configuration().server.port,
         host=Configuration().server.host,
+        port=Configuration().server.port,
         debug=Configuration().server.is_debug_mode)
 
 
