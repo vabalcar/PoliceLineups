@@ -1,8 +1,12 @@
 #!/usr/bin/pwsh
+param (
+    [switch] $Force
+)
+
 $swaggerCLIName = 'swagger-codegen-cli'
 $outFile = "$swaggerCLIName.jar"
 
-if (Test-Path -PathType Leaf $outFile) {
+if (!$Force -and (Test-Path -PathType Leaf $outFile)) {
     'Swagger codegen has been already installed' | Out-Host
     exit
 }
