@@ -3,5 +3,7 @@
   "port": 3306,
   "user": "root",
   "password": "password",
-  "db": "myDB"
+  "db": "myDB",
+  "maxConnections": "32",
+  "staleTimeout": "300"
 }

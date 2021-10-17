@@ -19,5 +19,5 @@ class DB(metaclass=Singleton):
                                        database=Configuration().db.database,
                                        port=Configuration().db.port,
                                        autoconnect=True,
-                                       max_connections=32,
-                                       stale_timeout=300)
+                                       max_connections=Configuration().db.max_connections,
+                                       stale_timeout=Configuration().db.stale_timeout)
