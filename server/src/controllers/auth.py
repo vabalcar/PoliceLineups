@@ -86,13 +86,14 @@ def login(body):  # noqa: E501
 
     success = False
     auth_token = None
+    auth_token_expiration_datetime = None
     is_admin = False
     user_full_name = None
 
     username = body.username
     password = body.password
 
-    db_user = DbUser.get_by_id(username)
+    db_user = DbUser.get_or_none(DbUser.username == username)
     success = db_user is not None and check_password_hash(db_user.password, password)
 
     if success:

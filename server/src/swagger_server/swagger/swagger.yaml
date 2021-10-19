@@ -369,6 +369,7 @@ components:
           tokenExpirationDatetime:
             type: string
             format: date-time
+            nullable: true
           isAdmin:
             type: boolean
           userFullName:
