@@ -59,7 +59,6 @@
         "fileLocation": ["relative", "${cwd}"],
         "pattern": "$tsc",
         "background": {
-          "activeOnStart": true,
           "beginsPattern": {
             "regexp": "^.*$"
           },
