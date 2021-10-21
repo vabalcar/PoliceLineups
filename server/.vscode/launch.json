@@ -6,13 +6,15 @@
       "name": "Debug server",
       "type": "python",
       "request": "launch",
+      "jinja": true,
       "linux": {
         "python": "${workspaceFolder}/.venv_linux/bin/python",
         "cwd": "${workspaceFolder}/src"
       },
       "windows": {
         "python": "${workspaceFolder}\\.venv_windows\\Scripts\\python.exe",
-        "cwd": "${workspaceFolder}\\src"
+        "cwd": "${workspaceFolder}\\src",
+        "console": "externalTerminal"
       },
       "program": "app.py",
       "args": ["--debug"],
