@@ -6,11 +6,14 @@
   "recommendations": [
     // Root
     "ms-vscode.powershell",
+    "foxundermoon.shell-format",
+    "grapecity.gc-excelviewer",
 
     // API
     "42crunch.vscode-openapi",
 
     // Client
+    "eg2.vscode-npm-script",
     "Angular.ng-template",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
