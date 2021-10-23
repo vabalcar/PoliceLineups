@@ -54,9 +54,6 @@
         "echo": false
       },
       "problemMatcher": {
-        "owner": "typescript",
-        "source": "ts",
-        "fileLocation": ["relative", "${cwd}"],
         "pattern": "$tsc",
         "background": {
           "beginsPattern": {
