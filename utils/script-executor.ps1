@@ -36,6 +36,13 @@ class ScriptExecutor {
     [void] Execute() {
         throw [System.NotImplementedException]::new()
     }
+
+    [void] Execute([ScriptExecutionInput[]] $excutionInputs) {
+        foreach ($executionInput in $excutionInputs) {
+            $this.Add(@{ Script = $executionInput.Script; WD = $executionInput.WD; ArgumentList = $executionInput.ArgumentList })
+        }
+        $this.Execute()
+    }
 }
 
 class SequentialScriptExecutor : ScriptExecutor {
@@ -85,32 +92,5 @@ class ExternalScriptExecutor : ScriptExecutor {
             $this.InitializeScriptExecution($se)
             Start-Process -WorkingDirectory $se.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-NoExit', '-File', "$($se.Script) $($se.ArgumentList)"
         }
-    }
-}
-
-class Executor {
-    static [void] ExecuteSequentially([ScriptExecutionInput[]] $excutionInputs) {
-        [Executor]::execute([SequentialScriptExecutor]::new(), $excutionInputs)
-    }
-
-    static [void] ExecuteParallelly([bool] $isDebugMode, [ScriptExecutionInput[]] $excutionInputs) {
-        [Executor]::execute([Executor]::isParalellismAllowed($isDebugMode) ? [ParallelScriptExecutor]::new() : [SequentialScriptExecutor]::new(), $excutionInputs)
-    }
-
-    static [void] ExecuteExternally([ScriptExecutionInput[]] $excutionInputs) {
-        [Executor]::execute([ExternalScriptExecutor]::new(), $excutionInputs)
-    }
-
-    hidden static [bool] isParalellismAllowed([bool] $isDebugMode) {
-        $environment = $isDebugMode ? 'debug' : 'production'
-        $config = Get-Content -Path (Join-Path $PSScriptRoot '..' 'config' $environment 'build.json') | ConvertFrom-Json
-        return $config.parallelismAllowed
-    }
-
-    hidden static [void] execute([ScriptExecutor] $executor, [ScriptExecutionInput[]] $excutionInputs) {
-        foreach ($executionInput in $excutionInputs) {
-            $executor.Add(@{ Script = $executionInput.Script; WD = $executionInput.WD; ArgumentList = $executionInput.ArgumentList })
-        }
-        $executor.Execute()
     }
 }

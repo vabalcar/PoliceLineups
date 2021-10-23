@@ -5,14 +5,17 @@ param (
 
 . (Join-Path '.' 'utils' 'script-executor.ps1')
 
+$sequentialExecutor = [SequentialScriptExecutor]::new()
+$executor = $Debug ? $sequentialExecutor : [ParallelScriptExecutor]::new()
+
 $commonArgs = $Debug ? @('-Debug') : @()
 
-[Executor]::ExecuteSequentially(@(
+$sequentialExecutor.Execute(@(
         @{Script = 'install.ps1'; WD = 'api' },
         @{Script = 'generate-code.ps1'; ArgumentList = $commonArgs }
     ))
 
-[Executor]::ExecuteParallelly($Debug, @(
+$executor.Execute(@(
         @{Script = 'install.ps1'; WD = 'client' },
         @{Script = 'build.ps1'; WD = 'proxy'; ArgumentList = $commonArgs },
         @{Script = 'install.ps1'; WD = 'server' }

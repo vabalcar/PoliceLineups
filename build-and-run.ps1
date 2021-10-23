@@ -5,9 +5,11 @@ param (
 
 . (Join-Path '.' 'utils' 'script-executor.ps1')
 
+$executor = [SequentialScriptExecutor]::new()
+
 $commonArgs = $Debug ? @('-Debug') : @()
 
-[Executor]::ExecuteSequentially(@(
+$executor.Execute(@(
         @{Script = 'build.ps1'; ArgumentList = $commonArgs },
         @{Script = 'run.ps1'; ArgumentList = $commonArgs }
     ))

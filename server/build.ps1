@@ -5,7 +5,9 @@ param (
 
 . (Join-Path '..' 'utils' 'script-executor.ps1')
 
-[Executor]::ExecuteParallelly($Debug, @(
+$executor = $Debug ? [SequentialScriptExecutor]::new() : [ParallelScriptExecutor]::new()
+
+$executor.Execute(@(
         @{Script = 'generate-code.ps1' },
         @{Script = 'install.ps1' }
     ))
