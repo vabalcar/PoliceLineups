@@ -8,21 +8,45 @@
       "request": "launch",
       "script": "${file}",
       "args": [],
-      "cwd": "${file}"
+      "cwd": "${file}",
+      "presentation": {
+        "group": "Debug current file",
+        "order": 1
+      }
     }
   ],
   "compounds": [
     {
-      "name": "Dubug server with client in Chrome",
-      "configurations": ["Debug server", "Debug client in Chrome"]
+      "name": "Debug app in Chrome",
+      "configurations": [
+        "Debug client in Chrome",
+        "Debug proxy",
+        "Debug server"
+      ],
+      "presentation": {
+        "group": "Debug app",
+        "order": 1
+      }
     },
     {
-      "name": "Dubug server with client in Firefox",
-      "configurations": ["Debug server", "Debug client in Firefox"]
+      "name": "Debug app in Firefox",
+      "configurations": [
+        "Debug client in Firefox",
+        "Debug proxy",
+        "Debug server"
+      ],
+      "presentation": {
+        "group": "Debug app",
+        "order": 2
+      }
     },
     {
-      "name": "Dubug server with client in Edge",
-      "configurations": ["Debug server", "Debug client in Edge"]
+      "name": "Debug app in Edge",
+      "configurations": ["Debug client in Edge", "Debug proxy", "Debug server"],
+      "presentation": {
+        "group": "Debug app",
+        "order": 3
+      }
     }
   ]
 }

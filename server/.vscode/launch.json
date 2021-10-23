@@ -18,7 +18,11 @@
       },
       "program": "app.py",
       "args": ["--debug"],
-      "preLaunchTask": "Prepare server debugging"
+      "preLaunchTask": "Prepare server debugging",
+      "presentation": {
+        "group": "Debug server",
+        "order": 1
+      }
     }
   ]
 }

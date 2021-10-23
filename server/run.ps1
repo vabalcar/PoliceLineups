@@ -8,9 +8,11 @@ param (
 & (Join-Path '.' 'activate.ps1')
 
 'Running server...' | Out-Host
+
 $originalWD = Get-Location
+Set-Location -Path 'src'
+
 try {
-    Set-Location -Path 'src'
     if ($Debug) {
         & python app.py --debug
     }

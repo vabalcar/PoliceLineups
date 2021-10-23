@@ -3,23 +3,19 @@
   "tasks": [
     {
       "label": "Build proxy",
-      "type": "process",
-      "command": "dotnet",
-      "args": [
-        "build",
-        "--nologo",
-        "${workspaceFolder}/Proxy/Proxy.csproj",
-        "/property:GenerateFullPaths=true",
-        "/consoleloggerparameters:NoSummary"
-      ],
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "pwsh",
+      "args": ["-NoLogo", "-File", "build.ps1", "-Debug"],
       "group": "build",
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
         "clear": true,
         "echo": false
-      },
-      "problemMatcher": "$msCompile"
+      }
     }
   ]
 }

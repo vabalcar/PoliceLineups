@@ -8,11 +8,21 @@
       "request": "launch",
       "preLaunchTask": "Build proxy",
       "stopAtEntry": false,
-      "program": "${workspaceFolder}/Proxy/bin/Debug/net6.0/Proxy.dll",
-      "cwd": "${workspaceFolder}\\Proxy",
+      "linux": {
+        "cwd": "${workspaceFolder}/src/Proxy",
+        "program": "bin/Debug/net6.0/Proxy.dll"
+      },
+      "windows": {
+        "cwd": "${workspaceFolder}\\src\\Proxy",
+        "program": "bin\\Debug\\net6.0\\Proxy.dll"
+      },
       "console": "integratedTerminal",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "presentation": {
+        "group": "Debug proxy",
+        "order": 1
       }
     }
   ]
