@@ -8,6 +8,7 @@ param (
 $commonArgs = $Debug ? @('-Debug') : @()
 
 [Executor]::ExecuteExternally(@(
-        @{Script = 'run.ps1'; WD = 'server'; ArgumentList = $commonArgs },
-        @{Script = 'run.ps1'; WD = 'client'; ArgumentList = $commonArgs }
+        @{Script = 'run.ps1'; WD = 'client'; ArgumentList = $commonArgs },
+        @{Script = 'run.ps1'; WD = 'proxy'; ArgumentList = $commonArgs },
+        @{Script = 'run.ps1'; WD = 'server'; ArgumentList = $commonArgs }
     ))

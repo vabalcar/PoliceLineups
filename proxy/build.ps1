@@ -4,6 +4,6 @@ param (
 )
 
 'Building proxy...' | Out-Host
-$targetProjetFile = (Join-Path '.' 'src' 'Proxy' 'Proxy.csproj')
-& dotnet build --nologo $targetProjetFile /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary
+$targetProjectFile = (Join-Path '.' 'src' 'Proxy' 'Proxy.csproj')
+& dotnet build --nologo $targetProjectFile /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary
 'done.' | Out-Host

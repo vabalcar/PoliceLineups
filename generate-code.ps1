@@ -6,6 +6,6 @@ param (
 . (Join-Path '.' 'utils' 'script-executor.ps1')
 
 [Executor]::ExecuteParallelly($Debug, @(
-        @{Script = 'generate-code.ps1'; WD = 'server' },
-        @{Script = 'generate-code.ps1'; WD = 'client' }
+        @{Script = 'generate-code.ps1'; WD = 'client' },
+        @{Script = 'generate-code.ps1'; WD = 'server' }
     ))

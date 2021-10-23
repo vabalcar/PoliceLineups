@@ -9,9 +9,8 @@ $originalWD = Get-Location
 Set-Location -Path 'src'
 
 try {
-    & dotnet run --project Proxy
+    & dotnet run --no-build --project Proxy
 }
 finally {
-    'stopped.' | Out-Host
     Set-Location -Path $originalWD
 }
