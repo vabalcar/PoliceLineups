@@ -1,9 +1,6 @@
 name;executable;installWebsite
 PowerShell Core;pwsh;https://github.com/powershell/powershell
 Java;java;https://www.oracle.com/technetwork/java/javase/downloads/index.html
-NodeJs;node;https://nodejs.org/en/
 NPM;npm;https://www.npmjs.com/get-npm
-Angular CLI;ng;https://cli.angular.io/
-MySQL;mysql;https://dev.mysql.com/downloads/
 Git;git;https://git-scm.com/
 .NET;dotnet;https://dotnet.microsoft.com/

@@ -2,6 +2,6 @@
 'Updating client...' | Out-Host
 
 & npm audit fix
-& ng update
+& npm run-script update
 
 'done.' | Out-Host

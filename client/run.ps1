@@ -9,7 +9,7 @@ $environment = $Debug ? 'debug' : 'production'
 $clientConfiguration = Get-Content (Join-Path '..' 'config' $environment 'client.json') | ConvertFrom-Json
 
 try {
-    & ng serve --host $($clientConfiguration.host) --port $($clientConfiguration.port)
+    & npm run-script start -- --host $($clientConfiguration.host) --port $($clientConfiguration.port)
 }
 finally {
     'stopped.' | Out-Host
