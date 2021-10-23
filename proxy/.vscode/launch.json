@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+      "name": "Debug proxy",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "Build proxy",
+      "stopAtEntry": false,
+      "program": "${workspaceFolder}/Proxy/bin/Debug/net6.0/Proxy.dll",
+      "cwd": "${workspaceFolder}\\Proxy",
+      "console": "integratedTerminal",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  ]
+}

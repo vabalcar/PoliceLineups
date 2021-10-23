@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build proxy",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "--nologo",
+        "${workspaceFolder}/Proxy/Proxy.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "echo": false
+      },
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}
