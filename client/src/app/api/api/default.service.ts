@@ -32,7 +32,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class DefaultService {
 
-    protected basePath = 'http://127.0.0.1:8080/v1';
+    protected basePath = '/';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 

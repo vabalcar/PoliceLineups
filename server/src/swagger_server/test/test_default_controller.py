@@ -25,7 +25,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = Person()
         response = self.client.open(
-            '/v1/people',
+            '/people',
             method='POST',
             data=json.dumps(body),
             content_type='application/json')
@@ -39,7 +39,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = User()
         response = self.client.open(
-            '/v1/users',
+            '/users',
             method='POST',
             data=json.dumps(body),
             content_type='application/json')
@@ -52,7 +52,7 @@ class TestDefaultController(BaseTestCase):
         Returns a user
         """
         response = self.client.open(
-            '/v1/currentUser',
+            '/currentUser',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -63,7 +63,7 @@ class TestDefaultController(BaseTestCase):
         Returns a list of people
         """
         response = self.client.open(
-            '/v1/people',
+            '/people',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -74,7 +74,7 @@ class TestDefaultController(BaseTestCase):
         Returns a person
         """
         response = self.client.open(
-            '/v1/person/{id}'.format(id=56),
+            '/person/{id}'.format(id=56),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -85,7 +85,7 @@ class TestDefaultController(BaseTestCase):
         Returns a user
         """
         response = self.client.open(
-            '/v1/user/{username}'.format(username='username_example'),
+            '/user/{username}'.format(username='username_example'),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -96,7 +96,7 @@ class TestDefaultController(BaseTestCase):
         Returns all users
         """
         response = self.client.open(
-            '/v1/users',
+            '/users',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -107,7 +107,7 @@ class TestDefaultController(BaseTestCase):
         Inits root user
         """
         response = self.client.open(
-            '/v1/init/rootUser',
+            '/init/rootUser',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -119,7 +119,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = AuthRequest()
         response = self.client.open(
-            '/v1/authorization',
+            '/authorization',
             method='POST',
             data=json.dumps(body),
             content_type='application/json')
@@ -132,7 +132,7 @@ class TestDefaultController(BaseTestCase):
         Removes a user
         """
         response = self.client.open(
-            '/v1/currentUser',
+            '/currentUser',
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -143,7 +143,7 @@ class TestDefaultController(BaseTestCase):
         Removes a person
         """
         response = self.client.open(
-            '/v1/person/{id}'.format(id='id_example'),
+            '/person/{id}'.format(id='id_example'),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -154,7 +154,7 @@ class TestDefaultController(BaseTestCase):
         Removes a user
         """
         response = self.client.open(
-            '/v1/user/{username}'.format(username='username_example'),
+            '/user/{username}'.format(username='username_example'),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -165,7 +165,7 @@ class TestDefaultController(BaseTestCase):
         Renews auth token
         """
         response = self.client.open(
-            '/v1/authorization',
+            '/authorization',
             method='PATCH')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -177,7 +177,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = User()
         response = self.client.open(
-            '/v1/currentUser',
+            '/currentUser',
             method='PATCH',
             data=json.dumps(body),
             content_type='application/json')
@@ -191,7 +191,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = Person()
         response = self.client.open(
-            '/v1/person/{id}'.format(id='id_example'),
+            '/person/{id}'.format(id='id_example'),
             method='PATCH',
             data=json.dumps(body),
             content_type='application/json')
@@ -205,7 +205,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = User()
         response = self.client.open(
-            '/v1/user/{username}'.format(username='username_example'),
+            '/user/{username}'.format(username='username_example'),
             method='PATCH',
             data=json.dumps(body),
             content_type='application/json')
@@ -219,7 +219,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = User()
         response = self.client.open(
-            '/v1/validation/user',
+            '/validation/user',
             method='PATCH',
             data=json.dumps(body),
             content_type='application/json')

@@ -3,7 +3,7 @@ info:
   title: Police lineups
   version: "1.0"
 servers:
-- url: http://127.0.0.1:8080/v1
+- url: /
 security:
 - JwtAuthUser: []
 paths:

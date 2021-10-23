@@ -111,7 +111,7 @@ import { AppEffects } from "./state/app.effects";
     {
       provide: BASE_PATH,
       useFactory: () =>
-        `http://${environment.server.host}:${environment.server.port}${environment.server.basePath}`,
+        `http://${environment.server.host}:${environment.server.port}`,
     },
     DefaultService,
   ],
