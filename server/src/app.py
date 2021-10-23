@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.9
 from police_lineups.db_scheme import prepare_db
 from police_lineups.singletons import Configuration, Server
 
