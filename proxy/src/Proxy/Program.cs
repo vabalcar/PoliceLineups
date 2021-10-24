@@ -61,9 +61,9 @@ var routes = new[]
     }
 };
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddReverseProxy().LoadFromMemory(routes, clusters);
+var appBuilder = WebApplication.CreateBuilder(args);
+appBuilder.Services.AddReverseProxy().LoadFromMemory(routes, clusters);
 
-var app = builder.Build();
+var app = appBuilder.Build();
 app.MapReverseProxy();
-app.Run();
+app.Run($"http://{proxyConfiguration?.host}:{proxyConfiguration?.port}");
