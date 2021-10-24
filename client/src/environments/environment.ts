@@ -11,9 +11,9 @@
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
 
-import server from "../../../config/debug/server.json";
+import proxy from "../../../config/debug/proxy.json";
 
 export const environment = {
   production: false,
-  server,
+  proxy,
 };

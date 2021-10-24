@@ -1,6 +1,6 @@
-import server from "../../../config/production/server.json";
+import proxy from "../../../config/production/proxy.json";
 
 export const environment = {
   production: true,
-  server,
+  proxy,
 };
