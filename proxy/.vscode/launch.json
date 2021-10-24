@@ -9,12 +9,12 @@
       "preLaunchTask": "Build proxy",
       "stopAtEntry": false,
       "linux": {
-        "cwd": "${workspaceFolder}/src/Proxy",
-        "program": "bin/Debug/net6.0/Proxy.dll"
+        "cwd": "${workspaceFolder}",
+        "program": "src/Proxy/bin/Debug/net6.0/Proxy.dll"
       },
       "windows": {
-        "cwd": "${workspaceFolder}\\src\\Proxy",
-        "program": "bin\\Debug\\net6.0\\Proxy.dll"
+        "cwd": "${workspaceFolder}",
+        "program": "src\\Proxy\\bin\\Debug\\net6.0\\Proxy.dll"
       },
       "console": "integratedTerminal",
       "env": {
