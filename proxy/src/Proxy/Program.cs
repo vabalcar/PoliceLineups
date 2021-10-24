@@ -17,7 +17,10 @@ ClusterConfig CreateClusterConfig(string clusterId, string clusterAddress)
         }
     };
 
-var configurationDirectory = Path.Combine("..", "config", "debug");
+var appBuilder = WebApplication.CreateBuilder(args);
+
+var environment = appBuilder.Environment.IsDevelopment() ? "debug" : "production";
+var configurationDirectory = Path.Combine("..", "config", environment);
 
 var clientConfiguration = ParseJsonFile(configurationDirectory, "client.json");
 var proxyConfiguration = ParseJsonFile(configurationDirectory, "proxy.json");
@@ -61,7 +64,6 @@ var routes = new[]
     }
 };
 
-var appBuilder = WebApplication.CreateBuilder(args);
 appBuilder.Services.AddReverseProxy().LoadFromMemory(routes, clusters);
 
 var app = appBuilder.Build();

@@ -5,12 +5,5 @@ param (
 
 'Running proxy...' | Out-Host
 
-$originalWD = Get-Location
-Set-Location -Path 'src'
-
-try {
-    & dotnet run --no-build --project Proxy
-}
-finally {
-    Set-Location -Path $originalWD
-}
+$env:ASPNETCORE_ENVIRONMENT = $Debug ? 'Development' : 'Production'
+& dotnet (Join-Path 'src' 'Proxy' 'bin' 'Debug' 'net6.0' 'Proxy.dll')

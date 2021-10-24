@@ -17,6 +17,6 @@ $sequentialExecutor.Execute(@(
 
 $executor.Execute(@(
         @{Script = 'install.ps1'; WD = 'client' },
-        @{Script = 'build.ps1'; WD = 'proxy'; ArgumentList = $commonArgs },
+        @{Script = 'build.ps1'; WD = 'proxy' },
         @{Script = 'install.ps1'; WD = 'server' }
     ))
