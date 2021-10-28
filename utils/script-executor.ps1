@@ -1,6 +1,9 @@
+using namespace System.Collections.Generic
+using namespace System.Diagnostics
+
 class ScriptExecution {
-    [string] $WD = '.'
     [string] $Script
+    [string] $WD = '.'
     [array] $ArgumentList = @()
 }
 
@@ -12,24 +15,45 @@ class ScriptExecutor {
 
 class SequentialScriptExecutor : ScriptExecutor {
     [void] Execute([ScriptExecution[]] $scriptExcutions) {
-        $scriptExcutions
-        | ForEach-Object {
-            Write-Host -ForegroundColor DarkCyan "Running script $(Join-Path $_.WD $_.Script) sequentially"
+        $processInProgress = $null
 
-            Start-Process -Wait -NoNewWindow -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$($_.Script) $($_.ArgumentList)"
+        try {
+            $scriptExcutions
+            | ForEach-Object {
+                Write-Host -ForegroundColor DarkCyan "Running script $(Join-Path $_.WD $_.Script) sequentially"
+
+                $processInProgress = Start-Process -PassThru -NoNewWindow -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$($_.Script) $($_.ArgumentList)"
+                $processInProgress | Wait-Process
+            }
+        }
+        finally {
+            if ($null -ne $processInProgress) {
+                # Wait after pressing ctrl+c
+                $processInProgress | Wait-Process
+            }
         }
     }
 }
 
 class ParallelScriptExecutor : ScriptExecutor {
     [void] Execute([ScriptExecution[]] $scriptExcutions) {
-        $scriptExcutions
-        | ForEach-Object {
-            Write-Host -ForegroundColor DarkCyan "Running script $(Join-Path $_.WD $_.Script) parallelly"
+        [List[Process]] $backgroundProcesses = [List[Process]]::new()
 
-            Start-Process -PassThru -NoNewWindow -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$($_.Script) $($_.ArgumentList)"
+        try {
+            $scriptExcutions
+            | ForEach-Object {
+                Write-Host -ForegroundColor DarkCyan "Running script $(Join-Path $_.WD $_.Script) parallelly"
+
+                $backgroundProcess = Start-Process -PassThru -NoNewWindow -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-NonInteractive', '-File', "$($_.Script) $($_.ArgumentList)"
+                $backgroundProcesses.Add($backgroundProcess)
+                return $backgroundProcess
+            }
+            | Wait-Process
         }
-        | Wait-Process
+        finally {
+            # Wait after pressing ctrl+c
+            $backgroundProcesses | Wait-Process
+        }
     }
 }
 
@@ -39,8 +63,7 @@ class ExternalScriptExecutor : ScriptExecutor {
         | ForEach-Object {
             Write-Host -ForegroundColor DarkCyan "Running script $(Join-Path $_.WD $_.Script) externally"
 
-            Start-Process -PassThru -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-NoExit', '-File', "$($_.Script) $($_.ArgumentList)"
+            Start-Process -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-NoExit', '-File', "$($_.Script) $($_.ArgumentList)"
         }
-        | Wait-Process
     }
 }
