@@ -7,7 +7,7 @@ param (
 
 $commonArgs = $Debug ? @('-Debug') : @()
 
-$executor = [ExternalScriptExecutor]::new()
+$executor = $Debug -and $IsWindows ? [ExternalScriptExecutor]::new() : [ParallelScriptExecutor]::new()
 
 $executor.Execute(@(
         @{Script = 'run.ps1'; WD = 'client'; ArgumentList = $commonArgs },
