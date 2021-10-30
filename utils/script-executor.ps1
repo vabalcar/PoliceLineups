@@ -1,5 +1,6 @@
 using namespace System.Collections.Generic
 using namespace System.Diagnostics
+using namespace System.IO
 
 class ScriptExecution {
     [string] $Script
@@ -65,5 +66,89 @@ class ExternalScriptExecutor : ScriptExecutor {
 
             Start-Process -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-NoExit', '-File', "$($_.Script) $($_.ArgumentList)"
         }
+    }
+}
+
+class ServiceScriptExecutor : ScriptExecutor {
+    [void] Execute([ScriptExecution[]] $scriptExcutions) {
+
+        $pidDirectory = $this.GetOrCreateVarDirectory('pid')
+        $logDirectory = $this.GetOrCreateVarDirectory('log')
+
+        $scriptExcutions
+        | ForEach-Object {
+            $scriptWithoutExtension = [Path]::GetFileNameWithoutExtension(($_.Script))
+
+            $processPidDirectory = $this.GetOrCreateDirectory((Join-Path $pidDirectory $_.WD))
+            $pidFile = Join-Path $processPidDirectory "$scriptWithoutExtension.pid"
+
+            if (Test-Path -PathType Leaf -Path $pidFile) {
+                "$(Join-Path $_.WD $_.Script) is already running" | Out-Host
+                return
+            }
+
+            $processLogDirectory = $this.GetOrCreateDirectory((Join-Path $logDirectory $_.WD))
+            $logFile = Join-Path $processLogDirectory "$scriptWithoutExtension.log"
+            $errorLogFile = Join-Path $processLogDirectory "$scriptWithoutExtension.err"
+
+            $serviceProcess = Start-Process -PassThru -NoNewWindow -WorkingDirectory $_.WD -RedirectStandardOutput $logFile -RedirectStandardError $errorLogFile -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$($_.Script) $($_.ArgumentList)"
+            $serviceProcess.Id | Out-File -FilePath $pidFile
+
+            Write-Host -ForegroundColor DarkCyan "Running script $(Join-Path $_.WD $_.Script) as a service"
+        }
+    }
+
+    [void] PrintExecutionStatus() {
+        $runningScripts = 0
+
+        Get-ChildItem -Recurse -Name -Path $this.GetOrCreateVarDirectory('pid') -Include '*.pid'
+        | ForEach-Object {
+            ++$runningScripts
+            "$($this.GetScript($_)) is running" | Out-Host
+        }
+
+        if ($runningScripts -eq 0) {
+            'Nothing is running' | Out-Host
+        }
+    }
+
+    [void] TerminateAllExecutions() {
+        $pidDirectory = $this.GetOrCreateVarDirectory('pid')
+        $terminatedScripts = 0
+
+        Get-ChildItem -Recurse -Name -Path $pidDirectory -Include '*.pid'
+        | ForEach-Object {
+            $targetPidFile = Join-Path $pidDirectory $_
+            $targetPid = Get-Content $targetPidFile
+            if ($IsWindows) {
+                # Following command sends SIGKILL, since Windows don't support sending SIGINT to the background process
+                & taskkill /f /t /pid $targetPid | Out-Host
+            }
+            else {
+                # TODO: implement linux version of termination backgroud process tree
+            }
+            Remove-Item -Path $targetPidFile
+            ++$terminatedScripts
+            "$($this.GetScript($_)) has been stopped" | Out-Host
+        }
+
+        if ($terminatedScripts -eq 0) {
+            'Nothing to stop' | Out-Host
+        }
+    }
+
+    hidden [string] GetOrCreateVarDirectory([string] $name) {
+        return $this.GetOrCreateDirectory((Join-Path $PSScriptRoot '..' '.var' $name))
+    }
+
+    hidden [string] GetOrCreateDirectory([string] $path) {
+        New-Item -ItemType Directory -Path $path -ErrorAction Ignore
+        return $path
+    }
+
+    hidden [string] GetScript([string] $pidFilePath) {
+        $parentDirectory = Split-Path -Parent $pidFilePath
+        $scriptName = "$([Path]::GetFileNameWithoutExtension($_)).ps1"
+        return Join-Path $parentDirectory $scriptName
     }
 }

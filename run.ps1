@@ -1,6 +1,7 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Debug
+    [switch] $Debug,
+    [switch] $AsService
 )
 
 . (Join-Path '.' 'utils' 'script-executor.ps1')
@@ -8,7 +9,7 @@ param (
 $commonArgs = $Debug ? @('-Debug') : @()
 $clientArgs = $Debug ? @() : @('-NonInteractive')
 
-$executor = $Debug -and $IsWindows ? [ExternalScriptExecutor]::new() : [ParallelScriptExecutor]::new()
+$executor = $AsService ? [ServiceScriptExecutor]::new() : $Debug -and $IsWindows ? [ExternalScriptExecutor]::new() : [ParallelScriptExecutor]::new()
 
 $executor.Execute(@(
         @{Script = 'run.ps1'; WD = 'client'; ArgumentList = $commonArgs + $clientArgs },
