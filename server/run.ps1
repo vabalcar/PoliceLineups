@@ -13,11 +13,14 @@ $originalWD = Get-Location
 Set-Location -Path 'src'
 
 try {
+    $env:FLASK_ENV = $Debug ? "development" : "production"
     if ($Debug) {
-        & python app.py --debug
+        python app_debug_runner.py
     }
     else {
-        & python app.py
+        $environment = $Debug ? 'debug' : 'production'
+        $serverConfiguration = Get-Content (Join-Path '..' '..' 'config' $environment 'client.json') | ConvertFrom-Json
+        & waitress-serve --host $serverConfiguration.host --port $serverConfiguration.port app:app
     }
 }
 finally {

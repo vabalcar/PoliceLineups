@@ -1,16 +1,4 @@
 #!/usr/bin/env python3.9
-from police_lineups.db_scheme import prepare_db
-from police_lineups.singletons import Configuration, Server
+from police_lineups.singletons import Server
 
-
-def main():
-    prepare_db()
-
-    Server().current.run(
-        host=Configuration().server.host,
-        port=Configuration().server.port,
-        debug=Configuration().server.is_debug_mode)
-
-
-if __name__ == '__main__':
-    main()
+app = Server().current.app

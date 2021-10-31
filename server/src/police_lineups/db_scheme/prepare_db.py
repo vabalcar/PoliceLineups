@@ -4,6 +4,6 @@ from .db_person import DbPerson
 from .db_user import DbUser
 
 
-def prepare_db():
+def prepare_current_db():
     with DB().current as database:
         database.create_tables([DbPerson, DbUser])

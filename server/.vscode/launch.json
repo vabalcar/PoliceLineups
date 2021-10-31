@@ -16,8 +16,10 @@
         "cwd": "${workspaceFolder}\\src",
         "console": "externalTerminal"
       },
-      "program": "app.py",
-      "args": ["--debug"],
+      "env": {
+        "FLASK_ENV": "development"
+      },
+      "program": "app_debug_runner.py",
       "preLaunchTask": "Prepare server debugging",
       "presentation": {
         "group": "Debug server",

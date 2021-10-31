@@ -4,6 +4,7 @@ from flask_cors import CORS
 
 from swagger_server.encoder import JSONEncoder
 
+from police_lineups.db_scheme import prepare_current_db
 from police_lineups.utils import Singleton
 
 from .db import DB
@@ -20,6 +21,8 @@ class Server(metaclass=Singleton):
         CORS(self._app.app)
         self._app.app.json_encoder = JSONEncoder
         self._app.add_api('swagger.yaml')
+
+        prepare_current_db()
 
         @self._app.app.before_request
         def _db_connect():
