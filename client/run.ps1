@@ -15,7 +15,6 @@ try {
         & npm run debug -- --host $($clientConfiguration.host) --port $($clientConfiguration.port) @inputRedirection
     }
     else {
-        & npm run build -- --configuration production
         & npm start -- (Join-Path 'dist' 'client')  -a $($clientConfiguration.host) -p $($clientConfiguration.port) --proxy "http://$($clientConfiguration.host):$($clientConfiguration.port)?" -d false --silent
     }
 }
