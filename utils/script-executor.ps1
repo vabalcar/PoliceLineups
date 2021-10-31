@@ -89,9 +89,8 @@ class ServiceScriptExecutor : ScriptExecutor {
 
             $processLogDirectory = $this.GetOrCreateDirectory((Join-Path $logDirectory $_.WD))
             $logFile = Join-Path $processLogDirectory "$scriptWithoutExtension.log"
-            $errorLogFile = Join-Path $processLogDirectory "$scriptWithoutExtension.err"
 
-            $serviceProcess = Start-Process -PassThru -NoNewWindow -WorkingDirectory $_.WD -RedirectStandardOutput $logFile -RedirectStandardError $errorLogFile -Path 'pwsh' -ArgumentList '-NoLogo', '-File', "$($_.Script) $($_.ArgumentList)"
+            $serviceProcess = Start-Process -PassThru -WindowStyle Hidden -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& pwsh -File $($_.Script) $($_.ArgumentList) *> $logFile"
             $serviceProcess.Id | Out-File -FilePath $pidFile
 
             Write-Host -ForegroundColor DarkCyan "Running script $(Join-Path $_.WD $_.Script) as a service"
