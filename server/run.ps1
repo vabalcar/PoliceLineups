@@ -19,7 +19,7 @@ try {
     }
     else {
         $environment = $Debug ? 'debug' : 'production'
-        $serverConfiguration = Get-Content (Join-Path '..' '..' 'config' $environment 'client.json') | ConvertFrom-Json
+        $serverConfiguration = Get-Content (Join-Path '..' '..' 'config' $environment 'server.json') | ConvertFrom-Json
         & waitress-serve --host $serverConfiguration.host --port $serverConfiguration.port app:app
     }
 }
