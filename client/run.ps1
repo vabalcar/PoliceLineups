@@ -8,12 +8,16 @@ param (
 
 $environment = $Debug ? 'debug' : 'production'
 $clientConfiguration = Get-Content (Join-Path '..' 'config' $environment 'client.json') | ConvertFrom-Json
-$angularConfiguration = $Debug ? @() : '--configuration', 'production'
-
-$inputRedirection = $NonInteractive ? '<', ($IsWindows ? 'nul' : '/dev/null') : @()
 
 try {
-    & npm start -- --host $($clientConfiguration.host) --port $($clientConfiguration.port) @angularConfiguration @inputRedirection
+    if ($Debug) {
+        $inputRedirection = $NonInteractive ? '<', ($IsWindows ? 'nul' : '/dev/null') : @()
+        & npm run debug -- --host $($clientConfiguration.host) --port $($clientConfiguration.port) @inputRedirection
+    }
+    else {
+        & npm run build -- --configuration production
+        & npm start -- (Join-Path 'dist' 'client')  -a $($clientConfiguration.host) -p $($clientConfiguration.port) --proxy "http://$($clientConfiguration.host):$($clientConfiguration.port)?" -d false
+    }
 }
 finally {
     'stopped.' | Out-Host
