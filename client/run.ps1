@@ -16,7 +16,7 @@ try {
     }
     else {
         & npm run build -- --configuration production
-        & npm start -- (Join-Path 'dist' 'client')  -a $($clientConfiguration.host) -p $($clientConfiguration.port) --proxy "http://$($clientConfiguration.host):$($clientConfiguration.port)?" -d false
+        & npm start -- (Join-Path 'dist' 'client')  -a $($clientConfiguration.host) -p $($clientConfiguration.port) --proxy "http://$($clientConfiguration.host):$($clientConfiguration.port)?" -d false --silent
     }
 }
 finally {
