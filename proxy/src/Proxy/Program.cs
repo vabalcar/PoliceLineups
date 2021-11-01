@@ -17,6 +17,19 @@ ClusterConfig CreateClusterConfig(string clusterId, string clusterAddress)
         }
     };
 
+X509Certificate2? GetCertificateOrDefault(string? host, bool IsDevelopmentEnvironment)
+{
+    if (string.IsNullOrEmpty(host))
+        return default;
+
+    using var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+    store.Open(OpenFlags.ReadOnly);
+
+    var foundCertificates = store.Certificates.Find(X509FindType.FindBySubjectName, host, validOnly: !IsDevelopmentEnvironment);
+
+    return foundCertificates.FirstOrDefault();
+}
+
 var appBuilder = WebApplication.CreateBuilder(args);
 
 var environment = appBuilder.Environment.IsDevelopment() ? "debug" : "production";
@@ -25,6 +38,8 @@ var configurationDirectory = Path.Combine("..", "config", environment);
 var clientConfiguration = ParseJsonFile(configurationDirectory, "client.json");
 var proxyConfiguration = ParseJsonFile(configurationDirectory, "proxy.json");
 var serverConfiguration = ParseJsonFile(configurationDirectory, "server.json");
+
+var proxyHost = $"{proxyConfiguration?.host}";
 
 const string ClientClusterId = "Client";
 const string ServerClusterId = "Server";
@@ -66,6 +81,25 @@ var routes = new[]
 
 appBuilder.Services.AddReverseProxy().LoadFromMemory(routes, clusters);
 
+appBuilder.WebHost.UseUrls(
+    $"http://{proxyHost}:{proxyConfiguration?.httpPort}",
+    $"https://{proxyHost}:{proxyConfiguration?.httpsPort}"
+);
+
+appBuilder.WebHost.ConfigureKestrel(kestrelOptions =>
+{
+    kestrelOptions.ConfigureEndpointDefaults(endpointCOnfiguration =>
+    {
+        endpointCOnfiguration.Protocols = HttpProtocols.Http1;
+    });
+    kestrelOptions.ConfigureHttpsDefaults(httpsConfiguration =>
+    {
+        httpsConfiguration.ServerCertificate = GetCertificateOrDefault(proxyHost, appBuilder.Environment.IsDevelopment());
+        httpsConfiguration.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13;
+    });
+});
+
 var app = appBuilder.Build();
 app.MapReverseProxy();
-app.Run($"http://{proxyConfiguration?.host}:{proxyConfiguration?.port}");
+app.UseHttpsRedirection();
+app.Run();
