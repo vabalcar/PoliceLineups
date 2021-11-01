@@ -37,7 +37,7 @@
       "api": true,
       "**/swagger-codegen-cli.jar": true,
       "client": true,
-      "configuration": true,
+      "config": true,
       "**/dist": true,
       "**/node_modules": true,
       "proxy": true,
