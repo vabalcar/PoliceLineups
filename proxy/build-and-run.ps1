@@ -10,6 +10,6 @@ $executor = [SequentialScriptExecutor]::new()
 $commonArgs = $Debug ? @('-Debug') : @()
 
 $executor.Execute(@(
-        @{Script = 'build.ps1' },
+        @{Script = 'build.ps1'; ArgumentList = $commonArgs },
         @{Script = 'run.ps1'; ArgumentList = $commonArgs }
     ))

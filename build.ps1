@@ -11,12 +11,11 @@ $executor = $Debug ? $sequentialExecutor : [ParallelScriptExecutor]::new()
 $commonArgs = $Debug ? @('-Debug') : @()
 
 $sequentialExecutor.Execute(@(
-        @{Script = 'install.ps1'; WD = 'api' },
-        @{Script = 'generate-code.ps1'; ArgumentList = $commonArgs }
+        @{Script = 'install.ps1'; WD = 'api' }
     ))
 
 $executor.Execute(@(
-        @{Script = 'install.ps1'; WD = 'client' },
-        @{Script = 'build.ps1'; WD = 'proxy' },
-        @{Script = 'install.ps1'; WD = 'server' }
+        @{Script = 'build.ps1'; WD = 'client'; ArgumentList = $commonArgs },
+        @{Script = 'build.ps1'; WD = 'proxy'; ArgumentList = $commonArgs },
+        @{Script = 'build.ps1'; WD = 'server' }
     ))

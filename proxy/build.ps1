@@ -1,8 +1,21 @@
 #!/usr/bin/pwsh
+param (
+    [switch] $Debug
+)
 
 'Building proxy...' | Out-Host
 
-$targetProjectFile = (Join-Path '.' 'src' 'Proxy' 'Proxy.csproj')
-& dotnet build --nologo $targetProjectFile /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary
+. (Join-Path '..' 'utils' 'script-executor.ps1')
+
+$executor = [SequentialScriptExecutor]::new()
+
+$commonArgs = $Debug ? @('-Debug') : @()
+
+$certificateGeneration = $Debug ? @(@{Script = 'generate-certificate.ps1' }) : @()
+
+$executor.Execute(@(
+        @{Script = 'install.ps1' },
+        @{Script = 'compile.ps1'; ArgumentList = $commonArgs }
+    ) + $certificateGeneration)
 
 'done.' | Out-Host
