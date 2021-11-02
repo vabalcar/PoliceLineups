@@ -90,7 +90,8 @@ class ServiceScriptExecutor : ScriptExecutor {
             $processLogDirectory = $this.GetOrCreateDirectory((Join-Path $logDirectory $_.WD))
             $logFile = Join-Path $processLogDirectory "$scriptWithoutExtension.log"
 
-            $serviceProcess = Start-Process -PassThru -WindowStyle Hidden -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& pwsh -File $($_.Script) $($_.ArgumentList) *> $logFile"
+            $windowStyle = $IsWindows ? @('-WindowStyle', 'Hidden') : @()
+            $serviceProcess = Start-Process -PassThru @windowStyle -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& pwsh -File $($_.Script) $($_.ArgumentList) *> $logFile"
             $serviceProcess.Id | Out-File -FilePath $pidFile
 
             Write-Host -ForegroundColor DarkCyan "Running script $(Join-Path $_.WD $_.Script) as a service"
@@ -120,11 +121,11 @@ class ServiceScriptExecutor : ScriptExecutor {
             $targetPidFile = Join-Path $pidDirectory $_
             $targetPid = Get-Content $targetPidFile
             if ($IsWindows) {
-                # Following command sends SIGKILL, since Windows don't support sending SIGINT to the background process
                 & taskkill /f /t /pid $targetPid | Out-Host
             }
             else {
-                # TODO: implement linux version of termination backgroud process tree
+                Write-Host -NoNewline 'Stopping processes with following PIDs: '
+                & rkill $targetPid | Out-Host
             }
             Remove-Item -Path $targetPidFile
             ++$terminatedScripts
