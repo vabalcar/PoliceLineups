@@ -17,17 +17,38 @@ ClusterConfig CreateClusterConfig(string clusterId, string clusterAddress)
         }
     };
 
-X509Certificate2? GetCertificateOrDefault(string? host, bool IsDevelopmentEnvironment)
+X509Certificate2? GetCertificateOrDefault(string? host, bool isDevelopmentEnvironment)
 {
-    if (string.IsNullOrEmpty(host))
+    var certificate = GetCertificateFromCertsDirectoryOrDefault(host);
+    return certificate ?? GetCertificateFromCertificateStoreOrDefault(host, isDevelopmentEnvironment);
+}
+
+X509Certificate2? GetCertificateFromCertificateStoreOrDefault(string? host, bool isDevelopmentEnvironment)
+{
+    if (!OperatingSystem.IsWindows() || string.IsNullOrEmpty(host))
         return default;
 
     using var store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
     store.Open(OpenFlags.ReadOnly);
 
-    var foundCertificates = store.Certificates.Find(X509FindType.FindBySubjectName, host, validOnly: !IsDevelopmentEnvironment);
+    var foundCertificates = store.Certificates.Find(X509FindType.FindBySubjectName, host, validOnly: !isDevelopmentEnvironment);
 
     return foundCertificates.FirstOrDefault();
+}
+
+X509Certificate2? GetCertificateFromCertsDirectoryOrDefault(string? host)
+{
+    if (string.IsNullOrEmpty(host))
+        return default;
+
+    const string certsDirectory = ".ssl";
+    var certFile = Path.Combine(certsDirectory, $"{host}.crt");
+    var certKeyFile = Path.Combine(certsDirectory, $"{host}.key");
+
+    if (!File.Exists(certFile) || !File.Exists(certKeyFile))
+        return default;
+
+    return new X509Certificate2(X509Certificate2.CreateFromPemFile(certFile, certKeyFile).Export(X509ContentType.Pkcs12));
 }
 
 var appBuilder = WebApplication.CreateBuilder(args);
