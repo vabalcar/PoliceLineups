@@ -1,2 +1,3 @@
 name;executable;installWebsite
 Python;python;https://www.python.org/downloads/
+taskkill;taskkill;https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/taskkill
