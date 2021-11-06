@@ -90,7 +90,7 @@ class ServiceScriptExecutor : ScriptExecutor {
             $processLogDirectory = $this.GetOrCreateDirectory((Join-Path $logDirectory $_.WD))
             $logFile = Join-Path $processLogDirectory "$scriptWithoutExtension.log"
 
-            $windowStyle = $IsWindows ? @('-WindowStyle', 'Hidden') : @()
+            $windowStyle = $IsWindows ? @{ WindowStyle = 'Hidden' } : @{}
             $serviceProcess = Start-Process -PassThru @windowStyle -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& pwsh -File $($_.Script) $($_.ArgumentList) *> $logFile"
             $serviceProcess.Id | Out-File -FilePath $pidFile
 
