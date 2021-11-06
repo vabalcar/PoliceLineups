@@ -43,6 +43,7 @@
       "proxy": true,
       "**/bin": true,
       "**/obj": true,
+      "**/.ssl": true,
       "server": true,
       "**/__pycache__": true,
       "**/.venv_linux": true,

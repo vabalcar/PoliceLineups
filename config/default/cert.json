@@ -1,0 +1,10 @@
+{
+  "windows": {
+    "certFile": "C:\\ert\\File\\Path",
+    "keyFile": "K:\\ey\\File\\Path"
+  },
+  "linux": {
+    "certFile": "/cert/File/Path",
+    "keyFile": "/key/File/Path"
+  }
+}
