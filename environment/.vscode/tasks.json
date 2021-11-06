@@ -6,16 +6,6 @@
     {
       "label": "Test environment",
       "type": "shell",
-      "windows": {
-        "options": {
-          "cwd": "${workspaceFolder}\\environment"
-        }
-      },
-      "linux": {
-        "options": {
-          "cwd": "${workspaceFolder}/environment"
-        }
-      },
       "command": "pwsh",
       "args": ["-NoLogo", "-File", "test-environment.ps1"],
       "group": "test",
@@ -29,16 +19,6 @@
     {
       "label": "Repair PowerShell execution policy",
       "type": "shell",
-      "windows": {
-        "options": {
-          "cwd": "${workspaceFolder}\\environment"
-        }
-      },
-      "linux": {
-        "options": {
-          "cwd": "${workspaceFolder}/environment"
-        }
-      },
       "command": "pwsh",
       "args": ["-NoLogo", "-File", "repair-pwsh-execution-policy.ps1"],
       "group": "build",
