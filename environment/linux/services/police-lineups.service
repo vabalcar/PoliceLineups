@@ -5,8 +5,9 @@ After=network.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-WorkingDirectory=/installation/directory/of/police/lineups/
-ExecStart=start.ps1
+WorkingDirectory=/installation/directory/of/police/lineups
+ExecStart=/installation/directory/of/police/lineups/start.ps1
+ExecStop=/installation/directory/of/police/lineups/stop.ps1
 
 [Install]
 WantedBy=multi-user.target
