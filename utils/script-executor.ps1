@@ -91,7 +91,7 @@ class ServiceScriptExecutor : ScriptExecutor {
             $logFile = Join-Path $processLogDirectory "$scriptWithoutExtension.log"
 
             $windowStyle = $IsWindows ? @{ WindowStyle = 'Hidden' } : @{}
-            $serviceProcess = Start-Process -PassThru @windowStyle -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& pwsh -File $($_.Script) $($_.ArgumentList) *> $logFile"
+            $serviceProcess = Start-Process -PassThru -UseNewEnvironment @windowStyle -WorkingDirectory $_.WD -Path 'pwsh' -ArgumentList '-NoLogo', '-Command', "& pwsh -File $($_.Script) $($_.ArgumentList) *> $logFile"
             $serviceProcess.Id | Out-File -FilePath $pidFile
 
             Write-Host -ForegroundColor DarkCyan "Running script $(Join-Path $_.WD $_.Script) as a service"
