@@ -1,7 +1,7 @@
 #!/bin/sh
 
 RUNAS="root"
-INSTALL_DIR="/installation/direxctory/of/police/lineups"
+INSTALL_DIR="/installation/directory/of/police/lineups"
 
 start() {
     local CMD="start.ps1"
