@@ -1,7 +1,7 @@
 using namespace System.Collections.Generic
 
 function Remove-GitIgnoredFiles {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [string] $Path = '.',
         [string] $ExclusionsFile
