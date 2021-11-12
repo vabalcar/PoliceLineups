@@ -38,21 +38,20 @@ function Test-Environment {
     return $isTestedEnvironmentReady
 }
 
-$isEnvironmentReady = $true
+$pwshExecutionPolicy = Get-ExecutionPolicy
+$isPwshReady = Test-ExecutionPolicy -ExecutionPolicy $pwshExecutionPolicy
 
-$currentExecutionPolicy = Get-ExecutionPolicy
-if (!(Test-ExecutionPolicy -ExecutionPolicy $currentExecutionPolicy)) {
-    "PowerShell execution policy is '$currentExecutionPolicy' which is BAD. Please repair it." | Out-Host
-    $isEnvironmentReady = $false
+if (!$isPwshReady) {
+    "PowerShell execution policy is '$pwshExecutionPolicy' which is BAD." | Out-Host
+    "Please repair it by running 'repair-pwsh-execution-policy.ps1' script." | Out-Host
 }
 
-$isEnvironmentReady = $isEnvironmentReady -and (Test-Environment -EnvironmentDescriptionFile 'environment-common.csv')
-if ($IsWindows) {
-    $isEnvironmentReady = $isEnvironmentReady -and (Test-Environment -EnvironmentDescriptionFile 'environment-windows.csv')
-}
-else {
-    $isEnvironmentReady = $isEnvironmentReady -and (Test-Environment -EnvironmentDescriptionFile 'environment-linux.csv')
-}
+$isCommonEnvironmentReady = Test-Environment -EnvironmentDescriptionFile 'environment-common.csv'
+
+$currentOSEnvironment = $IsWindows ? 'environment-windows.csv' : 'environment-linux.csv'
+$isCurrentOSEnvironmentReady = Test-Environment -EnvironmentDescriptionFile $currentOSEnvironment
+
+$isEnvironmentReady = $isPwshReady -and $isCommonEnvironmentReady -and $isCurrentOSEnvironmentReady
 
 if ($isEnvironmentReady) {
     'Environment is ready.' | Out-Host
@@ -60,3 +59,5 @@ if ($isEnvironmentReady) {
 else {
     'Evironment is not ready. Please follow instructions above and try again.' | Out-Host
 }
+
+return $isEnvironmentReady
