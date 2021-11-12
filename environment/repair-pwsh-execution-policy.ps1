@@ -1,7 +1,6 @@
 #!/usr/bin/pwsh
 
 function Test-ExecutionPolicy {
-    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)] [string] $ExecutionPolicy
     )

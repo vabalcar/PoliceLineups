@@ -25,7 +25,6 @@ function Remove-GitIgnoredFiles {
 }
 
 function Read-GitIgnore {
-    [CmdletBinding()]
     [OutputType([string[]])]
     param (
         [string] $Path = '.',
@@ -60,7 +59,6 @@ function Read-GitIgnore {
 }
 
 function Skip-Prefixed {
-    [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline)] [string[]] $String,
         [string[]] $Prefixes
