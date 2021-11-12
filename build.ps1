@@ -1,7 +1,13 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Debug
+    [switch] $Debug,
+    [switch] $NoEnvironmentTest
 )
+
+$isEnvironmentReady = $NoEnvironmentTest -or (& (Join-Path '.' 'environment' 'test-environment.ps1'))
+if (!$isEnvironmentReady) {
+    exit
+}
 
 . (Join-Path '.' 'utils' 'script-executor.ps1')
 

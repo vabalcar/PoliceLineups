@@ -4,14 +4,20 @@ param (
     [switch] $AsService
 )
 
+$isEnvironmentReady = & (Join-Path '.' 'environment' 'test-environment.ps1')
+if (!$isEnvironmentReady) {
+    exit
+}
+
 . (Join-Path '.' 'utils' 'script-executor.ps1')
 
 $executor = [SequentialScriptExecutor]::new()
 
 $commonArgs = $Debug ? @('-Debug') : @()
+$buildArgs = @('-NoEnvironmentTest')
 $runArgs = $AsService ? @('-AsService') : @()
 
 $executor.Execute(@(
-        @{Script = 'build.ps1'; ArgumentList = $commonArgs },
+        @{Script = 'build.ps1'; ArgumentList = $commonArgs + $buildArgs },
         @{Script = 'run.ps1'; ArgumentList = $commonArgs + $runArgs }
     ))

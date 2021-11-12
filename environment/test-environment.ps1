@@ -46,10 +46,10 @@ if (!$isPwshReady) {
     "Please repair it by running 'repair-pwsh-execution-policy.ps1' script." | Out-Host
 }
 
-$isCommonEnvironmentReady = Test-Environment -EnvironmentDescriptionFile 'environment-common.csv'
+$isCommonEnvironmentReady = Test-Environment -EnvironmentDescriptionFile (Join-Path $PSScriptRoot 'environment-common.csv')
 
 $currentOSEnvironment = $IsWindows ? 'environment-windows.csv' : 'environment-linux.csv'
-$isCurrentOSEnvironmentReady = Test-Environment -EnvironmentDescriptionFile $currentOSEnvironment
+$isCurrentOSEnvironmentReady = Test-Environment -EnvironmentDescriptionFile (Join-Path $PSScriptRoot $currentOSEnvironment)
 
 $isEnvironmentReady = $isPwshReady -and $isCommonEnvironmentReady -and $isCurrentOSEnvironmentReady
 
