@@ -1,13 +1,37 @@
 using namespace System.Collections.Generic
 
+function Remove-GitIgnoredFiles {
+    [CmdletBinding()]
+    param (
+        [string] $Path = '.',
+        [string] $ExclusionsFile
+    )
+
+    if (!$ExclusionsFile) {
+        Read-GitIgnore -Path $Path
+        | Remove-Item -Recurse -Force -Verbose -WhatIf
+        return
+    }
+
+    $excludedDirs = Read-GitIgnore -Path $Path -ExclusionsFile $ExclusionsFile -DirsOnly
+
+    $excludedFiles = [HashSet[string]]::new()
+    Read-GitIgnore -Path $Path -ExclusionsFile $ExclusionsFile -FilesOnly | ForEach-Object { $excludedFiles.Add($_) | Out-Null }
+
+    Read-GitIgnore -Path $Path
+    | Skip-Prefixed -Prefixes $excludedDirs
+    | Where-Object { !$excludedFiles.Contains($_) }
+    | Remove-Item -Recurse -Force -Verbose -WhatIf
+}
+
 function Read-GitIgnore {
     [CmdletBinding()]
     [OutputType([string[]])]
     param (
-        [string] $IgnoreFile = '',
         [string] $Path = '.',
         [switch] $DirsOnly,
-        [switch] $FilesOnly
+        [switch] $FilesOnly,
+        [string] $ExclusionsFile
     )
 
     if ($DirsOnly -and $FilesOnly) {
@@ -17,62 +41,42 @@ function Read-GitIgnore {
     $gitLsArgs = @(
         '--others',
         '--ignored',
-        ($IgnoreFile -eq '' ? '--exclude-standard' : "--exclude-per-directory=$IgnoreFile")
+        ($ExclusionsFile ? "--exclude-per-directory=$ExclusionsFile" : '--exclude-standard')
     )
 
-    $result = [List[string]]::new()
-
-    $dirs = & git ls-files @gitLsArgs --directory -- $Path | Where-Object { Test-Path -PathType Container -Path $_ }
-
-    if (!$FilesOnly) {
-        $dirs | ForEach-Object {
-            $result.Add($_)
-        }
-    }
+    $ignoredDirs = & git ls-files @gitLsArgs --directory -- $Path | Where-Object { Test-Path -PathType Container -Path $_ }
 
     if ($DirsOnly) {
-        return $result
+        return $ignoredDirs
     }
 
-    & git ls-files @gitLsArgs -- $Path
-    | ForEach-Object {
-        if ($dirs.Length -ne 0) {
-            foreach ($dir in $dirs) {
-                if ("$_".StartsWith("$dir")) {
-                    return
-                }
-            }
-        }
-        $result.Add($_)
+    $ignoredFiles = & git ls-files @gitLsArgs -- $Path | Skip-Prefixed -Prefixes $ignoredDirs
+
+    if ($FilesOnly) {
+        return $ignoredFiles
     }
 
-    return $result
+    return $ignoredDirs + $ignoredFiles
 }
 
-function Remove-GitIgnoredFiles {
+function Skip-Prefixed {
     [CmdletBinding()]
     param (
-        [string] $Path = '.',
-        [string] $CleanIgnoreFile = ''
+        [Parameter(ValueFromPipeline)] [string[]] $String,
+        [string[]] $Prefixes
     )
 
-    $cleanIgnoreFiles = [HashSet[string]]::new()
-    if ($CleanIgnoreFile -ne '') {
-        $cleanIgnoreDirs = Read-GitIgnore -Path $Path -IgnoreFile $CleanIgnoreFile -DirsOnly
-        Read-GitIgnore -Path $Path -IgnoreFile $CleanIgnoreFile -FilesOnly | ForEach-Object { $cleanIgnoreFiles.Add($_) | Out-Null }
-    }
-    Read-GitIgnore -Path $Path
-    | Where-Object {
-        if (!$cleanIgnoreDirs) {
-            return $true
+    process {
+        if (!$Prefixes) {
+            return $_
         }
-        foreach ($dir in $cleanIgnoreDirs) {
-            if ("$_".StartsWith("$dir")) {
-                return $false
+
+        foreach ($prefix in $Prefixes) {
+            if ($_.StartsWith($prefix)) {
+                return
             }
         }
-        return $true
+
+        return $_
     }
-    | Where-Object { !$cleanIgnoreFiles.Contains($_) }
-    | Remove-Item -Recurse -Force -Verbose
 }
