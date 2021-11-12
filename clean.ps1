@@ -8,8 +8,8 @@ param (
 $executor = $Debug ? [SequentialScriptExecutor]::new() : [ParallelScriptExecutor]::new()
 
 $executor.Execute(@(
-        @{Script = 'uninstall.ps1'; WD = 'api' },
-        @{Script = 'uninstall.ps1'; WD = 'client' },
-        @{Script = 'uninstall.ps1'; WD = 'proxy' },
-        @{Script = 'uninstall.ps1'; WD = 'server' }
+        @{Script = 'clean.ps1'; WD = 'api' },
+        @{Script = 'clean.ps1'; WD = 'client' },
+        @{Script = 'clean.ps1'; WD = 'proxy' },
+        @{Script = 'clean.ps1'; WD = 'server' }
     ))
