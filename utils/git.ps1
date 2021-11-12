@@ -9,7 +9,7 @@ function Remove-GitIgnoredFiles {
 
     if (!$ExclusionsFile) {
         Read-GitIgnore -Path $Path
-        | Remove-Item -Recurse -Force -Verbose -WhatIf
+        | Remove-Item -Recurse -Force -Verbose
         return
     }
 
@@ -21,7 +21,7 @@ function Remove-GitIgnoredFiles {
     Read-GitIgnore -Path $Path
     | Skip-Prefixed -Prefixes $excludedDirs
     | Where-Object { !$excludedFiles.Contains($_) }
-    | Remove-Item -Recurse -Force -Verbose -WhatIf
+    | Remove-Item -Recurse -Force -Verbose
 }
 
 function Read-GitIgnore {
