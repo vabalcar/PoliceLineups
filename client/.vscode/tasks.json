@@ -37,6 +37,14 @@
       }
     },
     {
+      "label": "Build client",
+      "dependsOn": ["Install client"],
+      "group": "build",
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+    {
       "label": "Debug client",
       "isBackground": true,
       "dependsOn": ["Install client"],
@@ -79,6 +87,15 @@
         "panel": "dedicated",
         "clear": true,
         "echo": false
+      }
+    },
+    {
+      "label": "Rebuild client",
+      "dependsOn": ["Clean client", "Build client"],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "presentation": {
+        "reveal": "never"
       }
     }
   ]

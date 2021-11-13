@@ -73,6 +73,15 @@
         "clear": true,
         "echo": false
       }
+    },
+    {
+      "label": "Rebuild proxy",
+      "dependsOn": ["Clean proxy", "Build proxy"],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "presentation": {
+        "reveal": "never"
+      }
     }
   ]
 }
