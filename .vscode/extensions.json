@@ -20,6 +20,9 @@
     "firefox-devtools.vscode-firefox-debug",
     "msjsdiag.debugger-for-edge",
 
+    // Proxy
+    "ms-dotnettools.csharp",
+
     // Server
     "ms-python.python",
 
