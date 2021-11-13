@@ -1,2 +1,2 @@
 # Text files with LF line endings
-/src/app/api/*  text eol=lf
+/src/app/api/**/* text eol=lf
