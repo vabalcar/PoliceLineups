@@ -7,7 +7,9 @@ param (
 
 $executor = $Debug ? [SequentialScriptExecutor]::new() : [ParallelScriptExecutor]::new()
 
+$publishing = $Debug ? @() : @(@{Script = 'publish.ps1' })
+
 $executor.Execute(@(
         @{Script = 'generate-code.ps1' },
         @{Script = 'install.ps1' }
-    ))
+    ) + $publishing)

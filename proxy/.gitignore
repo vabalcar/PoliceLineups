@@ -1,4 +1,5 @@
-/.ssl
-/dist
 **/bin
 **/obj
+
+/.ssl
+/dist

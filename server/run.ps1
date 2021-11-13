@@ -10,14 +10,14 @@ param (
 'Running server...' | Out-Host
 
 $originalWD = Get-Location
-Set-Location -Path 'src'
-
 try {
     $env:FLASK_ENV = $Debug ? "development" : "production"
     if ($Debug) {
+        Set-Location -Path 'src'
         python app_debug_runner.py
     }
     else {
+        Set-Location -Path 'dist'
         $environment = $Debug ? 'debug' : 'production'
         $serverConfiguration = Get-Content (Join-Path '..' '..' 'config' $environment 'server.json') | ConvertFrom-Json
         & waitress-serve --host $serverConfiguration.host --port $serverConfiguration.port app:app
