@@ -16,7 +16,7 @@ if ($Debug) {
     & dotnet build @commonBuildArgs /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary
 }
 else {
-    & dotnet publish @commonBuildArgs --configuration Release
+    & dotnet publish @commonBuildArgs --configuration Release --output 'dist'
 }
 
 'done.' | Out-Host

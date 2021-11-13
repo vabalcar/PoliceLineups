@@ -11,5 +11,5 @@ if ($Debug) {
     & dotnet (Join-Path 'src' 'Proxy' 'bin' 'Debug' 'net6.0' 'Proxy.dll')
 }
 else {
-    & dotnet (Join-Path 'src' 'Proxy' 'bin' 'Release' 'net6.0' 'publish' 'Proxy.dll')
+    & dotnet (Join-Path 'dist' 'Proxy.dll')
 }
