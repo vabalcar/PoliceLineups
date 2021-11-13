@@ -4,7 +4,7 @@ param (
     [switch] $NoEnvironmentTest
 )
 
-$isEnvironmentReady = $NoEnvironmentTest -or (& (Join-Path '.' 'environment' 'test-environment.ps1'))
+$isEnvironmentReady = $NoEnvironmentTest -or (& (Join-Path '.' 'environment' 'test-environment.ps1') -PassThru)
 if (!$isEnvironmentReady) {
     exit
 }

@@ -1,9 +1,13 @@
 #!/usr/bin/pwsh
+param (
+    [switch] $PassThru
+)
 
 function Test-ExecutionPolicy {
     param (
         [Parameter(Mandatory = $true)] [string] $ExecutionPolicy
     )
+
     return ($ExecutionPolicy -ne 'Restricted') -and ($ExecutionPolicy -ne 'AllSigned')
 }
 
@@ -57,4 +61,6 @@ else {
     'Evironment is not ready. Please follow instructions above and try again.' | Out-Host
 }
 
-return $isEnvironmentReady
+if ($PassThru) {
+    return $isEnvironmentReady
+}
