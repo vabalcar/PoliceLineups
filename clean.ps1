@@ -1,14 +1,17 @@
 #!/usr/bin/pwsh
 param (
     [switch] $Debug,
-    [switch] $WhatIf
+    [switch] $WhatIf,
+    [switch] $Confirm
 )
 
 . (Join-Path '.' 'utils' 'script-executor.ps1')
 
-$executor = $Debug ? [SequentialScriptExecutor]::new() : [ParallelScriptExecutor]::new()
+$executor = $Debug -or $Confirm ? [SequentialScriptExecutor]::new() : [ParallelScriptExecutor]::new()
 
-$commonArgs = $WhatIf ? @('-WhatIf') : @()
+$commonArgs = $WhatIf ? @('-WhatIf')
+: $Confirm ? @('-Confirm')
+: @()
 
 $executor.Execute(@(
         @{Script = 'clean.ps1'; WD = 'api'; ArgumentList = $commonArgs },
