@@ -7,6 +7,8 @@
     // Root
     "ms-vscode.powershell",
     "foxundermoon.shell-format",
+
+    // Environment
     "grapecity.gc-excelviewer",
 
     // API
