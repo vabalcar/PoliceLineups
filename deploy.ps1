@@ -1,6 +1,7 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Debug
+    [switch] $Debug,
+    [switch] $NoClean
 )
 
 'Deploying...' | Out-Host
@@ -12,19 +13,13 @@ $remoteHostName = $deployConfiguration.host
 $remotePort = $deployConfiguration.port
 $remoteUserName = $deployConfiguration.user
 $remotePath = $deployConfiguration.path
+$remotePathDelimiter = $deployConfiguration.isWindows ? '\' : '/'
 
-$remotePortArg = $remotePort ? @{ '-Port' = $remotePort } : @{}
-$remoteUserNameArg = $remoteUserName ? @{ '-UserName' = $remoteUserName } : @{}
+$remotePortArgs = $remotePort ? @( '-p', $remotePort ) : @()
+$noCleanArg = $NoClean ? '-NoClean' : ''
 
 "Connecting to $remoteHostName..." | Out-Host
-$session = New-PSSession -SSHTransport -HostName $remoteHostName @remotePortArg @remoteUserNameArg
-"connected." | Out-Host
 
-Invoke-Command -Session $session -ScriptBlock {
-    Set-Location $Using:remotePath
-    & (Join-Path '.' 'upgrade.ps1')
-}
-
-Remove-PSSession $session
+& ssh -t "$remoteUserName@$remoteHostName" @remotePortArgs "pwsh -WorkingDirectory $remotePath -File ${remotePath}${remotePathDelimiter}upgrade.ps1 $noCleanArg"
 
 'done.' | Out-Host

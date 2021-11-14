@@ -2,5 +2,6 @@
   "host": "server",
   "port": 22,
   "user": "root",
-  "path": "/opt/police-lineups"
+  "path": "/opt/police-lineups",
+  "isWindows": false
 }

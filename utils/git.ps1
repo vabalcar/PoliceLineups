@@ -44,12 +44,14 @@ function Read-GitIgnore {
     )
 
     $ignoredDirs = & git ls-files @gitLsArgs --directory -- $Path | Where-Object { Test-Path -PathType Container -Path $_ }
+    $ignoredDirs ??= @()
 
     if ($DirsOnly) {
         return $ignoredDirs
     }
 
     $ignoredFiles = & git ls-files @gitLsArgs -- $Path | Skip-Prefixed -Prefixes $ignoredDirs
+    $ignoredFiles ??= @()
 
     if ($FilesOnly) {
         return $ignoredFiles
