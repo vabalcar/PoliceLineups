@@ -4,6 +4,29 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Initialize configuration",
+      "type": "shell",
+      "linux": {
+        "options": {
+          "cwd": "${workspaceFolder}/config"
+        }
+      },
+      "windows": {
+        "options": {
+          "cwd": "${workspaceFolder}\\config"
+        }
+      },
+      "command": "pwsh",
+      "args": ["-NoLogo", "-File", "initialize.ps1"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "echo": false
+      }
+    },
+    {
       "label": "Deploy",
       "type": "shell",
       "command": "pwsh",

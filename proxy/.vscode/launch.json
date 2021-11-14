@@ -6,7 +6,6 @@
       "name": "Debug proxy",
       "type": "coreclr",
       "request": "launch",
-      "preLaunchTask": "Build proxy",
       "stopAtEntry": false,
       "linux": {
         "cwd": "${workspaceFolder}",
@@ -20,6 +19,7 @@
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
+      "preLaunchTask": "Build proxy",
       "presentation": {
         "group": "Debug proxy",
         "order": 1

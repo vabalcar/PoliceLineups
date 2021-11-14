@@ -23,6 +23,7 @@
         "Debug proxy",
         "Debug server"
       ],
+      "preLaunchTask": "Initialize configuration",
       "presentation": {
         "group": "Debug app",
         "order": 1
@@ -35,6 +36,7 @@
         "Debug proxy",
         "Debug server"
       ],
+      "preLaunchTask": "Initialize configuration",
       "presentation": {
         "group": "Debug app",
         "order": 2
@@ -43,6 +45,7 @@
     {
       "name": "Debug app in Edge",
       "configurations": ["Debug client in Edge", "Debug proxy", "Debug server"],
+      "preLaunchTask": "Initialize configuration",
       "presentation": {
         "group": "Debug app",
         "order": 3
