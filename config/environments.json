@@ -1,0 +1,4 @@
+{
+  "defaultEnvironment": "default",
+  "customEnvironments": ["debug", "production"]
+}

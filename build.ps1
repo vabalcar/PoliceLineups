@@ -17,6 +17,7 @@ $executor = $Debug ? $sequentialExecutor : [ParallelScriptExecutor]::new()
 $commonArgs = $Debug ? @('-Debug') : @()
 
 $sequentialExecutor.Execute(@(
+        @{Script = 'initialize.ps1'; WD = 'config' }
         @{Script = 'install.ps1'; WD = 'api' }
     ))
 
