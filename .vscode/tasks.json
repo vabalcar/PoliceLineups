@@ -43,7 +43,7 @@
       "label": "Deploy",
       "type": "shell",
       "command": "pwsh",
-      "args": ["-NoLogo", "-File", "deploy.ps1"],
+      "args": ["-NoLogo", "-File", "deploy.ps1", "-Debug"],
       "group": "build",
       "presentation": {
         "reveal": "always",
