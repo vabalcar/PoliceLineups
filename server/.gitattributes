@@ -2,4 +2,5 @@
 /src/app.py text eol=lf
 /src/app_debug_runner.py text eol=lf
 /src/swagger_server/**/* text eol=lf
+/src/swagger_server_override/**/* text eol=lf
 /swagger-*requirements.txt text eol=lf
