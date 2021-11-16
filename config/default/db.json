@@ -1,9 +1,9 @@
 {
+  "db": "myDB",
   "host": "127.0.0.1",
   "port": 3306,
   "user": "root",
   "password": "password",
-  "db": "myDB",
-  "maxConnections": "32",
-  "staleTimeout": "300"
+  "maxConnections": 32,
+  "staleTimeout": 300
 }
