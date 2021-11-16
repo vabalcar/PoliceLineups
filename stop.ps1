@@ -10,4 +10,4 @@ if (!$IsWindows) {
     & stty sane
 }
 
-'done.' | Out-Host
+'All scripts run as a service stopped' | Out-Host

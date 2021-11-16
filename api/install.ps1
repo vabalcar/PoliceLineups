@@ -21,4 +21,5 @@ $targetFile = "$swaggerCLIName-$swaggerVersion.jar"
 
 "Downloading $swaggerCLIName $swaggerVersion..." | Out-Host
 Invoke-WebRequest -URI "$swaggerRepo/$swaggerVersion/$targetFile" -OutFile $outFile
-'done.' | Out-Host
+
+'Swagger codegen installed' | Out-Host

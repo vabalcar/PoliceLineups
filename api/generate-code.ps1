@@ -28,7 +28,7 @@ function Invoke-SwaggerCodegen {
     $env:_JAVA_OPTIONS = "--add-opens=java.base/java.util=ALL-UNNAMED"
     & java -jar $swaggerCli @swaggerCliArgs
 
-    'done.' | Out-Host
+    "$Language api generated into $OutputDirectory" | Out-Host
 }
 
 $tmpDirectory = '.swagger-tmp'

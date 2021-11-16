@@ -26,5 +26,6 @@ else {
     & python -m pip freeze > $RequirementsLockFile
 }
 
-'done.' | Out-Host
 & deactivate
+
+'Server installed' | Out-Host

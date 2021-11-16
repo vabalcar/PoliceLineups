@@ -19,4 +19,4 @@ else {
     & dotnet publish @commonBuildArgs --configuration Release --output 'dist'
 }
 
-'done.' | Out-Host
+'Proxy compiled' | Out-Host

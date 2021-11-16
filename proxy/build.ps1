@@ -18,4 +18,4 @@ $executor.Execute(@(
         @{Script = 'compile.ps1'; ArgumentList = $commonArgs }
     ) + $certificateGeneration)
 
-'done.' | Out-Host
+'Proxy built' | Out-Host

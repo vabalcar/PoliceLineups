@@ -4,4 +4,4 @@
 & npm audit fix
 & npm run-script update
 
-'done.' | Out-Host
+'Client updated' | Out-Host

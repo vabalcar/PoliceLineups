@@ -22,4 +22,4 @@ $noCleanArg = $NoClean ? '-NoClean' : ''
 
 & ssh -t "$remoteUserName@$remoteHostName" @remotePortArgs "pwsh -WorkingDirectory $remotePath -File ${remotePath}${remotePathDelimiter}upgrade.ps1 $noCleanArg"
 
-'done.' | Out-Host
+'Deployment completed' | Out-Host

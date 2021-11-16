@@ -21,4 +21,4 @@ if (Test-Path -PathType Container -Path $venvPath) {
 
 & (Join-Path '.' 'install.ps1') -RequirementsLockFile $requirementsLockFile
 
-'done.' | Out-Host
+'Server updated' | Out-Host
