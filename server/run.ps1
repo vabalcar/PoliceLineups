@@ -3,7 +3,7 @@ param (
     [switch] $Debug
 )
 
-& (Join-Path '.' 'run-db.ps1')
+& (Join-Path '.' 'run-db.ps1') -Debug:$Debug
 
 & (Join-Path '.' 'activate.ps1')
 

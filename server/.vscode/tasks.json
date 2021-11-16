@@ -51,7 +51,7 @@
         "cwd": "${workspaceFolder}"
       },
       "command": "pwsh",
-      "args": ["-NoLogo", "-File", "run-db.ps1"],
+      "args": ["-NoLogo", "-File", "run-db.ps1", "-Debug"],
       "group": "build",
       "presentation": {
         "reveal": "always",

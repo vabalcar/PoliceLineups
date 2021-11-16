@@ -1,19 +1,25 @@
 #!/usr/bin/pwsh
 param (
-    [string] $MysqlService = 'mysql'
+    [switch] $Debug
 )
 
 'Running db...' | Out-Host
+
+$environment = $Debug ? 'debug' : 'production'
+$dbConfiguration = Get-Content (Join-Path '..' 'config' $environment 'db.json') | ConvertFrom-Json
+
+$service = $dbConfiguration.service
+
 if ($IsWindows) {
-    $dbStatus = (Get-Service $MysqlService).Status
+    $dbStatus = (Get-Service $service).Status
 
     if ($dbStatus -ne 'Running') {
-        Start-Process -Wait -Verb RunAs -FilePath 'pwsh' -Args '-NoLogo', '-Command', "Start-Service $MysqlService"
-        $dbStatus = (Get-Service $MysqlService).Status
+        Start-Process -Wait -Verb RunAs -FilePath 'pwsh' -Args '-NoLogo', '-Command', "Start-Service $service"
+        $dbStatus = (Get-Service $service).Status
     }
 
-    "DB (service $MysqlService) is $($dbStatus.ToString().ToLower())" | Out-Host
+    "DB (service $service) is $($dbStatus.ToString().ToLower())" | Out-Host
 }
 else {
-    & sudo service $MysqlService start
+    & sudo service $service start
 }
