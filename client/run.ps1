@@ -9,15 +9,16 @@ param (
 $environment = $Debug ? 'debug' : 'production'
 $clientConfiguration = Get-Content (Join-Path '..' 'config' $environment 'client.json') | ConvertFrom-Json
 
+$inputRedirection = $NonInteractive ? '<', ($IsWindows ? 'nul' : '/dev/null') : @()
+
 try {
     if ($Debug) {
-        $inputRedirection = $NonInteractive ? '<', ($IsWindows ? 'nul' : '/dev/null') : @()
         & npm run debug -- --host $($clientConfiguration.host) --port $($clientConfiguration.port) @inputRedirection
     }
     else {
-        & npm start -- (Join-Path 'dist' 'client')  -a $($clientConfiguration.host) -p $($clientConfiguration.port) --proxy "http://$($clientConfiguration.host):$($clientConfiguration.port)?" -d false --silent
+        & npm start -- (Join-Path 'dist' 'client')  -a $($clientConfiguration.host) -p $($clientConfiguration.port) --proxy "http://$($clientConfiguration.host):$($clientConfiguration.port)?" -d false --silent @inputRedirection
     }
 }
 finally {
-    'stopped.' | Out-Host
+    'Client stopped' | Out-Host
 }

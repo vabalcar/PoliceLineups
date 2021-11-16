@@ -24,7 +24,7 @@ try {
     }
 }
 finally {
-    'stopped.' | Out-Host
+    'Server stopped' | Out-Host
     & deactivate
     Set-Location -Path $originalWD
 }

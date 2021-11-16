@@ -13,3 +13,5 @@ if ($Debug) {
 else {
     & dotnet (Join-Path 'dist' 'Proxy.dll')
 }
+
+'Proxy stopped' | Out-Host
