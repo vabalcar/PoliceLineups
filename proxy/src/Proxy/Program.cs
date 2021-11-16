@@ -15,6 +15,7 @@ var clientPort = Json.GetPropertyValue(clientConfiguration, "port")?.GetUInt16()
 var proxyHost = Json.GetPropertyValue(proxyConfiguration, "host")?.GetString();
 var proxyHttpPort = Json.GetPropertyValue(proxyConfiguration, "httpPort")?.GetUInt16();
 var proxyHttpsPort = Json.GetPropertyValue(proxyConfiguration, "httpsPort")?.GetUInt16();
+var serverBasePath = Json.GetPropertyValue(proxyConfiguration, "serverBasePath")?.GetString() ?? string.Empty;
 
 var serverHost = Json.GetPropertyValue(serverConfiguration, "host")?.GetString();
 var serverPort = Json.GetPropertyValue(serverConfiguration, "port")?.GetUInt16();
@@ -45,13 +46,13 @@ var routes = new[]
         ClusterId = ServerClusterId,
         Match = new RouteMatch
         {
-            Path = "/api/{**catch-all}"
+            Path = $"{serverBasePath}/{{**catch-all}}"
         },
         Transforms = new[]
         {
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                { "PathRemovePrefix", "/api" }
+                { "PathRemovePrefix", serverBasePath }
             }
         }
     }

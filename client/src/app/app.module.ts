@@ -119,7 +119,7 @@ import { AppEffects } from "./state/app.effects";
     {
       provide: BASE_PATH,
       useFactory: () =>
-        `https://${environment.proxy.host}:${environment.proxy.httpsPort}/api`,
+        `https://${environment.proxy.host}:${environment.proxy.httpsPort}${environment.proxy.serverBasePath}`,
     },
     DefaultService,
   ],
