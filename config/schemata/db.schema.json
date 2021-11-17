@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "db": {
+      "type": "string",
+      "minLength": 1
+    },
+    "service": {
+      "type": "string",
+      "minLength": 1
+    },
+    "host": {
+      "type": "string",
+      "minLength": 1
+    },
+    "port": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "user": {
+      "type": "string",
+      "minLength": 1
+    },
+    "password": {
+      "type": "string",
+      "minLength": 1
+    },
+    "maxConnections": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "staleTimeout": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "required": [
+    "db",
+    "service",
+    "host",
+    "port",
+    "user",
+    "password",
+    "maxConnections",
+    "staleTimeout"
+  ]
+}

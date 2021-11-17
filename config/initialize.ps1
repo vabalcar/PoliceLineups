@@ -1,10 +1,9 @@
 #!/usr/bin/pwsh
 
-$environments = Get-Content 'environments.json' | ConvertFrom-Json
-$defaultEnvironment = $environments.defaultEnvironment
+$defaultEnvironment = 'default'
 $configurations = Get-ChildItem -Name -Path (Join-Path $defaultEnvironment '*') -Include '*.json'
 
-$environments.customEnvironments
+'debug', 'production'
 | ForEach-Object {
     $environment = $_
 
