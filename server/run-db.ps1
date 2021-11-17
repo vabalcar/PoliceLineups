@@ -1,12 +1,23 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Debug
+    [switch] $Debug,
+    [switch] $PassThru
 )
 
-'Running db...' | Out-Host
+'Running DB...' | Out-Host
 
 $environment = $Debug ? 'debug' : 'production'
-$dbConfiguration = Get-Content (Join-Path '..' 'config' $environment 'db.json') | ConvertFrom-Json
+$dbConfigurationFile = Join-Path '..' 'config' $environment 'db.json'
+
+$isDbConfigurationValid = & (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $dbConfigurationFile
+if (!$isDbConfigurationValid) {
+    if ($PassThru) {
+        return $false
+    }
+    exit
+}
+
+$dbConfiguration = Get-Content $dbConfigurationFile | ConvertFrom-Json
 
 $service = $dbConfiguration.service
 
@@ -22,4 +33,8 @@ if ($IsWindows) {
 }
 else {
     & sudo service $service start
+}
+
+if ($PassThru) {
+    return $true
 }

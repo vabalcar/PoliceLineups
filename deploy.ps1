@@ -7,7 +7,13 @@ param (
 'Deploying...' | Out-Host
 
 $environment = $Debug ? 'debug' : 'production'
-$deployConfiguration = Get-Content (Join-Path 'config' $environment 'deploy.json') | ConvertFrom-Json
+$deployConfigurationFile = Join-Path 'config' $environment 'deploy.json'
+$isDeployConfigurationValid = & (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $deployConfigurationFile
+if (!$isDeployConfigurationValid) {
+    exit
+}
+
+$deployConfiguration = Get-Content $deployConfigurationFile | ConvertFrom-Json
 
 $remoteHostName = $deployConfiguration.host
 $remotePort = $deployConfiguration.port

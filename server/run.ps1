@@ -3,11 +3,23 @@ param (
     [switch] $Debug
 )
 
-& (Join-Path '.' 'run-db.ps1') -Debug:$Debug
+$isDbRunning = & (Join-Path '.' 'run-db.ps1') -PassThru -Debug:$Debug
+if (!$isDbRunning) {
+    Write-Host -ForegroundColor Red "DB is not running, so the server can not be started"
+    exit
+}
 
 & (Join-Path '.' 'activate.ps1')
 
 'Running server...' | Out-Host
+
+$environment = $Debug ? 'debug' : 'production'
+$serverConfigurationFile = Join-Path '..' 'config' $environment 'server.json'
+
+$isServerConfigurationValid = & (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $serverConfigurationFile
+if (!$isServerConfigurationValid) {
+    exit
+}
 
 $originalWD = Get-Location
 try {
@@ -17,14 +29,13 @@ try {
         python app_debug_runner.py
     }
     else {
+        $serverConfiguration = Get-Content $serverConfigurationFile | ConvertFrom-Json
         Set-Location -Path 'dist'
-        $environment = $Debug ? 'debug' : 'production'
-        $serverConfiguration = Get-Content (Join-Path '..' '..' 'config' $environment 'server.json') | ConvertFrom-Json
         & waitress-serve --host $serverConfiguration.host --port $serverConfiguration.port app:app
     }
 }
 finally {
-    'Server stopped' | Out-Host
-    & deactivate
     Set-Location -Path $originalWD
+    & deactivate
+    'Server stopped' | Out-Host
 }

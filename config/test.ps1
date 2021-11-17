@@ -16,7 +16,7 @@ $testResult = Get-Content -Raw $ConfigurationFile
 if ($validationErrors) {
     $configurationFileFullPath = $ConfigurationFile | Resolve-Path
     $validationErrorsOutput = $validationErrors | Join-String -Separator "`n"
-    Write-Host "Errors found in configuration file $configurationFileFullPath`:`n$validationErrorsOutput" -ForegroundColor Red
+    Write-Host -ForegroundColor Red "Errors found in configuration file $configurationFileFullPath`:`n$validationErrorsOutput"
 }
 
 if ($PassThru) {

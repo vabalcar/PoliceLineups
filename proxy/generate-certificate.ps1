@@ -4,7 +4,13 @@ param (
 )
 
 $environment = $Debug ? 'debug' : 'production'
-$proxyConfiguration = Get-Content (Join-Path '..' 'config' $environment 'proxy.json') | ConvertFrom-Json
+$proxyConfigurationFile = Join-Path '..' 'config' $environment 'proxy.json'
+$isProxyConfigurationValid = & (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $proxyConfigurationFile
+if (!$isProxyConfigurationValid) {
+    exit
+}
+
+$proxyConfiguration = Get-Content $proxyConfigurationFile | ConvertFrom-Json
 $proxyHost = $proxyConfiguration.host
 
 if ($IsWindows -and !$NoCertificateStore) {
