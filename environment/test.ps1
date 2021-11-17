@@ -58,7 +58,7 @@ if ($isEnvironmentReady) {
     'Environment is ready.' | Out-Host
 }
 else {
-    'Evironment is not ready. Please follow instructions above and try again.' | Out-Host
+    Write-Host -ForegroundColor Red 'Evironment is not ready. Please follow instructions above and try again.'
 }
 
 if ($PassThru) {
