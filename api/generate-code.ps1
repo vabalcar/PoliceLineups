@@ -1,14 +1,14 @@
 #!/usr/bin/pwsh
 param (
-    [Parameter(Mandatory = $true)] [string] $Language,
-    [Parameter(Mandatory = $true)] [string] $Destination,
-    [Parameter(Mandatory = $true)] [string] $WhitelistFile,
+    [Parameter(Mandatory)] [string] $Language,
+    [Parameter(Mandatory)] [string] $Destination,
+    [Parameter(Mandatory)] [string] $WhitelistFile,
     [string] $AdditionalConfiguration
 )
 
 function Invoke-SwaggerCodegen {
     param (
-        [Parameter(Mandatory = $true)] [string] $OutputDirectory
+        [Parameter(Mandatory)] [string] $OutputDirectory
     )
 
     $swaggerCli = Join-Path $PSScriptRoot 'swagger-codegen-cli.jar'

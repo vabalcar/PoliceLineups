@@ -2,7 +2,7 @@
 
 function Test-ExecutionPolicy {
     param (
-        [Parameter(Mandatory = $true)] [string] $ExecutionPolicy
+        [Parameter(Mandatory)] [string] $ExecutionPolicy
     )
     return ($ExecutionPolicy -ne 'Restricted') -and ($ExecutionPolicy -ne 'AllSigned')
 }

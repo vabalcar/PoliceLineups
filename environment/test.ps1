@@ -5,7 +5,7 @@ param (
 
 function Test-ExecutionPolicy {
     param (
-        [Parameter(Mandatory = $true)] [string] $ExecutionPolicy
+        [Parameter(Mandatory)] [string] $ExecutionPolicy
     )
 
     return ($ExecutionPolicy -ne 'Restricted') -and ($ExecutionPolicy -ne 'AllSigned')
@@ -13,7 +13,7 @@ function Test-ExecutionPolicy {
 
 function Test-Executable {
     param (
-        [Parameter(Mandatory = $true)] [string] $Executable
+        [Parameter(Mandatory)] [string] $Executable
     )
 
     return Get-Command -CommandType Application -TotalCount 1 -Name $Executable -ErrorAction SilentlyContinue
@@ -21,7 +21,7 @@ function Test-Executable {
 
 function Test-Environment {
     param (
-        [Parameter(Mandatory = $true)] [string] $EnvironmentDescriptionFile
+        [Parameter(Mandatory)] [string] $EnvironmentDescriptionFile
     )
 
     $isTestedEnvironmentReady = $true
