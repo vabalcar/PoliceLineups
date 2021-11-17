@@ -6,6 +6,15 @@ param (
     [switch] $PassThru
 )
 
+if (!(Test-Path -PathType Leaf -Path $ConfigurationFile)) {
+    $configurationFileFullPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($ConfigurationFile)
+    Write-Host -ForegroundColor Red "Missing configuration file $configurationFileFullPath"
+    if ($PassThru) {
+        return $false
+    }
+    exit
+}
+
 $configurationFileName = Split-Path -Leaf $ConfigurationFile
 $configurationSchemaFileName = "$([Path]::GetFileNameWithoutExtension($configurationFileName)).schema.json"
 $configurationSchemaFile = Join-Path $PSScriptRoot 'schemata' $configurationSchemaFileName
