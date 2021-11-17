@@ -4,7 +4,7 @@ param (
     [switch] $AsService
 )
 
-$isEnvironmentReady = & (Join-Path '.' 'environment' 'test-environment.ps1') -PassThru
+$isEnvironmentReady = & (Join-Path '.' 'environment' 'test.ps1') -PassThru
 if (!$isEnvironmentReady) {
     exit
 }

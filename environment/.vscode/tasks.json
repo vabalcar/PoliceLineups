@@ -7,7 +7,7 @@
       "label": "Test environment",
       "type": "shell",
       "command": "pwsh",
-      "args": ["-NoLogo", "-File", "test-environment.ps1"],
+      "args": ["-NoLogo", "-File", "test.ps1"],
       "group": "test",
       "presentation": {
         "reveal": "always",
