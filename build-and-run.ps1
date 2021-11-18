@@ -4,8 +4,8 @@ param (
     [switch] $AsService
 )
 
-$isEnvironmentReady = & (Join-Path '.' 'environment' 'test.ps1') -PassThru
-if (!$isEnvironmentReady) {
+$isPlatformReady = & (Join-Path '.' 'platform' 'test.ps1') -PassThru
+if (!$isPlatformReady) {
     exit
 }
 
@@ -14,7 +14,7 @@ if (!$isEnvironmentReady) {
 $executor = [SequentialScriptExecutor]::new()
 
 $commonArgs = $Debug ? @('-Debug') : @()
-$buildArgs = @('-NoEnvironmentTest')
+$buildArgs = @('-NoPlatformTest')
 $runArgs = $AsService ? @('-AsService') : @()
 
 $executor.Execute(@(

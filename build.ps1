@@ -1,11 +1,11 @@
 #!/usr/bin/pwsh
 param (
     [switch] $Debug,
-    [switch] $NoEnvironmentTest
+    [switch] $NoPlatformTest
 )
 
-$isEnvironmentReady = $NoEnvironmentTest -or (& (Join-Path '.' 'environment' 'test.ps1') -PassThru)
-if (!$isEnvironmentReady) {
+$isPlatformReady = $NoPlatformTest -or (& (Join-Path '.' 'platform' 'test.ps1') -PassThru)
+if (!$isPlatformReady) {
     exit
 }
 

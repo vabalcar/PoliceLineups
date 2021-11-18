@@ -13,8 +13,8 @@
       "name": "Configuration"
     },
     {
-      "path": "environment",
-      "name": "Environment"
+      "path": "platform",
+      "name": "Platform"
     },
     {
       "path": "api",
@@ -41,7 +41,7 @@
       "api": true,
       "**/swagger-codegen-cli.jar": true,
       "config": true,
-      "environment": true,
+      "platform": true,
       "client": true,
       "**/dist": true,
       "**/node_modules": true,
