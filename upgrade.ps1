@@ -43,6 +43,7 @@ if ($isLocalUpgrade) {
     & (Join-Path '.' 'stop.ps1')
 }
 else {
+    "Stopping service $serviceName..." | Out-Host
     & sudo service $serviceName stop
 }
 
@@ -59,5 +60,8 @@ if ($isLocalUpgrade) {
     & (Join-Path '.' 'start.ps1')
 }
 else {
+    "Starting service $serviceName..." | Out-Host
     & sudo service $serviceName start
 }
+
+'Upgrade completed' | Out-Host
