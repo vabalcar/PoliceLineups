@@ -17,15 +17,14 @@ function Invoke-Rebuild {
 
 function Invoke-BuildAndRun {
     param (
-        [switch] $Debug
+        [switch] $Debug,
+        [switch] $NoConfigurationValidation
     )
 
     $executor = [SequentialScriptExecutor]::new()
 
-    $commonArgs = $Debug ? @('-Debug') : @()
-
     $executor.Execute(@(
-            @{Script = 'build.ps1'; ArgumentList = $commonArgs },
-            @{Script = 'run.ps1'; ArgumentList = $commonArgs }
+            @{Script = 'build.ps1'; ArgumentList = $args },
+            @{Script = 'run.ps1'; ArgumentList = $args }
         ))
 }

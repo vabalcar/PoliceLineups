@@ -1,12 +1,22 @@
 #!/usr/bin/pwsh
 param (
+    [switch] $AsService,
     [switch] $Debug,
-    [switch] $AsService
+    [switch] $NoConfigurationValidation
 )
+
+$allConfigurationsValid = $NoConfigurationValidation -or (& (Join-Path '.' 'config' 'test-all.ps1') -Debug:$Debug)
+if (!$allConfigurationsValid) {
+    exit
+}
 
 . (Join-Path '.' 'utils' 'script-executor.ps1')
 
-$commonArgs = $Debug ? @('-Debug') : @()
+$commonArgs = @('-NoConfigurationValidation')
+if ($Debug) {
+    $commonArgs += '-Debug'
+}
+
 $clientArgs = $Debug ? @() : @('-NonInteractive')
 
 $executor = $AsService ? [ServiceScriptExecutor]::new() : $Debug -and $IsWindows ? [ExternalScriptExecutor]::new() : [ParallelScriptExecutor]::new()

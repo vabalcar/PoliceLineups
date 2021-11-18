@@ -1,6 +1,7 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Debug
+    [switch] $Debug,
+    [switch] $NoConfigurationValidation
 )
 
 'Building proxy...' | Out-Host
@@ -11,7 +12,8 @@ $executor = [SequentialScriptExecutor]::new()
 
 $commonArgs = $Debug ? @('-Debug') : @()
 
-$certificateGeneration = $Debug ? @(@{Script = 'generate-certificate.ps1' }) : @()
+$certificateGenerationArgs = $NoConfigurationValidation ? @('-NoConfigurationValidation') : @()
+$certificateGeneration = $Debug ? @(@{Script = 'generate-certificate.ps1'; ArgumentList = $certificateGenerationArgs }) : @()
 
 $executor.Execute(@(
         @{Script = 'install.ps1' },

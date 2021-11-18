@@ -9,7 +9,7 @@ param (
 
 $environment = $Debug ? 'debug' : 'production'
 $deployConfigurationFile = Join-Path 'config' $environment 'deploy.json'
-$isDeployConfigurationValid = $NoConfigurationValidation -or (& (Join-Path 'config' 'test.ps1') -PassThru -ConfigurationFile $deployConfigurationFile)
+$isDeployConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '.' 'config' 'test.ps1') -PassThru -ConfigurationFile $deployConfigurationFile)
 if (!$isDeployConfigurationValid) {
     exit
 }

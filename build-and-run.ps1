@@ -9,13 +9,23 @@ if (!$isPlatformReady) {
     exit
 }
 
+$allConfigurationsValid = & (Join-Path '.' 'config' 'test-all.ps1') -Debug:$Debug
+if (!$allConfigurationsValid) {
+    exit
+}
+
 . (Join-Path '.' 'utils' 'script-executor.ps1')
 
 $executor = [SequentialScriptExecutor]::new()
 
 $commonArgs = $Debug ? @('-Debug') : @()
-$buildArgs = @('-NoPlatformTest')
-$runArgs = $AsService ? @('-AsService') : @()
+
+$buildArgs = @('-NoConfigurationValidation', '-NoPlatformTest')
+
+$runArgs = @('-NoConfigurationValidation')
+if ($AsService) {
+    $runArgs += '-AsService'
+}
 
 $executor.Execute(@(
         @{Script = 'build.ps1'; ArgumentList = $commonArgs + $buildArgs },

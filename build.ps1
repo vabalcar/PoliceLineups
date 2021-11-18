@@ -1,6 +1,7 @@
 #!/usr/bin/pwsh
 param (
     [switch] $Debug,
+    [switch] $NoConfigurationValidation,
     [switch] $NoPlatformTest
 )
 
@@ -9,15 +10,23 @@ if (!$isPlatformReady) {
     exit
 }
 
+$allConfigurationsValid = $NoConfigurationValidation -or (& (Join-Path '.' 'config' 'test-all.ps1') -Debug:$Debug)
+if (!$allConfigurationsValid) {
+    exit
+}
+
 . (Join-Path '.' 'utils' 'script-executor.ps1')
 
 $sequentialExecutor = [SequentialScriptExecutor]::new()
 $executor = $Debug ? $sequentialExecutor : [ParallelScriptExecutor]::new()
 
-$commonArgs = $Debug ? @('-Debug') : @()
+$commonArgs = @('-NoConfigurationValidation')
+if ($Debug) {
+    $commonArgs += '-Debug'
+}
 
 $sequentialExecutor.Execute(@(
-        @{Script = 'initialize.ps1'; WD = 'config' }
+        @{Script = 'initialize.ps1'; WD = 'config' },
         @{Script = 'install.ps1'; WD = 'api' }
     ))
 

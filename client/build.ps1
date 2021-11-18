@@ -1,6 +1,7 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Debug
+    [switch] $Debug,
+    [switch] $NoConfigurationValidation
 )
 
 . (Join-Path '..' 'utils' 'script-executor.ps1')
@@ -17,6 +18,8 @@ if ($Debug) {
     exit
 }
 
+$compilationArgs = $NoConfigurationValidation ? @('-NoConfigurationValidation') : @()
+
 $sequentialExecutor.Execute(@(
-        @{Script = 'compile.ps1' }
+        @{Script = 'compile.ps1'; ArgumentList = $compilationArgs }
     ))
