@@ -1,6 +1,7 @@
 #!/usr/bin/pwsh
 param (
     [switch] $Debug,
+    [switch] $NoConfigurationValidation,
     [switch] $PassThru
 )
 
@@ -9,7 +10,7 @@ param (
 $environment = $Debug ? 'debug' : 'production'
 $dbConfigurationFile = Join-Path '..' 'config' $environment 'db.json'
 
-$isDbConfigurationValid = & (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $dbConfigurationFile
+$isDbConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $dbConfigurationFile)
 if (!$isDbConfigurationValid) {
     if ($PassThru) {
         return $false

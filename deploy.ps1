@@ -1,14 +1,15 @@
 #!/usr/bin/pwsh
 param (
     [switch] $Debug,
-    [switch] $NoClean
+    [switch] $NoClean,
+    [switch] $NoConfigurationValidation
 )
 
 'Deploying...' | Out-Host
 
 $environment = $Debug ? 'debug' : 'production'
 $deployConfigurationFile = Join-Path 'config' $environment 'deploy.json'
-$isDeployConfigurationValid = & (Join-Path 'config' 'test.ps1') -PassThru -ConfigurationFile $deployConfigurationFile
+$isDeployConfigurationValid = $NoConfigurationValidation -or (& (Join-Path 'config' 'test.ps1') -PassThru -ConfigurationFile $deployConfigurationFile)
 if (!$isDeployConfigurationValid) {
     exit
 }

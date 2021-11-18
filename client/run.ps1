@@ -1,6 +1,7 @@
 #!/usr/bin/pwsh
 param (
     [switch] $Debug,
+    [switch] $NoConfigurationValidation,
     [switch] $NonInteractive
 )
 
@@ -11,7 +12,7 @@ $environmentCofigurationDirectory = Join-Path '..' 'config' $environment
 
 $clientConfigurationFile = Join-Path $environmentCofigurationDirectory 'client.json'
 
-$isClientConfigurationValid = & (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $clientConfigurationFile
+$isClientConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $clientConfigurationFile)
 if (!$isClientConfigurationValid) {
     exit
 }
@@ -23,7 +24,7 @@ $inputRedirection = $NonInteractive ? '<', ($IsWindows ? 'nul' : '/dev/null') : 
 try {
     if ($Debug) {
         $proxyConfigurationFile = Join-Path $environmentCofigurationDirectory 'proxy.json'
-        $isProxyConfigurationValid = & (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $proxyConfigurationFile
+        $isProxyConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $proxyConfigurationFile)
         if (!$isProxyConfigurationValid) {
             exit
         }

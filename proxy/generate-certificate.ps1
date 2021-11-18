@@ -1,11 +1,12 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $NoCertificateStore
+    [switch] $NoCertificateStore,
+    [switch] $NoConfigurationValidation
 )
 
 $environment = $Debug ? 'debug' : 'production'
 $proxyConfigurationFile = Join-Path '..' 'config' $environment 'proxy.json'
-$isProxyConfigurationValid = & (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $proxyConfigurationFile
+$isProxyConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $proxyConfigurationFile)
 if (!$isProxyConfigurationValid) {
     exit
 }

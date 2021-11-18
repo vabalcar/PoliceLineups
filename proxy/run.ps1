@@ -1,6 +1,7 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Debug
+    [switch] $Debug,
+    [switch] $NoConfigurationValidation
 )
 
 'Running proxy...' | Out-Host
@@ -10,11 +11,13 @@ $environmentCofigurationDirectory = Join-Path '..' 'config' $environment
 
 $allConfigurationsValid = $true
 
-'cert.json', 'client.json', 'proxy.json', 'server.json' | ForEach-Object {
-    $configurationFile = Join-Path $environmentCofigurationDirectory $_
-    $isConfigurationValid = & (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $configurationFile
-    if (!$isConfigurationValid -and $allConfigurationsValid) {
-        $allConfigurationsValid = $false
+if (!$NoConfigurationValidation) {
+    'cert.json', 'client.json', 'proxy.json', 'server.json' | ForEach-Object {
+        $configurationFile = Join-Path $environmentCofigurationDirectory $_
+        $isConfigurationValid = & (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $configurationFile
+        if (!$isConfigurationValid -and $allConfigurationsValid) {
+            $allConfigurationsValid = $false
+        }
     }
 }
 
