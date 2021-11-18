@@ -19,6 +19,13 @@ $configurationFileName = Split-Path -Leaf $ConfigurationFile
 $configurationSchemaFileName = "$([Path]::GetFileNameWithoutExtension($configurationFileName)).schema.json"
 $configurationSchemaFile = Join-Path $PSScriptRoot 'schemata' $configurationSchemaFileName
 
+if (!(Test-Path -PathType Leaf -Path $configurationSchemaFile)) {
+    if ($PassThru) {
+        return $true
+    }
+    exit
+}
+
 $testResult = Get-Content -Raw $ConfigurationFile
 | Test-Json -SchemaFile $configurationSchemaFile -ErrorAction SilentlyContinue -ErrorVariable 'validationErrors'
 
