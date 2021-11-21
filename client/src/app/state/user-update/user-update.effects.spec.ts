@@ -1,6 +1,11 @@
 import { TestBed } from "@angular/core/testing";
+import { Actions } from "@ngrx/effects";
 import { provideMockActions } from "@ngrx/effects/testing";
+import { provideMockStore } from "@ngrx/store/testing";
+
 import { Observable } from "rxjs";
+
+import { DefaultService } from "src/app/api/api/default.service";
 
 import { UserUpdateEffects } from "./user-update.effects";
 
@@ -10,10 +15,20 @@ describe("UserUpdateEffects", () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UserUpdateEffects, provideMockActions(() => actions$)],
+      providers: [
+        UserUpdateEffects,
+        provideMockStore(),
+        provideMockActions(() => actions$),
+        { provide: DefaultService, useValue: DefaultService.prototype },
+      ],
     });
 
+    actions$ = TestBed.inject(Actions);
     effects = TestBed.inject(UserUpdateEffects);
+  });
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
 
   it("should be created", () => {

@@ -1,16 +1,19 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ReactiveComponentModule } from "@ngrx/component";
+import { provideMockStore } from "@ngrx/store/testing";
 
-import { UsersListComponent } from './users-list.component';
+import { UsersListComponent } from "./users-list.component";
 
-describe('UsersListComponent', () => {
+describe("UsersListComponent", () => {
   let component: UsersListComponent;
   let fixture: ComponentFixture<UsersListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UsersListComponent ]
-    })
-    .compileComponents();
+      declarations: [UsersListComponent],
+      imports: [ReactiveComponentModule],
+      providers: provideMockStore(),
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +22,11 @@ describe('UsersListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
