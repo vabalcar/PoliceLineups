@@ -7,6 +7,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { Actions } from "@ngrx/effects";
 import { Observable } from "rxjs";
 
+import { Configuration } from "src/app/api/configuration";
 import { DefaultService } from "src/app/api/api/default.service";
 
 import { AuthEffects } from "./auth.effects";
@@ -16,13 +17,16 @@ describe("AuthEffects", () => {
   let effects: AuthEffects;
 
   beforeEach(() => {
+    const defaultServiceMock = Object.assign({}, DefaultService.prototype);
+    defaultServiceMock.configuration = new Configuration();
+
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, MatSnackBarModule],
       providers: [
         AuthEffects,
-        provideMockStore(),
+        provideMockStore({ initialState: { auth: {} } }),
         provideMockActions(() => actions$),
-        { provide: DefaultService, useValue: DefaultService.prototype },
+        { provide: DefaultService, useValue: defaultServiceMock },
       ],
     });
 

@@ -2,6 +2,8 @@ import { TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { provideMockStore } from "@ngrx/store/testing";
 
+import { NotAuthorizedComponent } from "src/app/components/pages/users/not-authorized/not-authorized.component";
+
 import { UserAuthGuard } from "./auth-user.guard";
 
 describe("AuthGuard", () => {
@@ -9,8 +11,12 @@ describe("AuthGuard", () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      providers: [provideMockStore()],
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: "not-authorized", component: NotAuthorizedComponent },
+        ]),
+      ],
+      providers: [provideMockStore({ initialState: { auth: {} } })],
     });
 
     guard = TestBed.inject(UserAuthGuard);
