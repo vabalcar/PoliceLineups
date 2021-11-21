@@ -1,7 +1,7 @@
 {
   "name": "Police lineups",
   "short_name": "Lineups",
-  "theme_color": "#ad2d5b",
+  "theme_color": "#0064bc",
   "background_color": "#303030",
   "display": "standalone",
   "scope": "./",
