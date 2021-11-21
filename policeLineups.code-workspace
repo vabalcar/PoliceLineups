@@ -78,6 +78,28 @@
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
 
+    // Yaml
+    "yaml.format.enable": false,
+    "yaml.format.singleQuote": false,
+
+    // CSS
+    "css.validate": false,
+    "scss.validate": false,
+    "[css]": {
+      "editor.defaultFormatter": "michelemelluso.code-beautifier"
+    },
+    "[scss]": {
+      "editor.defaultFormatter": "michelemelluso.code-beautifier"
+    },
+
+    // TS
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+
     // Python
     "python.linting.enabled": true,
     "python.linting.lintOnSave": true,
@@ -90,18 +112,6 @@
       "--experimental",
       "--aggressive",
       "--aggressive"
-    ],
-
-    // TS
-    "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[typescriptreact]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-
-    // Yaml
-    "yaml.format.enable": false,
-    "yaml.format.singleQuote": false
+    ]
   }
 }
