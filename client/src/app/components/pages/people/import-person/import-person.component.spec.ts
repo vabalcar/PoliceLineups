@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { ImportPersonComponent } from "./import-person.component";
@@ -9,6 +10,7 @@ describe("ImportPersonComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ImportPersonComponent],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

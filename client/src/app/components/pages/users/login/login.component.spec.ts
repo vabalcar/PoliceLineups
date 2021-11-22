@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { provideMockStore } from "@ngrx/store/testing";
 
@@ -10,6 +11,7 @@ describe("LoginComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LoginComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [provideMockStore()],
     }).compileComponents();
   });

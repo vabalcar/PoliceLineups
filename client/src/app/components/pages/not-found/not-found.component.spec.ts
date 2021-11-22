@@ -4,6 +4,7 @@ import { provideMockStore } from "@ngrx/store/testing";
 import { ReactiveComponentModule } from "@ngrx/component";
 
 import { NotFoundComponent } from "./not-found.component";
+import { NO_ERRORS_SCHEMA } from "@angular/core";
 
 describe("NotFoundComponent", () => {
   let component: NotFoundComponent;
@@ -12,6 +13,7 @@ describe("NotFoundComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [NotFoundComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [ReactiveComponentModule],
       providers: [provideMockStore()],
     }).compileComponents();

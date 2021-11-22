@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { DefaultService } from "src/app/api/api/default.service";
@@ -11,6 +12,7 @@ describe("RegisterComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RegisterComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: DefaultService, useValue: DefaultService.prototype },
       ],

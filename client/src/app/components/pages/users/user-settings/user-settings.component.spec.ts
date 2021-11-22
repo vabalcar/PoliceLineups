@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { provideMockStore } from "@ngrx/store/testing";
@@ -11,6 +12,7 @@ describe("UserSettingsComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UserSettingsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       imports: [RouterTestingModule],
       providers: [provideMockStore()],
     }).compileComponents();
