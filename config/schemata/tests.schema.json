@@ -6,7 +6,16 @@
       "type": "integer",
       "minimum": 0,
       "maximum": 65535
+    },
+    "e2eClientHost": {
+      "type": "string",
+      "minLength": 1
+    },
+    "e2eClientPort": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65535
     }
   },
-  "required": ["clientUnitTestsPort"]
+  "required": ["clientUnitTestsPort", "e2eClientHost", "e2eClientPort"]
 }

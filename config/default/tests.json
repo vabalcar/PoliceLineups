@@ -1,3 +1,5 @@
 {
-  "clientUnitTestsPort": 9875
+  "clientUnitTestsPort": 9875,
+  "e2eClientHost": "127.0.0.1",
+  "e2eClientPort": 4500
 }
