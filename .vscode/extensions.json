@@ -24,6 +24,7 @@
     "mrmlnc.vscode-scss",
     "stylelint.vscode-stylelint",
     "michelemelluso.code-beautifier",
+    "raagh.angular-karma-test-explorer",
 
     // Proxy
     "ms-dotnettools.csharp",
