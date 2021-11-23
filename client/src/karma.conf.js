@@ -1,6 +1,9 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+const environmentName = process.env.POLICE_LINEUPS_KARMA_ENV || 'debug';
+const testsConfiguration = require(`../../config/${environmentName}/tests.json`);
+
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -21,7 +24,7 @@ module.exports = function (config) {
       fixWebpackSourcePaths: true
     },
     reporters: ['progress', 'kjhtml'],
-    port: 9876,
+    port: testsConfiguration.clientUnitTestsPort,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
