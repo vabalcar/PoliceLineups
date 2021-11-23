@@ -29,10 +29,10 @@ try {
             exit
         }
 
-        & npm run debug -- --host $($clientConfiguration.host) --port $($clientConfiguration.port) @inputRedirection
+        & npm run debug -- --host $clientConfiguration.host --port $clientConfiguration.port @inputRedirection
     }
     else {
-        & npm start -- (Join-Path 'dist' 'client')  -a $($clientConfiguration.host) -p $($clientConfiguration.port) --proxy "http://$($clientConfiguration.host):$($clientConfiguration.port)?" -d false --silent @inputRedirection
+        & npm start -- (Join-Path 'dist' 'client')  -a $clientConfiguration.host -p $clientConfiguration.port --proxy "http://$($clientConfiguration.host):$($clientConfiguration.port)?" -d false --silent @inputRedirection
     }
 }
 finally {
