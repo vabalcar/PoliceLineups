@@ -4,15 +4,15 @@
 
   // List of extensions which should be recommended for users of this workspace.
   "recommendations": [
-    // Root
+    // Workspace
     "ms-vscode.powershell",
     "foxundermoon.shell-format",
 
-    // Environment
+    // Platform
     "grapecity.gc-excelviewer",
 
-    // API
-    "42crunch.vscode-openapi",
+    // Proxy
+    "ms-dotnettools.csharp",
 
     // Client
     "eg2.vscode-npm-script",
@@ -26,8 +26,8 @@
     "michelemelluso.code-beautifier",
     "raagh.angular-karma-test-explorer",
 
-    // Proxy
-    "ms-dotnettools.csharp",
+    // API
+    "42crunch.vscode-openapi",
 
     // Server
     "ms-python.python",

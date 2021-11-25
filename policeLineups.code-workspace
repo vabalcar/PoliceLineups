@@ -1,58 +1,65 @@
 {
   "folders": [
     {
-      "path": ".var",
-      "name": "Var"
-    },
-    {
       "path": ".",
       "name": "Workspace"
-    },
-    {
-      "path": "config",
-      "name": "Configuration"
     },
     {
       "path": "platform",
       "name": "Platform"
     },
     {
-      "path": "api",
-      "name": "Api"
-    },
-    {
-      "path": "client",
-      "name": "Client"
+      "path": "config",
+      "name": "Configuration"
     },
     {
       "path": "proxy",
       "name": "Proxy"
     },
     {
+      "path": "client",
+      "name": "Client"
+    },
+    {
+      "path": "api",
+      "name": "Api"
+    },
+    {
       "path": "server",
       "name": "Server"
+    },
+    {
+      "path": ".var",
+      "name": "Var"
     }
   ],
   "settings": {
     "files.exclude": {
       "**/.swagger-tmp": true,
       ".git": true,
-      ".var": true,
-      "api": true,
-      "**/swagger-codegen-cli.jar": true,
-      "config": true,
+
       "platform": true,
-      "client": true,
-      "**/dist": true,
-      "**/node_modules": true,
+
+      "config": true,
+
       "proxy": true,
       "**/bin": true,
       "**/obj": true,
       "**/.ssl": true,
+
+      "client": true,
+      "**/dist": true,
+      "**/node_modules": true,
+
+      "api": true,
+      "**/swagger-codegen-cli.jar": true,
+
       "server": true,
       "**/__pycache__": true,
       "**/.venv_linux": true,
-      "**/.venv_windows": true
+      "**/.venv_windows": true,
+
+      ".var": true
     },
 
     // Debugging
