@@ -4,12 +4,12 @@ param (
     [switch] $NoConfigurationValidation
 )
 
-'Running proxy...' | Out-Host
-
 $isConfigurationValid = & (Join-Path '.' 'test-configuration.ps1') -Debug:$Debug
 if (!$isConfigurationValid) {
     exit
 }
+
+'Running proxy...' | Out-Host
 
 $env:ASPNETCORE_ENVIRONMENT = $Debug ? 'Development' : 'Production'
 
