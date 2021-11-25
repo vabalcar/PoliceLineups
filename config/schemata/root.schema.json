@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "username": {
+      "type": "string",
+      "minLength": 1
+    },
+    "default_password": {
+      "type": "string",
+      "minLength": 1
+    },
+    "default_fullname": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": ["username", "default_password", "default_fullname"]
+}
