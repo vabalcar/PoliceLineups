@@ -6,6 +6,7 @@
       "name": "Debug client in Chrome",
       "type": "chrome",
       "request": "launch",
+      "url": "http://localhost",
       "webRoot": "${workspaceFolder}",
       "preLaunchTask": "Debug client",
       "presentation": {
@@ -17,6 +18,7 @@
       "name": "Debug client in Firefox",
       "type": "firefox",
       "request": "launch",
+      "url": "http://localhost",
       "webRoot": "${workspaceFolder}",
       "preLaunchTask": "Debug client",
       "presentation": {
@@ -28,6 +30,7 @@
       "name": "Debug client in Edge",
       "type": "pwa-msedge",
       "request": "launch",
+      "url": "http://localhost",
       "webRoot": "${workspaceFolder}",
       "preLaunchTask": "Debug client",
       "presentation": {
