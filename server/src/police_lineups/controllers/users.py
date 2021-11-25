@@ -68,7 +68,7 @@ def get_current_user():  # noqa: E501
     :rtype: User
     """
 
-    return get_user(connexion.request.authorization.username)
+    return get_user(connexion.context['username'])
 
 
 def add_user(body):  # noqa: E501
@@ -190,7 +190,7 @@ def update_current_user(body):  # noqa: E501
     :rtype: Response
     """
 
-    return update_user(body, connexion.request.authorization.username)
+    return update_user(body, connexion.context['username'])
 
 
 def remove_user(username):  # noqa: E501
@@ -221,4 +221,4 @@ def remove_current_user():  # noqa: E501
     :rtype: Response
     """
 
-    return remove_user(connexion.request.authorization.username)
+    return remove_user(connexion.context['username'])

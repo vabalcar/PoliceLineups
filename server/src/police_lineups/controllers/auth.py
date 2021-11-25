@@ -6,7 +6,6 @@ from typing import Mapping, Tuple
 import connexion
 from jose import JWTError, jwt
 from werkzeug.security import check_password_hash
-from werkzeug.datastructures import Authorization
 from werkzeug.exceptions import Unauthorized
 
 from swagger_server.models import AuthRequest, AuthResponse, AuthTokenRenewalResponse
@@ -48,10 +47,8 @@ def _decode_auth_token(token) -> Mapping:
 
 
 def _authorize_user_by_token_payload(token_payload: Mapping) -> None:
-    authorized_user_name = token_payload.get("username", None)
-
-    connexion.request.authorization = Authorization(
-        "bearer", dict(username=authorized_user_name))
+    connexion.context['username'] = token_payload.get('username', None)
+    connexion.context['is_admin'] = token_payload.get('is_admin', False)
 
 
 def authorize_user_by_token(token) -> Mapping:
@@ -65,7 +62,7 @@ def authorize_admin_by_token(token) -> Mapping:
     token_payload = _decode_auth_token(token)
 
     _authorize_user_by_token_payload(token_payload)
-    if not token_payload.get("is_admin", False):
+    if not connexion.context['is_admin']:
         raise Unauthorized
 
     return token_payload
@@ -118,7 +115,7 @@ def renew_auth_token():  # noqa: E501
     :rtype: AuthTokenRenewalResponse
     """
 
-    username = connexion.request.authorization.username
+    username = connexion.context['username']
     db_user = DbUser.get_by_id(username)
     if db_user is None:
         return AuthTokenRenewalResponse(success=False)
