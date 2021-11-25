@@ -5,8 +5,6 @@ param (
     [switch] $PassThru
 )
 
-'Running DB...' | Out-Host
-
 $environment = $Debug ? 'debug' : 'production'
 $dbConfigurationFile = Join-Path '..' 'config' $environment 'db.json'
 
@@ -18,8 +16,9 @@ if (!$isDbConfigurationValid) {
     exit
 }
 
-$dbConfiguration = Get-Content $dbConfigurationFile | ConvertFrom-Json
+'Running DB...' | Out-Host
 
+$dbConfiguration = Get-Content $dbConfigurationFile | ConvertFrom-Json
 $service = $dbConfiguration.service
 
 if ($IsWindows) {

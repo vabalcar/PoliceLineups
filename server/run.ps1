@@ -4,23 +4,23 @@ param (
     [switch] $NoConfigurationValidation
 )
 
-$isDbRunning = & (Join-Path '.' 'run-db.ps1') -PassThru -Debug:$Debug
-if (!$isDbRunning) {
-    Write-Host -ForegroundColor Red "DB is not running, so the server can not be started"
+$isConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '.' 'test-configuration.ps1') -Debug:$Debug)
+if (!$isConfigurationValid) {
     exit
 }
 
-& (Join-Path '.' 'activate.ps1')
+$isDbRunning = & (Join-Path '.' 'run-db.ps1') -Debug:$Debug -NoConfigurationValidation -PassThru
+if (!$isDbRunning) {
+    Write-Host -ForegroundColor Red "DB is not running, so the server can not be run"
+    exit
+}
 
 'Running server...' | Out-Host
 
+& (Join-Path '.' 'activate.ps1')
+
 $environment = $Debug ? 'debug' : 'production'
 $serverConfigurationFile = Join-Path '..' 'config' $environment 'server.json'
-
-$isServerConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $serverConfigurationFile)
-if (!$isServerConfigurationValid) {
-    exit
-}
 
 $originalWD = Get-Location
 try {

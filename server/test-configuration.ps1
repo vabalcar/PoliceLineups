@@ -3,6 +3,6 @@ param (
     [switch] $Debug
 )
 
-$configurationsToTest = 'cert.json', 'client.json', 'proxy.json', 'server.json'
+$configurationsToTest = 'db.json', 'root.json', 'server.json'
 
 return & (Join-Path '..' 'config' 'test-all.ps1') -Configurations $configurationsToTest -Debug:$Debug

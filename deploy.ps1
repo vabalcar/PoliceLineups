@@ -5,14 +5,15 @@ param (
     [switch] $NoConfigurationValidation
 )
 
-'Deploying...' | Out-Host
-
 $environment = $Debug ? 'debug' : 'production'
 $deployConfigurationFile = Join-Path 'config' $environment 'deploy.json'
+
 $isDeployConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '.' 'config' 'test.ps1') -PassThru -ConfigurationFile $deployConfigurationFile)
 if (!$isDeployConfigurationValid) {
     exit
 }
+
+'Deploying...' | Out-Host
 
 $deployConfiguration = Get-Content $deployConfigurationFile | ConvertFrom-Json
 

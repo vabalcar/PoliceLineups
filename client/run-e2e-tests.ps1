@@ -4,8 +4,6 @@ param (
     [switch] $NoConfigurationValidation
 )
 
-'Running e2e tests of client...' | Out-Host
-
 $environment = $Debug ? 'debug' : 'production'
 $testsConfigurationFile = Join-Path '..' 'config' $environment 'tests.json'
 
@@ -13,6 +11,8 @@ $isTestsConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '..' '
 if (!$isTestsConfigurationValid) {
     exit
 }
+
+'Running e2e tests of client...' | Out-Host
 
 $testsConfiguration = Get-Content $testsConfigurationFile | ConvertFrom-Json
 

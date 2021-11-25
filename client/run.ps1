@@ -5,30 +5,21 @@ param (
     [switch] $NonInteractive
 )
 
-'Running client...' | Out-Host
-
-$environment = $Debug ? 'debug' : 'production'
-$environmentCofigurationDirectory = Join-Path '..' 'config' $environment
-
-$clientConfigurationFile = Join-Path $environmentCofigurationDirectory 'client.json'
-
-$isClientConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $clientConfigurationFile)
-if (!$isClientConfigurationValid) {
+$isConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '.' 'test-configuration.ps1') -Debug:$Debug)
+if (!$isConfigurationValid) {
     exit
 }
 
+'Running client...' | Out-Host
+
+$environment = $Debug ? 'debug' : 'production'
+$clientConfigurationFile = Join-Path '..' 'config' $environment 'client.json'
 $clientConfiguration = Get-Content $clientConfigurationFile | ConvertFrom-Json
 
 $inputRedirection = $NonInteractive ? '<', ($IsWindows ? 'nul' : '/dev/null') : @()
 
 try {
     if ($Debug) {
-        $proxyConfigurationFile = Join-Path $environmentCofigurationDirectory 'proxy.json'
-        $isProxyConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $proxyConfigurationFile)
-        if (!$isProxyConfigurationValid) {
-            exit
-        }
-
         & npm run debug -- --host $clientConfiguration.host --port $clientConfiguration.port @inputRedirection
     }
     else {

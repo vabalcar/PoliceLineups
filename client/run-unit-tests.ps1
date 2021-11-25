@@ -4,8 +4,6 @@ param (
     [switch] $NoConfigurationValidation
 )
 
-'Running unit tests of client...' | Out-Host
-
 $environment = $Debug ? 'debug' : 'production'
 $testsConfigurationFile = Join-Path '..' 'config' $environment 'tests.json'
 
@@ -13,6 +11,8 @@ $isTestsConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '..' '
 if (!$isTestsConfigurationValid) {
     exit
 }
+
+'Running unit tests of client...' | Out-Host
 
 try {
     $env:POLICE_LINEUPS_KARMA_ENV = $environment
