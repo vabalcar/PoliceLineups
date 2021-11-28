@@ -5,7 +5,7 @@ import connexion
 
 from swagger_server.models import Person, Response
 
-from police_lineups.db_scheme import DbPerson
+from police_lineups.db import DbPerson
 from police_lineups.utils import clear_model_update
 
 

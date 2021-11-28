@@ -14,35 +14,35 @@ class User(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, username: str=None, password: str=None, name: str=None, is_admin: bool=None):  # noqa: E501
+    def __init__(self, user_id: int=None, username: str=None, is_admin: bool=None, full_name: str=None):  # noqa: E501
         """User - a model defined in Swagger
 
+        :param user_id: The user_id of this User.  # noqa: E501
+        :type user_id: int
         :param username: The username of this User.  # noqa: E501
         :type username: str
-        :param password: The password of this User.  # noqa: E501
-        :type password: str
-        :param name: The name of this User.  # noqa: E501
-        :type name: str
         :param is_admin: The is_admin of this User.  # noqa: E501
         :type is_admin: bool
+        :param full_name: The full_name of this User.  # noqa: E501
+        :type full_name: str
         """
         self.swagger_types = {
+            'user_id': int,
             'username': str,
-            'password': str,
-            'name': str,
-            'is_admin': bool
+            'is_admin': bool,
+            'full_name': str
         }
 
         self.attribute_map = {
+            'user_id': 'userId',
             'username': 'username',
-            'password': 'password',
-            'name': 'name',
-            'is_admin': 'isAdmin'
+            'is_admin': 'isAdmin',
+            'full_name': 'fullName'
         }
+        self._user_id = user_id
         self._username = username
-        self._password = password
-        self._name = name
         self._is_admin = is_admin
+        self._full_name = full_name
 
     @classmethod
     def from_dict(cls, dikt) -> 'User':
@@ -54,6 +54,27 @@ class User(Model):
         :rtype: User
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def user_id(self) -> int:
+        """Gets the user_id of this User.
+
+
+        :return: The user_id of this User.
+        :rtype: int
+        """
+        return self._user_id
+
+    @user_id.setter
+    def user_id(self, user_id: int):
+        """Sets the user_id of this User.
+
+
+        :param user_id: The user_id of this User.
+        :type user_id: int
+        """
+
+        self._user_id = user_id
 
     @property
     def username(self) -> str:
@@ -77,48 +98,6 @@ class User(Model):
         self._username = username
 
     @property
-    def password(self) -> str:
-        """Gets the password of this User.
-
-
-        :return: The password of this User.
-        :rtype: str
-        """
-        return self._password
-
-    @password.setter
-    def password(self, password: str):
-        """Sets the password of this User.
-
-
-        :param password: The password of this User.
-        :type password: str
-        """
-
-        self._password = password
-
-    @property
-    def name(self) -> str:
-        """Gets the name of this User.
-
-
-        :return: The name of this User.
-        :rtype: str
-        """
-        return self._name
-
-    @name.setter
-    def name(self, name: str):
-        """Sets the name of this User.
-
-
-        :param name: The name of this User.
-        :type name: str
-        """
-
-        self._name = name
-
-    @property
     def is_admin(self) -> bool:
         """Gets the is_admin of this User.
 
@@ -138,3 +117,24 @@ class User(Model):
         """
 
         self._is_admin = is_admin
+
+    @property
+    def full_name(self) -> str:
+        """Gets the full_name of this User.
+
+
+        :return: The full_name of this User.
+        :rtype: str
+        """
+        return self._full_name
+
+    @full_name.setter
+    def full_name(self, full_name: str):
+        """Sets the full_name of this User.
+
+
+        :param full_name: The full_name of this User.
+        :type full_name: str
+        """
+
+        self._full_name = full_name

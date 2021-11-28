@@ -16,7 +16,7 @@ export const usersListFeatureKey = "usersList";
 export type UsersListState = EntityState<User>;
 
 export const adapter: EntityAdapter<User> = createEntityAdapter<User>({
-  selectId: (user: User) => user.username,
+  selectId: (user: User) => user.userId,
 });
 
 // Selectors

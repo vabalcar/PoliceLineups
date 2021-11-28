@@ -27,7 +27,7 @@ const routes: Routes = [
     canActivate: [AdminAuthGuard],
   },
   {
-    path: "user/:username/settings",
+    path: "user/:userId/settings",
     component: UserSettingsComponent,
     canActivate: [AdminAuthGuard],
   },

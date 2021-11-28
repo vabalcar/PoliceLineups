@@ -42,12 +42,12 @@ export const selectEditedUserInfo = createUserInfoSelector(
 // Actions
 export const loadUserToUpdate = createAction(
   "[User update] load user",
-  props<{ targetUsername?: string }>()
+  props<{ targetUserId?: number }>()
 );
 
 export const userToUpdateLoaded = createAction(
   "[User update] load user successful",
-  props<Pick<UserUpdateState, "username" | "userFullName">>()
+  props<Pick<UserUpdateState, "userId" | "fullName">>()
 );
 
 export const validateUserFullnameUpdate = createAction(
@@ -62,28 +62,33 @@ export const userFullnameUpdateValidated = createAction(
 
 export const updateUserFullName = createAction(
   "[User update] update user full name",
-  props<{ targetUsername?: string; newFullName: string }>()
+  props<{ targetUserId?: number; newFullName: string }>()
 );
 
 export const updateUserPassword = createAction(
   "[User update] update password",
-  props<{ targetUsername?: string; newPassword: string }>()
+  props<{ targetUserId?: number; newPassword: string }>()
 );
 
 export const userUpdateFailed = createAction("[User update] failed");
 export const userUpdatePasswordSuccessful = createAction(
   "[User update] password successful"
 );
+export const currentUserFullNameUpdateSuccessful = createAction(
+  "[User update] current fullname",
+  props<Pick<UserUpdateState, "fullName">>()
+);
 export const userFullNameUpdateSucessful = createAction(
   "[User update] fullname successful",
-  props<Pick<UserUpdateState, "userFullName">>()
+  props<Pick<UserUpdateState, "fullName">>()
 );
 
 // State manipulation
 export const initialState: UserUpdateState = {
+  userId: null,
   username: null,
-  userFullName: null,
   isAdmin: false,
+  fullName: null,
 };
 
 export const userUpdateReducer = createReducer(
@@ -102,6 +107,11 @@ export const userUpdateReducer = createReducer(
     })
   ),
   on(userFullNameUpdateSucessful, (state, action) =>
+    updateState(state, action, {
+      success: true,
+    })
+  ),
+  on(currentUserFullNameUpdateSuccessful, (state, action) =>
     updateState(state, action, {
       success: true,
     })

@@ -7,7 +7,7 @@ import {
   props,
 } from "@ngrx/store";
 import { AppState } from "../app.reducer";
-import { userFullNameUpdateSucessful } from "../user-update/user-update.reducer";
+import { currentUserFullNameUpdateSuccessful as fullNameUpdated } from "../user-update/user-update.reducer";
 import {
   updateSavedFeatureState,
   getSavedFeatureState,
@@ -18,9 +18,10 @@ import { createUserInfoSelector } from "../utils/users.utils";
 export const authFeatureName = "auth";
 
 export interface IUserInfo {
+  userId: number;
   username: string;
   isAdmin: boolean;
-  userFullName: string;
+  fullName: string;
 }
 
 // State
@@ -50,14 +51,19 @@ export const selectCurrentUserIsAdmin = createSelector(
   (state: AuthState) => state.isAdmin
 );
 
+export const selectCurrentUserUserId = createSelector(
+  selectAuthFeature,
+  (state: AuthState) => state.userId
+);
+
 export const selectCurrentUserUsername = createSelector(
   selectAuthFeature,
-  (state: AuthState) => state.username
+  (state: AuthState) => state.userId
 );
 
 export const selectCurrentUserFullName = createSelector(
   selectAuthFeature,
-  (state: AuthState) => state.userFullName
+  (state: AuthState) => state.fullName
 );
 
 export const selectLoginFailedCount = createSelector(
@@ -78,11 +84,12 @@ export const loginSuccessfulAction = createAction(
   props<
     Pick<
       AuthState,
+      | "userId"
       | "username"
+      | "isAdmin"
+      | "fullName"
       | "token"
       | "tokenExpirationDatetime"
-      | "userFullName"
-      | "isAdmin"
     >
   >()
 );
@@ -102,11 +109,12 @@ export const logoutAction = createAction("[Auth] logout");
 
 // State manupilation
 const defaultState: AuthState = {
+  userId: null,
   username: null,
+  isAdmin: false,
+  fullName: null,
   token: null,
   tokenExpirationDatetime: null,
-  isAdmin: false,
-  userFullName: null,
   loginFailedCount: 0,
 };
 
@@ -132,6 +140,6 @@ export const authReducer = createReducer(
       loginFailedCount: state.loginFailedCount + 1,
     })
   ),
-  on(userFullNameUpdateSucessful, updateState),
+  on(fullNameUpdated, updateState),
   on(logoutAction, resetState)
 );

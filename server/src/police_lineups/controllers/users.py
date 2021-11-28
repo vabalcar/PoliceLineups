@@ -6,25 +6,10 @@ from werkzeug.security import generate_password_hash
 
 from swagger_server.models import User, Response, ValidationResponse
 
-from police_lineups.db_scheme import DbUser
+from police_lineups.db import DbUser
+from police_lineups.singletons import Configuration
 from police_lineups.utils import clear_model_update
-
-ROOT_USERNAME = 'root'
-ROOT_DEFAULT_NAME = 'Root'
-ROOT_DEFAULT_PASSWORD = '1234'
-
-
-def init_root_user():
-    root_user = User(
-        username=ROOT_USERNAME,
-        password=ROOT_DEFAULT_PASSWORD,
-        name=ROOT_DEFAULT_NAME,
-        is_admin=True
-    )
-
-    success = add_user(root_user).success
-
-    return Response(success)
+from swagger_server.models.user_with_password import UserWithPassword
 
 
 def get_users():  # noqa: E501
@@ -32,31 +17,32 @@ def get_users():  # noqa: E501
 
      # noqa: E501
 
-
     :rtype: List[User]
     """
 
     return [
-        User(username=db_user.username, name=db_user.name, is_admin=db_user.is_admin)
+        User(
+            user_id=db_user.user_id,
+            username=db_user.username,
+            is_admin=db_user.is_admin,
+            full_name=db_user.full_name)
         for db_user in DbUser.select()]
 
 
-def get_user(username):  # noqa: E501
+def get_user(user_id):  # noqa: E501
     """Returns a user.
 
      # noqa: E501
 
-    :param id: ID of the user.
-    :type id: int
-
     :rtype: User
     """
 
-    db_user: DbUser = DbUser.get_by_id(username)
+    db_user: DbUser = DbUser.get_by_id(user_id)
     return User(
+        user_id=db_user.user_id,
         username=db_user.username,
-        name=db_user.name,
-        is_admin=db_user.is_admin)
+        is_admin=db_user.is_admin,
+        full_name=db_user.full_name)
 
 
 def get_current_user():  # noqa: E501
@@ -64,11 +50,10 @@ def get_current_user():  # noqa: E501
 
      # noqa: E501
 
-
     :rtype: User
     """
 
-    return get_user(connexion.context['username'])
+    return get_user(connexion.context['current_user_id'])
 
 
 def add_user(body):  # noqa: E501
@@ -83,8 +68,8 @@ def add_user(body):  # noqa: E501
     """
 
     if connexion.request.is_json:
-        user = User.from_dict(connexion.request.get_json())  # noqa: E501
-    elif isinstance(body, User):
+        user = UserWithPassword.from_dict(connexion.request.get_json())  # noqa: E501
+    elif isinstance(body, UserWithPassword):
         user = body
 
     success = False
@@ -94,7 +79,7 @@ def add_user(body):  # noqa: E501
 
     user.password = generate_password_hash(user.password)
 
-    if DbUser.get_or_none(DbUser.username == user.username) is None:
+    if DbUser.get_or_none(DbUser.user_id == user.user_id) is None:
         DbUser.create(**user.to_dict())
         success = True
 
@@ -133,48 +118,41 @@ def validate_user_update(body):  # noqa: E501
     :rtype: Response
     """
     if connexion.request.is_json:
-        body = User.from_dict(connexion.request.get_json())  # noqa: E501
+        body = UserWithPassword.from_dict(connexion.request.get_json())  # noqa: E501
 
     error = None
 
     if body.password is not None:
         error = validate_password(body.password)
 
-    if body.name is not None:
-        error = validate_user_full_name(body.name)
+    if body.full_name is not None:
+        error = validate_user_full_name(body.full_name)
 
     return ValidationResponse(success=True, validation_error=error)
 
 
-def update_user(body, username):  # noqa: E501
+def update_user(body, user_id):  # noqa: E501
     """Updates a user
 
      # noqa: E501
 
-    :param body: a user to update
-    :type body: dict | bytes
-    :param username: username of a user
-    :type username: str
-
     :rtype: Response
     """
     if connexion.request.is_json:
-        update = User.from_dict(connexion.request.get_json())  # noqa: E501
-    elif isinstance(body, User):
-        update = body
+        body = UserWithPassword.from_dict(connexion.request.get_json())  # noqa: E501
 
-    if update is None:
+    if body is None:
         return Response(True)
 
-    if update.password is not None:
-        update.password = generate_password_hash(update.password)
+    if body.password is not None:
+        body.password = generate_password_hash(body.password)
 
     success = False
 
-    if update.username is None \
-            and (username is not ROOT_USERNAME or not update.is_admin):
-        success = DbUser.update(**clear_model_update(update)).where(DbUser.username ==
-                                                                    username).execute() == 1
+    if body.username is None \
+            and (user_id is not Configuration().root_user.user_id or not body.is_admin):
+        success = DbUser.update(**clear_model_update(body)).where(DbUser.user_id ==
+                                                                  user_id).execute() == 1
 
     return Response(success)
 
@@ -190,24 +168,20 @@ def update_current_user(body):  # noqa: E501
     :rtype: Response
     """
 
-    return update_user(body, connexion.context['username'])
+    return update_user(body, connexion.context['current_user_id'])
 
 
-def remove_user(username):  # noqa: E501
+def remove_user(user_id):  # noqa: E501
     """Unregisters an user
 
      # noqa: E501
 
-    :param user: an user to unregister
-    :type user:
-
-    :rtype: object
     """
 
     success = False
 
-    if username != ROOT_USERNAME:
-        success = DbUser.delete_by_id(username) == 1
+    if user_id != Configuration().root_user.user_id:
+        success = DbUser.delete_by_id(user_id) == 1
 
     return Response(success)
 
@@ -221,4 +195,4 @@ def remove_current_user():  # noqa: E501
     :rtype: Response
     """
 
-    return remove_user(connexion.context['username'])
+    return remove_user(connexion.context['current_user_id'])

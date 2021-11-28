@@ -10,8 +10,8 @@ export class RegisterComponent {
   username: string;
   password: string;
   passwordAgain: string;
+  isAdmin = false;
   fullName: string;
-  isAdmin: boolean;
 
   constructor(private api: DefaultService) {}
 
@@ -27,7 +27,7 @@ export class RegisterComponent {
       .addUser({
         username: this.username,
         password: this.password,
-        name: this.fullName,
+        fullName: this.fullName,
         isAdmin: this.isAdmin,
       })
       .subscribe((response) => {

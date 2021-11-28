@@ -11,6 +11,7 @@ from swagger_server.models.auth_token_renewal_response import AuthTokenRenewalRe
 from swagger_server.models.person import Person  # noqa: E501
 from swagger_server.models.response import Response  # noqa: E501
 from swagger_server.models.user import User  # noqa: E501
+from swagger_server.models.user_with_password import UserWithPassword  # noqa: E501
 from swagger_server.models.validation_response import ValidationResponse  # noqa: E501
 from swagger_server.test import BaseTestCase
 
@@ -37,7 +38,7 @@ class TestDefaultController(BaseTestCase):
 
         Adds a user
         """
-        body = User()
+        body = UserWithPassword()
         response = self.client.open(
             '/users',
             method='POST',
@@ -85,7 +86,7 @@ class TestDefaultController(BaseTestCase):
         Returns a user
         """
         response = self.client.open(
-            '/user/{username}'.format(username='username_example'),
+            '/user/{user_id}'.format(user_id=789),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -97,17 +98,6 @@ class TestDefaultController(BaseTestCase):
         """
         response = self.client.open(
             '/users',
-            method='GET')
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
-    def test_init_root_user(self):
-        """Test case for init_root_user
-
-        Inits root user
-        """
-        response = self.client.open(
-            '/init/rootUser',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -154,7 +144,7 @@ class TestDefaultController(BaseTestCase):
         Removes a user
         """
         response = self.client.open(
-            '/user/{username}'.format(username='username_example'),
+            '/user/{user_id}'.format(user_id=789),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -175,7 +165,7 @@ class TestDefaultController(BaseTestCase):
 
         Updates a user
         """
-        body = User()
+        body = UserWithPassword()
         response = self.client.open(
             '/currentUser',
             method='PATCH',
@@ -203,9 +193,9 @@ class TestDefaultController(BaseTestCase):
 
         Updates a user
         """
-        body = User()
+        body = UserWithPassword()
         response = self.client.open(
-            '/user/{username}'.format(username='username_example'),
+            '/user/{user_id}'.format(user_id=789),
             method='PATCH',
             data=json.dumps(body),
             content_type='application/json')

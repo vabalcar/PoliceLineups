@@ -6,7 +6,7 @@ import { map } from "rxjs/operators";
 import { AppState } from "src/app/state/app.reducer";
 import {
   IUserInfo,
-  selectCurrentUserUsername,
+  selectCurrentUserUserId,
 } from "src/app/state/auth/auth.reducer";
 import {
   loadUserToUpdate,
@@ -22,15 +22,18 @@ import {
   ObservableFormControl,
 } from "src/app/components/utils/forms.utils";
 
+interface IUserSettingsComponentData {
+  userId: number;
+  username: string;
+  isEditingSelf: boolean;
+}
+
 @Component({
   selector: "app-user-settings",
   templateUrl: "./user-settings.component.html",
 })
 export class UserSettingsComponent implements OnInit {
-  readonly targetUserData$: Observable<{
-    isEditingSelf: boolean;
-    targetUserUsername: string;
-  }>;
+  readonly userSettingsComponentData$: Observable<IUserSettingsComponentData>;
 
   readonly fullNameFormControl: ObservableFormControl<string>;
   readonly fullNameUpdateErrorPublisher: ErrorPublisher;
@@ -39,34 +42,35 @@ export class UserSettingsComponent implements OnInit {
   readonly passwordAgainFormControl: ObservableFormControl<string>;
   readonly passwordUpdateErrorPublisher: ErrorPublisher;
 
-  private readonly loggedInUserUsername$: Observable<string>;
+  private readonly loggedInUserId$: Observable<number>;
   private readonly targetUserInfo$: Observable<IUserInfo>;
-  private readonly targetUserUsernameSubject$: BehaviorSubject<
-    string | undefined
+  private readonly userSettingsComponentDataSubject$: BehaviorSubject<
+    IUserSettingsComponentData | undefined
   >;
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {
-    this.loggedInUserUsername$ = this.store.select(selectCurrentUserUsername);
+    this.loggedInUserId$ = this.store.select(selectCurrentUserUserId);
     this.targetUserInfo$ = this.store.select(selectEditedUserInfo);
 
-    this.targetUserUsernameSubject$ = new BehaviorSubject(undefined);
-    this.targetUserInfo$
-      .pipe(map((editedUserInfo) => editedUserInfo.username))
-      .subscribe(this.targetUserUsernameSubject$);
-
-    this.targetUserData$ = combineLatest([
-      this.loggedInUserUsername$,
-      this.targetUserUsernameSubject$,
+    this.userSettingsComponentData$ = combineLatest([
+      this.loggedInUserId$,
+      this.targetUserInfo$,
     ]).pipe(
-      map(([loggedInUserUsername, targetUserUsername]) => ({
-        isEditingSelf: loggedInUserUsername === targetUserUsername,
-        targetUserUsername,
+      map(([loggedInUserId, targetUserInfo]) => ({
+        userId: targetUserInfo.userId,
+        username: targetUserInfo.username,
+        isEditingSelf: loggedInUserId === targetUserInfo.userId,
       }))
+    );
+
+    this.userSettingsComponentDataSubject$ = new BehaviorSubject(undefined);
+    this.userSettingsComponentData$.subscribe(
+      this.userSettingsComponentDataSubject$
     );
 
     this.fullNameFormControl = new ObservableFormControl(
       this.targetUserInfo$.pipe(
-        map((targetUserInfo) => targetUserInfo.userFullName)
+        map((targetUserInfo) => targetUserInfo.fullName)
       ),
       ([validationErrorType]) => {
         switch (validationErrorType) {
@@ -109,11 +113,11 @@ export class UserSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap
-      .pipe(map((params) => params.get("username")))
-      .subscribe((editedUserUsernameFromRoute) =>
+      .pipe(map((params) => params.get("userId")))
+      .subscribe((editedUserIdFromRoute) =>
         this.store.dispatch(
           loadUserToUpdate({
-            targetUsername: editedUserUsernameFromRoute ?? undefined,
+            targetUserId: parseInt(editedUserIdFromRoute, 10),
           })
         )
       );
@@ -135,7 +139,9 @@ export class UserSettingsComponent implements OnInit {
   updateUserFullName(): void {
     this.store.dispatch(
       updateUserFullName({
-        targetUsername: this.targetUserUsernameSubject$.getValue(),
+        targetUserId: this.getTargetUserId(
+          this.userSettingsComponentDataSubject$.getValue()
+        ),
         newFullName: this.fullNameFormControl.currentValue,
       })
     );
@@ -152,9 +158,17 @@ export class UserSettingsComponent implements OnInit {
   updateUserPassword(): void {
     this.store.dispatch(
       updateUserPassword({
-        targetUsername: this.targetUserUsernameSubject$.getValue(),
+        targetUserId: this.getTargetUserId(
+          this.userSettingsComponentDataSubject$.getValue()
+        ),
         newPassword: this.passwordFormControl.currentValue,
       })
     );
+  }
+
+  private getTargetUserId(
+    userData: IUserSettingsComponentData | undefined
+  ): number | undefined {
+    return !userData || userData.isEditingSelf ? undefined : userData.userId;
   }
 }

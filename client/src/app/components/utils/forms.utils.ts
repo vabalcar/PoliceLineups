@@ -117,7 +117,7 @@ export class ObservableFormControl<T> extends FormControl {
         if (this.pristine) {
           this.setValue(value);
         }
-        this.defaultValueSubscription.unsubscribe();
+        this.defaultValueSubscription?.unsubscribe();
       });
   }
 

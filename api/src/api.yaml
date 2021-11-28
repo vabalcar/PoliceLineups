@@ -1,7 +1,7 @@
-openapi: "3.0.2"
+openapi: "3.0.3"
 info:
   title: Police lineups
-  version: "1.0"
+  version: "0.1"
 security:
   - JwtAuthUser: []
 paths:
@@ -36,19 +36,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthTokenRenewalResponse"
-  /init/rootUser:
-    get:
-      summary: Inits root user
-      x-openapi-router-controller: police_lineups.controllers.users
-      operationId: initRootUser
-      security: [] # Enabled anonymous access
-      responses:
-        "200":
-          description: root user initialization result
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Response"
   /users:
     get:
       summary: Returns all users
@@ -75,7 +62,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: "#/components/schemas/UserWithPassword"
       responses:
         "200":
           description: addition result
@@ -102,7 +89,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ValidationResponse"
-  /user/{username}:
+  /user/{user_id}:
     get:
       summary: Returns a user
       x-openapi-router-controller: police_lineups.controllers.users
@@ -110,11 +97,12 @@ paths:
       security: [JwtAuthAdmin: []]
       parameters:
         - in: path
-          name: username
-          description: username of a userUser
+          name: user_id
+          description: id of a user
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         "200":
           description: a JSON object describing the User
@@ -133,14 +121,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: "#/components/schemas/UserWithPassword"
       parameters:
         - in: path
-          name: username
-          description: username of a user
+          name: user_id
+          description: id of a user
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         "200":
           description: update result
@@ -155,11 +144,12 @@ paths:
       security: [JwtAuthAdmin: []]
       parameters:
         - in: path
-          name: username
-          description: a username of a user
+          name: user_id
+          description: id of a user
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         "200":
           description: removal result
@@ -189,7 +179,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: "#/components/schemas/UserWithPassword"
       responses:
         "200":
           description: update result
@@ -352,27 +342,38 @@ components:
         - $ref: "#/components/schemas/Response"
         - type: object
           properties:
+            userId:
+              type: integer
+              format: int64
+            isAdmin:
+              type: boolean
+            userFullName:
+              type: string
             authToken:
               type: string
             tokenExpirationDatetime:
               type: string
               nullable: true
               format: date-time
-            isAdmin:
-              type: boolean
-            userFullName:
-              type: string
     User:
       type: object
       properties:
+        userId:
+          type: integer
+          format: int64
         username:
-          type: string
-        password:
-          type: string
-        name:
           type: string
         isAdmin:
           type: boolean
+        fullName:
+          type: string
+    UserWithPassword:
+      allOf:
+        - $ref: "#/components/schemas/User"
+        - type: object
+          properties:
+            password:
+              type: string
     Person:
       type: object
       properties:

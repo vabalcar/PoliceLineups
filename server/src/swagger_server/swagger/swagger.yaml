@@ -1,7 +1,7 @@
-openapi: 3.0.2
+openapi: 3.0.3
 info:
   title: Police lineups
-  version: "1.0"
+  version: "0.1"
 servers:
 - url: /
 security:
@@ -38,19 +38,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthTokenRenewalResponse'
       x-openapi-router-controller: police_lineups.controllers.auth
-  /init/rootUser:
-    get:
-      summary: Inits root user
-      operationId: init_root_user
-      responses:
-        "200":
-          description: root user initialization result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Response'
-      security: []
-      x-openapi-router-controller: police_lineups.controllers.users
   /users:
     get:
       summary: Returns all users
@@ -76,7 +63,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserWithPassword'
         required: true
       responses:
         "200":
@@ -107,19 +94,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/ValidationResponse'
       x-openapi-router-controller: police_lineups.controllers.users
-  /user/{username}:
+  /user/{user_id}:
     get:
       summary: Returns a user
       operationId: get_user
       parameters:
-      - name: username
+      - name: user_id
         in: path
-        description: username of a userUser
+        description: id of a user
         required: true
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
+          format: int64
       responses:
         "200":
           description: a JSON object describing the User
@@ -134,14 +122,15 @@ paths:
       summary: Removes a user
       operationId: remove_user
       parameters:
-      - name: username
+      - name: user_id
         in: path
-        description: a username of a user
+        description: id of a user
         required: true
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
+          format: int64
       responses:
         "200":
           description: removal result
@@ -156,20 +145,21 @@ paths:
       summary: Updates a user
       operationId: update_user
       parameters:
-      - name: username
+      - name: user_id
         in: path
-        description: username of a user
+        description: id of a user
         required: true
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
+          format: int64
       requestBody:
         description: update of user
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserWithPassword'
         required: true
       responses:
         "200":
@@ -212,7 +202,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserWithPassword'
         required: true
       responses:
         "200":
@@ -364,32 +354,43 @@ components:
       - $ref: '#/components/schemas/Response'
       - type: object
         properties:
+          userId:
+            type: integer
+            format: int64
+          isAdmin:
+            type: boolean
+          userFullName:
+            type: string
           authToken:
             type: string
           tokenExpirationDatetime:
             type: string
             format: date-time
             nullable: true
-          isAdmin:
-            type: boolean
-          userFullName:
-            type: string
     User:
       type: object
       properties:
+        userId:
+          type: integer
+          format: int64
         username:
-          type: string
-        password:
-          type: string
-        name:
           type: string
         isAdmin:
           type: boolean
+        fullName:
+          type: string
       example:
-        password: password
-        name: name
+        fullName: fullName
         isAdmin: true
+        userId: 0
         username: username
+    UserWithPassword:
+      allOf:
+      - $ref: '#/components/schemas/User'
+      - type: object
+        properties:
+          password:
+            type: string
     Person:
       type: object
       properties:

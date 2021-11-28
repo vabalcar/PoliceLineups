@@ -15,40 +15,45 @@ class AuthResponse(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, success: bool=None, auth_token: str=None, token_expiration_datetime: datetime=None, is_admin: bool=None, user_full_name: str=None):  # noqa: E501
+    def __init__(self, success: bool=None, user_id: int=None, is_admin: bool=None, user_full_name: str=None, auth_token: str=None, token_expiration_datetime: datetime=None):  # noqa: E501
         """AuthResponse - a model defined in Swagger
 
         :param success: The success of this AuthResponse.  # noqa: E501
         :type success: bool
-        :param auth_token: The auth_token of this AuthResponse.  # noqa: E501
-        :type auth_token: str
-        :param token_expiration_datetime: The token_expiration_datetime of this AuthResponse.  # noqa: E501
-        :type token_expiration_datetime: datetime
+        :param user_id: The user_id of this AuthResponse.  # noqa: E501
+        :type user_id: int
         :param is_admin: The is_admin of this AuthResponse.  # noqa: E501
         :type is_admin: bool
         :param user_full_name: The user_full_name of this AuthResponse.  # noqa: E501
         :type user_full_name: str
+        :param auth_token: The auth_token of this AuthResponse.  # noqa: E501
+        :type auth_token: str
+        :param token_expiration_datetime: The token_expiration_datetime of this AuthResponse.  # noqa: E501
+        :type token_expiration_datetime: datetime
         """
         self.swagger_types = {
             'success': bool,
-            'auth_token': str,
-            'token_expiration_datetime': datetime,
+            'user_id': int,
             'is_admin': bool,
-            'user_full_name': str
+            'user_full_name': str,
+            'auth_token': str,
+            'token_expiration_datetime': datetime
         }
 
         self.attribute_map = {
             'success': 'success',
-            'auth_token': 'authToken',
-            'token_expiration_datetime': 'tokenExpirationDatetime',
+            'user_id': 'userId',
             'is_admin': 'isAdmin',
-            'user_full_name': 'userFullName'
+            'user_full_name': 'userFullName',
+            'auth_token': 'authToken',
+            'token_expiration_datetime': 'tokenExpirationDatetime'
         }
         self._success = success
-        self._auth_token = auth_token
-        self._token_expiration_datetime = token_expiration_datetime
+        self._user_id = user_id
         self._is_admin = is_admin
         self._user_full_name = user_full_name
+        self._auth_token = auth_token
+        self._token_expiration_datetime = token_expiration_datetime
 
     @classmethod
     def from_dict(cls, dikt) -> 'AuthResponse':
@@ -83,46 +88,25 @@ class AuthResponse(Model):
         self._success = success
 
     @property
-    def auth_token(self) -> str:
-        """Gets the auth_token of this AuthResponse.
+    def user_id(self) -> int:
+        """Gets the user_id of this AuthResponse.
 
 
-        :return: The auth_token of this AuthResponse.
-        :rtype: str
+        :return: The user_id of this AuthResponse.
+        :rtype: int
         """
-        return self._auth_token
+        return self._user_id
 
-    @auth_token.setter
-    def auth_token(self, auth_token: str):
-        """Sets the auth_token of this AuthResponse.
-
-
-        :param auth_token: The auth_token of this AuthResponse.
-        :type auth_token: str
-        """
-
-        self._auth_token = auth_token
-
-    @property
-    def token_expiration_datetime(self) -> datetime:
-        """Gets the token_expiration_datetime of this AuthResponse.
+    @user_id.setter
+    def user_id(self, user_id: int):
+        """Sets the user_id of this AuthResponse.
 
 
-        :return: The token_expiration_datetime of this AuthResponse.
-        :rtype: datetime
-        """
-        return self._token_expiration_datetime
-
-    @token_expiration_datetime.setter
-    def token_expiration_datetime(self, token_expiration_datetime: datetime):
-        """Sets the token_expiration_datetime of this AuthResponse.
-
-
-        :param token_expiration_datetime: The token_expiration_datetime of this AuthResponse.
-        :type token_expiration_datetime: datetime
+        :param user_id: The user_id of this AuthResponse.
+        :type user_id: int
         """
 
-        self._token_expiration_datetime = token_expiration_datetime
+        self._user_id = user_id
 
     @property
     def is_admin(self) -> bool:
@@ -165,3 +149,45 @@ class AuthResponse(Model):
         """
 
         self._user_full_name = user_full_name
+
+    @property
+    def auth_token(self) -> str:
+        """Gets the auth_token of this AuthResponse.
+
+
+        :return: The auth_token of this AuthResponse.
+        :rtype: str
+        """
+        return self._auth_token
+
+    @auth_token.setter
+    def auth_token(self, auth_token: str):
+        """Sets the auth_token of this AuthResponse.
+
+
+        :param auth_token: The auth_token of this AuthResponse.
+        :type auth_token: str
+        """
+
+        self._auth_token = auth_token
+
+    @property
+    def token_expiration_datetime(self) -> datetime:
+        """Gets the token_expiration_datetime of this AuthResponse.
+
+
+        :return: The token_expiration_datetime of this AuthResponse.
+        :rtype: datetime
+        """
+        return self._token_expiration_datetime
+
+    @token_expiration_datetime.setter
+    def token_expiration_datetime(self, token_expiration_datetime: datetime):
+        """Sets the token_expiration_datetime of this AuthResponse.
+
+
+        :param token_expiration_datetime: The token_expiration_datetime of this AuthResponse.
+        :type token_expiration_datetime: datetime
+        """
+
+        self._token_expiration_datetime = token_expiration_datetime

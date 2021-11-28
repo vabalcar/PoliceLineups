@@ -10,7 +10,7 @@ from werkzeug.exceptions import Unauthorized
 
 from swagger_server.models import AuthRequest, AuthResponse, AuthTokenRenewalResponse
 
-from police_lineups.db_scheme import DbUser
+from police_lineups.db import DbUser
 
 JWT_ISSUER = 'police_lineups'
 JWT_SECRET = secrets.token_urlsafe(32)
@@ -22,14 +22,14 @@ def _current_timestamp() -> int:
     return int(time.time())
 
 
-def _generate_auth_token(username: str, is_admin: bool) -> Tuple[str, datetime]:
+def _generate_auth_token(user_id: int, is_admin: bool) -> Tuple[str, datetime]:
     issued_timestamp = _current_timestamp()
     expiration_timestamp = issued_timestamp + JWT_LIFETIME_SECONDS
     auth_payload = {
         "iss": JWT_ISSUER,
         "iat": int(issued_timestamp),
         "exp": int(expiration_timestamp),
-        "username": username,
+        "user_id": user_id,
         "is_admin": is_admin
     }
 
@@ -47,7 +47,7 @@ def _decode_auth_token(token) -> Mapping:
 
 
 def _authorize_user_by_token_payload(token_payload: Mapping) -> None:
-    connexion.context['username'] = token_payload.get('username', None)
+    connexion.context['current_user_id'] = token_payload.get('user_id', None)
     connexion.context['is_admin'] = token_payload.get('is_admin', False)
 
 
@@ -82,28 +82,28 @@ def login(body):  # noqa: E501
         body = AuthRequest.from_dict(connexion.request.get_json())  # noqa: E501
 
     success = False
-    auth_token = None
-    auth_token_expiration_datetime = None
+    user_id = 0
     is_admin = False
     user_full_name = None
+    auth_token = None
+    auth_token_expiration_datetime = None
 
-    username = body.username
-    password = body.password
-
-    db_user = DbUser.get_or_none(DbUser.username == username)
-    success = db_user is not None and check_password_hash(db_user.password, password)
+    db_user = DbUser.get_or_none(DbUser.username == body.username)
+    success = db_user is not None and check_password_hash(db_user.password, body.password)
 
     if success:
+        user_id = db_user.user_id
         is_admin = db_user.is_admin
-        (auth_token, auth_token_expiration_datetime) = _generate_auth_token(username, is_admin)
-        user_full_name = db_user.name
+        user_full_name = db_user.full_name
+        (auth_token, auth_token_expiration_datetime) = _generate_auth_token(user_id, is_admin)
 
     return AuthResponse(
         success=success,
-        auth_token=auth_token,
-        token_expiration_datetime=auth_token_expiration_datetime,
+        user_id=user_id,
         is_admin=is_admin,
-        user_full_name=user_full_name)
+        user_full_name=user_full_name,
+        auth_token=auth_token,
+        token_expiration_datetime=auth_token_expiration_datetime)
 
 
 def renew_auth_token():  # noqa: E501
@@ -115,13 +115,13 @@ def renew_auth_token():  # noqa: E501
     :rtype: AuthTokenRenewalResponse
     """
 
-    username = connexion.context['username']
-    db_user = DbUser.get_by_id(username)
+    user_id = connexion.context['current_user_id']
+    db_user = DbUser.get_by_id(user_id)
     if db_user is None:
         return AuthTokenRenewalResponse(success=False)
     is_admin = db_user.is_admin
 
-    (auth_token, auth_token_expiration_datetime) = _generate_auth_token(username, is_admin)
+    (auth_token, auth_token_expiration_datetime) = _generate_auth_token(user_id, is_admin)
 
     return AuthTokenRenewalResponse(
         success=True, auth_token=auth_token,

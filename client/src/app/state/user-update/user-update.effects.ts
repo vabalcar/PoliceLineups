@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
+import { exhaustMap, map, mergeMap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { selectCurrentUserInfo, IUserInfo } from "../auth/auth.reducer";
 import { catchBeError } from "../utils/errors.utils";
 import {
+  currentUserFullNameUpdateSuccessful,
   loadUserToUpdate,
   updateUserFullName,
   updateUserPassword,
@@ -23,15 +24,16 @@ export class UserUpdateEffects {
     this.actions$.pipe(
       ofType(loadUserToUpdate),
       mergeMap((action) =>
-        (!action.targetUsername
+        (!action.targetUserId
           ? this.store.select(selectCurrentUserInfo)
-          : this.api.getUser(action.targetUsername).pipe(
+          : this.api.getUser(action.targetUserId).pipe(
               map(
                 (response) =>
                   ({
+                    userId: action.targetUserId,
                     username: response.username,
-                    userFullName: response.name,
                     isAdmin: response.isAdmin,
+                    fullName: response.fullName,
                   } as IUserInfo)
               )
             )
@@ -51,13 +53,13 @@ export class UserUpdateEffects {
     this.actions$.pipe(
       ofType(updateUserPassword),
       exhaustMap((action) =>
-        (!action.targetUsername
+        (!action.targetUserId
           ? this.api.updateCurrentUser({ password: action.newPassword })
           : this.api.updateUser(
               {
                 password: action.newPassword,
               },
-              action.targetUsername
+              action.targetUserId
             )
         ).pipe(
           map((response) =>
@@ -75,20 +77,24 @@ export class UserUpdateEffects {
     this.actions$.pipe(
       ofType(updateUserFullName),
       exhaustMap((action) =>
-        (!action.targetUsername
-          ? this.api.updateCurrentUser({ name: action.newFullName })
+        (!action.targetUserId
+          ? this.api.updateCurrentUser({ fullName: action.newFullName })
           : this.api.updateUser(
               {
-                name: action.newFullName,
+                fullName: action.newFullName,
               },
-              action.targetUsername
+              action.targetUserId
             )
         ).pipe(
           map((response) =>
             response.success
-              ? userFullNameUpdateSucessful({
-                  userFullName: action.newFullName,
-                })
+              ? !action.targetUserId
+                ? currentUserFullNameUpdateSuccessful({
+                    fullName: action.newFullName,
+                  })
+                : userFullNameUpdateSucessful({
+                    fullName: action.newFullName,
+                  })
               : userUpdateFailed()
           ),
           catchBeError()
@@ -101,7 +107,7 @@ export class UserUpdateEffects {
     this.actions$.pipe(
       ofType(validateUserFullnameUpdate),
       mergeMap((action) =>
-        this.api.validateUserUpdate({ name: action.newFullName }).pipe(
+        this.api.validateUserUpdate({ fullName: action.newFullName }).pipe(
           map((response) =>
             userFullnameUpdateValidated({
               userFullNameUpdateValidationError: response.validationError,

@@ -25,7 +25,7 @@ export class UsersListComponent implements OnInit {
     })
   );
 
-  displayedTableColumns: (keyof User)[] = ["name", "username", "isAdmin"];
+  displayedTableColumns: (keyof User)[] = ["username", "fullName", "isAdmin"];
 
   constructor(private store: Store<AppState>) {}
 

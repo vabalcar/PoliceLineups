@@ -9,8 +9,9 @@ export const createUserInfoSelector = <TFeatureState extends IUserInfo>(
     featureSelector,
     (state: TFeatureState) =>
       ({
+        userId: state.userId,
         username: state.username,
-        userFullName: state.userFullName,
+        fullName: state.fullName,
         isAdmin: state.isAdmin,
       } as IUserInfo)
   );

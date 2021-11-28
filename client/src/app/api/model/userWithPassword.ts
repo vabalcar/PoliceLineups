@@ -9,12 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { User } from './user';
 
-export interface Person { 
-    id?: number;
-    pid?: string;
-    name?: string;
-    born?: number;
-    nationality?: string;
-    features?: string;
+export interface UserWithPassword extends User { 
+    password?: string;
 }

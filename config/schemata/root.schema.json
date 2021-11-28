@@ -6,14 +6,14 @@
       "type": "string",
       "minLength": 1
     },
-    "default_password": {
+    "defaultPassword": {
       "type": "string",
       "minLength": 1
     },
-    "default_fullname": {
+    "defaultFullName": {
       "type": "string",
       "minLength": 1
     }
   },
-  "required": ["username", "default_password", "default_fullname"]
+  "required": ["username", "defaultPassword", "defaultFullName"]
 }

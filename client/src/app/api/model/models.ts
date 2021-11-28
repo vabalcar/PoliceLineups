@@ -4,4 +4,5 @@ export * from './authTokenRenewalResponse';
 export * from './person';
 export * from './response';
 export * from './user';
+export * from './userWithPassword';
 export * from './validationResponse';

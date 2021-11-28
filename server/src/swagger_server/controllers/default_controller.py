@@ -7,6 +7,7 @@ from swagger_server.models.auth_token_renewal_response import AuthTokenRenewalRe
 from swagger_server.models.person import Person  # noqa: E501
 from swagger_server.models.response import Response  # noqa: E501
 from swagger_server.models.user import User  # noqa: E501
+from swagger_server.models.user_with_password import UserWithPassword  # noqa: E501
 from swagger_server.models.validation_response import ValidationResponse  # noqa: E501
 from swagger_server import util
 
@@ -37,7 +38,7 @@ def add_user(body):  # noqa: E501
     :rtype: Response
     """
     if connexion.request.is_json:
-        body = User.from_dict(connexion.request.get_json())  # noqa: E501
+        body = UserWithPassword.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 
@@ -76,13 +77,13 @@ def get_person(id):  # noqa: E501
     return 'do some magic!'
 
 
-def get_user(username):  # noqa: E501
+def get_user(user_id):  # noqa: E501
     """Returns a user
 
      # noqa: E501
 
-    :param username: username of a userUser
-    :type username: str
+    :param user_id: id of a user
+    :type user_id: int
 
     :rtype: User
     """
@@ -96,17 +97,6 @@ def get_users():  # noqa: E501
 
 
     :rtype: List[User]
-    """
-    return 'do some magic!'
-
-
-def init_root_user():  # noqa: E501
-    """Inits root user
-
-     # noqa: E501
-
-
-    :rtype: Response
     """
     return 'do some magic!'
 
@@ -150,13 +140,13 @@ def remove_person(id):  # noqa: E501
     return 'do some magic!'
 
 
-def remove_user(username):  # noqa: E501
+def remove_user(user_id):  # noqa: E501
     """Removes a user
 
      # noqa: E501
 
-    :param username: a username of a user
-    :type username: str
+    :param user_id: id of a user
+    :type user_id: int
 
     :rtype: Response
     """
@@ -185,7 +175,7 @@ def update_current_user(body):  # noqa: E501
     :rtype: Response
     """
     if connexion.request.is_json:
-        body = User.from_dict(connexion.request.get_json())  # noqa: E501
+        body = UserWithPassword.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 
@@ -206,20 +196,20 @@ def update_person(body, id):  # noqa: E501
     return 'do some magic!'
 
 
-def update_user(body, username):  # noqa: E501
+def update_user(body, user_id):  # noqa: E501
     """Updates a user
 
      # noqa: E501
 
     :param body: update of user
     :type body: dict | bytes
-    :param username: username of a user
-    :type username: str
+    :param user_id: id of a user
+    :type user_id: int
 
     :rtype: Response
     """
     if connexion.request.is_json:
-        body = User.from_dict(connexion.request.get_json())  # noqa: E501
+        body = UserWithPassword.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 
