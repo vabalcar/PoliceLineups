@@ -129,6 +129,22 @@
         "clear": true,
         "echo": false
       }
+    },
+    {
+      "label": "Test client configuration",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "pwsh",
+      "args": ["-NoLogo", "-File", "test-configuration.ps1", "-Debug"],
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "echo": false
+      }
     }
   ]
 }

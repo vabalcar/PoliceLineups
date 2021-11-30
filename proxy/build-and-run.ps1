@@ -3,7 +3,7 @@ param (
     [switch] $Debug
 )
 
-$isConfigurationValid = & (Join-Path '.' 'test-configuration.ps1') -Debug:$Debug
+$isConfigurationValid = & (Join-Path '.' 'test-configuration.ps1') -Debug:$Debug -PassThru
 if (!$isConfigurationValid) {
     exit
 }

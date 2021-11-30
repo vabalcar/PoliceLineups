@@ -9,7 +9,7 @@ if (!$isPlatformReady) {
     exit
 }
 
-$allConfigurationsValid = & (Join-Path '.' 'config' 'test-all.ps1') -Debug:$Debug
+$allConfigurationsValid = & (Join-Path '.' 'config' 'test-all.ps1') -Debug:$Debug -PassThru
 if (!$allConfigurationsValid) {
     exit
 }

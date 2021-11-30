@@ -10,7 +10,7 @@ if (!$isPlatformReady) {
     exit
 }
 
-$allConfigurationsValid = $NoConfigurationValidation -or (& (Join-Path '.' 'config' 'test-all.ps1') -Debug:$Debug)
+$allConfigurationsValid = $NoConfigurationValidation -or (& (Join-Path '.' 'config' 'test-all.ps1') -Debug:$Debug -PassThru)
 if (!$allConfigurationsValid) {
     exit
 }

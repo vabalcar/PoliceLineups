@@ -1,10 +1,19 @@
 #!/usr/bin/pwsh
 param (
+    [string[]] $Configurations = $null,
     [switch] $Debug,
-    [string[]] $Configurations = $null
+    [switch] $PassThru
 )
 
 $environment = $Debug ? 'debug' : 'production'
+
+if ($Configurations) {
+    "Testing configurations $($Configurations | Join-String -Separator ', ') of environment '$environment'..." | Out-Host
+}
+else {
+    "Testing all configurations of environment '$environment'..." | Out-Host
+}
+
 $environmentCofigurationDirectory = Join-Path $PSScriptRoot $environment
 $Configurations ??= Get-ChildItem -Name -Path (Join-Path $PSScriptRoot $environment '*') -Include '*.json'
 
@@ -18,4 +27,10 @@ $Configurations | ForEach-Object {
     }
 }
 
-return $allConfigurationsValid
+if ($allConfigurationsValid) {
+    'All tested configurations are valid' | Out-Host
+}
+
+if ($PassThru) {
+    return $allConfigurationsValid
+}

@@ -1,6 +1,7 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Debug
+    [switch] $Debug,
+    [switch] $PassThru
 )
 
 $configurationsToTest = @('client.json')
@@ -8,4 +9,8 @@ if ($Debug) {
     $configurationsToTest += @('proxy.json')
 }
 
-return & (Join-Path '..' 'config' 'test-all.ps1') -Configurations $configurationsToTest -Debug:$Debug
+$allConfigurationsValid = & (Join-Path '..' 'config' 'test-all.ps1') -Configurations $configurationsToTest -Debug:$Debug -PassThru
+
+if ($PassThru) {
+    return $allConfigurationsValid
+}

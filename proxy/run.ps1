@@ -4,7 +4,7 @@ param (
     [switch] $NoConfigurationValidation
 )
 
-$isConfigurationValid = & (Join-Path '.' 'test-configuration.ps1') -Debug:$Debug
+$isConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '.' 'test-configuration.ps1') -Debug:$Debug -PassThru)
 if (!$isConfigurationValid) {
     exit
 }

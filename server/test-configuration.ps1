@@ -1,8 +1,13 @@
 #!/usr/bin/pwsh
 param (
-    [switch] $Debug
+    [switch] $Debug,
+    [switch] $PassThru
 )
 
 $configurationsToTest = 'auth.json', 'db.json', 'root.json', 'server.json'
 
-return & (Join-Path '..' 'config' 'test-all.ps1') -Configurations $configurationsToTest -Debug:$Debug
+$allConfigurationsValid = & (Join-Path '..' 'config' 'test-all.ps1') -Configurations $configurationsToTest -Debug:$Debug -PassThru
+
+if ($PassThru) {
+    return $allConfigurationsValid
+}
