@@ -40,6 +40,37 @@
       }
     },
     {
+      "label": "Install api",
+      "type": "shell",
+      "linux": {
+        "options": {
+          "cwd": "${workspaceFolder}/api"
+        }
+      },
+      "windows": {
+        "options": {
+          "cwd": "${workspaceFolder}\\api"
+        }
+      },
+      "command": "pwsh",
+      "args": ["-NoLogo", "-File", "install.ps1"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "echo": false
+      }
+    },
+    {
+      "label": "Initialize app debugging",
+      "dependsOn": ["Initialize configuration", "Install api"],
+      "group": "test",
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+    {
       "label": "Deploy",
       "type": "shell",
       "command": "pwsh",
