@@ -8,7 +8,8 @@ param (
 $environment = $Debug ? 'debug' : 'production'
 
 if ($Configurations) {
-    "Testing configurations $($Configurations | Join-String -Separator ', ') of environment '$environment'..." | Out-Host
+    $configurationsOutputString = $Configurations | Join-String -Separator ', '
+    "Testing configurations $configurationsOutputString of environment '$environment'..." | Out-Host
 }
 else {
     "Testing all configurations of environment '$environment'..." | Out-Host
@@ -28,7 +29,12 @@ $Configurations | ForEach-Object {
 }
 
 if ($allConfigurationsValid) {
-    'All tested configurations are valid' | Out-Host
+    if ($configurationsOutputString) {
+        "Configurations $configurationsOutputString of environment '$environment' are valid" | Out-Host
+    }
+    else {
+        "All configurations of environment '$environment' are valid" | Out-Host
+    }
 }
 
 if ($PassThru) {
