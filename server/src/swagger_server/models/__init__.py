@@ -10,4 +10,3 @@ from swagger_server.models.person import Person
 from swagger_server.models.response import Response
 from swagger_server.models.user import User
 from swagger_server.models.user_with_password import UserWithPassword
-from swagger_server.models.validation_response import ValidationResponse

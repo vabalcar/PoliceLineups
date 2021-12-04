@@ -37,7 +37,7 @@ export class AuthEffects implements OnInitEffects {
           .login({ username: action.username, password: action.password })
           .pipe(
             map((authResponse) =>
-              authResponse.success
+              !authResponse.error
                 ? loginSuccessfulAction({
                     userId: authResponse.userId,
                     username: action.username,
@@ -45,7 +45,7 @@ export class AuthEffects implements OnInitEffects {
                     tokenExpirationDatetime: convertToLocalDateTime(
                       authResponse.tokenExpirationDatetime
                     ),
-                    fullName: authResponse.userFullName,
+                    fullName: authResponse.fullName,
                     isAdmin: !!authResponse.isAdmin,
                   })
                 : loginFailedAction()

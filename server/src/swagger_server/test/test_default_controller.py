@@ -12,7 +12,6 @@ from swagger_server.models.person import Person  # noqa: E501
 from swagger_server.models.response import Response  # noqa: E501
 from swagger_server.models.user import User  # noqa: E501
 from swagger_server.models.user_with_password import UserWithPassword  # noqa: E501
-from swagger_server.models.validation_response import ValidationResponse  # noqa: E501
 from swagger_server.test import BaseTestCase
 
 

@@ -8,7 +8,6 @@ from swagger_server.models.person import Person  # noqa: E501
 from swagger_server.models.response import Response  # noqa: E501
 from swagger_server.models.user import User  # noqa: E501
 from swagger_server.models.user_with_password import UserWithPassword  # noqa: E501
-from swagger_server.models.validation_response import ValidationResponse  # noqa: E501
 from swagger_server import util
 
 
@@ -221,7 +220,7 @@ def validate_user_update(body):  # noqa: E501
     :param body: update of a user
     :type body: dict | bytes
 
-    :rtype: ValidationResponse
+    :rtype: Response
     """
     if connexion.request.is_json:
         body = User.from_dict(connexion.request.get_json())  # noqa: E501

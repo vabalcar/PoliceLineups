@@ -1,14 +1,17 @@
 openapi: "3.0.3"
+
 info:
   title: Police lineups
   version: "0.1"
+
 security:
   - JwtAuthUser: []
+
 paths:
   /authorization:
     post:
       summary: Logins registered userUser
-      x-openapi-router-controller: police_lineups.controllers.auth
+      x-openapi-router-controller: police_lineups.controllers.auth.queries
       operationId: login
       security: [] # Enabled anonymous access
       requestBody:
@@ -27,7 +30,7 @@ paths:
                 $ref: "#/components/schemas/AuthResponse"
     patch:
       summary: Renews auth token
-      x-openapi-router-controller: police_lineups.controllers.auth
+      x-openapi-router-controller: police_lineups.controllers.auth.queries
       operationId: renewAuthToken
       responses:
         "200":
@@ -36,10 +39,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AuthTokenRenewalResponse"
+
   /users:
     get:
       summary: Returns all users
-      x-openapi-router-controller: police_lineups.controllers.users
+      x-openapi-router-controller: police_lineups.controllers.users.queries
       operationId: getUsers
       security: [JwtAuthAdmin: []]
       responses:
@@ -53,7 +57,7 @@ paths:
                   $ref: "#/components/schemas/User"
     post:
       summary: Adds a user
-      x-openapi-router-controller: police_lineups.controllers.users
+      x-openapi-router-controller: police_lineups.controllers.users.requests
       operationId: addUser
       security: [JwtAuthAdmin: []]
       requestBody:
@@ -70,10 +74,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Response"
+
   /validation/user:
     patch:
       summary: Validated an update of a user
-      x-openapi-router-controller: police_lineups.controllers.users
+      x-openapi-router-controller: police_lineups.controllers.users.queries
       operationId: validateUserUpdate
       requestBody:
         description: update of a user
@@ -88,11 +93,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ValidationResponse"
+                $ref: "#/components/schemas/Response"
+
   /user/{user_id}:
     get:
       summary: Returns a user
-      x-openapi-router-controller: police_lineups.controllers.users
+      x-openapi-router-controller: police_lineups.controllers.users.queries
       operationId: getUser
       security: [JwtAuthAdmin: []]
       parameters:
@@ -112,7 +118,7 @@ paths:
                 $ref: "#/components/schemas/User"
     patch:
       summary: Updates a user
-      x-openapi-router-controller: police_lineups.controllers.users
+      x-openapi-router-controller: police_lineups.controllers.users.requests
       operationId: updateUser
       security: [JwtAuthAdmin: []]
       requestBody:
@@ -139,7 +145,7 @@ paths:
                 $ref: "#/components/schemas/Response"
     delete:
       summary: Removes a user
-      x-openapi-router-controller: police_lineups.controllers.users
+      x-openapi-router-controller: police_lineups.controllers.users.requests
       operationId: removeUser
       security: [JwtAuthAdmin: []]
       parameters:
@@ -157,10 +163,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Response"
+
   /currentUser:
     get:
       summary: Returns a user
-      x-openapi-router-controller: police_lineups.controllers.users
+      x-openapi-router-controller: police_lineups.controllers.users.queries
       operationId: getCurrentUser
       responses:
         "200":
@@ -171,7 +178,7 @@ paths:
                 $ref: "#/components/schemas/User"
     patch:
       summary: Updates a user
-      x-openapi-router-controller: police_lineups.controllers.users
+      x-openapi-router-controller: police_lineups.controllers.users.requests
       operationId: updateCurrentUser
       requestBody:
         description: update of user
@@ -189,7 +196,7 @@ paths:
                 $ref: "#/components/schemas/Response"
     delete:
       summary: Removes a user
-      x-openapi-router-controller: police_lineups.controllers.users
+      x-openapi-router-controller: police_lineups.controllers.users.requests
       operationId: removeCurrentUser
       responses:
         "200":
@@ -198,10 +205,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Response"
+
   /people:
     get:
       summary: Returns a list of people
-      x-openapi-router-controller: police_lineups.controllers.people
+      x-openapi-router-controller: police_lineups.controllers.people.queries
       operationId: getPeople
       responses:
         "200":
@@ -214,7 +222,7 @@ paths:
                   $ref: "#/components/schemas/Person"
     post:
       summary: Adds a person
-      x-openapi-router-controller: police_lineups.controllers.people
+      x-openapi-router-controller: police_lineups.controllers.people.requests
       operationId: addPerson
       requestBody:
         description: a person to add
@@ -230,10 +238,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Response"
+
   /person/{id}:
     get:
       summary: Returns a person
-      x-openapi-router-controller: police_lineups.controllers.people
+      x-openapi-router-controller: police_lineups.controllers.people.queries
       operationId: getPerson
       parameters:
         - in: path
@@ -251,7 +260,7 @@ paths:
                 $ref: "#/components/schemas/Person"
     patch:
       summary: Updates a person
-      x-openapi-router-controller: police_lineups.controllers.people
+      x-openapi-router-controller: police_lineups.controllers.people.requests
       operationId: updatePerson
       requestBody:
         description: a person to update
@@ -276,7 +285,7 @@ paths:
                 $ref: "#/components/schemas/Response"
     delete:
       summary: Removes a person
-      x-openapi-router-controller: police_lineups.controllers.people
+      x-openapi-router-controller: police_lineups.controllers.people.requests
       operationId: removePerson
       parameters:
         - in: path
@@ -292,6 +301,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Response"
+
 components:
   securitySchemes:
     JwtAuthUser:
@@ -299,11 +309,13 @@ components:
       scheme: bearer
       bearerFormat: JWT
       x-bearerInfoFunc: swagger_server.controllers.authorization_controller.check_JwtAuthUser # workaround of a bug in codegen
+
     JwtAuthAdmin:
       type: http
       scheme: bearer
       bearerFormat: JWT
       x-bearerInfoFunc: swagger_server.controllers.authorization_controller.check_JwtAuthAdmin # workaround of a bug in codegen
+
   schemas:
     AuthRequest:
       type: object
@@ -315,18 +327,14 @@ components:
       required:
         - username
         - password
+
     Response:
       type: object
       properties:
-        success:
-          type: boolean
-    ValidationResponse:
-      allOf:
-        - $ref: "#/components/schemas/Response"
-        - type: object
-          properties:
-            validationError:
-              type: string
+        error:
+          type: string
+          nullable: true
+
     AuthTokenRenewalResponse:
       allOf:
         - $ref: "#/components/schemas/Response"
@@ -336,25 +344,15 @@ components:
               type: string
             tokenExpirationDatetime:
               type: string
+              nullable: true
               format: date-time
+
     AuthResponse:
       allOf:
         - $ref: "#/components/schemas/Response"
-        - type: object
-          properties:
-            userId:
-              type: integer
-              format: int64
-            isAdmin:
-              type: boolean
-            userFullName:
-              type: string
-            authToken:
-              type: string
-            tokenExpirationDatetime:
-              type: string
-              nullable: true
-              format: date-time
+        - $ref: "#/components/schemas/AuthTokenRenewalResponse"
+        - $ref: "#/components/schemas/User"
+
     User:
       type: object
       properties:
@@ -367,6 +365,7 @@ components:
           type: boolean
         fullName:
           type: string
+
     UserWithPassword:
       allOf:
         - $ref: "#/components/schemas/User"
@@ -374,6 +373,7 @@ components:
           properties:
             password:
               type: string
+
     Person:
       type: object
       properties:

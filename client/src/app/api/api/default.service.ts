@@ -24,7 +24,6 @@ import { Person } from '../model/person';
 import { Response } from '../model/response';
 import { User } from '../model/user';
 import { UserWithPassword } from '../model/userWithPassword';
-import { ValidationResponse } from '../model/validationResponse';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -803,9 +802,9 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public validateUserUpdate(body: User, observe?: 'body', reportProgress?: boolean): Observable<ValidationResponse>;
-    public validateUserUpdate(body: User, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ValidationResponse>>;
-    public validateUserUpdate(body: User, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ValidationResponse>>;
+    public validateUserUpdate(body: User, observe?: 'body', reportProgress?: boolean): Observable<Response>;
+    public validateUserUpdate(body: User, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
+    public validateUserUpdate(body: User, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
     public validateUserUpdate(body: User, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
@@ -839,7 +838,7 @@ export class DefaultService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ValidationResponse>('patch',`${this.basePath}/validation/user`,
+        return this.httpClient.request<Response>('patch',`${this.basePath}/validation/user`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

@@ -1,8 +1,8 @@
 """
-controller generated to handled auth operation described at:
+controller for handling auth operation described at:
 https://connexion.readthedocs.io/en/latest/security.html
 """
-from police_lineups.controllers.auth import authorize_admin_by_token, authorize_user_by_token
+from police_lineups.controllers.auth.internal import authorize_admin_by_token, authorize_user_by_token
 
 
 def check_JwtAuthUser(token):

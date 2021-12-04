@@ -14,20 +14,20 @@ class Response(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, success: bool=None):  # noqa: E501
+    def __init__(self, error: str=None):  # noqa: E501
         """Response - a model defined in Swagger
 
-        :param success: The success of this Response.  # noqa: E501
-        :type success: bool
+        :param error: The error of this Response.  # noqa: E501
+        :type error: str
         """
         self.swagger_types = {
-            'success': bool
+            'error': str
         }
 
         self.attribute_map = {
-            'success': 'success'
+            'error': 'error'
         }
-        self._success = success
+        self._error = error
 
     @classmethod
     def from_dict(cls, dikt) -> 'Response':
@@ -41,22 +41,22 @@ class Response(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def success(self) -> bool:
-        """Gets the success of this Response.
+    def error(self) -> str:
+        """Gets the error of this Response.
 
 
-        :return: The success of this Response.
-        :rtype: bool
+        :return: The error of this Response.
+        :rtype: str
         """
-        return self._success
+        return self._error
 
-    @success.setter
-    def success(self, success: bool):
-        """Sets the success of this Response.
+    @error.setter
+    def error(self, error: str):
+        """Sets the error of this Response.
 
 
-        :param success: The success of this Response.
-        :type success: bool
+        :param error: The error of this Response.
+        :type error: str
         """
 
-        self._success = success
+        self._error = error

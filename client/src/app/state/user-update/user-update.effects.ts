@@ -63,7 +63,7 @@ export class UserUpdateEffects {
             )
         ).pipe(
           map((response) =>
-            response.success
+            !response.error
               ? userUpdatePasswordSuccessful()
               : userUpdateFailed()
           ),
@@ -87,7 +87,7 @@ export class UserUpdateEffects {
             )
         ).pipe(
           map((response) =>
-            response.success
+            !response.error
               ? !action.targetUserId
                 ? currentUserFullNameUpdateSuccessful({
                     fullName: action.newFullName,
@@ -110,7 +110,7 @@ export class UserUpdateEffects {
         this.api.validateUserUpdate({ fullName: action.newFullName }).pipe(
           map((response) =>
             userFullnameUpdateValidated({
-              userFullNameUpdateValidationError: response.validationError,
+              userFullNameUpdateValidationError: response.error,
             })
           ),
           catchBeError()

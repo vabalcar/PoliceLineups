@@ -9,12 +9,15 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { AuthTokenRenewalResponse } from './authTokenRenewalResponse';
 import { Response } from './response';
+import { User } from './user';
 
 export interface AuthResponse extends Response { 
-    userId?: number;
-    isAdmin?: boolean;
-    userFullName?: string;
     authToken?: string;
     tokenExpirationDatetime?: Date;
+    userId?: number;
+    username?: string;
+    isAdmin?: boolean;
+    fullName?: string;
 }

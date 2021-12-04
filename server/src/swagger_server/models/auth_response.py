@@ -6,7 +6,9 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
+from swagger_server.models.auth_token_renewal_response import AuthTokenRenewalResponse  # noqa: F401,E501
 from swagger_server.models.response import Response  # noqa: F401,E501
+from swagger_server.models.user import User  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -15,45 +17,50 @@ class AuthResponse(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, success: bool=None, user_id: int=None, is_admin: bool=None, user_full_name: str=None, auth_token: str=None, token_expiration_datetime: datetime=None):  # noqa: E501
+    def __init__(self, auth_token: str=None, token_expiration_datetime: datetime=None, user_id: int=None, username: str=None, is_admin: bool=None, full_name: str=None, error: str=None):  # noqa: E501
         """AuthResponse - a model defined in Swagger
 
-        :param success: The success of this AuthResponse.  # noqa: E501
-        :type success: bool
-        :param user_id: The user_id of this AuthResponse.  # noqa: E501
-        :type user_id: int
-        :param is_admin: The is_admin of this AuthResponse.  # noqa: E501
-        :type is_admin: bool
-        :param user_full_name: The user_full_name of this AuthResponse.  # noqa: E501
-        :type user_full_name: str
         :param auth_token: The auth_token of this AuthResponse.  # noqa: E501
         :type auth_token: str
         :param token_expiration_datetime: The token_expiration_datetime of this AuthResponse.  # noqa: E501
         :type token_expiration_datetime: datetime
+        :param user_id: The user_id of this AuthResponse.  # noqa: E501
+        :type user_id: int
+        :param username: The username of this AuthResponse.  # noqa: E501
+        :type username: str
+        :param is_admin: The is_admin of this AuthResponse.  # noqa: E501
+        :type is_admin: bool
+        :param full_name: The full_name of this AuthResponse.  # noqa: E501
+        :type full_name: str
+        :param error: The error of this AuthResponse.  # noqa: E501
+        :type error: str
         """
         self.swagger_types = {
-            'success': bool,
-            'user_id': int,
-            'is_admin': bool,
-            'user_full_name': str,
             'auth_token': str,
-            'token_expiration_datetime': datetime
+            'token_expiration_datetime': datetime,
+            'user_id': int,
+            'username': str,
+            'is_admin': bool,
+            'full_name': str,
+            'error': str
         }
 
         self.attribute_map = {
-            'success': 'success',
-            'user_id': 'userId',
-            'is_admin': 'isAdmin',
-            'user_full_name': 'userFullName',
             'auth_token': 'authToken',
-            'token_expiration_datetime': 'tokenExpirationDatetime'
+            'token_expiration_datetime': 'tokenExpirationDatetime',
+            'user_id': 'userId',
+            'username': 'username',
+            'is_admin': 'isAdmin',
+            'full_name': 'fullName',
+            'error': 'error'
         }
-        self._success = success
-        self._user_id = user_id
-        self._is_admin = is_admin
-        self._user_full_name = user_full_name
         self._auth_token = auth_token
         self._token_expiration_datetime = token_expiration_datetime
+        self._user_id = user_id
+        self._username = username
+        self._is_admin = is_admin
+        self._full_name = full_name
+        self._error = error
 
     @classmethod
     def from_dict(cls, dikt) -> 'AuthResponse':
@@ -65,90 +72,6 @@ class AuthResponse(Model):
         :rtype: AuthResponse
         """
         return util.deserialize_model(dikt, cls)
-
-    @property
-    def success(self) -> bool:
-        """Gets the success of this AuthResponse.
-
-
-        :return: The success of this AuthResponse.
-        :rtype: bool
-        """
-        return self._success
-
-    @success.setter
-    def success(self, success: bool):
-        """Sets the success of this AuthResponse.
-
-
-        :param success: The success of this AuthResponse.
-        :type success: bool
-        """
-
-        self._success = success
-
-    @property
-    def user_id(self) -> int:
-        """Gets the user_id of this AuthResponse.
-
-
-        :return: The user_id of this AuthResponse.
-        :rtype: int
-        """
-        return self._user_id
-
-    @user_id.setter
-    def user_id(self, user_id: int):
-        """Sets the user_id of this AuthResponse.
-
-
-        :param user_id: The user_id of this AuthResponse.
-        :type user_id: int
-        """
-
-        self._user_id = user_id
-
-    @property
-    def is_admin(self) -> bool:
-        """Gets the is_admin of this AuthResponse.
-
-
-        :return: The is_admin of this AuthResponse.
-        :rtype: bool
-        """
-        return self._is_admin
-
-    @is_admin.setter
-    def is_admin(self, is_admin: bool):
-        """Sets the is_admin of this AuthResponse.
-
-
-        :param is_admin: The is_admin of this AuthResponse.
-        :type is_admin: bool
-        """
-
-        self._is_admin = is_admin
-
-    @property
-    def user_full_name(self) -> str:
-        """Gets the user_full_name of this AuthResponse.
-
-
-        :return: The user_full_name of this AuthResponse.
-        :rtype: str
-        """
-        return self._user_full_name
-
-    @user_full_name.setter
-    def user_full_name(self, user_full_name: str):
-        """Sets the user_full_name of this AuthResponse.
-
-
-        :param user_full_name: The user_full_name of this AuthResponse.
-        :type user_full_name: str
-        """
-
-        self._user_full_name = user_full_name
 
     @property
     def auth_token(self) -> str:
@@ -191,3 +114,108 @@ class AuthResponse(Model):
         """
 
         self._token_expiration_datetime = token_expiration_datetime
+
+    @property
+    def user_id(self) -> int:
+        """Gets the user_id of this AuthResponse.
+
+
+        :return: The user_id of this AuthResponse.
+        :rtype: int
+        """
+        return self._user_id
+
+    @user_id.setter
+    def user_id(self, user_id: int):
+        """Sets the user_id of this AuthResponse.
+
+
+        :param user_id: The user_id of this AuthResponse.
+        :type user_id: int
+        """
+
+        self._user_id = user_id
+
+    @property
+    def username(self) -> str:
+        """Gets the username of this AuthResponse.
+
+
+        :return: The username of this AuthResponse.
+        :rtype: str
+        """
+        return self._username
+
+    @username.setter
+    def username(self, username: str):
+        """Sets the username of this AuthResponse.
+
+
+        :param username: The username of this AuthResponse.
+        :type username: str
+        """
+
+        self._username = username
+
+    @property
+    def is_admin(self) -> bool:
+        """Gets the is_admin of this AuthResponse.
+
+
+        :return: The is_admin of this AuthResponse.
+        :rtype: bool
+        """
+        return self._is_admin
+
+    @is_admin.setter
+    def is_admin(self, is_admin: bool):
+        """Sets the is_admin of this AuthResponse.
+
+
+        :param is_admin: The is_admin of this AuthResponse.
+        :type is_admin: bool
+        """
+
+        self._is_admin = is_admin
+
+    @property
+    def full_name(self) -> str:
+        """Gets the full_name of this AuthResponse.
+
+
+        :return: The full_name of this AuthResponse.
+        :rtype: str
+        """
+        return self._full_name
+
+    @full_name.setter
+    def full_name(self, full_name: str):
+        """Sets the full_name of this AuthResponse.
+
+
+        :param full_name: The full_name of this AuthResponse.
+        :type full_name: str
+        """
+
+        self._full_name = full_name
+
+    @property
+    def error(self) -> str:
+        """Gets the error of this AuthResponse.
+
+
+        :return: The error of this AuthResponse.
+        :rtype: str
+        """
+        return self._error
+
+    @error.setter
+    def error(self, error: str):
+        """Sets the error of this AuthResponse.
+
+
+        :param error: The error of this AuthResponse.
+        :type error: str
+        """
+
+        self._error = error

@@ -15,28 +15,28 @@ class AuthTokenRenewalResponse(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, success: bool=None, auth_token: str=None, token_expiration_datetime: datetime=None):  # noqa: E501
+    def __init__(self, error: str=None, auth_token: str=None, token_expiration_datetime: datetime=None):  # noqa: E501
         """AuthTokenRenewalResponse - a model defined in Swagger
 
-        :param success: The success of this AuthTokenRenewalResponse.  # noqa: E501
-        :type success: bool
+        :param error: The error of this AuthTokenRenewalResponse.  # noqa: E501
+        :type error: str
         :param auth_token: The auth_token of this AuthTokenRenewalResponse.  # noqa: E501
         :type auth_token: str
         :param token_expiration_datetime: The token_expiration_datetime of this AuthTokenRenewalResponse.  # noqa: E501
         :type token_expiration_datetime: datetime
         """
         self.swagger_types = {
-            'success': bool,
+            'error': str,
             'auth_token': str,
             'token_expiration_datetime': datetime
         }
 
         self.attribute_map = {
-            'success': 'success',
+            'error': 'error',
             'auth_token': 'authToken',
             'token_expiration_datetime': 'tokenExpirationDatetime'
         }
-        self._success = success
+        self._error = error
         self._auth_token = auth_token
         self._token_expiration_datetime = token_expiration_datetime
 
@@ -52,25 +52,25 @@ class AuthTokenRenewalResponse(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def success(self) -> bool:
-        """Gets the success of this AuthTokenRenewalResponse.
+    def error(self) -> str:
+        """Gets the error of this AuthTokenRenewalResponse.
 
 
-        :return: The success of this AuthTokenRenewalResponse.
-        :rtype: bool
+        :return: The error of this AuthTokenRenewalResponse.
+        :rtype: str
         """
-        return self._success
+        return self._error
 
-    @success.setter
-    def success(self, success: bool):
-        """Sets the success of this AuthTokenRenewalResponse.
+    @error.setter
+    def error(self, error: str):
+        """Sets the error of this AuthTokenRenewalResponse.
 
 
-        :param success: The success of this AuthTokenRenewalResponse.
-        :type success: bool
+        :param error: The error of this AuthTokenRenewalResponse.
+        :type error: str
         """
 
-        self._success = success
+        self._error = error
 
     @property
     def auth_token(self) -> str:
