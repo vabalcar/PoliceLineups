@@ -4,6 +4,7 @@ from police_lineups.controllers.users.validations import validate_user_update_in
 from swagger_server.models import User, UserWithPassword, Response
 
 from police_lineups.db import DbUser
+from police_lineups.singletons import Context
 
 
 def get_users():
@@ -29,7 +30,7 @@ def get_user(user_id):
 
 
 def get_current_user():
-    return get_user(connexion.context['current_user_id'])
+    return get_user(Context().user.user_id)
 
 
 def validate_user_update(body):

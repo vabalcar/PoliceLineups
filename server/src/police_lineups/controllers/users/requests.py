@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash
 from swagger_server.models import Response, UserWithPassword
 
 from police_lineups.db import DbUser
-from police_lineups.singletons import Configuration
+from police_lineups.singletons import Configuration, Context
 from police_lineups.utils import clear_model_update
 
 from .errors import UserErrors
@@ -45,7 +45,7 @@ def update_user(body, user_id):
 
 
 def update_current_user(body):
-    return update_user(body, connexion.context['current_user_id'])
+    return update_user(body, Context().user.user_id)
 
 
 def remove_user(user_id):
@@ -58,4 +58,4 @@ def remove_user(user_id):
 
 
 def remove_current_user():
-    return remove_user(connexion.context['current_user_id'])
+    return remove_user(Context().user.user_id)
