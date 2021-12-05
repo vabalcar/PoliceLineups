@@ -104,11 +104,13 @@
       "editor.defaultFormatter": "michelemelluso.code-beautifier"
     },
 
-    // TS
-    "[typescript]": {
+    // JS
+    "[javascript]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "[typescriptreact]": {
+
+    // TS
+    "[typescript]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
 
