@@ -89,6 +89,11 @@
     "yaml.format.enable": false,
     "yaml.format.singleQuote": false,
 
+    // HTML
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+
     // CSS
     "css.validate": false,
     "scss.validate": false,

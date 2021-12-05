@@ -1,11 +1,15 @@
 <mat-card *ngIf="person" class="card">
-    <mat-card-header>
-      <mat-card-title>{{person?.name}}</mat-card-title>
-    </mat-card-header>
-    <img mat-card-image src="assets/media/photos/{{person?.pid}}.jpg" alt="Photo of {{person?.name}}" />
-    <mat-card-content>
-      <div *ngFor="let feature of features">
-        <b>{{feature.name}}:</b> {{feature.value}}<br />
-      </div>
-    </mat-card-content>
+  <mat-card-header>
+    <mat-card-title>{{ person?.name }}</mat-card-title>
+  </mat-card-header>
+  <img
+    mat-card-image
+    src="assets/media/photos/{{ person?.pid }}.jpg"
+    alt="Photo of {{ person?.name }}"
+  />
+  <mat-card-content>
+    <div *ngFor="let feature of features">
+      <b>{{ feature.name }}:</b> {{ feature.value }}<br />
+    </div>
+  </mat-card-content>
 </mat-card>

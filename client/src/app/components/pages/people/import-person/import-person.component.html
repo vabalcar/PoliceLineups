@@ -1,34 +1,49 @@
 <h1 class="mat-headline">Import person</h1>
 <form (submit)="import()">
-    <div fxLayout="column" fxLayoutGap="16px">
-        <div *ngIf="!files?.length" appDropZone class="dropzone" id="import-person-dropzone" (dropFiles)="filesDropped($event)">
-            <span class="dropzone-content">Drop your files here!</span>
-        </div>
-        <div *ngIf="files?.length > 0" fxLayout="row wrap" fxLayoutGap="16px">
-            <div *ngFor="let file of files">
-                <img *ngIf="file" [src]="file.url" height="200px">
-            </div>
-        </div>
-        <div fxLayout="row wrap" fxLayoutGap="16px">
-            <mat-form-field appearance="fill">
-                <mat-label>Name</mat-label>
-                <input required matInput type="text" name="fullName" [(ngModel)]="name">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Birth date</mat-label>
-                <input matInput type="date" name="username" [(ngModel)]="born">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Nationality</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let nationality of nationalities" [value]="nationality.value">
-                    {{nationality.value}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-        </div>
-        <button mat-raised-button color="primary" fxFlexAlign="start">
-            Import
-        </button>
+  <div fxLayout="column" fxLayoutGap="16px">
+    <div
+      *ngIf="!files?.length"
+      appDropZone
+      class="dropzone"
+      id="import-person-dropzone"
+      (dropFiles)="filesDropped($event)"
+    >
+      <span class="dropzone-content">Drop your files here!</span>
     </div>
+    <div *ngIf="files?.length > 0" fxLayout="row wrap" fxLayoutGap="16px">
+      <div *ngFor="let file of files">
+        <img *ngIf="file" [src]="file.url" height="200px" />
+      </div>
+    </div>
+    <div fxLayout="row wrap" fxLayoutGap="16px">
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input
+          required
+          matInput
+          type="text"
+          name="fullName"
+          [(ngModel)]="name"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Birth date</mat-label>
+        <input matInput type="date" name="username" [(ngModel)]="born" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Nationality</mat-label>
+        <mat-select>
+          <mat-option
+            *ngFor="let nationality of nationalities"
+            [value]="nationality.value"
+          >
+            {{ nationality.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" fxFlexAlign="start">
+      Import
+    </button>
+  </div>
 </form>
