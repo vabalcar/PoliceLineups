@@ -32,11 +32,3 @@ def get_user(user_id):
 
 def get_current_user():
     return get_user(Context().user.user_id)
-
-
-def validate_user_update(body):
-    if connexion.request.is_json:
-        body = UserWithPassword.from_dict(connexion.request.get_json())
-
-    error = validate_user_update_internally(body)
-    return error if error else Responses.SUCCESS

@@ -1,6 +1,18 @@
-from swagger_server.models import Response, User
+import connexion
+
+from swagger_server.models import Response, User, UserWithPassword
+
+from police_lineups.controllers.utils import Responses
 
 from .errors import UserErrors
+
+
+def validate_user_update(body):
+    if connexion.request.is_json:
+        body = UserWithPassword.from_dict(connexion.request.get_json())
+
+    error = validate_user_update_internally(body)
+    return error if error else Responses.SUCCESS
 
 
 def validate_user_update_internally(user_update: User) -> Response:
