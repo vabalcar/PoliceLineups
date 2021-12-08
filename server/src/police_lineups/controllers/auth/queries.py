@@ -1,7 +1,7 @@
 import connexion
 from werkzeug.security import check_password_hash
 
-from swagger_server.models import AuthRequest, AuthResponse, AuthTokenRenewalResponse, Response
+from swagger_server.models import AuthRequest, AuthResponse, AuthTokenRenewalResponse
 
 from police_lineups.db import DbUser
 from police_lineups.singletons import Context
@@ -16,7 +16,7 @@ def login(body):
 
     db_user = DbUser.get_or_none(DbUser.username == body.username)
     if db_user is None or not check_password_hash(db_user.password, body.password):
-        return Response(AuthErrors.INVALID_CREDENTIALS)
+        return AuthErrors.INVALID_CREDENTIALS
 
     (auth_token, auth_token_expiration_datetime) = create_auth_token(db_user.user_id, db_user.is_admin)
 
@@ -32,7 +32,7 @@ def renew_auth_token():
     user_id = Context().user.user_id
     db_user = DbUser.get_by_id(user_id)
     if db_user is None:
-        return AuthTokenRenewalResponse(error=AuthErrors.INVALID_USER)
+        return AuthErrors.INVALID_USER
 
     (auth_token, auth_token_expiration_datetime) = create_auth_token(db_user.user_id, db_user.is_admin)
 

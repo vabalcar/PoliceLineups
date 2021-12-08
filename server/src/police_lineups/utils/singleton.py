@@ -1,8 +1,15 @@
 class Singleton(type):
-    instances = {}
+    classes_to_instances = {}
 
-    def __call__(cls, *args, **kwargs):
-        instance_description = (cls, *args, *kwargs.values())
-        if instance_description not in cls.instances:
-            cls.instances[instance_description] = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls.instances[instance_description]
+    def __call__(cls, *instance_args):
+        if cls not in cls.classes_to_instances:
+            cls.classes_to_instances[cls] = {}
+
+        instances = cls.classes_to_instances[cls]
+
+        if instance_args not in instances:
+            instances[instance_args] = super(
+                Singleton, cls).__call__(
+                *instance_args)
+
+        return instances[instance_args]

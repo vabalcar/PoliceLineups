@@ -1,3 +1,6 @@
+from police_lineups.controllers.utils import Responses
+
+
 class AuthErrors:
-    INVALID_USER = 'Invalid user'
-    INVALID_CREDENTIALS = 'Invalid credentials'
+    INVALID_USER = Responses.error('Invalid user')
+    INVALID_CREDENTIALS = Responses.error('Invalid credentials')

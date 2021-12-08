@@ -1,11 +1,9 @@
-from typing import Union
-
-from swagger_server.models import User
+from swagger_server.models import Response, User
 
 from .errors import UserErrors
 
 
-def validate_user_update_internally(user_update: User) -> Union[str, None]:
+def validate_user_update_internally(user_update: User) -> Response:
     if user_update.username is not None:
         return UserErrors.USERNAME_CANNOT_BE_CHANGED
 
@@ -22,7 +20,7 @@ def validate_user_update_internally(user_update: User) -> Union[str, None]:
     return None
 
 
-def _validate_password(password: str) -> Union[str, None]:
+def _validate_password(password: str) -> Response:
     password_len = len(password)
 
     if password_len == 0:
@@ -34,7 +32,7 @@ def _validate_password(password: str) -> Union[str, None]:
     return None
 
 
-def _validate_user_full_name(user_full_name: str) -> Union[str, None]:
+def _validate_user_full_name(user_full_name: str) -> Response:
     if len(user_full_name) == 0:
         return UserErrors.FULL_NAME_IS_EMPTY
 

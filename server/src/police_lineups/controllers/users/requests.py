@@ -1,8 +1,9 @@
 import connexion
 from werkzeug.security import generate_password_hash
 
-from swagger_server.models import Response, UserWithPassword
+from swagger_server.models import UserWithPassword
 
+from police_lineups.controllers.utils import Responses
 from police_lineups.db import DbUser
 from police_lineups.singletons import Configuration, Context
 from police_lineups.utils import clear_model_update
@@ -16,12 +17,12 @@ def add_user(body):
         body = UserWithPassword.from_dict(connexion.request.get_json())
 
     if DbUser.get_or_none(DbUser.user_id == body.user_id):
-        return Response(error=UserErrors.USER_ALREADY_EXITS)
+        return UserErrors.USER_ALREADY_EXITS
 
     body.password = generate_password_hash(body.password)
     DbUser.create(**body.to_dict())
 
-    return Response()
+    return Responses.SUCCESS
 
 
 def update_user(body, user_id):
@@ -30,10 +31,10 @@ def update_user(body, user_id):
 
     error = validate_user_update_internally(body)
     if error:
-        return Response(error)
+        return error
 
     if user_id == Configuration().root_user.user_id and not body.is_admin:
-        return Response(UserErrors.ROOT_MUST_STAY_ADMIN)
+        return UserErrors.ROOT_MUST_STAY_ADMIN
 
     if body.password:
         body.password = generate_password_hash(body.password)
@@ -41,7 +42,7 @@ def update_user(body, user_id):
     DbUser.update(**clear_model_update(body)).where(DbUser.user_id ==
                                                     user_id).execute()
 
-    return Response()
+    return Responses.SUCCESS
 
 
 def update_current_user(body):
@@ -50,11 +51,11 @@ def update_current_user(body):
 
 def remove_user(user_id):
     if user_id == Configuration().root_user.user_id:
-        return Response(UserErrors.ROOT_CANNOT_BE_REMOVED)
+        return UserErrors.ROOT_CANNOT_BE_REMOVED
 
     DbUser.delete_by_id(user_id)
 
-    return Response()
+    return Responses.SUCCESS
 
 
 def remove_current_user():
