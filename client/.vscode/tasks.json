@@ -37,6 +37,23 @@
       }
     },
     {
+      "label": "Update client",
+      "dependsOn": ["Install client"],
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "pwsh",
+      "args": ["-NoLogo", "-File", "update.ps1"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "echo": false
+      }
+    },
+    {
       "label": "Build client",
       "dependsOn": ["Install client"],
       "group": "build",
