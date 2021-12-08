@@ -15,8 +15,8 @@ def get_people():
         for db_person in DbPerson.select()]
 
 
-def get_person(id):
-    db_person: DbPerson = DbPerson.get_or_none(id)
+def get_person(person_id):
+    db_person: DbPerson = DbPerson.get_or_none(person_id)
     return Person(
         id=db_person.id,
         pid=db_person.pid,

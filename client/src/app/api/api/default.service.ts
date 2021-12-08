@@ -259,17 +259,17 @@ export class DefaultService {
     /**
      * Returns a person
      * 
-     * @param id ID of the person
+     * @param personId id of a person
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPerson(id: number, observe?: 'body', reportProgress?: boolean): Observable<Person>;
-    public getPerson(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Person>>;
-    public getPerson(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Person>>;
-    public getPerson(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPerson(personId: number, observe?: 'body', reportProgress?: boolean): Observable<Person>;
+    public getPerson(personId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Person>>;
+    public getPerson(personId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Person>>;
+    public getPerson(personId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getPerson.');
+        if (personId === null || personId === undefined) {
+            throw new Error('Required parameter personId was null or undefined when calling getPerson.');
         }
 
         let headers = this.defaultHeaders;
@@ -294,7 +294,7 @@ export class DefaultService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Person>('get',`${this.basePath}/person/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<Person>('get',`${this.basePath}/person/${encodeURIComponent(String(personId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -488,17 +488,17 @@ export class DefaultService {
     /**
      * Removes a person
      * 
-     * @param id ID of a person
+     * @param personId id of a person
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public removePerson(id: string, observe?: 'body', reportProgress?: boolean): Observable<Response>;
-    public removePerson(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
-    public removePerson(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
-    public removePerson(id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public removePerson(personId: number, observe?: 'body', reportProgress?: boolean): Observable<Response>;
+    public removePerson(personId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
+    public removePerson(personId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
+    public removePerson(personId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling removePerson.');
+        if (personId === null || personId === undefined) {
+            throw new Error('Required parameter personId was null or undefined when calling removePerson.');
         }
 
         let headers = this.defaultHeaders;
@@ -523,7 +523,7 @@ export class DefaultService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Response>('delete',`${this.basePath}/person/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<Response>('delete',`${this.basePath}/person/${encodeURIComponent(String(personId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -682,21 +682,21 @@ export class DefaultService {
      * Updates a person
      * 
      * @param body a person to update
-     * @param id name of a person
+     * @param personId id of a person
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updatePerson(body: Person, id: string, observe?: 'body', reportProgress?: boolean): Observable<Response>;
-    public updatePerson(body: Person, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
-    public updatePerson(body: Person, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
-    public updatePerson(body: Person, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updatePerson(body: Person, personId: number, observe?: 'body', reportProgress?: boolean): Observable<Response>;
+    public updatePerson(body: Person, personId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
+    public updatePerson(body: Person, personId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
+    public updatePerson(body: Person, personId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling updatePerson.');
         }
 
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling updatePerson.');
+        if (personId === null || personId === undefined) {
+            throw new Error('Required parameter personId was null or undefined when calling updatePerson.');
         }
 
         let headers = this.defaultHeaders;
@@ -726,7 +726,7 @@ export class DefaultService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Response>('patch',`${this.basePath}/person/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<Response>('patch',`${this.basePath}/person/${encodeURIComponent(String(personId))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

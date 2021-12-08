@@ -251,22 +251,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/Response'
       x-openapi-router-controller: police_lineups.controllers.people
-  /person/{id}:
+  /person/{person_id}:
     get:
       summary: Returns a person
       operationId: get_person
       parameters:
-      - name: id
+      - name: person_id
         in: path
-        description: ID of the person
+        description: id of a person
         required: true
         style: simple
         explode: false
         schema:
           type: integer
+          format: int64
       responses:
         "200":
-          description: the person
+          description: found person
           content:
             application/json:
               schema:
@@ -282,14 +283,15 @@ paths:
       summary: Removes a person
       operationId: remove_person
       parameters:
-      - name: id
+      - name: person_id
         in: path
-        description: ID of a person
+        description: id of a person
         required: true
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
+          format: int64
       responses:
         "200":
           description: removal result
@@ -302,14 +304,15 @@ paths:
       summary: Updates a person
       operationId: update_person
       parameters:
-      - name: id
+      - name: person_id
         in: path
-        description: name of a person
+        description: id of a person
         required: true
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
+          format: int64
       requestBody:
         description: a person to update
         content:

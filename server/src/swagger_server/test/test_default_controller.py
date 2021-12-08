@@ -75,7 +75,7 @@ class TestDefaultController(BaseTestCase):
         Returns a person
         """
         response = self.client.open(
-            '/person/{id}'.format(id=56),
+            '/person/{person_id}'.format(person_id=789),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -133,7 +133,7 @@ class TestDefaultController(BaseTestCase):
         Removes a person
         """
         response = self.client.open(
-            '/person/{id}'.format(id='id_example'),
+            '/person/{person_id}'.format(person_id=789),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -181,7 +181,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = Person()
         response = self.client.open(
-            '/person/{id}'.format(id='id_example'),
+            '/person/{person_id}'.format(person_id=789),
             method='PATCH',
             data=json.dumps(body),
             content_type='application/json')

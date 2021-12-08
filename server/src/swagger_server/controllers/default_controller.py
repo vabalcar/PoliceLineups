@@ -64,13 +64,13 @@ def get_people():  # noqa: E501
     return 'do some magic!'
 
 
-def get_person(id):  # noqa: E501
+def get_person(person_id):  # noqa: E501
     """Returns a person
 
      # noqa: E501
 
-    :param id: ID of the person
-    :type id: int
+    :param person_id: id of a person
+    :type person_id: int
 
     :rtype: Person
     """
@@ -127,13 +127,13 @@ def remove_current_user():  # noqa: E501
     return 'do some magic!'
 
 
-def remove_person(id):  # noqa: E501
+def remove_person(person_id):  # noqa: E501
     """Removes a person
 
      # noqa: E501
 
-    :param id: ID of a person
-    :type id: str
+    :param person_id: id of a person
+    :type person_id: int
 
     :rtype: Response
     """
@@ -179,15 +179,15 @@ def update_current_user(body):  # noqa: E501
     return 'do some magic!'
 
 
-def update_person(body, id):  # noqa: E501
+def update_person(body, person_id):  # noqa: E501
     """Updates a person
 
      # noqa: E501
 
     :param body: a person to update
     :type body: dict | bytes
-    :param id: name of a person
-    :type id: str
+    :param person_id: id of a person
+    :type person_id: int
 
     :rtype: Response
     """

@@ -21,15 +21,15 @@ def add_person(body):
     return Responses.SUCCESS
 
 
-def update_person(body, id):
+def update_person(body, person_id):
     if connexion.request.is_json:
         body = Person.from_dict(connexion.request.get_json())
 
-    DbPerson.update(**clear_model_update(body)).where(DbPerson.id == id).execute()
+    DbPerson.update(**clear_model_update(body)).where(DbPerson.id == person_id).execute()
 
     return Responses.SUCCESS
 
 
-def remove_person(id):
-    DbPerson.delete_by_id(id)
+def remove_person(person_id):
+    DbPerson.delete_by_id(person_id)
     return Responses.SUCCESS
