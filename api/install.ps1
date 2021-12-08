@@ -13,7 +13,7 @@ if (!$Force -and (Test-Path -PathType Leaf $outFile)) {
 
 'Installing Swagger codegen...' | Out-Host
 
-$swaggerCLIInfo = Get-Content "$swaggerCLIName.json" | ConvertFrom-Json
+$swaggerCLIInfo = Get-Content "$swaggerCLIName.jsonc" | ConvertFrom-Json
 
 $swaggerRepo = "$($swaggerCLIInfo.repoRoot)/$swaggerCLIName"
 $swaggerVersion = $swaggerCLIInfo.version
