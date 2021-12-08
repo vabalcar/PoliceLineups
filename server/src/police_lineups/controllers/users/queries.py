@@ -1,9 +1,5 @@
-import connexion
-from police_lineups.controllers.users.validations import validate_user_update_internally
+from swagger_server.models import User
 
-from swagger_server.models import User, UserWithPassword
-
-from police_lineups.controllers.utils import Responses
 from police_lineups.db import DbUser
 from police_lineups.singletons import Context
 
