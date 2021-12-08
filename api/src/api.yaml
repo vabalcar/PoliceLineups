@@ -116,6 +116,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
+        "404":
+          description: user not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
     patch:
       summary: Updates a user
       x-openapi-router-controller: police_lineups.controllers.users
@@ -258,6 +264,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Person"
+        "404":
+          description: person not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
     patch:
       summary: Updates a person
       x-openapi-router-controller: police_lineups.controllers.people
@@ -327,6 +339,10 @@ components:
       required:
         - username
         - password
+
+    EmptyResponse:
+      type: object
+      nullable: true
 
     Response:
       type: object

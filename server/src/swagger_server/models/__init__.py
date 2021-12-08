@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from swagger_server.models.auth_request import AuthRequest
 from swagger_server.models.auth_response import AuthResponse
 from swagger_server.models.auth_token_renewal_response import AuthTokenRenewalResponse
+from swagger_server.models.empty_response import EmptyResponse
 from swagger_server.models.person import Person
 from swagger_server.models.response import Response
 from swagger_server.models.user import User

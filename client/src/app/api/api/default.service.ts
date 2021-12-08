@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { AuthRequest } from '../model/authRequest';
 import { AuthResponse } from '../model/authResponse';
 import { AuthTokenRenewalResponse } from '../model/authTokenRenewalResponse';
+import { EmptyResponse } from '../model/emptyResponse';
 import { Person } from '../model/person';
 import { Response } from '../model/response';
 import { User } from '../model/user';

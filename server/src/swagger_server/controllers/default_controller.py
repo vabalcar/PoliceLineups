@@ -4,6 +4,7 @@ import six
 from swagger_server.models.auth_request import AuthRequest  # noqa: E501
 from swagger_server.models.auth_response import AuthResponse  # noqa: E501
 from swagger_server.models.auth_token_renewal_response import AuthTokenRenewalResponse  # noqa: E501
+from swagger_server.models.empty_response import EmptyResponse  # noqa: E501
 from swagger_server.models.person import Person  # noqa: E501
 from swagger_server.models.response import Response  # noqa: E501
 from swagger_server.models.user import User  # noqa: E501

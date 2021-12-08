@@ -115,6 +115,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        "404":
+          description: user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
       security:
       - JwtAuthAdmin: []
       x-openapi-router-controller: police_lineups.controllers.users
@@ -265,6 +271,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Person'
+        "404":
+          description: person not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
       x-openapi-router-controller: police_lineups.controllers.people
     delete:
       summary: Removes a person
@@ -325,6 +337,9 @@ components:
           type: string
         password:
           type: string
+    EmptyResponse:
+      type: object
+      nullable: true
     Response:
       type: object
       properties:
