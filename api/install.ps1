@@ -20,6 +20,9 @@ $swaggerVersion = $swaggerCLIInfo.version
 $targetFile = "$swaggerCLIName-$swaggerVersion.jar"
 
 "Downloading $swaggerCLIName $swaggerVersion..." | Out-Host
+
+$ProgressPreference = 'SilentlyContinue'
 Invoke-WebRequest -URI "$swaggerRepo/$swaggerVersion/$targetFile" -OutFile $outFile
+$ProgressPreference = 'Continue'
 
 'Swagger codegen installed' | Out-Host

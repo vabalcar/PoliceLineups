@@ -9,6 +9,7 @@ $executor = $Debug ? [SequentialScriptExecutor]::new() : [ParallelScriptExecutor
 
 $executor.Execute(@(
         @{Script = 'update.ps1'; WD = 'api' },
-        @{Script = 'update.ps1'; WD = 'server' },
-        @{Script = 'update.ps1'; WD = 'client' }
+        @{Script = 'update.ps1'; WD = 'client' },
+        @{Script = 'update.ps1'; WD = 'proxy' },
+        @{Script = 'update.ps1'; WD = 'server' }
     ))

@@ -18,6 +18,22 @@
       }
     },
     {
+      "label": "Update proxy",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "command": "pwsh",
+      "args": ["-NoLogo", "-File", "update.ps1"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "echo": false
+      }
+    },
+    {
       "label": "Compile proxy",
       "dependsOn": ["Install proxy"],
       "type": "shell",
