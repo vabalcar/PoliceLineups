@@ -1,6 +1,7 @@
 {
   "python.pythonPath": ".venv_windows\\Scripts\\python.exe",
   "python.linting.pylintPath": ".venv_windows\\Scripts\\pylint.exe",
+  "python.linting.ignorePatterns": ["src\\swagger_server\\**\\*.py"],
   "python.linting.pylintArgs": [
     "--disable=no-value-for-parameter",
     "--variable-rgx",

@@ -1,6 +1,7 @@
 {
   "python.pythonPath": ".venv_linux/bin/python",
   "python.linting.pylintPath": ".venv_linux/bin/pylint",
+  "python.linting.ignorePatterns": ["src/swagger_server/**/*.py"],
   "python.linting.pylintArgs": [
     "--disable=no-value-for-parameter",
     "--variable-rgx",
