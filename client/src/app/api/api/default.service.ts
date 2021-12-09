@@ -203,7 +203,7 @@ export class DefaultService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<User>('get',`${this.basePath}/currentUser`,
+        return this.httpClient.request<User>('get',`${this.basePath}/user/current`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -475,7 +475,7 @@ export class DefaultService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Response>('delete',`${this.basePath}/currentUser`,
+        return this.httpClient.request<Response>('delete',`${this.basePath}/user/current`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -667,7 +667,7 @@ export class DefaultService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Response>('patch',`${this.basePath}/currentUser`,
+        return this.httpClient.request<Response>('patch',`${this.basePath}/user/current`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

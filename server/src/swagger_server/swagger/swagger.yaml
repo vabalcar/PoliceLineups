@@ -94,6 +94,47 @@ paths:
               schema:
                 $ref: '#/components/schemas/Response'
       x-openapi-router-controller: police_lineups.controllers.users
+  /user/current:
+    get:
+      summary: Returns a user
+      operationId: get_current_user
+      responses:
+        "200":
+          description: a JSON object describing the User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      x-openapi-router-controller: police_lineups.controllers.users
+    delete:
+      summary: Removes a user
+      operationId: remove_current_user
+      responses:
+        "200":
+          description: removal result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: police_lineups.controllers.users
+    patch:
+      summary: Updates a user
+      operationId: update_current_user
+      requestBody:
+        description: update of user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserWithPassword'
+        required: true
+      responses:
+        "200":
+          description: update result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: police_lineups.controllers.users
   /user/{user_id}:
     get:
       summary: Returns a user
@@ -176,47 +217,6 @@ paths:
                 $ref: '#/components/schemas/Response'
       security:
       - JwtAuthAdmin: []
-      x-openapi-router-controller: police_lineups.controllers.users
-  /currentUser:
-    get:
-      summary: Returns a user
-      operationId: get_current_user
-      responses:
-        "200":
-          description: a JSON object describing the User
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-      x-openapi-router-controller: police_lineups.controllers.users
-    delete:
-      summary: Removes a user
-      operationId: remove_current_user
-      responses:
-        "200":
-          description: removal result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Response'
-      x-openapi-router-controller: police_lineups.controllers.users
-    patch:
-      summary: Updates a user
-      operationId: update_current_user
-      requestBody:
-        description: update of user
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserWithPassword'
-        required: true
-      responses:
-        "200":
-          description: update result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Response'
       x-openapi-router-controller: police_lineups.controllers.users
   /people:
     get:

@@ -53,7 +53,7 @@ class TestDefaultController(BaseTestCase):
         Returns a user
         """
         response = self.client.open(
-            '/currentUser',
+            '/user/current',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -122,7 +122,7 @@ class TestDefaultController(BaseTestCase):
         Removes a user
         """
         response = self.client.open(
-            '/currentUser',
+            '/user/current',
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -167,7 +167,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = UserWithPassword()
         response = self.client.open(
-            '/currentUser',
+            '/user/current',
             method='PATCH',
             data=json.dumps(body),
             content_type='application/json')
