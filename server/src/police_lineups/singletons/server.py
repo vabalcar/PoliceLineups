@@ -30,6 +30,6 @@ class Server(metaclass=Singleton):
                 DB().current.connect()
 
         @self._app.app.teardown_request
-        def _db_close(exc):
+        def _db_close(exc):  # pylint: disable=unused-argument
             if not DB().current.is_closed():
                 DB().current.close()
