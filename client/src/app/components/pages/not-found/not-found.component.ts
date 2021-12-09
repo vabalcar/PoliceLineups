@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { AppState } from "src/app/state/app.reducer";
+import { AppState } from "src/app/state/app.state";
 import { selectUrl } from "src/app/state/router/router.selectors";
 
 @Component({

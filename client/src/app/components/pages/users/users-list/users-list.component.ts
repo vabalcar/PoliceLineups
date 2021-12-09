@@ -4,11 +4,9 @@ import { MatTableDataSource } from "@angular/material/table";
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 import { User } from "src/app/api/model/user";
-import { AppState } from "src/app/state/app.reducer";
-import {
-  loadUsersListAction,
-  selectUsersList,
-} from "src/app/state/users-list/users-list.reducer";
+import { AppState } from "src/app/state/app.state";
+import { loadUsersListAction } from "src/app/state/users-list/users-list.actions";
+import { selectUsersList } from "src/app/state/users-list/users-list.selectors";
 
 @Component({
   selector: "app-users-list",

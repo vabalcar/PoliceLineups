@@ -11,7 +11,7 @@ import { Action, Store } from "@ngrx/store";
 import { exhaustMap, filter, map, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { NotificationsService } from "src/app/services/notifications.service";
-import { AppState } from "../app.reducer";
+import { AppState } from "../app.state";
 import { convertToLocalDateTime } from "../utils/date.utils";
 import { catchBeError } from "../utils/errors.utils";
 import { HttpStatusCode } from "../utils/http-status-code.utils";
@@ -22,9 +22,9 @@ import {
   logoutAction,
   renewInitTokenAction,
   renewTokenAction,
-  selectAuthToken,
   tokenRenewed,
-} from "./auth.reducer";
+} from "./auth.actions";
+import { selectAuthToken } from "./auth.selectors";
 import { AuthTokenRenewalScheduler } from "./auth.utils";
 
 @Injectable()

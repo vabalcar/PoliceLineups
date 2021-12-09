@@ -1,28 +1,9 @@
-import { HttpErrorResponse } from "@angular/common/http";
-import { routerReducer, RouterState } from "@ngrx/router-store";
-import { ActionReducerMap, createAction, props } from "@ngrx/store";
+import { routerReducer } from "@ngrx/router-store";
+import { ActionReducerMap } from "@ngrx/store";
 
-import { authReducer, AuthState } from "./auth/auth.reducer";
-import {
-  userUpdateReducer,
-  UserUpdateState,
-} from "./user-update/user-update.reducer";
-import {
-  usersListReducer,
-  UsersListState,
-} from "./users-list/users-list.reducer";
-
-export interface AppState {
-  router: RouterState;
-  auth: AuthState;
-  usersList: UsersListState;
-  userUpdate: UserUpdateState;
-}
-
-export const beFailed = createAction(
-  "BE failed",
-  props<{ errorResponse: HttpErrorResponse }>()
-);
+import { authReducer } from "./auth/auth.reducer";
+import { userUpdateReducer } from "./user-update/user-update.reducer";
+import { usersListReducer } from "./users-list/users-list.reducer";
 
 export const reducers: ActionReducerMap<Record<string, unknown>> = {
   router: routerReducer,

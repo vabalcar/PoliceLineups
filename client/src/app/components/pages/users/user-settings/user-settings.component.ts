@@ -3,24 +3,24 @@ import { ActivatedRoute } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { BehaviorSubject, combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { AppState } from "src/app/state/app.reducer";
 import {
-  IUserInfo,
-  selectCurrentUserUserId,
-} from "src/app/state/auth/auth.reducer";
-import {
-  loadUserToUpdate,
   selectEditedUserInfo,
   selectUserFullnameUpdateValidationError,
-  updateUserFullName,
-  updateUserPassword,
-  validateUserFullnameUpdate,
-} from "src/app/state/user-update/user-update.reducer";
+} from "src/app/state/user-update/user-update.selectors";
 import {
   ErrorPublisher,
   MinLengthValidationErrorProps,
   ObservableFormControl,
 } from "src/app/components/utils/forms.utils";
+import { AppState } from "src/app/state/app.state";
+import { selectCurrentUserUserId } from "src/app/state/auth/auth.selectors";
+import {
+  loadUserToUpdate,
+  updateUserFullName,
+  updateUserPassword,
+  validateUserFullnameUpdate,
+} from "src/app/state/user-update/user-update.actions";
+import { IUserInfo } from "src/app/state/utils/user-info";
 
 interface IUserSettingsComponentData {
   userId: number;

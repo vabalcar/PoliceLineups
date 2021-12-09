@@ -1,11 +1,9 @@
 import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
+import { AppState } from "src/app/state/app.state";
 
-import { AppState } from "src/app/state/app.reducer";
-import {
-  loginAction,
-  selectLoginFailedCount,
-} from "src/app/state/auth/auth.reducer";
+import { loginAction } from "src/app/state/auth/auth.actions";
+import { selectLoginFailedCount } from "src/app/state/auth/auth.selectors";
 
 @Component({
   selector: "app-login",

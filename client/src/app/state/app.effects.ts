@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { tap } from "rxjs/operators";
 import { NotificationsService } from "../services/notifications.service";
-import { beFailed } from "./app.reducer";
+import { beFailed } from "./app.actions";
 
 @Injectable()
 export class AppEffects {

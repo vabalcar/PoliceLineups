@@ -3,20 +3,21 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { exhaustMap, map, mergeMap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
-import { selectCurrentUserInfo, IUserInfo } from "../auth/auth.reducer";
+import { selectCurrentUserInfo } from "../auth/auth.selectors";
 import { catchBeError } from "../utils/errors.utils";
+import { IUserInfo } from "../utils/user-info";
 import {
-  currentUserFullNameUpdateSuccessful,
   loadUserToUpdate,
-  updateUserFullName,
-  updateUserPassword,
-  userFullNameUpdateSucessful,
-  userFullnameUpdateValidated,
   userToUpdateLoaded,
-  userUpdateFailed,
+  updateUserPassword,
   userUpdatePasswordSuccessful,
+  userUpdateFailed,
+  updateUserFullName,
+  currentUserFullNameUpdateSuccessful,
+  userFullNameUpdateSucessful,
   validateUserFullnameUpdate,
-} from "./user-update.reducer";
+  userFullnameUpdateValidated,
+} from "./user-update.actions";
 
 @Injectable()
 export class UserUpdateEffects {

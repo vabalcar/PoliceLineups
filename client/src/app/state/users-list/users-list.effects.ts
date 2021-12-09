@@ -6,7 +6,7 @@ import { catchBeError } from "../utils/errors.utils";
 import {
   loadUsersListAction,
   usersListLoadedAction,
-} from "./users-list.reducer";
+} from "./users-list.actions";
 
 @Injectable()
 export class UsersListEffects {

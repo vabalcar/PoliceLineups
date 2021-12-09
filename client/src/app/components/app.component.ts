@@ -2,14 +2,14 @@ import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
+import { AppState } from "../state/app.state";
 
-import { AppState } from "src/app/state/app.reducer";
+import { logoutAction } from "../state/auth/auth.actions";
 import {
-  logoutAction,
-  selectCurrentUserIsAdmin,
   selectCurrentUserFullName,
+  selectCurrentUserIsAdmin,
   selectIsLoggedIn,
-} from "src/app/state/auth/auth.reducer";
+} from "../state/auth/auth.selectors";
 
 @Component({
   selector: "app-root",
