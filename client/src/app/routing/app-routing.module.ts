@@ -27,14 +27,14 @@ const routes: Routes = [
     canActivate: [AdminAuthGuard],
   },
   {
-    path: "user/:userId/settings",
-    component: UserSettingsComponent,
-    canActivate: [AdminAuthGuard],
-  },
-  {
-    path: "currentUser/settings",
+    path: "user/current",
     component: UserSettingsComponent,
     canActivate: [UserAuthGuard],
+  },
+  {
+    path: "user/:userId",
+    component: UserSettingsComponent,
+    canActivate: [AdminAuthGuard],
   },
   {
     path: "import",
