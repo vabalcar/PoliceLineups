@@ -5,9 +5,9 @@ from flask_cors import CORS
 from swagger_server.encoder import JSONEncoder
 
 from police_lineups.db import init_current_db
-from police_lineups.utils import Singleton
 
 from .db import DB
+from .utils import Singleton
 
 
 class Server(metaclass=Singleton):

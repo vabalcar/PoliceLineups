@@ -1,7 +1,9 @@
 import os
 
 from police_lineups.configurations import AuthTokenConfiguration, DBConfiguration, RootUserConfiguration
-from police_lineups.utils import parse_json_file, Singleton
+from police_lineups.utils import parse_json_file
+
+from .utils import Singleton
 
 
 class Configuration(metaclass=Singleton):

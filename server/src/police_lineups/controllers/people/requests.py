@@ -2,9 +2,8 @@ import connexion
 
 from swagger_server.models import Person
 
-from police_lineups.controllers.utils import Responses
+from police_lineups.controllers.utils import clear_model_update, Responses
 from police_lineups.db import DbPerson
-from police_lineups.utils import clear_model_update
 
 from .errors import PeopleErrors
 

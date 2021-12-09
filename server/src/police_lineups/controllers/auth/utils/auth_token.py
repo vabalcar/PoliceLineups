@@ -1,4 +1,5 @@
 from datetime import datetime
+from time import time
 from typing import Mapping, Tuple
 
 from jose import JWTError, jwt
@@ -6,11 +7,10 @@ from werkzeug.exceptions import Unauthorized
 
 from police_lineups.context import UserContext
 from police_lineups.singletons import Configuration, Context
-from police_lineups.utils import create_current_timestamp
 
 
 def create_auth_token(user_id: int, is_admin: bool) -> Tuple[str, datetime]:
-    issued_timestamp = create_current_timestamp()
+    issued_timestamp = _create_current_timestamp()
     expiration_timestamp = issued_timestamp + Configuration().auth_token.lifetime
     auth_token_payload = {
         'iss': Configuration().auth_token.issuer,
@@ -42,3 +42,7 @@ def set_user_context(auth_token_payload: Mapping) -> None:
         return
 
     Context().user = UserContext(user_id, auth_token_payload.get('is_admin', False))
+
+
+def _create_current_timestamp() -> int:
+    return int(time())

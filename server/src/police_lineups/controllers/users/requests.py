@@ -3,10 +3,9 @@ from werkzeug.security import generate_password_hash
 
 from swagger_server.models import UserWithPassword
 
-from police_lineups.controllers.utils import Responses
+from police_lineups.controllers.utils import clear_model_update, Responses
 from police_lineups.db import DbUser
 from police_lineups.singletons import Configuration, Context
-from police_lineups.utils import clear_model_update
 
 from .errors import UserErrors
 from .validations import validate_user_update_internally

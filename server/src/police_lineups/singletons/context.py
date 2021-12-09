@@ -1,7 +1,8 @@
 import connexion
 
 from police_lineups.context import UserContext
-from police_lineups.utils import Singleton
+
+from .utils import Singleton
 
 
 class Context(metaclass=Singleton):
