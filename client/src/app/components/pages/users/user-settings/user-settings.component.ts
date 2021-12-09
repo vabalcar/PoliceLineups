@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { BehaviorSubject, combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
@@ -48,7 +48,11 @@ export class UserSettingsComponent implements OnInit {
     IUserSettingsComponentData | undefined
   >;
 
-  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private store: Store<AppState>
+  ) {
     this.loggedInUserId$ = this.store.select(selectCurrentUserUserId);
     this.targetUserInfo$ = this.store.select(selectEditedUserInfo);
 
@@ -113,13 +117,19 @@ export class UserSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap
-      .pipe(map((params) => params.get("userId")))
-      .subscribe((editedUserIdFromRoute) =>
-        this.store.dispatch(
-          loadUserToUpdate({
-            targetUserId: parseInt(editedUserIdFromRoute, 10),
-          })
+      .pipe(
+        map((params) =>
+          params.has("userId") ? +params.get("userId") : undefined
         )
+      )
+      .subscribe((targetUserId) =>
+        targetUserId === undefined || this.isUserId(targetUserId)
+          ? this.store.dispatch(
+              loadUserToUpdate({
+                targetUserId,
+              })
+            )
+          : this.router.navigateByUrl("/not-found")
       );
 
     this.fullNameFormControl.value$.subscribe((value) =>
@@ -170,5 +180,9 @@ export class UserSettingsComponent implements OnInit {
     userData: IUserSettingsComponentData | undefined
   ): number | undefined {
     return !userData || userData.isEditingSelf ? undefined : userData.userId;
+  }
+
+  private isUserId(n: number): boolean {
+    return Number.isInteger(n) && n > 0;
   }
 }
