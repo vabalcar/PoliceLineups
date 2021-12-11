@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { map } from "rxjs/operators";
 
 import { DefaultService } from "src/app/api/api/default.service";
+import { DynamicPath } from "src/app/routing/path";
 
 const PEOPLE_LIMIT = 30;
 
@@ -14,6 +15,8 @@ export class PeopleComponent {
   people = this.api
     .getPeople()
     .pipe(map((people) => people.slice(0, PEOPLE_LIMIT)));
+
+  readonly dynamicPath = DynamicPath;
 
   constructor(private api: DefaultService) {}
 }

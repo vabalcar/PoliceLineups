@@ -1,11 +1,12 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
+import { PathTemplate, StaticPath } from "./path";
+
 import { UserAuthGuard } from "./guards/auth-user/auth-user.guard";
 import { AdminAuthGuard } from "./guards/auth-admin/auth-admin.guard";
 
 import { LoginComponent } from "../components/pages/users/login/login.component";
-import { NotFoundComponent } from "../components/pages/not-found/not-found.component";
 import { PeopleComponent } from "../components/pages/people/people/people.component";
 import { PersonComponent } from "../components/pages/people/person/person.component";
 import { HomeComponent } from "../components/pages/home/home.component";
@@ -14,48 +15,70 @@ import { ImportPersonComponent } from "../components/pages/people/import-person/
 import { UserSettingsComponent } from "../components/pages/users/user-settings/user-settings.component";
 import { UsersListComponent } from "../components/pages/users/users-list/users-list.component";
 import { NotAuthorizedComponent } from "../components/pages/users/not-authorized/not-authorized.component";
+import { NotFoundComponent } from "../components/pages/not-found/not-found.component";
+import { PathNotFoundComponent } from "../components/pages/path-not-found/path-not-found.component";
+
+const getPathForRoute = (path: StaticPath) => path.substring(1);
 
 const routes: Routes = [
   {
-    path: "register",
+    path: getPathForRoute(StaticPath.register),
     component: RegisterComponent,
     canActivate: [AdminAuthGuard],
   },
   {
-    path: "users",
+    path: getPathForRoute(StaticPath.users),
     component: UsersListComponent,
     canActivate: [AdminAuthGuard],
   },
   {
-    path: "user/current",
+    path: getPathForRoute(StaticPath.currentUser),
     component: UserSettingsComponent,
     canActivate: [UserAuthGuard],
   },
   {
-    path: "user/:userId",
+    path: PathTemplate.user,
     component: UserSettingsComponent,
     canActivate: [AdminAuthGuard],
   },
   {
-    path: "import",
+    path: getPathForRoute(StaticPath.import),
     component: ImportPersonComponent,
     canActivate: [UserAuthGuard],
   },
-  { path: "people", component: PeopleComponent, canActivate: [UserAuthGuard] },
   {
-    path: "person/:id",
+    path: getPathForRoute(StaticPath.people),
+    component: PeopleComponent,
+    canActivate: [UserAuthGuard],
+  },
+  {
+    path: PathTemplate.person,
     component: PersonComponent,
     canActivate: [UserAuthGuard],
   },
   {
-    path: "login",
+    path: getPathForRoute(StaticPath.login),
     component: LoginComponent,
   },
-  { path: "home", component: HomeComponent },
-  { path: "", redirectTo: "/home", pathMatch: "full" },
-  { path: "not-authorized", component: NotAuthorizedComponent },
-  { path: "not-found", component: NotFoundComponent },
-  { path: "**", component: NotFoundComponent },
+  { path: getPathForRoute(StaticPath.home), component: HomeComponent },
+  {
+    path: getPathForRoute(StaticPath.default),
+    redirectTo: StaticPath.home,
+    pathMatch: "full",
+  },
+  {
+    path: getPathForRoute(StaticPath.notAuthorized),
+    component: NotAuthorizedComponent,
+  },
+  {
+    path: getPathForRoute(StaticPath.notFound),
+    component: NotFoundComponent,
+  },
+  {
+    path: getPathForRoute(StaticPath.pathNotFound),
+    component: PathNotFoundComponent,
+  },
+  { path: "**", component: PathNotFoundComponent },
 ];
 
 @NgModule({

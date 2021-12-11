@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
+import { StaticPath } from "../routing/path";
 import { AppState } from "../state/app.state";
 
 import { logoutAction } from "../state/auth/auth.actions";
@@ -18,6 +19,8 @@ import {
 })
 export class AppComponent {
   drawerOpened = false;
+
+  readonly staticPath = StaticPath;
 
   readonly isLoggedIn$: Observable<boolean>;
   readonly isAdmin$: Observable<boolean>;

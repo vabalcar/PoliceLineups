@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { tap } from "rxjs/operators";
+import { StaticPath } from "../routing/path";
 import { NotificationsService } from "../services/notifications.service";
 import { beFailed } from "./app.actions";
 
@@ -12,7 +14,12 @@ export class AppEffects {
         ofType(beFailed),
         tap((action) =>
           this.notifications.showNotification(action.errorResponse.message)
-        )
+        ),
+        tap((action) => {
+          if (action.errorResponse.status === 404) {
+            this.router.navigateByUrl(StaticPath.notFound);
+          }
+        })
       ),
     {
       dispatch: false,
@@ -21,6 +28,7 @@ export class AppEffects {
 
   constructor(
     private actions$: Actions,
-    private notifications: NotificationsService
+    private notifications: NotificationsService,
+    private router: Router
   ) {}
 }

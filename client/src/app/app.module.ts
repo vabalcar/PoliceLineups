@@ -38,13 +38,14 @@ import { AppComponent } from "./components/app.component";
 import { PeopleComponent } from "./components/pages/people/people/people.component";
 import { PersonComponent } from "./components/pages/people/person/person.component";
 import { LoginComponent } from "./components/pages/users/login/login.component";
-import { NotFoundComponent } from "./components/pages/not-found/not-found.component";
 import { RegisterComponent } from "./components/pages/users/register/register.component";
 import { ImportPersonComponent } from "./components/pages/people/import-person/import-person.component";
 import { HomeComponent } from "./components/pages/home/home.component";
 import { UserSettingsComponent } from "./components/pages/users/user-settings/user-settings.component";
 import { UsersListComponent } from "./components/pages/users/users-list/users-list.component";
 import { NotAuthorizedComponent } from "./components/pages/users/not-authorized/not-authorized.component";
+import { NotFoundComponent } from "./components/pages/not-found/not-found.component";
+import { PathNotFoundComponent } from "./components/pages/path-not-found/path-not-found.component";
 
 import { DropZoneDirective } from "./directives/drop-zone.directive";
 
@@ -61,7 +62,6 @@ import { AppEffects } from "./state/app.effects";
     PeopleComponent,
     PersonComponent,
     LoginComponent,
-    NotFoundComponent,
     RegisterComponent,
     ImportPersonComponent,
     HomeComponent,
@@ -69,6 +69,8 @@ import { AppEffects } from "./state/app.effects";
     UsersListComponent,
     DropZoneDirective,
     NotAuthorizedComponent,
+    NotFoundComponent,
+    PathNotFoundComponent,
   ],
   imports: [
     BrowserModule,

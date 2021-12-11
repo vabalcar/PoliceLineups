@@ -37,7 +37,7 @@ export class PersonComponent implements OnInit {
   constructor(private route: ActivatedRoute, private api: DefaultService) {}
 
   ngOnInit() {
-    const id = +this.route.snapshot.paramMap.get("id");
+    const id = +this.route.snapshot.paramMap.get("personId");
     this.api.getPerson(id).subscribe((person) => {
       this.features = person.features.split(",").map(parseFeature);
       person.features = undefined;

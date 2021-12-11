@@ -21,6 +21,7 @@ import {
   validateUserFullnameUpdate,
 } from "src/app/state/user-update/user-update.actions";
 import { IUserInfo } from "src/app/state/utils/user-info";
+import { StaticPath } from "src/app/routing/path";
 
 interface IUserSettingsComponentData {
   userId: number;
@@ -129,7 +130,7 @@ export class UserSettingsComponent implements OnInit {
                 targetUserId,
               })
             )
-          : this.router.navigateByUrl("/not-found")
+          : this.router.navigateByUrl(StaticPath.pathNotFound)
       );
 
     this.fullNameFormControl.value$.subscribe((value) =>

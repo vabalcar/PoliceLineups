@@ -10,6 +10,7 @@ import {
 import { Action, Store } from "@ngrx/store";
 import { exhaustMap, filter, map, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
+import { StaticPath } from "src/app/routing/path";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { AppState } from "../app.state";
 import { convertToLocalDateTime } from "../utils/date.utils";
@@ -65,7 +66,7 @@ export class AuthEffects implements OnInitEffects {
             action.tokenExpirationDatetime
           )
         ),
-        tap(() => this.router.navigateByUrl("/"))
+        tap(() => this.router.navigateByUrl(StaticPath.default))
       ),
     {
       dispatch: false,
@@ -122,7 +123,7 @@ export class AuthEffects implements OnInitEffects {
       this.actions$.pipe(
         ofType(logoutAction),
         tap(() => this.authTokenRenewalScheduler.cancelScheduledAuthRenewal()),
-        tap(() => this.router.navigateByUrl("/")),
+        tap(() => this.router.navigateByUrl(StaticPath.default)),
         tap(() =>
           this.notifications.showNotification("You have been logged out")
         )
