@@ -8,8 +8,8 @@ export enum StaticPath {
   default = "/",
   home = "/home",
   notAuthorized = "/not-authorized",
-  notFound = "/not-found",
   pathNotFound = "/path-not-found",
+  resourceNotFound = "/resource-not-found",
 }
 
 export enum PathTemplate {

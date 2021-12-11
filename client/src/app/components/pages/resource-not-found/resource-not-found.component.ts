@@ -3,8 +3,8 @@ import { StaticPath } from "src/app/routing/path";
 
 @Component({
   selector: "app-not-found",
-  templateUrl: "./not-found.component.html",
+  templateUrl: "./resource-not-found.component.html",
 })
-export class NotFoundComponent {
+export class ResourceNotFoundComponent {
   readonly staticPath = StaticPath;
 }

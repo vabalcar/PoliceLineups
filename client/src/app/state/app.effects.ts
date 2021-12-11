@@ -17,7 +17,7 @@ export class AppEffects {
         ),
         tap((action) => {
           if (action.errorResponse.status === 404) {
-            this.router.navigateByUrl(StaticPath.notFound);
+            this.router.navigateByUrl(StaticPath.resourceNotFound);
           }
         })
       ),

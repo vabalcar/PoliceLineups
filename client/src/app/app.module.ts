@@ -44,8 +44,8 @@ import { HomeComponent } from "./components/pages/home/home.component";
 import { UserSettingsComponent } from "./components/pages/users/user-settings/user-settings.component";
 import { UsersListComponent } from "./components/pages/users/users-list/users-list.component";
 import { NotAuthorizedComponent } from "./components/pages/users/not-authorized/not-authorized.component";
-import { NotFoundComponent } from "./components/pages/not-found/not-found.component";
 import { PathNotFoundComponent } from "./components/pages/path-not-found/path-not-found.component";
+import { ResourceNotFoundComponent } from "./components/pages/resource-not-found/resource-not-found.component";
 
 import { DropZoneDirective } from "./directives/drop-zone.directive";
 
@@ -69,8 +69,8 @@ import { AppEffects } from "./state/app.effects";
     UsersListComponent,
     DropZoneDirective,
     NotAuthorizedComponent,
-    NotFoundComponent,
     PathNotFoundComponent,
+    ResourceNotFoundComponent,
   ],
   imports: [
     BrowserModule,
