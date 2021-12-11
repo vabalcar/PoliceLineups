@@ -3,7 +3,7 @@ import { updateState } from "../utils/reducer.utils";
 import {
   currentUserFullNameUpdateSuccessful,
   loadUserToUpdate,
-  userFullNameUpdateSucessful,
+  userFullNameUpdateSuccessful,
   userFullnameUpdateValidated,
   userToUpdateLoaded,
   userUpdateFailed,
@@ -33,7 +33,7 @@ export const userUpdateReducer = createReducer(
       success: true,
     })
   ),
-  on(userFullNameUpdateSucessful, (state, action) =>
+  on(userFullNameUpdateSuccessful, (state, action) =>
     updateState(state, action, {
       success: true,
     })

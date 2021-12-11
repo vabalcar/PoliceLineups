@@ -32,14 +32,32 @@ export const updateUserPassword = createAction(
 );
 
 export const userUpdateFailed = createAction("[User update] failed");
+
 export const userUpdatePasswordSuccessful = createAction(
   "[User update] password successful"
 );
+
 export const currentUserFullNameUpdateSuccessful = createAction(
   "[User update] current fullname",
   props<Pick<UserUpdateState, "fullName">>()
 );
-export const userFullNameUpdateSucessful = createAction(
+
+export const userFullNameUpdateSuccessful = createAction(
   "[User update] fullname successful",
   props<Pick<UserUpdateState, "fullName">>()
 );
+
+export const deleteUser = createAction(
+  "[User update] deletion",
+  props<{ targetUserId?: number }>()
+);
+
+export const currentUserDeletionSuccessful = createAction(
+  "[User update] current user deletion successful"
+);
+
+export const userDeletionSuccessful = createAction(
+  "[User update] user deletion successful"
+);
+
+export const userDeletionFailed = createAction("[User update] deletion failed");

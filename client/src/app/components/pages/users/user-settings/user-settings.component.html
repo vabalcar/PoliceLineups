@@ -86,7 +86,7 @@
   </div>
 
   <h2 class="mat-title">Delete account</h2>
-  <button mat-raised-button color="warn">
+  <button mat-raised-button color="warn" (click)="deleteUser()">
     Delete
     <span *ngIf="data.isEditingSelf">your</span>
     account

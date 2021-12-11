@@ -15,6 +15,7 @@ import {
 import { AppState } from "src/app/state/app.state";
 import { selectCurrentUserUserId } from "src/app/state/auth/auth.selectors";
 import {
+  deleteUser,
   loadUserToUpdate,
   updateUserFullName,
   updateUserPassword,
@@ -173,6 +174,16 @@ export class UserSettingsComponent implements OnInit {
           this.userSettingsComponentDataSubject$.getValue()
         ),
         newPassword: this.passwordFormControl.currentValue,
+      })
+    );
+  }
+
+  deleteUser(): void {
+    this.store.dispatch(
+      deleteUser({
+        targetUserId: this.getTargetUserId(
+          this.userSettingsComponentDataSubject$.getValue()
+        ),
       })
     );
   }

@@ -1,8 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
+import { of } from "rxjs";
 import { exhaustMap, map, mergeMap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
+import { logoutAction } from "../auth/auth.actions";
 import { selectCurrentUserInfo } from "../auth/auth.selectors";
 import { catchBeError } from "../utils/errors.utils";
 import { IUserInfo } from "../utils/user-info";
@@ -14,9 +16,13 @@ import {
   userUpdateFailed,
   updateUserFullName,
   currentUserFullNameUpdateSuccessful,
-  userFullNameUpdateSucessful,
+  userFullNameUpdateSuccessful,
   validateUserFullnameUpdate,
   userFullnameUpdateValidated,
+  deleteUser,
+  userDeletionFailed,
+  userDeletionSuccessful,
+  currentUserDeletionSuccessful,
 } from "./user-update.actions";
 
 @Injectable()
@@ -78,28 +84,34 @@ export class UserUpdateEffects {
     this.actions$.pipe(
       ofType(updateUserFullName),
       exhaustMap((action) =>
-        (!action.targetUserId
-          ? this.api.updateCurrentUser({ fullName: action.newFullName })
-          : this.api.updateUser(
-              {
-                fullName: action.newFullName,
-              },
-              action.targetUserId
+        !action.targetUserId
+          ? this.api.updateCurrentUser({ fullName: action.newFullName }).pipe(
+              map((response) =>
+                !response.error
+                  ? currentUserFullNameUpdateSuccessful({
+                      fullName: action.newFullName,
+                    })
+                  : userUpdateFailed()
+              ),
+              catchBeError()
             )
-        ).pipe(
-          map((response) =>
-            !response.error
-              ? !action.targetUserId
-                ? currentUserFullNameUpdateSuccessful({
-                    fullName: action.newFullName,
-                  })
-                : userFullNameUpdateSucessful({
-                    fullName: action.newFullName,
-                  })
-              : userUpdateFailed()
-          ),
-          catchBeError()
-        )
+          : this.api
+              .updateUser(
+                {
+                  fullName: action.newFullName,
+                },
+                action.targetUserId
+              )
+              .pipe(
+                map((response) =>
+                  !response.error
+                    ? userFullNameUpdateSuccessful({
+                        fullName: action.newFullName,
+                      })
+                    : userUpdateFailed()
+                ),
+                catchBeError()
+              )
       )
     )
   );
@@ -117,6 +129,38 @@ export class UserUpdateEffects {
           catchBeError()
         )
       )
+    )
+  );
+
+  deleteUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteUser),
+      exhaustMap((action) =>
+        !action.targetUserId
+          ? this.api.removeCurrentUser().pipe(
+              map((response) =>
+                !response.error
+                  ? currentUserDeletionSuccessful()
+                  : userDeletionFailed()
+              ),
+              catchBeError()
+            )
+          : this.api.removeUser(action.targetUserId).pipe(
+              map((response) =>
+                !response.error
+                  ? userDeletionSuccessful()
+                  : userDeletionFailed()
+              ),
+              catchBeError()
+            )
+      )
+    )
+  );
+
+  currentUserDeletionSuccessful$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(currentUserDeletionSuccessful),
+      mergeMap((_) => of(logoutAction()))
     )
   );
 
