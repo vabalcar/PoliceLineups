@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { of } from "rxjs";
-import { exhaustMap, map, mergeMap } from "rxjs/operators";
+import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
+import { StaticPath } from "src/app/routing/path";
 import { logoutAction } from "../auth/auth.actions";
 import { selectCurrentUserInfo } from "../auth/auth.selectors";
 import { catchBeError } from "../utils/errors.utils";
@@ -157,16 +159,28 @@ export class UserUpdateEffects {
     )
   );
 
-  currentUserDeletionSuccessful$ = createEffect(() =>
+  logoutOnCurrentUserDeletionSuccessful$ = createEffect(() =>
     this.actions$.pipe(
       ofType(currentUserDeletionSuccessful),
       mergeMap((_) => of(logoutAction()))
     )
   );
 
+  redirectToUsersListOnUserDeletionSuccessful$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userDeletionSuccessful),
+        tap(() => this.router.navigateByUrl(StaticPath.users))
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
   constructor(
     private actions$: Actions,
     private api: DefaultService,
+    private router: Router,
     private store: Store
   ) {}
 }
