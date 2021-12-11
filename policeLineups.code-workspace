@@ -66,6 +66,9 @@
     "debug.onTaskErrors": "debugAnyway",
     "debug.focusWindowOnBreak": false,
 
+    // Testing
+    "testExplorer.useNativeTesting": true,
+
     // General settings for prittiers
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "file",

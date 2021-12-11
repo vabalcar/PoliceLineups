@@ -22,7 +22,7 @@
     "esbenp.prettier-vscode",
     "mrmlnc.vscode-scss",
     "stylelint.vscode-stylelint",
-    "raagh.angular-karma-test-explorer",
+    "lucono.karma-test-explorer",
 
     // API
     "42crunch.vscode-openapi",
