@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { updateState } from "../utils/reducer.utils";
+import { updateState } from "../../utils/reducer.utils";
 import {
   currentUserFullNameUpdateSuccessful,
   loadUserToUpdate,

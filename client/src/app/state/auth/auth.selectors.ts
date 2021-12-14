@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { AppState } from "../app.state";
-import { createUserInfoSelector } from "../utils/users.utils";
+import { createUserInfoSelector } from "../users/utils/selector.utils";
 import { AuthState } from "./auth.state";
 
 export const authFeatureName = "auth";

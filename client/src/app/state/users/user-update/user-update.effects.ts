@@ -5,10 +5,10 @@ import { Store } from "@ngrx/store";
 import { of } from "rxjs";
 import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
-import { StaticPath } from "src/app/routing/path";
-import { logoutAction } from "../auth/auth.actions";
-import { selectCurrentUserInfo } from "../auth/auth.selectors";
-import { catchBeError } from "../utils/errors.utils";
+import { StaticPath } from "src/app/routing/paths";
+import { logoutAction } from "../../auth/auth.actions";
+import { selectCurrentUserInfo } from "../../auth/auth.selectors";
+import { catchBeError } from "../../utils/errors.utils";
 import { IUserInfo } from "../utils/IUserInfo";
 import {
   loadUserToUpdate,

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { StaticPath } from "src/app/routing/path";
+import { StaticPath } from "src/app/routing/paths";
 
 @Component({
   selector: "app-not-found",

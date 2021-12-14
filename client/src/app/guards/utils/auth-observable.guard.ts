@@ -1,7 +1,7 @@
 import { CanActivate, Router } from "@angular/router";
 import { Observable, Subscription } from "rxjs";
 import { filter } from "rxjs/operators";
-import { StaticPath } from "../path";
+import { StaticPath } from "src/app/routing/paths";
 
 export abstract class ObservableAuthGuard implements CanActivate {
   protected readonly redirectionOnUnauthorized: Subscription;

@@ -4,7 +4,7 @@ import { Store } from "@ngrx/store";
 import { AppState } from "src/app/state/app.state";
 
 import { selectIsLoggedIn } from "src/app/state/auth/auth.selectors";
-import { ObservableAuthGuard } from "../auth-observable.guard";
+import { ObservableAuthGuard } from "../utils/auth-observable.guard";
 
 @Injectable({
   providedIn: "root",

@@ -1,5 +1,5 @@
 import { createSelector, Selector } from "@ngrx/store";
-import { AppState } from "../app.state";
+import { AppState } from "../../app.state";
 import { IUserInfo } from "./IUserInfo";
 
 export const createUserInfoSelector = <TFeatureState extends IUserInfo>(

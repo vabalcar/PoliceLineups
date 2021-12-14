@@ -4,10 +4,10 @@ import { MatTableDataSource } from "@angular/material/table";
 import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
 import { User } from "src/app/api/model/user";
-import { DynamicPath } from "src/app/routing/path";
+import { DynamicPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
-import { loadUsersListAction } from "src/app/state/users-list/users-list.actions";
-import { selectUsersList } from "src/app/state/users-list/users-list.selectors";
+import { loadUsersListAction } from "src/app/state/users/users-list/users-list.actions";
+import { selectUsersList } from "src/app/state/users/users-list/users-list.selectors";
 
 @Component({
   selector: "app-users-list",

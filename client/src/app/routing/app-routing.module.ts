@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
-import { PathTemplate, StaticPath } from "./path";
+import { PathTemplate, StaticPath } from "./paths";
 
-import { UserAuthGuard } from "./guards/auth-user/auth-user.guard";
-import { AdminAuthGuard } from "./guards/auth-admin/auth-admin.guard";
+import { UserAuthGuard } from "../guards/auth-user/auth-user.guard";
+import { AdminAuthGuard } from "../guards/auth-admin/auth-admin.guard";
 
-import { LoginComponent } from "../components/pages/users/login/login.component";
+import { LoginComponent } from "../components/pages/auth/login/login.component";
 import { PeopleComponent } from "../components/pages/people/people/people.component";
 import { PersonComponent } from "../components/pages/people/person/person.component";
 import { HomeComponent } from "../components/pages/home/home.component";
@@ -14,9 +14,9 @@ import { RegisterComponent } from "../components/pages/users/register/register.c
 import { ImportPersonComponent } from "../components/pages/people/import-person/import-person.component";
 import { UserSettingsComponent } from "../components/pages/users/user-settings/user-settings.component";
 import { UsersListComponent } from "../components/pages/users/users-list/users-list.component";
-import { NotAuthorizedComponent } from "../components/pages/users/not-authorized/not-authorized.component";
-import { PathNotFoundComponent } from "../components/pages/path-not-found/path-not-found.component";
-import { ResourceNotFoundComponent } from "../components/pages/resource-not-found/resource-not-found.component";
+import { NotAuthorizedComponent } from "../components/pages/auth/not-authorized/not-authorized.component";
+import { PathNotFoundComponent } from "../components/pages/not-found/path-not-found/path-not-found.component";
+import { ResourceNotFoundComponent } from "../components/pages/not-found/resource-not-found/resource-not-found.component";
 
 const getPathForRoute = (path: StaticPath) => path.substring(1);
 

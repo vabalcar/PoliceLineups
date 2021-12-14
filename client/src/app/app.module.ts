@@ -1,99 +1,99 @@
 import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
 import { HttpClientModule } from "@angular/common/http";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ServiceWorkerModule } from "@angular/service-worker";
 
-import { MatSliderModule } from "@angular/material/slider";
-import { MatCardModule } from "@angular/material/card";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatListModule } from "@angular/material/list";
-import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatListModule } from "@angular/material/list";
 import { MatMenuModule } from "@angular/material/menu";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
-import { MatTableModule } from "@angular/material/table";
 import { MatSelectModule } from "@angular/material/select";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatSliderModule } from "@angular/material/slider";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSortModule } from "@angular/material/sort";
+import { MatTableModule } from "@angular/material/table";
+import { MatToolbarModule } from "@angular/material/toolbar";
 
-import { StoreModule } from "@ngrx/store";
-import { StoreRouterConnectingModule } from "@ngrx/router-store";
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-import { EffectsModule } from "@ngrx/effects";
 import { ReactiveComponentModule } from "@ngrx/component";
+import { EffectsModule } from "@ngrx/effects";
+import { StoreRouterConnectingModule } from "@ngrx/router-store";
+import { StoreModule } from "@ngrx/store";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 import { environment } from "src/environments/environment";
-
-import { AppRoutingModule } from "./routing/app-routing.module";
 
 import { DefaultService } from "./api/api/default.service";
 import { BASE_PATH } from "./api/variables";
 
 import { AppComponent } from "./components/app.component";
+import { LoginComponent } from "./components/pages/auth/login/login.component";
+import { NotAuthorizedComponent } from "./components/pages/auth/not-authorized/not-authorized.component";
+import { HomeComponent } from "./components/pages/home/home.component";
+import { PathNotFoundComponent } from "./components/pages/not-found/path-not-found/path-not-found.component";
+import { ResourceNotFoundComponent } from "./components/pages/not-found/resource-not-found/resource-not-found.component";
+import { ImportPersonComponent } from "./components/pages/people/import-person/import-person.component";
 import { PeopleComponent } from "./components/pages/people/people/people.component";
 import { PersonComponent } from "./components/pages/people/person/person.component";
-import { LoginComponent } from "./components/pages/users/login/login.component";
 import { RegisterComponent } from "./components/pages/users/register/register.component";
-import { ImportPersonComponent } from "./components/pages/people/import-person/import-person.component";
-import { HomeComponent } from "./components/pages/home/home.component";
-import { UserSettingsComponent } from "./components/pages/users/user-settings/user-settings.component";
 import { UsersListComponent } from "./components/pages/users/users-list/users-list.component";
-import { NotAuthorizedComponent } from "./components/pages/users/not-authorized/not-authorized.component";
-import { PathNotFoundComponent } from "./components/pages/path-not-found/path-not-found.component";
-import { ResourceNotFoundComponent } from "./components/pages/resource-not-found/resource-not-found.component";
+import { UserSettingsComponent } from "./components/pages/users/user-settings/user-settings.component";
 
 import { DropZoneDirective } from "./directives/drop-zone.directive";
 
+import { AppRoutingModule } from "./routing/app-routing.module";
+
 import { reducers } from "./state/app.reducer";
 
-import { AuthEffects } from "./state/auth/auth.effects";
-import { UsersListEffects } from "./state/users-list/users-list.effects";
-import { UserUpdateEffects } from "./state/user-update/user-update.effects";
 import { AppEffects } from "./state/app.effects";
+import { AuthEffects } from "./state/auth/auth.effects";
+import { UsersListEffects } from "./state/users/users-list/users-list.effects";
+import { UserUpdateEffects } from "./state/users/user-update/user-update.effects";
 
 @NgModule({
   declarations: [
     AppComponent,
-    PeopleComponent,
-    PersonComponent,
-    LoginComponent,
-    RegisterComponent,
-    ImportPersonComponent,
-    HomeComponent,
-    UserSettingsComponent,
-    UsersListComponent,
     DropZoneDirective,
+    HomeComponent,
+    ImportPersonComponent,
+    LoginComponent,
     NotAuthorizedComponent,
     PathNotFoundComponent,
+    PeopleComponent,
+    PersonComponent,
+    RegisterComponent,
     ResourceNotFoundComponent,
+    UserSettingsComponent,
+    UsersListComponent,
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     BrowserAnimationsModule,
+    BrowserModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
 
-    MatSliderModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatListModule,
-    MatSidenavModule,
     MatButtonModule,
+    MatCardModule,
     MatIconModule,
     MatInputModule,
-    MatSlideToggleModule,
+    MatListModule,
     MatMenuModule,
-    MatSnackBarModule,
-    MatTableModule,
-    MatSortModule,
     MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
+    MatToolbarModule,
 
     FlexLayoutModule,
 

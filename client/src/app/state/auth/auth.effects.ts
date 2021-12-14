@@ -10,7 +10,7 @@ import {
 import { Action, Store } from "@ngrx/store";
 import { exhaustMap, filter, map, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
-import { StaticPath } from "src/app/routing/path";
+import { StaticPath } from "src/app/routing/paths";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { AppState } from "../app.state";
 import { convertToLocalDateTime } from "../utils/date.utils";
@@ -26,7 +26,7 @@ import {
   tokenRenewed,
 } from "./auth.actions";
 import { selectAuthToken } from "./auth.selectors";
-import { AuthTokenRenewalScheduler } from "./auth.utils";
+import { AuthTokenRenewalScheduler } from "./utils/token-renewal.utils";
 
 @Injectable()
 export class AuthEffects implements OnInitEffects {

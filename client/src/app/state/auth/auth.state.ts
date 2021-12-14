@@ -1,4 +1,4 @@
-import { IUserInfo } from "../utils/IUserInfo";
+import { IUserInfo } from "../users/utils/IUserInfo";
 
 export interface AuthState extends IUserInfo {
   token: string;

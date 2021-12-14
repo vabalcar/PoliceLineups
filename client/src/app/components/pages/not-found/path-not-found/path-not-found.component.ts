@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { StaticPath } from "src/app/routing/path";
+import { StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
 import { selectUrl } from "src/app/state/router/router.selectors";
 

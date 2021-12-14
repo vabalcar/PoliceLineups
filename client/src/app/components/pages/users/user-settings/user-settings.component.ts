@@ -1,12 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
+
 import { BehaviorSubject, combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import {
-  selectEditedUserInfo,
-  selectUserFullnameUpdateValidationError,
-} from "src/app/state/user-update/user-update.selectors";
+
+import { StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
 import { selectCurrentUserUserId } from "src/app/state/auth/auth.selectors";
 import {
@@ -15,14 +14,17 @@ import {
   updateUserFullName,
   updateUserPassword,
   validateUserFullnameUpdate,
-} from "src/app/state/user-update/user-update.actions";
-import { IUserInfo } from "src/app/state/utils/IUserInfo";
-import { StaticPath } from "src/app/routing/path";
+} from "src/app/state/users/user-update/user-update.actions";
+import {
+  selectEditedUserInfo,
+  selectUserFullnameUpdateValidationError,
+} from "src/app/state/users/user-update/user-update.selectors";
+import { IUserInfo } from "src/app/state/users/utils/IUserInfo";
+import { FullNameValidation } from "src/app/validations/full-name.validation";
 import {
   PasswordValidation,
   PasswordValidationFormControls,
 } from "src/app/validations/password.validation";
-import { FullNameValidation } from "src/app/validations/full-name.validation";
 import { BeValidation } from "src/app/validations/utils/BeValidation";
 
 interface IUserSettingsComponentData {
