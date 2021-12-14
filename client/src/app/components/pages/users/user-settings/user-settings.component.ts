@@ -7,11 +7,6 @@ import {
   selectEditedUserInfo,
   selectUserFullnameUpdateValidationError,
 } from "src/app/state/user-update/user-update.selectors";
-import {
-  ErrorPublisher,
-  MinLengthValidationErrorProps,
-  ObservableFormControl,
-} from "src/app/components/utils/forms.utils";
 import { AppState } from "src/app/state/app.state";
 import { selectCurrentUserUserId } from "src/app/state/auth/auth.selectors";
 import {
@@ -23,6 +18,12 @@ import {
 } from "src/app/state/user-update/user-update.actions";
 import { IUserInfo } from "src/app/state/utils/user-info";
 import { StaticPath } from "src/app/routing/path";
+import {
+  PasswordValidation,
+  PasswordValidationFormControls,
+} from "src/app/validations/password.validation";
+import { FullNameValidation } from "src/app/validations/full-name.validation";
+import { BeValidation } from "src/app/validations/utils/validation.utils";
 
 interface IUserSettingsComponentData {
   userId: number;
@@ -35,14 +36,12 @@ interface IUserSettingsComponentData {
   templateUrl: "./user-settings.component.html",
 })
 export class UserSettingsComponent implements OnInit {
+  readonly passwordValidationFormControls = PasswordValidationFormControls;
+
   readonly userSettingsComponentData$: Observable<IUserSettingsComponentData>;
 
-  readonly fullNameFormControl: ObservableFormControl<string>;
-  readonly fullNameUpdateErrorPublisher: ErrorPublisher;
-
-  readonly passwordFormControl: ObservableFormControl<string>;
-  readonly passwordAgainFormControl: ObservableFormControl<string>;
-  readonly passwordUpdateErrorPublisher: ErrorPublisher;
+  readonly passwordValidation: PasswordValidation;
+  readonly fullNameValidation: FullNameValidation;
 
   private readonly loggedInUserId$: Observable<number>;
   private readonly targetUserInfo$: Observable<IUserInfo>;
@@ -74,47 +73,19 @@ export class UserSettingsComponent implements OnInit {
       this.userSettingsComponentDataSubject$
     );
 
-    this.fullNameFormControl = new ObservableFormControl(
+    this.passwordValidation = new PasswordValidation();
+    this.fullNameValidation = new FullNameValidation(
+      new BeValidation(
+        (value) =>
+          this.store.dispatch(
+            validateUserFullnameUpdate({ newFullName: value ?? "" })
+          ),
+        this.store.select(selectUserFullnameUpdateValidationError)
+      ),
       this.targetUserInfo$.pipe(
         map((targetUserInfo) => targetUserInfo.fullName)
-      ),
-      ([validationErrorType]) => {
-        switch (validationErrorType) {
-          case "required":
-            return "Full name is required";
-        }
-      }
+      )
     );
-    this.fullNameUpdateErrorPublisher = new ErrorPublisher(
-      [this.fullNameFormControl.validationError$],
-      [this.store.select(selectUserFullnameUpdateValidationError)]
-    );
-
-    this.passwordFormControl = new ObservableFormControl(
-      undefined,
-      ([validationErrorType, validationErrorProps]) => {
-        switch (validationErrorType) {
-          case "required":
-            return "Password is required";
-          case "minlength":
-            validationErrorProps =
-              validationErrorProps as MinLengthValidationErrorProps;
-            return `Password has to be at least ${validationErrorProps.requiredLength} characters long`;
-        }
-      }
-    );
-    this.passwordAgainFormControl = new ObservableFormControl();
-    this.passwordUpdateErrorPublisher = new ErrorPublisher([
-      this.passwordFormControl.validationError$,
-      combineLatest([
-        this.passwordFormControl.value$,
-        this.passwordAgainFormControl.value$,
-      ]).pipe(
-        map(([password, passwordAgain]) =>
-          password === passwordAgain ? null : "passwords don't match"
-        )
-      ),
-    ]);
   }
 
   ngOnInit(): void {
@@ -133,19 +104,6 @@ export class UserSettingsComponent implements OnInit {
             )
           : this.router.navigateByUrl(StaticPath.pathNotFound)
       );
-
-    this.fullNameFormControl.value$.subscribe((value) =>
-      this.store.dispatch(
-        validateUserFullnameUpdate({ newFullName: value ?? "" })
-      )
-    );
-  }
-
-  fullNameUpdateDisabled(): boolean {
-    return (
-      this.fullNameFormControl.pristine ||
-      this.fullNameUpdateErrorPublisher.isErrorState()
-    );
   }
 
   updateUserFullName(): void {
@@ -154,16 +112,8 @@ export class UserSettingsComponent implements OnInit {
         targetUserId: this.getTargetUserId(
           this.userSettingsComponentDataSubject$.getValue()
         ),
-        newFullName: this.fullNameFormControl.currentValue,
+        newFullName: this.fullNameValidation.value,
       })
-    );
-  }
-
-  passwordUpdateDisabled(): boolean {
-    return (
-      this.passwordFormControl.pristine ||
-      this.passwordAgainFormControl.pristine ||
-      this.passwordUpdateErrorPublisher.isErrorState()
     );
   }
 
@@ -173,7 +123,7 @@ export class UserSettingsComponent implements OnInit {
         targetUserId: this.getTargetUserId(
           this.userSettingsComponentDataSubject$.getValue()
         ),
-        newPassword: this.passwordFormControl.currentValue,
+        newPassword: this.passwordValidation.value,
       })
     );
   }

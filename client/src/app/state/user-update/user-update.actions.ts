@@ -38,12 +38,12 @@ export const userUpdatePasswordSuccessful = createAction(
 );
 
 export const currentUserFullNameUpdateSuccessful = createAction(
-  "[User update] current fullname",
+  "[User update] current full name",
   props<Pick<UserUpdateState, "fullName">>()
 );
 
 export const userFullNameUpdateSuccessful = createAction(
-  "[User update] fullname successful",
+  "[User update] full name successful",
   props<Pick<UserUpdateState, "fullName">>()
 );
 

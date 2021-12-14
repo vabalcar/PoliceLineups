@@ -10,6 +10,75 @@ import {
 } from "rxjs";
 import { filter, map, share } from "rxjs/operators";
 
+export class BeValidation<T> {
+  constructor(
+    readonly validationEventDispatch: (value: T) => void,
+    readonly error$: Observable<string>
+  ) {}
+}
+
+export abstract class FormValidationBase<T> {
+  abstract get pristine(): boolean;
+  abstract get value(): T;
+
+  get error$(): Observable<string> {
+    return this.errorPublisher.error$;
+  }
+
+  get invalid(): boolean {
+    return this.pristine || this.errorPublisher.isErrorState();
+  }
+
+  constructor(
+    readonly value$: Observable<T>,
+    readonly errorPublisher: ErrorPublisher,
+    protected readonly backendValidation?: BeValidation<T>
+  ) {
+    if (backendValidation) {
+      this.value$.subscribe(this.backendValidation.validationEventDispatch);
+    }
+  }
+}
+
+export abstract class FormValidation<T> extends FormValidationBase<T> {
+  get pristine(): boolean {
+    return this.formControl.pristine;
+  }
+
+  get value(): T {
+    return this.formControl.value;
+  }
+
+  constructor(
+    readonly formControl: ObservableFormControl<T>,
+    errorPublisher: ErrorPublisher,
+    backendValidation?: BeValidation<T>
+  ) {
+    super(formControl.value$, errorPublisher, backendValidation);
+  }
+}
+
+export abstract class MultiFormValidation<T, K> extends FormValidationBase<T> {
+  get pristine(): boolean {
+    for (const formControl of this.formControls.values()) {
+      if (!formControl.pristine) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  constructor(
+    readonly formControls: Map<K, ObservableFormControl<T>>,
+    value$: Observable<T>,
+    errorPublisher: ErrorPublisher,
+    backendValidation?: BeValidation<T>
+  ) {
+    super(value$, errorPublisher, backendValidation);
+  }
+}
+
 export class ErrorPublisher implements ErrorStateMatcher {
   readonly error$: Observable<string | null>;
   readonly feError$: Observable<string | null>;
@@ -76,15 +145,11 @@ export class ObservableFormControl<T> extends FormControl {
   private readonly valueSubject$: BehaviorSubject<T>;
   private readonly defaultValueSubscription: Subscription;
 
-  get currentValue(): T {
-    return this.value;
-  }
-
   constructor(
-    defaultvalue$?: Observable<T>,
     translateValidationError?: (
       validationError: ValidationError
-    ) => string | undefined
+    ) => string | undefined,
+    defaultvalue$?: Observable<T>
   ) {
     super();
 

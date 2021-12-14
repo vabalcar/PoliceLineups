@@ -18,11 +18,11 @@
             matInput
             type="text"
             name="fullName"
-            [formControl]="fullNameFormControl"
-            [errorStateMatcher]="fullNameUpdateErrorPublisher"
+            [formControl]="fullNameValidation.formControl"
+            [errorStateMatcher]="fullNameValidation.errorPublisher"
           />
           <mat-error>
-            {{ fullNameUpdateErrorPublisher.error$ | ngrxPush }}
+            {{ fullNameValidation.error$ | ngrxPush }}
           </mat-error>
         </mat-form-field>
       </mat-card-content>
@@ -30,7 +30,7 @@
         <button
           mat-button
           color="accent"
-          [disabled]="fullNameUpdateDisabled()"
+          [disabled]="fullNameValidation.invalid"
           (click)="updateUserFullName()"
         >
           Update
@@ -52,11 +52,15 @@
               matInput
               type="password"
               name="password"
-              [formControl]="passwordFormControl"
-              [errorStateMatcher]="passwordUpdateErrorPublisher"
+              [formControl]="
+                passwordValidation.formControls.get(
+                  passwordValidationFormControls.password
+                )
+              "
+              [errorStateMatcher]="passwordValidation.errorPublisher"
             />
             <mat-error>
-              {{ passwordUpdateErrorPublisher.error$ | ngrxPush }}
+              {{ passwordValidation.error$ | ngrxPush }}
             </mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
@@ -66,8 +70,12 @@
               matInput
               type="password"
               name="passwordAgain"
-              [formControl]="passwordAgainFormControl"
-              [errorStateMatcher]="passwordUpdateErrorPublisher"
+              [formControl]="
+                passwordValidation.formControls.get(
+                  passwordValidationFormControls.passwordAgain
+                )
+              "
+              [errorStateMatcher]="passwordValidation.errorPublisher"
             />
           </mat-form-field>
         </div>
@@ -76,7 +84,7 @@
         <button
           mat-button
           color="accent"
-          [disabled]="passwordUpdateDisabled()"
+          [disabled]="passwordValidation.invalid"
           (click)="updateUserPassword()"
         >
           Update
