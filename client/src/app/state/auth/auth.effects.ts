@@ -15,7 +15,7 @@ import { NotificationsService } from "src/app/services/notifications.service";
 import { AppState } from "../app.state";
 import { convertToLocalDateTime } from "../utils/date.utils";
 import { catchBeError } from "../utils/errors.utils";
-import { HttpStatusCode } from "../utils/http-status-code.utils";
+import { HttpStatusCode } from "../utils/HttpStatusCode";
 import {
   loginAction,
   loginFailedAction,

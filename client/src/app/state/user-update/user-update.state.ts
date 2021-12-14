@@ -1,4 +1,4 @@
-import { IUserInfo } from "../utils/user-info";
+import { IUserInfo } from "../utils/IUserInfo";
 
 export interface UserUpdateState extends IUserInfo {
   success?: boolean;

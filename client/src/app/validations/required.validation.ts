@@ -4,15 +4,15 @@ import { FormValidation } from "./utils/FormValidation";
 import { ErrorPublisher } from "./utils/ErrorPublisher";
 import { ObservableFormControl } from "./utils/ObservableFormControl";
 
-export class FullNameValidation extends FormValidation<string> {
+export class RequiredValidation<T> extends FormValidation<T> {
   constructor(
-    backendValidation: BeValidation<string>,
-    defaultValue$: Observable<string>
+    backendValidation?: BeValidation<T>,
+    defaultValue$?: Observable<T>
   ) {
     const formControl = new ObservableFormControl(([validationErrorType]) => {
       switch (validationErrorType) {
         case "required":
-          return "Full name is required";
+          return "This value is required";
       }
     }, defaultValue$);
 
@@ -20,7 +20,7 @@ export class FullNameValidation extends FormValidation<string> {
       formControl,
       new ErrorPublisher(
         [formControl.validationError$],
-        [backendValidation.error$]
+        backendValidation ? [backendValidation.error$] : undefined
       ),
       backendValidation
     );

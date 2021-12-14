@@ -16,14 +16,14 @@ import {
   updateUserPassword,
   validateUserFullnameUpdate,
 } from "src/app/state/user-update/user-update.actions";
-import { IUserInfo } from "src/app/state/utils/user-info";
+import { IUserInfo } from "src/app/state/utils/IUserInfo";
 import { StaticPath } from "src/app/routing/path";
 import {
   PasswordValidation,
   PasswordValidationFormControls,
 } from "src/app/validations/password.validation";
 import { FullNameValidation } from "src/app/validations/full-name.validation";
-import { BeValidation } from "src/app/validations/utils/validation.utils";
+import { BeValidation } from "src/app/validations/utils/BeValidation";
 
 interface IUserSettingsComponentData {
   userId: number;
@@ -38,10 +38,10 @@ interface IUserSettingsComponentData {
 export class UserSettingsComponent implements OnInit {
   readonly passwordValidationFormControls = PasswordValidationFormControls;
 
-  readonly userSettingsComponentData$: Observable<IUserSettingsComponentData>;
-
   readonly passwordValidation: PasswordValidation;
   readonly fullNameValidation: FullNameValidation;
+
+  readonly userSettingsComponentData$: Observable<IUserSettingsComponentData>;
 
   private readonly loggedInUserId$: Observable<number>;
   private readonly targetUserInfo$: Observable<IUserInfo>;

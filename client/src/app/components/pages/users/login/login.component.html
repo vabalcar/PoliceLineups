@@ -1,5 +1,5 @@
 <h1 class="mat-headline">Login</h1>
-<form (submit)="login()">
+<form>
   <div fxLayout="column" fxLayoutGap="16px">
     <div>
       <mat-form-field appearance="fill">
@@ -9,7 +9,8 @@
           required
           type="text"
           name="username"
-          [(ngModel)]="username"
+          [formControl]="usernameValidation.formControl"
+          [errorStateMatcher]="usernameValidation.errorPublisher"
         />
       </mat-form-field>
     </div>
@@ -21,10 +22,19 @@
           required
           type="password"
           name="password"
-          [(ngModel)]="password"
+          [formControl]="passwordValidation.formControl"
+          [errorStateMatcher]="passwordValidation.errorPublisher"
         />
       </mat-form-field>
     </div>
-    <button mat-raised-button color="primary" fxFlexAlign="start">Login</button>
+    <button
+      mat-raised-button
+      color="primary"
+      fxFlexAlign="start"
+      [disabled]="usernameValidation.invalid || passwordValidation.invalid"
+      (click)="login()"
+    >
+      Login
+    </button>
   </div>
 </form>

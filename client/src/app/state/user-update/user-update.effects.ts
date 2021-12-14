@@ -9,7 +9,7 @@ import { StaticPath } from "src/app/routing/path";
 import { logoutAction } from "../auth/auth.actions";
 import { selectCurrentUserInfo } from "../auth/auth.selectors";
 import { catchBeError } from "../utils/errors.utils";
-import { IUserInfo } from "../utils/user-info";
+import { IUserInfo } from "../utils/IUserInfo";
 import {
   loadUserToUpdate,
   userToUpdateLoaded,
