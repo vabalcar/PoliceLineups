@@ -13,10 +13,10 @@ import { selectUrl } from "src/app/state/router/router.selectors";
 export class PathNotFoundComponent {
   readonly staticPath = StaticPath;
 
-  readonly url: Observable<string>;
+  readonly url$: Observable<string>;
 
   constructor(private store: Store<AppState>) {
-    this.url = this.store
+    this.url$ = this.store
       .select(selectUrl)
       .pipe(map((url) => (url === StaticPath.pathNotFound ? undefined : url)));
   }

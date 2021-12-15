@@ -1,6 +1,6 @@
 <h1 class="mat-headline">Not found</h1>
 <p class="mat-body-1">
-  Path {{ (url | ngrxPush) || "you entered" }} wasn't found on this page.
+  Path {{ (url$ | ngrxPush) || "you entered" }} wasn't found on this page.
 </p>
 <button mat-raised-button color="primary" routerLink="{{ staticPath.home }}">
   Go to home page
