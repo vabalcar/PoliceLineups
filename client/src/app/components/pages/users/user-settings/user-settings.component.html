@@ -6,91 +6,98 @@
 
   <h2 class="mat-title">Update account</h2>
   <div fxLayout="row wrap" fxLayoutGap="16px">
-    <mat-card class="form-card">
-      <mat-card-header class="mat-card-simple-header">
-        <mat-card-title>Full name</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-form-field appearance="outline">
-          <mat-label>Full name</mat-label>
-          <input
-            required
-            matInput
-            type="text"
-            name="fullName"
-            [formControl]="fullNameValidation.formControl"
-            [errorStateMatcher]="fullNameValidation.errorPublisher"
-          />
-          <mat-error>
-            {{ fullNameValidation.error$ | ngrxPush }}
-          </mat-error>
-        </mat-form-field>
-      </mat-card-content>
-      <mat-card-actions>
-        <button
-          mat-button
-          color="accent"
-          [disabled]="fullNameValidation.invalid"
-          (click)="updateUserFullName()"
-        >
-          Update
-        </button>
-      </mat-card-actions>
-    </mat-card>
-
-    <mat-card class="form-card">
-      <mat-card-header class="mat-card-simple-header">
-        <mat-card-title>Password</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div fxLayout="row" fxLayoutGap="16px">
+    <form>
+      <mat-card class="form-card">
+        <mat-card-header class="mat-card-simple-header">
+          <mat-card-title>Full name</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           <mat-form-field appearance="outline">
-            <mat-label>Password</mat-label>
+            <mat-label>Full name</mat-label>
             <input
               required
-              minlength="4"
               matInput
-              type="password"
-              name="password"
-              [formControl]="
-                passwordValidation.formControls.get(
-                  passwordValidationFormControls.password
-                )
-              "
-              [errorStateMatcher]="passwordValidation.errorPublisher"
+              type="text"
+              name="fullName"
+              autocomplete="name"
+              [formControl]="fullNameValidation.formControl"
+              [errorStateMatcher]="fullNameValidation.errorPublisher"
             />
             <mat-error>
-              {{ passwordValidation.error$ | ngrxPush }}
+              {{ fullNameValidation.error$ | ngrxPush }}
             </mat-error>
           </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Password again</mat-label>
-            <input
-              required
-              matInput
-              type="password"
-              name="passwordAgain"
-              [formControl]="
-                passwordValidation.formControls.get(
-                  passwordValidationFormControls.passwordAgain
-                )
-              "
-              [errorStateMatcher]="passwordValidation.errorPublisher"
-            />
-          </mat-form-field>
-        </div>
-      </mat-card-content>
-      <mat-card-actions>
-        <button
-          mat-button
-          color="accent"
-          [disabled]="passwordValidation.invalid"
-          (click)="updateUserPassword()"
-        >
-          Update
-        </button>
-      </mat-card-actions>
-    </mat-card>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-button
+            color="accent"
+            [disabled]="fullNameValidation.invalid"
+            (click)="updateUserFullName()"
+          >
+            Update
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+
+    <form>
+      <mat-card class="form-card">
+        <mat-card-header class="mat-card-simple-header">
+          <mat-card-title>Password</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div fxLayout="row" fxLayoutGap="16px">
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input
+                required
+                minlength="4"
+                matInput
+                type="password"
+                name="password"
+                autocomplete="new-password"
+                [formControl]="
+                  passwordValidation.formControls.get(
+                    passwordValidationFormControls.password
+                  )
+                "
+                [errorStateMatcher]="passwordValidation.errorPublisher"
+              />
+              <mat-error>
+                {{ passwordValidation.error$ | ngrxPush }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Password again</mat-label>
+              <input
+                required
+                matInput
+                type="password"
+                name="passwordAgain"
+                autocomplete="new-password"
+                [formControl]="
+                  passwordValidation.formControls.get(
+                    passwordValidationFormControls.passwordAgain
+                  )
+                "
+                [errorStateMatcher]="passwordValidation.errorPublisher"
+              />
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-button
+            color="accent"
+            [disabled]="passwordValidation.invalid"
+            (click)="updateUserPassword()"
+          >
+            Update
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
   </div>
 
   <h2 class="mat-title">Delete account</h2>

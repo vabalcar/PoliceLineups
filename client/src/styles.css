@@ -41,6 +41,10 @@ form mat-form-field {
   margin-bottom: -16px !important;
 }
 
+form mat-card mat-form-field {
+  margin-bottom: 0 !important;
+}
+
 .mat-card-simple-header .mat-card-header-text {
   margin: 0 !important;
 }

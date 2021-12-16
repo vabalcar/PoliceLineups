@@ -7,7 +7,7 @@ import { ObservableFormControl } from "./utils/ObservableFormControl";
 export class FullNameValidation extends FormValidation<string> {
   constructor(
     backendValidation: BeValidation<string>,
-    defaultValue$: Observable<string>
+    defaultValue$?: Observable<string>
   ) {
     const formControl = new ObservableFormControl(([validationErrorType]) => {
       switch (validationErrorType) {

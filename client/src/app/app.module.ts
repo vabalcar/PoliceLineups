@@ -41,9 +41,9 @@ import { ResourceNotFoundComponent } from "./components/pages/not-found/resource
 import { ImportPersonComponent } from "./components/pages/people/import-person/import-person.component";
 import { PeopleComponent } from "./components/pages/people/people/people.component";
 import { PersonComponent } from "./components/pages/people/person/person.component";
-import { RegisterComponent } from "./components/pages/users/register/register.component";
-import { UsersListComponent } from "./components/pages/users/users-list/users-list.component";
+import { UserRegistrationComponent } from "./components/pages/users/user-registration/user-registration.component";
 import { UserSettingsComponent } from "./components/pages/users/user-settings/user-settings.component";
+import { UsersListComponent } from "./components/pages/users/users-list/users-list.component";
 
 import { DropZoneDirective } from "./directives/drop-zone.directive";
 
@@ -53,8 +53,9 @@ import { reducers } from "./state/app.reducer";
 
 import { AppEffects } from "./state/app.effects";
 import { AuthEffects } from "./state/auth/auth.effects";
-import { UsersListEffects } from "./state/users/users-list/users-list.effects";
+import { UserRegistrationEffects } from "./state/users/user-registration/user-registration.effects";
 import { UserUpdateEffects } from "./state/users/user-update/user-update.effects";
+import { UsersListEffects } from "./state/users/users-list/users-list.effects";
 
 @NgModule({
   declarations: [
@@ -67,7 +68,7 @@ import { UserUpdateEffects } from "./state/users/user-update/user-update.effects
     PathNotFoundComponent,
     PeopleComponent,
     PersonComponent,
-    RegisterComponent,
+    UserRegistrationComponent,
     ResourceNotFoundComponent,
     UserSettingsComponent,
     UsersListComponent,
@@ -106,8 +107,9 @@ import { UserUpdateEffects } from "./state/users/user-update/user-update.effects
     EffectsModule.forRoot([AppEffects]),
     EffectsModule.forFeature([
       AuthEffects,
-      UsersListEffects,
+      UserRegistrationEffects,
       UserUpdateEffects,
+      UsersListEffects,
     ]),
 
     ServiceWorkerModule.register("ngsw-worker.js", {

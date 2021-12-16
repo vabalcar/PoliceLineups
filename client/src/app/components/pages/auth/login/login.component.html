@@ -9,6 +9,7 @@
           required
           type="text"
           name="username"
+          autocomplete="username"
           [formControl]="usernameValidation.formControl"
           [errorStateMatcher]="usernameValidation.errorPublisher"
         />
@@ -22,6 +23,7 @@
           required
           type="password"
           name="password"
+          autocomplete="current-password"
           [formControl]="passwordValidation.formControl"
           [errorStateMatcher]="passwordValidation.errorPublisher"
         />

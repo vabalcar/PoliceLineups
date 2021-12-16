@@ -15,7 +15,7 @@ def add_user(body):
     if connexion.request.is_json:
         body = UserWithPassword.from_dict(connexion.request.get_json())
 
-    if DbUser.get_or_none(DbUser.user_id == body.user_id):
+    if DbUser.get_or_none(DbUser.username == body.username) is not None:
         return UserErrors.USER_ALREADY_EXITS
 
     body.password = generate_password_hash(body.password)

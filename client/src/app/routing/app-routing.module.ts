@@ -3,27 +3,31 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { PathTemplate, StaticPath } from "./paths";
 
-import { UserAuthGuard } from "../guards/auth-user/auth-user.guard";
 import { AdminAuthGuard } from "../guards/auth-admin/auth-admin.guard";
+import { UserAuthGuard } from "../guards/auth-user/auth-user.guard";
 
 import { LoginComponent } from "../components/pages/auth/login/login.component";
-import { PeopleComponent } from "../components/pages/people/people/people.component";
-import { PersonComponent } from "../components/pages/people/person/person.component";
-import { HomeComponent } from "../components/pages/home/home.component";
-import { RegisterComponent } from "../components/pages/users/register/register.component";
-import { ImportPersonComponent } from "../components/pages/people/import-person/import-person.component";
-import { UserSettingsComponent } from "../components/pages/users/user-settings/user-settings.component";
-import { UsersListComponent } from "../components/pages/users/users-list/users-list.component";
 import { NotAuthorizedComponent } from "../components/pages/auth/not-authorized/not-authorized.component";
+
+import { HomeComponent } from "../components/pages/home/home.component";
+
 import { PathNotFoundComponent } from "../components/pages/not-found/path-not-found/path-not-found.component";
 import { ResourceNotFoundComponent } from "../components/pages/not-found/resource-not-found/resource-not-found.component";
+
+import { ImportPersonComponent } from "../components/pages/people/import-person/import-person.component";
+import { PeopleComponent } from "../components/pages/people/people/people.component";
+import { PersonComponent } from "../components/pages/people/person/person.component";
+
+import { UserRegistrationComponent } from "../components/pages/users/user-registration/user-registration.component";
+import { UserSettingsComponent } from "../components/pages/users/user-settings/user-settings.component";
+import { UsersListComponent } from "../components/pages/users/users-list/users-list.component";
 
 const getPathForRoute = (path: StaticPath) => path.substring(1);
 
 const routes: Routes = [
   {
     path: getPathForRoute(StaticPath.register),
-    component: RegisterComponent,
+    component: UserRegistrationComponent,
     canActivate: [AdminAuthGuard],
   },
   {

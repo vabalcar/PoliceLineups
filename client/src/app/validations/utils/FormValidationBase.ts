@@ -18,10 +18,14 @@ export abstract class FormValidationBase<T> {
     readonly value$: Observable<T>,
     readonly errorPublisher: ErrorPublisher,
     protected readonly backendValidation?: BeValidation<T>
-  ) {
-    if (backendValidation) {
-      this.value$.subscribe(this.backendValidation.validationEventDispatch);
+  ) {}
+
+  triggerBeValidation(): void {
+    if (!this.backendValidation || this.invalid) {
+      return;
     }
+
+    this.backendValidation.validationEventDispatch(this.value);
   }
 
   abstract clearValue(): void;

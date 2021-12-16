@@ -1,0 +1,83 @@
+<h1 class="mat-headline">Register</h1>
+<form>
+  <div fxLayout="column" fxLayoutGap="16px">
+    <mat-slide-toggle name="isAdmin" [formControl]="isAdminFormControl"
+      >Admin</mat-slide-toggle
+    >
+    <div fxLayout="row" fxLayoutGap="16px">
+      <mat-form-field appearance="fill">
+        <mat-label>Full name</mat-label>
+        <input
+          required
+          matInput
+          type="text"
+          name="fullName"
+          autocomplete="name"
+          [formControl]="fullNameValidation.formControl"
+          [errorStateMatcher]="fullNameValidation.errorPublisher"
+          (focusout)="fullNameValidation.triggerBeValidation()"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input
+          required
+          matInput
+          type="text"
+          name="username"
+          autocomplete="username"
+          [formControl]="usernameValidation.formControl"
+          [errorStateMatcher]="usernameValidation.errorPublisher"
+        />
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutGap="16px">
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input
+          required
+          matInput
+          type="password"
+          name="password"
+          autocomplete="new-password"
+          [formControl]="
+            passwordValidation.formControls.get(
+              passwordValidationFormControls.password
+            )
+          "
+          [errorStateMatcher]="passwordValidation.errorPublisher"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Password again</mat-label>
+        <input
+          required
+          matInput
+          type="password"
+          name="passwordAgain"
+          autocomplete="new-password"
+          [formControl]="
+            passwordValidation.formControls.get(
+              passwordValidationFormControls.passwordAgain
+            )
+          "
+          [errorStateMatcher]="passwordValidation.errorPublisher"
+        />
+      </mat-form-field>
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      fxFlexAlign="start"
+      [disabled]="
+        usernameValidation.invalid ||
+        passwordValidation.invalid ||
+        fullNameValidation.invalid
+      "
+      (click)="register()"
+    >
+      Register
+    </button>
+  </div>
+</form>
