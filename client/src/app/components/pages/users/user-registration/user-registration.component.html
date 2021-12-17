@@ -6,19 +6,6 @@
     >
     <div fxLayout="row" fxLayoutGap="16px">
       <mat-form-field appearance="fill">
-        <mat-label>Full name</mat-label>
-        <input
-          required
-          matInput
-          type="text"
-          name="fullName"
-          autocomplete="name"
-          [formControl]="fullNameValidation.formControl"
-          [errorStateMatcher]="fullNameValidation.errorPublisher"
-          (focusout)="fullNameValidation.triggerBeValidation()"
-        />
-      </mat-form-field>
-      <mat-form-field appearance="fill">
         <mat-label>Username</mat-label>
         <input
           required
@@ -28,7 +15,26 @@
           autocomplete="username"
           [formControl]="usernameValidation.formControl"
           [errorStateMatcher]="usernameValidation.errorPublisher"
+          (focusout)="usernameValidation.triggerBeValidation()"
         />
+        <mat-error>
+          {{ usernameValidation.error$ | ngrxPush }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Full name</mat-label>
+        <input
+          required
+          matInput
+          type="text"
+          name="fullName"
+          autocomplete="name"
+          [formControl]="fullNameValidation.formControl"
+          [errorStateMatcher]="fullNameValidation.errorPublisher"
+        />
+        <mat-error>
+          {{ fullNameValidation.error$ | ngrxPush }}
+        </mat-error>
       </mat-form-field>
     </div>
     <div fxLayout="row" fxLayoutGap="16px">
@@ -47,6 +53,9 @@
           "
           [errorStateMatcher]="passwordValidation.errorPublisher"
         />
+        <mat-error>
+          {{ passwordValidation.error$ | ngrxPush }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -72,8 +81,8 @@
       fxFlexAlign="start"
       [disabled]="
         usernameValidation.invalid ||
-        passwordValidation.invalid ||
-        fullNameValidation.invalid
+        fullNameValidation.invalid ||
+        passwordValidation.invalid
       "
       (click)="register()"
     >

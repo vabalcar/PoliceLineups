@@ -202,15 +202,15 @@ class TestDefaultController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_validate_user_update(self):
-        """Test case for validate_user_update
+    def test_validate_new_user(self):
+        """Test case for validate_new_user
 
-        Validated an update of a user
+        Validated properties of a new user
         """
-        body = User()
+        body = UserWithPassword()
         response = self.client.open(
-            '/validation/user',
-            method='PATCH',
+            '/validation/users',
+            method='POST',
             data=json.dumps(body),
             content_type='application/json')
         self.assert200(response,

@@ -9,12 +9,7 @@ export const selectUserRegistrationFeature = createFeatureSelector<
   UserRegistrationState
 >(userRegistrationFeatureKey);
 
-export const selectUserUpdateSuccess = createSelector(
+export const selectUsernameValidationError = createSelector(
   selectUserRegistrationFeature,
-  (state: UserRegistrationState) => state.success
-);
-
-export const selectUserFullnameValidationError = createSelector(
-  selectUserRegistrationFeature,
-  (state: UserRegistrationState) => state.userFullNameValidationError
+  (state: UserRegistrationState) => state.usernameValidationError
 );

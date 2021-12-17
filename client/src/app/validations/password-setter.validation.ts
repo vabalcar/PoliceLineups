@@ -10,7 +10,7 @@ export enum PasswordValidationFormControls {
   passwordAgain,
 }
 
-export class PasswordValidation extends MultiFormValidation<
+export class PasswordSetterValidation extends MultiFormValidation<
   string,
   PasswordValidationFormControls
 > {

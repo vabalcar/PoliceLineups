@@ -19,8 +19,6 @@ import {
   updateUserFullName,
   currentUserFullNameUpdateSuccessful,
   userFullNameUpdateSuccessful,
-  validateUserFullnameUpdate,
-  userFullnameUpdateValidated,
   deleteUser,
   userDeletionFailed,
   userDeletionSuccessful,
@@ -114,22 +112,6 @@ export class UserUpdateEffects {
                 ),
                 catchBeError()
               )
-      )
-    )
-  );
-
-  validateFullnameUpdate$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(validateUserFullnameUpdate),
-      mergeMap((action) =>
-        this.api.validateUserUpdate({ fullName: action.newFullName }).pipe(
-          map((response) =>
-            userFullnameUpdateValidated({
-              userFullNameUpdateValidationError: response.error,
-            })
-          ),
-          catchBeError()
-        )
       )
     )
   );

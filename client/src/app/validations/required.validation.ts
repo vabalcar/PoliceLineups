@@ -6,8 +6,8 @@ import { ObservableFormControl } from "./utils/ObservableFormControl";
 
 export class RequiredValidation<T> extends FormValidation<T> {
   constructor(
-    backendValidation?: BeValidation<T>,
-    defaultValue$?: Observable<T>
+    defaultValue$?: Observable<T>,
+    backendValidation?: BeValidation<T>
   ) {
     const formControl = new ObservableFormControl(([validationErrorType]) => {
       switch (validationErrorType) {

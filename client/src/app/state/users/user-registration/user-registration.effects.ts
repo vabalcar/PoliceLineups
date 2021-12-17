@@ -5,22 +5,22 @@ import { DefaultService } from "src/app/api/api/default.service";
 import { catchBeError } from "../../utils/errors.utils";
 import {
   registerUser,
-  userFullNameValidated,
+  usernameValidated,
   userRegistrationSuccessful,
   userRegistrationFailed,
-  validateUserFullname,
+  validateUserName,
 } from "./user-registration.actions";
 
 @Injectable()
 export class UserRegistrationEffects {
-  validateFullName$ = createEffect(() =>
+  usernameValidation$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(validateUserFullname),
+      ofType(validateUserName),
       mergeMap((action) =>
-        this.api.validateUserUpdate({ fullName: action.fullName }).pipe(
+        this.api.validateNewUser({ username: action.username }).pipe(
           map((response) =>
-            userFullNameValidated({
-              userFullNameValidationError: response.error,
+            usernameValidated({
+              usernameValidationError: response.error,
             })
           ),
           catchBeError()
@@ -29,7 +29,7 @@ export class UserRegistrationEffects {
     )
   );
 
-  registerUser$ = createEffect(() =>
+  userRegistration$ = createEffect(() =>
     this.actions$.pipe(
       ofType(registerUser),
       exhaustMap((action) =>

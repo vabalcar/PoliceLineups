@@ -25,7 +25,7 @@ export abstract class FormValidationBase<T> {
       return;
     }
 
-    this.backendValidation.validationEventDispatch(this.value);
+    this.backendValidation.validationTrigger(this.value);
   }
 
   abstract clearValue(): void;

@@ -797,6 +797,60 @@ export class DefaultService {
     }
 
     /**
+     * Validated properties of a new user
+     * 
+     * @param body a user to add
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public validateNewUser(body: UserWithPassword, observe?: 'body', reportProgress?: boolean): Observable<Response>;
+    public validateNewUser(body: UserWithPassword, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
+    public validateNewUser(body: UserWithPassword, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
+    public validateNewUser(body: UserWithPassword, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling validateNewUser.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (JwtAuthUser) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<Response>('post',`${this.basePath}/validation/users`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Validated an update of a user
      * 
      * @param body update of a user

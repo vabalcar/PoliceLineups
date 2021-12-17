@@ -38,6 +38,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/AuthTokenRenewalResponse'
       x-openapi-router-controller: police_lineups.controllers.auth
+  /validation/users:
+    post:
+      summary: Validated properties of a new user
+      operationId: validate_new_user
+      requestBody:
+        description: a user to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserWithPassword'
+        required: true
+      responses:
+        "200":
+          description: addition result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: police_lineups.controllers.users
   /users:
     get:
       summary: Returns all users
@@ -74,25 +93,6 @@ paths:
                 $ref: '#/components/schemas/Response'
       security:
       - JwtAuthAdmin: []
-      x-openapi-router-controller: police_lineups.controllers.users
-  /validation/user:
-    patch:
-      summary: Validated an update of a user
-      operationId: validate_user_update
-      requestBody:
-        description: update of a user
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      responses:
-        "200":
-          description: validation result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Response'
       x-openapi-router-controller: police_lineups.controllers.users
   /user/current:
     get:

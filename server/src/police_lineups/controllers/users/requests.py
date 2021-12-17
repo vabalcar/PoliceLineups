@@ -8,15 +8,16 @@ from police_lineups.db import DbUser
 from police_lineups.singletons import Configuration, Context
 
 from .errors import UserErrors
-from .validations import validate_user_update_internally
+from .validations import validate_new_user_internally, validate_user_update_internally
 
 
 def add_user(body):
     if connexion.request.is_json:
         body = UserWithPassword.from_dict(connexion.request.get_json())
 
-    if DbUser.get_or_none(DbUser.username == body.username) is not None:
-        return UserErrors.USER_ALREADY_EXITS
+    error = validate_new_user_internally(body, strictly=True)
+    if error:
+        return error
 
     body.password = generate_password_hash(body.password)
     DbUser.create(**body.to_dict())

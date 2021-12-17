@@ -213,16 +213,16 @@ def update_user(body, user_id):  # noqa: E501
     return 'do some magic!'
 
 
-def validate_user_update(body):  # noqa: E501
-    """Validated an update of a user
+def validate_new_user(body):  # noqa: E501
+    """Validated properties of a new user
 
      # noqa: E501
 
-    :param body: update of a user
+    :param body: a user to add
     :type body: dict | bytes
 
     :rtype: Response
     """
     if connexion.request.is_json:
-        body = User.from_dict(connexion.request.get_json())  # noqa: E501
+        body = UserWithPassword.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'

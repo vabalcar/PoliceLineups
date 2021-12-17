@@ -11,16 +11,6 @@ export const userToUpdateLoaded = createAction(
   props<Pick<UserUpdateState, "userId" | "fullName">>()
 );
 
-export const validateUserFullnameUpdate = createAction(
-  "[User update] validate user full name update",
-  props<{ newFullName: string }>()
-);
-
-export const userFullnameUpdateValidated = createAction(
-  "[User update] user full name update validated",
-  props<Pick<UserUpdateState, "userFullNameUpdateValidationError">>()
-);
-
 export const updateUserFullName = createAction(
   "[User update] update user full name",
   props<{ targetUserId?: number; newFullName: string }>()

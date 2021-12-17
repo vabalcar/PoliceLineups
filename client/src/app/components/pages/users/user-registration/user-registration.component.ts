@@ -4,14 +4,13 @@ import { Store } from "@ngrx/store";
 import { AppState } from "src/app/state/app.state";
 import {
   registerUser,
-  validateUserFullname,
+  validateUserName,
 } from "src/app/state/users/user-registration/user-registration.actions";
-import { selectUserFullnameValidationError } from "src/app/state/users/user-registration/user-registration.selectors";
-import { FullNameValidation } from "src/app/validations/full-name.validation";
+import { selectUsernameValidationError } from "src/app/state/users/user-registration/user-registration.selectors";
 import {
-  PasswordValidation,
+  PasswordSetterValidation,
   PasswordValidationFormControls,
-} from "src/app/validations/password.validation";
+} from "src/app/validations/password-setter.validation";
 import { RequiredValidation } from "src/app/validations/required.validation";
 import { BeValidation } from "src/app/validations/utils/BeValidation";
 import { ObservableFormControl } from "src/app/validations/utils/ObservableFormControl";
@@ -24,19 +23,20 @@ export class UserRegistrationComponent {
   readonly passwordValidationFormControls = PasswordValidationFormControls;
 
   readonly usernameValidation: RequiredValidation<string>;
-  readonly passwordValidation: PasswordValidation;
-  readonly fullNameValidation: FullNameValidation;
+  readonly passwordValidation: PasswordSetterValidation;
+  readonly fullNameValidation: RequiredValidation<string>;
   readonly isAdminFormControl: ObservableFormControl<boolean>;
 
   constructor(private store: Store<AppState>) {
-    this.usernameValidation = new RequiredValidation();
-    this.passwordValidation = new PasswordValidation();
-    this.fullNameValidation = new FullNameValidation(
+    this.usernameValidation = new RequiredValidation(
+      undefined,
       new BeValidation(
-        (fullName) => this.store.dispatch(validateUserFullname({ fullName })),
-        this.store.select(selectUserFullnameValidationError)
+        (username) => this.store.dispatch(validateUserName({ username })),
+        this.store.select(selectUsernameValidationError)
       )
     );
+    this.passwordValidation = new PasswordSetterValidation();
+    this.fullNameValidation = new RequiredValidation<string>();
     this.isAdminFormControl = new ObservableFormControl<boolean>();
   }
 

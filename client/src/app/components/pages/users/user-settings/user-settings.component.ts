@@ -13,19 +13,14 @@ import {
   loadUserToUpdate,
   updateUserFullName,
   updateUserPassword,
-  validateUserFullnameUpdate,
 } from "src/app/state/users/user-update/user-update.actions";
-import {
-  selectEditedUserInfo,
-  selectUserFullnameUpdateValidationError,
-} from "src/app/state/users/user-update/user-update.selectors";
+import { selectEditedUserInfo } from "src/app/state/users/user-update/user-update.selectors";
 import { IUserInfo } from "src/app/state/users/utils/IUserInfo";
-import { FullNameValidation } from "src/app/validations/full-name.validation";
 import {
-  PasswordValidation,
+  PasswordSetterValidation,
   PasswordValidationFormControls,
-} from "src/app/validations/password.validation";
-import { BeValidation } from "src/app/validations/utils/BeValidation";
+} from "src/app/validations/password-setter.validation";
+import { RequiredValidation } from "src/app/validations/required.validation";
 
 interface IUserSettingsComponentData {
   userId: number;
@@ -40,8 +35,8 @@ interface IUserSettingsComponentData {
 export class UserSettingsComponent implements OnInit {
   readonly passwordValidationFormControls = PasswordValidationFormControls;
 
-  readonly passwordValidation: PasswordValidation;
-  readonly fullNameValidation: FullNameValidation;
+  readonly fullNameValidation: RequiredValidation<string>;
+  readonly passwordValidation: PasswordSetterValidation;
 
   readonly userSettingsComponentData$: Observable<IUserSettingsComponentData>;
 
@@ -75,19 +70,12 @@ export class UserSettingsComponent implements OnInit {
       this.userSettingsComponentDataSubject$
     );
 
-    this.passwordValidation = new PasswordValidation();
-    this.fullNameValidation = new FullNameValidation(
-      new BeValidation(
-        (value) =>
-          this.store.dispatch(
-            validateUserFullnameUpdate({ newFullName: value ?? "" })
-          ),
-        this.store.select(selectUserFullnameUpdateValidationError)
-      ),
+    this.fullNameValidation = new RequiredValidation(
       this.targetUserInfo$.pipe(
         map((targetUserInfo) => targetUserInfo.fullName)
       )
     );
+    this.passwordValidation = new PasswordSetterValidation();
   }
 
   ngOnInit(): void {
