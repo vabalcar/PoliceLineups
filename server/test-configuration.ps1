@@ -4,7 +4,7 @@ param (
     [switch] $PassThru
 )
 
-$configurationsToTest = 'auth.json', 'db.json', 'root.json', 'server.json'
+$configurationsToTest = 'auth.json', 'db.json', 'root.json', 'rootForServer.json', 'server.json'
 
 $allConfigurationsValid = & (Join-Path '..' 'config' 'test-all.ps1') -Configurations $configurationsToTest -Debug:$Debug -PassThru
 

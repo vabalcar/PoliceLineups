@@ -5,9 +5,8 @@ param (
 
 'Compiling client...' | Out-Host
 
-$proxyConfigurationFile = Join-Path '..' 'config' 'production' 'proxy.json'
-$isProxyConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '..' 'config' 'test.ps1') -PassThru -ConfigurationFile $proxyConfigurationFile)
-if (!$isProxyConfigurationValid) {
+$isConfigurationValid = $NoConfigurationValidation -or (& (Join-Path '.' 'test-configuration.ps1') -ForCompile -PassThru)
+if (!$isConfigurationValid) {
     exit
 }
 

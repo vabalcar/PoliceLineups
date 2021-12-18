@@ -98,6 +98,25 @@
         </mat-card-actions>
       </mat-card>
     </form>
+
+    <form>
+      <mat-card class="form-card">
+        <mat-card-header class="mat-card-simple-header">
+          <mat-card-title>Role</mat-card-title>
+        </mat-card-header>
+        <mat-card-content
+          ><mat-slide-toggle
+            name="isAdmin"
+            [formControl]="isAdminFormControl"
+            [appReactivelyDisabled]="
+              data.isEditingSelf || data.isEditingRootUser
+            "
+            (change)="updateUserRole()"
+            >Admin</mat-slide-toggle
+          ></mat-card-content
+        >
+      </mat-card>
+    </form>
   </div>
 
   <h2 class="mat-title">Delete account</h2>

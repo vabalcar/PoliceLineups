@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { BehaviorSubject, combineLatest, Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, share } from "rxjs/operators";
 import { StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
 import { selectCurrentUserUserId } from "src/app/state/auth/auth.selectors";
@@ -11,6 +11,7 @@ import {
   loadUserToUpdate,
   updateUserFullName,
   updateUserPassword,
+  updateUserRole,
 } from "src/app/state/users/user-update/user-update.actions";
 import { selectEditedUserInfo } from "src/app/state/users/user-update/user-update.selectors";
 import { IUserInfo } from "src/app/state/users/utils/IUserInfo";
@@ -19,11 +20,14 @@ import {
   PasswordSetterValidation,
   PasswordValidationFormControls,
 } from "src/app/validations/users/password-setter.validation";
+import { ObservableFormControl } from "src/app/validations/utils/ObservableFormControl";
+import { environment } from "src/environments/environment";
 
 interface IUserSettingsComponentData {
   userId: number;
   username: string;
   isEditingSelf: boolean;
+  isEditingRootUser: boolean;
 }
 
 @Component({
@@ -35,6 +39,7 @@ export class UserSettingsComponent implements OnInit {
 
   readonly fullNameValidation: FullNameValidation;
   readonly passwordSetterValidation: PasswordSetterValidation;
+  readonly isAdminFormControl: ObservableFormControl<boolean>;
 
   readonly userSettingsComponentData$: Observable<IUserSettingsComponentData>;
 
@@ -50,7 +55,9 @@ export class UserSettingsComponent implements OnInit {
     private store: Store<AppState>
   ) {
     this.loggedInUserId$ = this.store.select(selectCurrentUserUserId);
-    this.targetUserInfo$ = this.store.select(selectEditedUserInfo);
+    this.targetUserInfo$ = this.store
+      .select(selectEditedUserInfo)
+      .pipe(share());
 
     this.userSettingsComponentData$ = combineLatest([
       this.loggedInUserId$,
@@ -60,6 +67,8 @@ export class UserSettingsComponent implements OnInit {
         userId: targetUserInfo.userId,
         username: targetUserInfo.username,
         isEditingSelf: loggedInUserId === targetUserInfo.userId,
+        isEditingRootUser:
+          targetUserInfo.username === environment.rootUser.username,
       }))
     );
 
@@ -74,6 +83,9 @@ export class UserSettingsComponent implements OnInit {
       )
     );
     this.passwordSetterValidation = new PasswordSetterValidation();
+    this.isAdminFormControl = new ObservableFormControl(
+      this.targetUserInfo$.pipe(map((targetUserInfo) => targetUserInfo.isAdmin))
+    );
   }
 
   ngOnInit(): void {
@@ -112,6 +124,17 @@ export class UserSettingsComponent implements OnInit {
           this.userSettingsComponentDataSubject$.getValue()
         ),
         newPassword: this.passwordSetterValidation.value,
+      })
+    );
+  }
+
+  updateUserRole(): void {
+    this.store.dispatch(
+      updateUserRole({
+        targetUserId: this.getTargetUserId(
+          this.userSettingsComponentDataSubject$.getValue()
+        ),
+        isAdmin: !!this.isAdminFormControl.value,
       })
     );
   }

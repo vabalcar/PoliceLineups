@@ -32,6 +32,7 @@ class Configuration(metaclass=Singleton):
         self._db_config = DBConfiguration(
             parse_json_file(self._config_dir, 'db.json'))
         self._root_user_config = RootUserConfiguration(
-            parse_json_file(self._config_dir, 'root.json'))
+            parse_json_file(self._config_dir, 'root.json'),
+            parse_json_file(self._config_dir, 'rootForServer.json'))
         self._auth_token_config = AuthTokenConfiguration(
             parse_json_file(self._config_dir, 'auth.json'))

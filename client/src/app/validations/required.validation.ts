@@ -11,12 +11,15 @@ export class RequiredValidation<T> extends FormValidation<T> {
     defaultValue$?: Observable<T>,
     beValidation?: BeValidation<T>
   ) {
-    const formControl = new ObservableFormControl(([validationErrorType]) => {
-      switch (validationErrorType) {
-        case "required":
-          return `${inputName} is required`;
+    const formControl = new ObservableFormControl(
+      defaultValue$,
+      ([validationErrorType]) => {
+        switch (validationErrorType) {
+          case "required":
+            return `${inputName} is required`;
+        }
       }
-    }, defaultValue$);
+    );
 
     super(
       formControl,

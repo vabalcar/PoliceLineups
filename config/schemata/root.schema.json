@@ -5,15 +5,7 @@
     "username": {
       "type": "string",
       "minLength": 1
-    },
-    "defaultPassword": {
-      "type": "string",
-      "minLength": 1
-    },
-    "defaultFullName": {
-      "type": "string",
-      "minLength": 1
     }
   },
-  "required": ["username", "defaultPassword", "defaultFullName"]
+  "required": ["username"]
 }

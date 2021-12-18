@@ -27,6 +27,7 @@ export class PasswordSetterValidation extends MultiFormValidation<
       [
         PasswordValidationFormControls.password,
         new ObservableFormControl(
+          undefined,
           ([validationErrorType, validationErrorProps]) => {
             switch (validationErrorType) {
               case "required":

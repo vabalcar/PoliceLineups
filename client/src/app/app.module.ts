@@ -30,6 +30,7 @@ import { DefaultService } from "./api/api/default.service";
 import { BASE_PATH } from "./api/variables";
 import { AppComponent } from "./components/app/app.component";
 import { DropZoneDirective } from "./directives/drop-zone.directive";
+import { ReactivelyDisabledControlDirective } from "./directives/reactively-disabled-control.directive";
 import { LoginComponent } from "./pages/auth/login/login.component";
 import { NotAuthorizedComponent } from "./pages/auth/not-authorized/not-authorized.component";
 import { HomeComponent } from "./pages/home/home.component";
@@ -53,6 +54,7 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
   declarations: [
     AppComponent,
     DropZoneDirective,
+    ReactivelyDisabledControlDirective,
     HomeComponent,
     ImportPersonComponent,
     LoginComponent,

@@ -2,6 +2,7 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 import proxy from "../../../config/debug/proxy.json";
+import rootUser from "../../../config/debug/root.json";
 
 /*
  * For easier debugging in development mode, you can import the following file
@@ -15,4 +16,5 @@ import proxy from "../../../config/debug/proxy.json";
 export const environment = {
   production: false,
   proxy,
+  rootUser,
 };

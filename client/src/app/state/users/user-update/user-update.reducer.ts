@@ -7,7 +7,7 @@ import { UserUpdateState } from "./user-update.state";
 export const initialState: UserUpdateState = {
   userId: null,
   username: null,
-  isAdmin: false,
+  isAdmin: null,
   fullName: null,
 };
 
