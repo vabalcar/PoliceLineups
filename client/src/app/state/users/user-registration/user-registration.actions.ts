@@ -1,5 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { UserWithPassword } from "src/app/api/model/userWithPassword";
+
 import { UserRegistrationState } from "./user-registration.state";
 
 export const validateUserName = createAction(

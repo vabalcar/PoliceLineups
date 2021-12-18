@@ -77,6 +77,8 @@
     "files.trimFinalNewlines": true,
     "files.insertFinalNewline": true,
 
+    "prettier.printWidth": 80,
+
     // CSV
     "csv-preview.separator": ";",
 
@@ -116,6 +118,9 @@
     "[typescript]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "typescriptHero.imports.multiLineWrapThreshold": 80,
+    "typescriptHero.imports.organizeOnSave": true,
+    "typescriptHero.imports.stringQuoteStyle": "\"",
 
     // Python
     "python.linting.enabled": true,
@@ -125,7 +130,7 @@
     "python.formatting.provider": "autopep8",
     "python.formatting.autopep8Args": [
       "--max-line-length",
-      "100",
+      "79",
       "--experimental",
       "--aggressive",
       "--aggressive"

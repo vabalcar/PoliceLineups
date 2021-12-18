@@ -15,10 +15,12 @@ def login(body):
         body = AuthRequest.from_dict(connexion.request.get_json())
 
     db_user = DbUser.get_or_none(DbUser.username == body.username)
-    if db_user is None or not check_password_hash(db_user.password, body.password):
+    if db_user is None or not check_password_hash(
+            db_user.password, body.password):
         return AuthErrors.INVALID_CREDENTIALS
 
-    (auth_token, auth_token_expiration_datetime) = create_auth_token(db_user.user_id, db_user.is_admin)
+    (auth_token, auth_token_expiration_datetime) = create_auth_token(
+        db_user.user_id, db_user.is_admin)
 
     return AuthResponse(
         user_id=db_user.user_id,
@@ -34,7 +36,8 @@ def renew_auth_token():
     if db_user is None:
         return AuthErrors.INVALID_USER
 
-    (auth_token, auth_token_expiration_datetime) = create_auth_token(db_user.user_id, db_user.is_admin)
+    (auth_token, auth_token_expiration_datetime) = create_auth_token(
+        db_user.user_id, db_user.is_admin)
 
     return AuthTokenRenewalResponse(
         auth_token=auth_token,

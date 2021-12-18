@@ -1,10 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-
 import { BehaviorSubject, combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
-
 import { StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
 import { selectCurrentUserUserId } from "src/app/state/auth/auth.selectors";
@@ -14,13 +12,15 @@ import {
   updateUserFullName,
   updateUserPassword,
 } from "src/app/state/users/user-update/user-update.actions";
-import { selectEditedUserInfo } from "src/app/state/users/user-update/user-update.selectors";
+import {
+  selectEditedUserInfo,
+} from "src/app/state/users/user-update/user-update.selectors";
 import { IUserInfo } from "src/app/state/users/utils/IUserInfo";
+import { RequiredValidation } from "src/app/validations/required.validation";
 import {
   PasswordSetterValidation,
   PasswordValidationFormControls,
-} from "src/app/validations/password-setter.validation";
-import { RequiredValidation } from "src/app/validations/required.validation";
+} from "src/app/validations/users/password-setter.validation";
 
 interface IUserSettingsComponentData {
   userId: number;

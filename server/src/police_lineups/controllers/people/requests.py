@@ -24,7 +24,8 @@ def update_person(body, person_id):
     if connexion.request.is_json:
         body = Person.from_dict(connexion.request.get_json())
 
-    DbPerson.update(**clear_model_update(body)).where(DbPerson.id == person_id).execute()
+    DbPerson.update(**clear_model_update(body)
+                    ).where(DbPerson.id == person_id).execute()
 
     return Responses.SUCCESS
 

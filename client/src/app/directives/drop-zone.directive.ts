@@ -1,9 +1,9 @@
 import {
   Directive,
+  EventEmitter,
   HostBinding,
   HostListener,
   Output,
-  EventEmitter,
 } from "@angular/core";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 

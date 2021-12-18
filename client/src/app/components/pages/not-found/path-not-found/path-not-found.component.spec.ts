@@ -1,10 +1,9 @@
+import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ReactiveComponentModule } from "@ngrx/component";
 import { provideMockStore } from "@ngrx/store/testing";
 
-import { ReactiveComponentModule } from "@ngrx/component";
-
 import { PathNotFoundComponent } from "./path-not-found.component";
-import { NO_ERRORS_SCHEMA } from "@angular/core";
 
 describe("PathNotFoundComponent", () => {
   let component: PathNotFoundComponent;

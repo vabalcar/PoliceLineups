@@ -2,9 +2,7 @@ import { TestBed } from "@angular/core/testing";
 import { Actions } from "@ngrx/effects";
 import { provideMockActions } from "@ngrx/effects/testing";
 import { provideMockStore } from "@ngrx/store/testing";
-
 import { Observable } from "rxjs";
-
 import { DefaultService } from "src/app/api/api/default.service";
 
 import { UserUpdateEffects } from "./user-update.effects";

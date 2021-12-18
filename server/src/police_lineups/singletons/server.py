@@ -17,7 +17,8 @@ class Server(metaclass=Singleton):
         return self._app
 
     def __init__(self) -> None:
-        self._app = connexion.App(__name__, specification_dir='../../swagger_server/swagger/')
+        self._app = connexion.App(
+            __name__, specification_dir='../../swagger_server/swagger/')
         CORS(self._app.app)
         self._app.app.json_encoder = JSONEncoder
         self._app.add_api('swagger.yaml')

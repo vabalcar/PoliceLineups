@@ -2,6 +2,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { TypedAction } from "@ngrx/store/src/models";
 import { iif, Observable, of, throwError } from "rxjs";
 import { catchError, map } from "rxjs/operators";
+
 import { beFailed } from "../app.actions";
 
 export const catchBeError = <T, R extends string>(

@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Subscription } from "rxjs";
 import { AppState } from "src/app/state/app.state";
-
 import { loginAction } from "src/app/state/auth/auth.actions";
 import { selectLoginFailedCount } from "src/app/state/auth/auth.selectors";
 import { RequiredValidation } from "src/app/validations/required.validation";

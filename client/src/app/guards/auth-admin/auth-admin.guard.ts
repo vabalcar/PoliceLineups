@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/state/app.state";
-
 import { selectCurrentUserIsAdmin } from "src/app/state/auth/auth.selectors";
+
 import { ObservableAuthGuard } from "../utils/auth-observable.guard";
 
 @Injectable({

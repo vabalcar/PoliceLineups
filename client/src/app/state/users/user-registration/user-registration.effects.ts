@@ -2,12 +2,13 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { exhaustMap, map, mergeMap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
+
 import { catchBeError } from "../../utils/errors.utils";
 import {
   registerUser,
   usernameValidated,
-  userRegistrationSuccessful,
   userRegistrationFailed,
+  userRegistrationSuccessful,
   validateUserName,
 } from "./user-registration.actions";
 

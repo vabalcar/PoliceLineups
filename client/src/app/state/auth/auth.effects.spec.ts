@@ -1,14 +1,12 @@
 import { TestBed } from "@angular/core/testing";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { RouterTestingModule } from "@angular/router/testing";
+import { Actions } from "@ngrx/effects";
 import { provideMockActions } from "@ngrx/effects/testing";
 import { provideMockStore } from "@ngrx/store/testing";
-
-import { MatSnackBarModule } from "@angular/material/snack-bar";
-import { Actions } from "@ngrx/effects";
 import { Observable } from "rxjs";
-
-import { Configuration } from "src/app/api/configuration";
 import { DefaultService } from "src/app/api/api/default.service";
+import { Configuration } from "src/app/api/configuration";
 
 import { AuthEffects } from "./auth.effects";
 

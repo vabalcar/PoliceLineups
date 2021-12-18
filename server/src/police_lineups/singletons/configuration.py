@@ -25,10 +25,12 @@ class Configuration(metaclass=Singleton):
         return self._auth_token_config
 
     def __init__(self) -> None:
-        environment = 'debug' if os.environ.get('FLASK_ENV') == 'development' else 'production'
+        environment = 'debug' if os.environ.get(
+            'FLASK_ENV') == 'development' else 'production'
         self._config_dir = os.path.join('..', '..', 'config', environment)
 
-        self._db_config = DBConfiguration(parse_json_file(self._config_dir, 'db.json'))
+        self._db_config = DBConfiguration(
+            parse_json_file(self._config_dir, 'db.json'))
         self._root_user_config = RootUserConfiguration(
             parse_json_file(self._config_dir, 'root.json'))
         self._auth_token_config = AuthTokenConfiguration(

@@ -1,7 +1,7 @@
-import { ErrorPublisher } from "./ErrorPublisher";
-import { ObservableFormControl } from "./ObservableFormControl";
 import { BeValidation } from "./BeValidation";
+import { ErrorPublisher } from "./ErrorPublisher";
 import { FormValidationBase } from "./FormValidationBase";
+import { ObservableFormControl } from "./ObservableFormControl";
 
 export abstract class FormValidation<T> extends FormValidationBase<T> {
   get pristine(): boolean {

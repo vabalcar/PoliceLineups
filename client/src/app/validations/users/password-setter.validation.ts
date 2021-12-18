@@ -1,9 +1,10 @@
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
-import { MultiFormValidation } from "./utils/MultiFormValidation";
-import { ErrorPublisher } from "./utils/ErrorPublisher";
-import { ObservableFormControl } from "./utils/ObservableFormControl";
-import { MinLengthValidationErrorProps } from "./utils/ValidationError";
+
+import { ErrorPublisher } from "../utils/ErrorPublisher";
+import { MultiFormValidation } from "../utils/MultiFormValidation";
+import { ObservableFormControl } from "../utils/ObservableFormControl";
+import { MinLengthValidationErrorProps } from "../utils/ValidationError";
 
 export enum PasswordValidationFormControls {
   password,

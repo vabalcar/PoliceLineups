@@ -1,8 +1,9 @@
 import { TestBed } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { provideMockStore } from "@ngrx/store/testing";
-
-import { NotAuthorizedComponent } from "src/app/components/pages/auth/not-authorized/not-authorized.component";
+import {
+  NotAuthorizedComponent,
+} from "src/app/components/pages/auth/not-authorized/not-authorized.component";
 
 import { AdminAuthGuard } from "./auth-admin.guard";
 

@@ -23,5 +23,6 @@ class RootUserConfiguration:
     def __init__(self, raw_root_user_config: Mapping) -> None:
         self._user_id = 1
         self._username = raw_root_user_config.get('username')
-        self._default_password = generate_password_hash(raw_root_user_config.get('defaultPassword'))
+        self._default_password = generate_password_hash(
+            raw_root_user_config.get('defaultPassword'))
         self._default_full_name = raw_root_user_config.get('defaultFullName')

@@ -1,5 +1,4 @@
 import { TestBed } from "@angular/core/testing";
-
 import { DefaultService } from "src/app/api/api/default.service";
 
 import { authReducer, initialState } from "./auth.reducer";

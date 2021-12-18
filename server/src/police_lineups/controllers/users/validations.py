@@ -16,7 +16,9 @@ def validate_new_user(body):
     return error if error else Responses.SUCCESS
 
 
-def validate_new_user_internally(new_user: UserWithPassword, strictly: bool) -> Response:
+def validate_new_user_internally(
+        new_user: UserWithPassword,
+        strictly: bool) -> Response:
     if strictly or new_user.username is not None:
         error = _validate_unique_username(new_user.username)
         if error:

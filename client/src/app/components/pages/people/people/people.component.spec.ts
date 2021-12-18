@@ -1,9 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-
 import { ReactiveComponentModule } from "@ngrx/component";
 import { of } from "rxjs";
-
 import { DefaultService } from "src/app/api/api/default.service";
 
 import { PeopleComponent } from "./people.component";

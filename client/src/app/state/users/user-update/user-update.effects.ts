@@ -6,23 +6,24 @@ import { of } from "rxjs";
 import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { StaticPath } from "src/app/routing/paths";
+
 import { logoutAction } from "../../auth/auth.actions";
 import { selectCurrentUserInfo } from "../../auth/auth.selectors";
 import { catchBeError } from "../../utils/errors.utils";
 import { IUserInfo } from "../utils/IUserInfo";
 import {
-  loadUserToUpdate,
-  userToUpdateLoaded,
-  updateUserPassword,
-  userUpdatePasswordSuccessful,
-  userUpdateFailed,
-  updateUserFullName,
+  currentUserDeletionSuccessful,
   currentUserFullNameUpdateSuccessful,
-  userFullNameUpdateSuccessful,
   deleteUser,
+  loadUserToUpdate,
+  updateUserFullName,
+  updateUserPassword,
   userDeletionFailed,
   userDeletionSuccessful,
-  currentUserDeletionSuccessful,
+  userFullNameUpdateSuccessful,
+  userToUpdateLoaded,
+  userUpdateFailed,
+  userUpdatePasswordSuccessful,
 } from "./user-update.actions";
 
 @Injectable()

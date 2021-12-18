@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
 import { map } from "rxjs/operators";
-
 import { DefaultService } from "src/app/api/api/default.service";
 import { DynamicPath } from "src/app/routing/paths";
 

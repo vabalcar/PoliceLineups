@@ -1,4 +1,5 @@
 import { createAction, props } from "@ngrx/store";
+
 import { UserUpdateState } from "./user-update.state";
 
 export const loadUserToUpdate = createAction(

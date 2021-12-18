@@ -1,6 +1,7 @@
-import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
+import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { User } from "src/app/api/model/user";
+
 import { AppState } from "../../app.state";
 import { UsersListState } from "./users-list.state";
 

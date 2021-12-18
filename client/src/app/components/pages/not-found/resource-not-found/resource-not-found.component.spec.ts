@@ -1,8 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { provideMockStore } from "@ngrx/store/testing";
-
 import { ReactiveComponentModule } from "@ngrx/component";
+import { provideMockStore } from "@ngrx/store/testing";
 
 import { ResourceNotFoundComponent } from "./resource-not-found.component";
 

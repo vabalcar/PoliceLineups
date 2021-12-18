@@ -20,8 +20,10 @@ def create_auth_token(user_id: int, is_admin: bool) -> Tuple[str, datetime]:
         'is_admin': is_admin
     }
 
-    auth_token = jwt.encode(auth_token_payload, Configuration().auth_token.secret,
-                            algorithm=Configuration().auth_token.algorithm)
+    auth_token = jwt.encode(
+        auth_token_payload,
+        Configuration().auth_token.secret,
+        algorithm=Configuration().auth_token.algorithm)
     expiration_datetime = datetime.utcfromtimestamp(expiration_timestamp)
 
     return (auth_token, expiration_datetime)
