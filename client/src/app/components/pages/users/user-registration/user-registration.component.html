@@ -47,14 +47,14 @@
           name="password"
           autocomplete="new-password"
           [formControl]="
-            passwordValidation.formControls.get(
+            passwordSetterValidation.formControls.get(
               passwordValidationFormControls.password
             )
           "
-          [errorStateMatcher]="passwordValidation.errorPublisher"
+          [errorStateMatcher]="passwordSetterValidation.errorPublisher"
         />
         <mat-error>
-          {{ passwordValidation.error$ | ngrxPush }}
+          {{ passwordSetterValidation.error$ | ngrxPush }}
         </mat-error>
       </mat-form-field>
 
@@ -67,11 +67,11 @@
           name="passwordAgain"
           autocomplete="new-password"
           [formControl]="
-            passwordValidation.formControls.get(
+            passwordSetterValidation.formControls.get(
               passwordValidationFormControls.passwordAgain
             )
           "
-          [errorStateMatcher]="passwordValidation.errorPublisher"
+          [errorStateMatcher]="passwordSetterValidation.errorPublisher"
         />
       </mat-form-field>
     </div>
@@ -82,7 +82,7 @@
       [disabled]="
         usernameValidation.invalid ||
         fullNameValidation.invalid ||
-        passwordValidation.invalid
+        passwordSetterValidation.invalid
       "
       (click)="register()"
     >

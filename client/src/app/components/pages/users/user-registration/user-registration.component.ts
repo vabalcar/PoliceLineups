@@ -5,18 +5,15 @@ import {
   registerUser,
   validateUserName,
 } from "src/app/state/users/user-registration/user-registration.actions";
-import {
-  selectUsernameValidationError,
-} from "src/app/state/users/user-registration/user-registration.selectors";
-import { RequiredValidation } from "src/app/validations/required.validation";
+import { selectUsernameValidationError } from "src/app/state/users/user-registration/user-registration.selectors";
+import { FullNameValidation } from "src/app/validations/users/full-name.validation";
 import {
   PasswordSetterValidation,
   PasswordValidationFormControls,
 } from "src/app/validations/users/password-setter.validation";
+import { UsernameValidation } from "src/app/validations/users/username.validation";
 import { BeValidation } from "src/app/validations/utils/BeValidation";
-import {
-  ObservableFormControl,
-} from "src/app/validations/utils/ObservableFormControl";
+import { ObservableFormControl } from "src/app/validations/utils/ObservableFormControl";
 
 @Component({
   selector: "app-register",
@@ -25,21 +22,20 @@ import {
 export class UserRegistrationComponent {
   readonly passwordValidationFormControls = PasswordValidationFormControls;
 
-  readonly usernameValidation: RequiredValidation<string>;
-  readonly passwordValidation: PasswordSetterValidation;
-  readonly fullNameValidation: RequiredValidation<string>;
+  readonly usernameValidation: UsernameValidation;
+  readonly fullNameValidation: FullNameValidation;
+  readonly passwordSetterValidation: PasswordSetterValidation;
   readonly isAdminFormControl: ObservableFormControl<boolean>;
 
   constructor(private store: Store<AppState>) {
-    this.usernameValidation = new RequiredValidation(
-      undefined,
+    this.usernameValidation = new UsernameValidation(
       new BeValidation(
         (username) => this.store.dispatch(validateUserName({ username })),
         this.store.select(selectUsernameValidationError)
       )
     );
-    this.passwordValidation = new PasswordSetterValidation();
-    this.fullNameValidation = new RequiredValidation<string>();
+    this.fullNameValidation = new FullNameValidation();
+    this.passwordSetterValidation = new PasswordSetterValidation();
     this.isAdminFormControl = new ObservableFormControl<boolean>();
   }
 
@@ -47,7 +43,7 @@ export class UserRegistrationComponent {
     this.store.dispatch(
       registerUser({
         username: this.usernameValidation.value,
-        password: this.passwordValidation.value,
+        password: this.passwordSetterValidation.value,
         fullName: this.fullNameValidation.value,
         isAdmin: !!this.isAdminFormControl.value,
       })

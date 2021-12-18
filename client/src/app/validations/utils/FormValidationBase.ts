@@ -18,15 +18,15 @@ export abstract class FormValidationBase<T> {
   constructor(
     readonly value$: Observable<T>,
     readonly errorPublisher: ErrorPublisher,
-    protected readonly backendValidation?: BeValidation<T>
+    protected readonly beValidation?: BeValidation<T>
   ) {}
 
   triggerBeValidation(): void {
-    if (!this.backendValidation || this.invalid) {
+    if (!this.beValidation || this.invalid) {
       return;
     }
 
-    this.backendValidation.validationTrigger(this.value);
+    this.beValidation.validationTrigger(this.value);
   }
 
   abstract clearValue(): void;

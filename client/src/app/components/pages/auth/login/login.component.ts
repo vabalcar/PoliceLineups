@@ -5,13 +5,14 @@ import { AppState } from "src/app/state/app.state";
 import { loginAction } from "src/app/state/auth/auth.actions";
 import { selectLoginFailedCount } from "src/app/state/auth/auth.selectors";
 import { RequiredValidation } from "src/app/validations/required.validation";
+import { UsernameValidation } from "src/app/validations/users/username.validation";
 
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
 })
 export class LoginComponent {
-  readonly usernameValidation: RequiredValidation<string>;
+  readonly usernameValidation: UsernameValidation;
   readonly passwordValidation: RequiredValidation<string>;
 
   readonly loginFailedCountSubscription: Subscription;
@@ -26,8 +27,8 @@ export class LoginComponent {
         }
       });
 
-    this.usernameValidation = new RequiredValidation();
-    this.passwordValidation = new RequiredValidation();
+    this.usernameValidation = new UsernameValidation();
+    this.passwordValidation = new RequiredValidation("Password");
   }
 
   login(): void {

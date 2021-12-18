@@ -12,11 +12,9 @@ import {
   updateUserFullName,
   updateUserPassword,
 } from "src/app/state/users/user-update/user-update.actions";
-import {
-  selectEditedUserInfo,
-} from "src/app/state/users/user-update/user-update.selectors";
+import { selectEditedUserInfo } from "src/app/state/users/user-update/user-update.selectors";
 import { IUserInfo } from "src/app/state/users/utils/IUserInfo";
-import { RequiredValidation } from "src/app/validations/required.validation";
+import { FullNameValidation } from "src/app/validations/users/full-name.validation";
 import {
   PasswordSetterValidation,
   PasswordValidationFormControls,
@@ -35,8 +33,8 @@ interface IUserSettingsComponentData {
 export class UserSettingsComponent implements OnInit {
   readonly passwordValidationFormControls = PasswordValidationFormControls;
 
-  readonly fullNameValidation: RequiredValidation<string>;
-  readonly passwordValidation: PasswordSetterValidation;
+  readonly fullNameValidation: FullNameValidation;
+  readonly passwordSetterValidation: PasswordSetterValidation;
 
   readonly userSettingsComponentData$: Observable<IUserSettingsComponentData>;
 
@@ -70,12 +68,12 @@ export class UserSettingsComponent implements OnInit {
       this.userSettingsComponentDataSubject$
     );
 
-    this.fullNameValidation = new RequiredValidation(
+    this.fullNameValidation = new FullNameValidation(
       this.targetUserInfo$.pipe(
         map((targetUserInfo) => targetUserInfo.fullName)
       )
     );
-    this.passwordValidation = new PasswordSetterValidation();
+    this.passwordSetterValidation = new PasswordSetterValidation();
   }
 
   ngOnInit(): void {
@@ -113,7 +111,7 @@ export class UserSettingsComponent implements OnInit {
         targetUserId: this.getTargetUserId(
           this.userSettingsComponentDataSubject$.getValue()
         ),
-        newPassword: this.passwordValidation.value,
+        newPassword: this.passwordSetterValidation.value,
       })
     );
   }

@@ -58,14 +58,14 @@
                 name="password"
                 autocomplete="new-password"
                 [formControl]="
-                  passwordValidation.formControls.get(
+                  passwordSetterValidation.formControls.get(
                     passwordValidationFormControls.password
                   )
                 "
-                [errorStateMatcher]="passwordValidation.errorPublisher"
+                [errorStateMatcher]="passwordSetterValidation.errorPublisher"
               />
               <mat-error>
-                {{ passwordValidation.error$ | ngrxPush }}
+                {{ passwordSetterValidation.error$ | ngrxPush }}
               </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
@@ -77,11 +77,11 @@
                 name="passwordAgain"
                 autocomplete="new-password"
                 [formControl]="
-                  passwordValidation.formControls.get(
+                  passwordSetterValidation.formControls.get(
                     passwordValidationFormControls.passwordAgain
                   )
                 "
-                [errorStateMatcher]="passwordValidation.errorPublisher"
+                [errorStateMatcher]="passwordSetterValidation.errorPublisher"
               />
             </mat-form-field>
           </div>
@@ -90,7 +90,7 @@
           <button
             mat-button
             color="accent"
-            [disabled]="passwordValidation.invalid"
+            [disabled]="passwordSetterValidation.invalid"
             (click)="updateUserPassword()"
           >
             Update

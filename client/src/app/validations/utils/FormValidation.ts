@@ -15,9 +15,9 @@ export abstract class FormValidation<T> extends FormValidationBase<T> {
   constructor(
     readonly formControl: ObservableFormControl<T>,
     errorPublisher: ErrorPublisher,
-    backendValidation?: BeValidation<T>
+    beValidation?: BeValidation<T>
   ) {
-    super(formControl.value$, errorPublisher, backendValidation);
+    super(formControl.value$, errorPublisher, beValidation);
   }
 
   clearValue(): void {
