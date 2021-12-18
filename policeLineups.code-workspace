@@ -119,7 +119,6 @@
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "typescriptHero.imports.multiLineWrapThreshold": 80,
-    "typescriptHero.imports.organizeOnSave": true,
     "typescriptHero.imports.stringQuoteStyle": "\"",
 
     // Python

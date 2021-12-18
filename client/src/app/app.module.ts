@@ -30,45 +30,23 @@ import { DefaultService } from "./api/api/default.service";
 import { BASE_PATH } from "./api/variables";
 import { AppComponent } from "./components/app.component";
 import { LoginComponent } from "./components/pages/auth/login/login.component";
-import {
-  NotAuthorizedComponent,
-} from "./components/pages/auth/not-authorized/not-authorized.component";
+import { NotAuthorizedComponent } from "./components/pages/auth/not-authorized/not-authorized.component";
 import { HomeComponent } from "./components/pages/home/home.component";
-import {
-  PathNotFoundComponent,
-} from "./components/pages/not-found/path-not-found/path-not-found.component";
-import {
-  ResourceNotFoundComponent,
-} from "./components/pages/not-found/resource-not-found/resource-not-found.component";
-import {
-  ImportPersonComponent,
-} from "./components/pages/people/import-person/import-person.component";
-import {
-  PeopleComponent,
-} from "./components/pages/people/people/people.component";
-import {
-  PersonComponent,
-} from "./components/pages/people/person/person.component";
-import {
-  UserRegistrationComponent,
-} from "./components/pages/users/user-registration/user-registration.component";
-import {
-  UserSettingsComponent,
-} from "./components/pages/users/user-settings/user-settings.component";
-import {
-  UsersListComponent,
-} from "./components/pages/users/users-list/users-list.component";
+import { PathNotFoundComponent } from "./components/pages/not-found/path-not-found/path-not-found.component";
+import { ResourceNotFoundComponent } from "./components/pages/not-found/resource-not-found/resource-not-found.component";
+import { ImportPersonComponent } from "./components/pages/people/import-person/import-person.component";
+import { PeopleComponent } from "./components/pages/people/people/people.component";
+import { PersonComponent } from "./components/pages/people/person/person.component";
+import { UserRegistrationComponent } from "./components/pages/users/user-registration/user-registration.component";
+import { UserSettingsComponent } from "./components/pages/users/user-settings/user-settings.component";
+import { UsersListComponent } from "./components/pages/users/users-list/users-list.component";
 import { DropZoneDirective } from "./directives/drop-zone.directive";
 import { AppRoutingModule } from "./routing/app-routing.module";
 import { AppEffects } from "./state/app.effects";
 import { reducers } from "./state/app.reducer";
 import { AuthEffects } from "./state/auth/auth.effects";
-import {
-  UserRegistrationEffects,
-} from "./state/users/user-registration/user-registration.effects";
-import {
-  UserUpdateEffects,
-} from "./state/users/user-update/user-update.effects";
+import { UserRegistrationEffects } from "./state/users/user-registration/user-registration.effects";
+import { UserUpdateEffects } from "./state/users/user-update/user-update.effects";
 import { UsersListEffects } from "./state/users/users-list/users-list.effects";
 
 @NgModule({

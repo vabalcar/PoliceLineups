@@ -1,8 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 
-import {
-  currentUserFullNameUpdateSuccessful as fullNameUpdated,
-} from "../users/user-update/user-update.actions";
+import { currentUserFullNameUpdateSuccessful as fullNameUpdated } from "../users/user-update/user-update.actions";
 import {
   deleteSavedFeatureState,
   getSavedFeatureState,
