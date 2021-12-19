@@ -7,9 +7,9 @@ import {
   updateSavedFeatureState,
 } from "../utils/reducer.utils";
 import {
-  loginFailedAction,
-  loginSuccessfulAction,
-  logoutAction,
+  loginFailed,
+  loginSuccessful,
+  logout,
   tokenRenewed,
 } from "./auth.actions";
 import { authFeatureName } from "./auth.selectors";
@@ -38,15 +38,15 @@ const resetState = () => {
 
 export const authReducer = createReducer(
   initialState,
-  on(loginSuccessfulAction, (state, actionProps) =>
+  on(loginSuccessful, (state, actionProps) =>
     updateState(state, actionProps, { loginFailedCount: 0 })
   ),
   on(tokenRenewed, updateState),
-  on(loginFailedAction, (state) =>
+  on(loginFailed, (state) =>
     updateState(state, {
       loginFailedCount: state.loginFailedCount + 1,
     })
   ),
   on(fullNameUpdated, updateState),
-  on(logoutAction, resetState)
+  on(logout, resetState)
 );

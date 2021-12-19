@@ -4,19 +4,16 @@ import { exhaustMap, map } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 
 import { catchBeError } from "../../utils/errors.utils";
-import {
-  loadUsersListAction,
-  usersListLoadedAction,
-} from "./users-list.actions";
+import { loadUsersList, usersListLoaded } from "./users-list.actions";
 
 @Injectable()
 export class UsersListEffects {
-  loadUsers$ = createEffect(() =>
+  loadUsersList$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadUsersListAction),
+      ofType(loadUsersList),
       exhaustMap(() =>
         this.api.getUsers().pipe(
-          map((response) => usersListLoadedAction({ users: response })),
+          map((response) => usersListLoaded({ users: response })),
           catchBeError()
         )
       )

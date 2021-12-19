@@ -2,12 +2,12 @@ import { createAction, props } from "@ngrx/store";
 
 import { AuthState } from "./auth.state";
 
-export const loginAction = createAction(
+export const login = createAction(
   "[Auth] login",
   props<{ username: string; password: string }>()
 );
 
-export const loginSuccessfulAction = createAction(
+export const loginSuccessful = createAction(
   "[Auth] login successful",
   props<
     Pick<
@@ -22,15 +22,15 @@ export const loginSuccessfulAction = createAction(
   >()
 );
 
-export const renewInitTokenAction = createAction("[Auth] renew init token");
+export const renewInitToken = createAction("[Auth] renew init token");
 
-export const renewTokenAction = createAction("[Auth] renew token");
+export const renewToken = createAction("[Auth] renew token");
 
 export const tokenRenewed = createAction(
   "[Auth] token renewed",
   props<Pick<AuthState, "token" | "tokenExpirationDatetime">>()
 );
 
-export const loginFailedAction = createAction("[Auth] login failed");
+export const loginFailed = createAction("[Auth] login failed");
 
-export const logoutAction = createAction("[Auth] logout");
+export const logout = createAction("[Auth] logout");

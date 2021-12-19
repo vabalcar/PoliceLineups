@@ -14,7 +14,7 @@ import {
 
 @Injectable()
 export class UserRegistrationEffects {
-  usernameValidation$ = createEffect(() =>
+  validateUserName$ = createEffect(() =>
     this.actions$.pipe(
       ofType(validateUserName),
       mergeMap((action) =>
@@ -30,7 +30,7 @@ export class UserRegistrationEffects {
     )
   );
 
-  userRegistration$ = createEffect(() =>
+  registerUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(registerUser),
       exhaustMap((action) =>

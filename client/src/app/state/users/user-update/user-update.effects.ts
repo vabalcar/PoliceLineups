@@ -7,7 +7,7 @@ import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { StaticPath } from "src/app/routing/paths";
 
-import { logoutAction } from "../../auth/auth.actions";
+import { logout } from "../../auth/auth.actions";
 import { selectCurrentUserInfo } from "../../auth/auth.selectors";
 import { catchBeError } from "../../utils/errors.utils";
 import { IUserInfo } from "../utils/IUserInfo";
@@ -59,7 +59,7 @@ export class UserUpdateEffects {
     )
   );
 
-  updateFullName$ = createEffect(() =>
+  updateUserFullName$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateUserFullName),
       exhaustMap((action) =>
@@ -95,7 +95,7 @@ export class UserUpdateEffects {
     )
   );
 
-  updatePassword$ = createEffect(() =>
+  updateUserPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateUserPassword),
       exhaustMap((action) =>
@@ -119,7 +119,7 @@ export class UserUpdateEffects {
     )
   );
 
-  updateRole$ = createEffect(() =>
+  updateUserRole$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateUserRole),
       exhaustMap((action) =>
@@ -166,14 +166,14 @@ export class UserUpdateEffects {
     )
   );
 
-  logoutOnCurrentUserDeletionSuccessful$ = createEffect(() =>
+  currentUserDeletionSuccessful$ = createEffect(() =>
     this.actions$.pipe(
       ofType(currentUserDeletionSuccessful),
-      mergeMap((_) => of(logoutAction()))
+      mergeMap((_) => of(logout()))
     )
   );
 
-  redirectToUsersListOnUserDeletionSuccessful$ = createEffect(
+  userDeletionSuccessful$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(userDeletionSuccessful),

@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Subscription } from "rxjs";
 import { AppState } from "src/app/state/app.state";
-import { loginAction } from "src/app/state/auth/auth.actions";
+import { login } from "src/app/state/auth/auth.actions";
 import { selectLoginFailedCount } from "src/app/state/auth/auth.selectors";
 import { RequiredValidation } from "src/app/validations/required.validation";
 import { UsernameValidation } from "src/app/validations/users/username.validation";
@@ -33,7 +33,7 @@ export class LoginComponent {
 
   login(): void {
     this.store.dispatch(
-      loginAction({
+      login({
         username: this.usernameValidation.value,
         password: this.passwordValidation.value,
       })

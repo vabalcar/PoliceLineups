@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import { StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
-import { logoutAction } from "src/app/state/auth/auth.actions";
+import { logout } from "src/app/state/auth/auth.actions";
 import {
   selectCurrentUserFullName,
   selectCurrentUserIsAdmin,
@@ -39,6 +39,6 @@ export class AppComponent {
   }
 
   logout() {
-    this.store.dispatch(logoutAction());
+    this.store.dispatch(logout());
   }
 }

@@ -18,29 +18,29 @@ import { convertToLocalDateTime } from "../utils/date.utils";
 import { catchBeError } from "../utils/errors.utils";
 import { HttpStatusCode } from "../utils/HttpStatusCode";
 import {
-  loginAction,
-  loginFailedAction,
-  loginSuccessfulAction,
-  logoutAction,
-  renewInitTokenAction,
-  renewTokenAction,
+  login,
+  loginFailed,
+  loginSuccessful,
+  logout,
+  renewInitToken,
+  renewToken,
   tokenRenewed,
 } from "./auth.actions";
-import { selectAuthToken } from "./auth.selectors";
-import { AuthTokenRenewalScheduler } from "./utils/token-renewal.utils";
+import { selectToken } from "./auth.selectors";
+import { TokenRenewalScheduler } from "./utils/TokenRenewalScheduler";
 
 @Injectable()
 export class AuthEffects implements OnInitEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loginAction),
+      ofType(login),
       exhaustMap((action) =>
         this.api
           .login({ username: action.username, password: action.password })
           .pipe(
             map((authResponse) =>
               !authResponse.error
-                ? loginSuccessfulAction({
+                ? loginSuccessful({
                     userId: authResponse.userId,
                     username: action.username,
                     token: authResponse.authToken,
@@ -50,7 +50,7 @@ export class AuthEffects implements OnInitEffects {
                     fullName: authResponse.fullName,
                     isAdmin: !!authResponse.isAdmin,
                   })
-                : loginFailedAction()
+                : loginFailed()
             ),
             catchBeError()
           )
@@ -61,9 +61,9 @@ export class AuthEffects implements OnInitEffects {
   loginSuccessful$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(loginSuccessfulAction),
+        ofType(loginSuccessful),
         tap((action) =>
-          this.authTokenRenewalScheduler.scheduleAuthRenewal(
+          this.authTokenRenewalScheduler.scheduleTokenRenewal(
             action.tokenExpirationDatetime
           )
         ),
@@ -74,18 +74,18 @@ export class AuthEffects implements OnInitEffects {
     }
   );
 
-  renewInitAuthToken$ = createEffect(() =>
+  renewInitToken$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(renewInitTokenAction),
-      concatLatestFrom(() => this.store.select(selectAuthToken)),
+      ofType(renewInitToken),
+      concatLatestFrom(() => this.store.select(selectToken)),
       filter(([, token]) => !!token),
-      map(() => renewTokenAction())
+      map(() => renewToken())
     )
   );
 
-  renewAuthToken$ = createEffect(() =>
+  renewToken$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(renewTokenAction),
+      ofType(renewToken),
       exhaustMap(() =>
         this.api.renewAuthToken().pipe(
           map((response) =>
@@ -97,11 +97,11 @@ export class AuthEffects implements OnInitEffects {
             })
           ),
           tap((action) =>
-            this.authTokenRenewalScheduler.scheduleAuthRenewal(
+            this.authTokenRenewalScheduler.scheduleTokenRenewal(
               action.tokenExpirationDatetime
             )
           ),
-          catchBeError(HttpStatusCode.Unauthorized, () => logoutAction()),
+          catchBeError(HttpStatusCode.Unauthorized, () => logout()),
           catchBeError()
         )
       )
@@ -111,7 +111,7 @@ export class AuthEffects implements OnInitEffects {
   loginFailed$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(loginFailedAction),
+        ofType(loginFailed),
         tap(() => this.notifications.showNotification("Login failed"))
       ),
     {
@@ -122,8 +122,8 @@ export class AuthEffects implements OnInitEffects {
   logout$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(logoutAction),
-        tap(() => this.authTokenRenewalScheduler.cancelScheduledAuthRenewal()),
+        ofType(logout),
+        tap(() => this.authTokenRenewalScheduler.cancelScheduledTokenRenewal()),
         tap(() => this.router.navigateByUrl(StaticPath.default)),
         tap(() =>
           this.notifications.showNotification("You have been logged out")
@@ -135,10 +135,10 @@ export class AuthEffects implements OnInitEffects {
   );
 
   setTokenForApiCalls = this.store
-    .select(selectAuthToken)
+    .select(selectToken)
     .subscribe((token) => (this.api.configuration.accessToken = token));
 
-  private authTokenRenewalScheduler: AuthTokenRenewalScheduler;
+  private authTokenRenewalScheduler: TokenRenewalScheduler;
 
   constructor(
     private actions$: Actions,
@@ -147,10 +147,10 @@ export class AuthEffects implements OnInitEffects {
     private store: Store<AppState>,
     private notifications: NotificationsService
   ) {
-    this.authTokenRenewalScheduler = new AuthTokenRenewalScheduler(store);
+    this.authTokenRenewalScheduler = new TokenRenewalScheduler(store);
   }
 
   ngrxOnInitEffects(): Action {
-    return renewInitTokenAction();
+    return renewInitToken();
   }
 }

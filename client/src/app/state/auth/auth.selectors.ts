@@ -10,7 +10,7 @@ export const selectAuthFeature = createFeatureSelector<AppState, AuthState>(
   authFeatureName
 );
 
-export const selectAuthToken = createSelector(
+export const selectToken = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.token
 );
