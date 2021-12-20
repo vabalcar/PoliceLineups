@@ -24,7 +24,8 @@
 }
 
 #drawer-container {
-  height: calc(100% - var(--tolbar-height));
+  min-height: calc(100% - var(--tolbar-height));
+  height: max-content;
 }
 
 #drawer {
