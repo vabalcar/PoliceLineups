@@ -25,7 +25,6 @@ const parseFeature = (feature: string): IPersonFeature => {
 };
 
 @Component({
-  selector: "app-person",
   templateUrl: "./person.component.html",
   styleUrls: ["./person.component.css"],
 })

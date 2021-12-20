@@ -7,7 +7,6 @@ interface INationality {
 }
 
 @Component({
-  selector: "app-import-person",
   templateUrl: "./import-person.component.html",
   styleUrls: ["./import-person.component.css"],
 })

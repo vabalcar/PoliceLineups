@@ -33,7 +33,6 @@ interface IUserSettingsComponentData {
 }
 
 @Component({
-  selector: "app-user-settings",
   templateUrl: "./user-settings.component.html",
 })
 export class UserSettingsComponent implements OnInit {

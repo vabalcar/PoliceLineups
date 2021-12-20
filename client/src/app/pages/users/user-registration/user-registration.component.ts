@@ -17,7 +17,6 @@ import { BeValidation } from "src/app/validations/utils/BeValidation";
 import { ObservableFormControl } from "src/app/validations/utils/ObservableFormControl";
 
 @Component({
-  selector: "app-register",
   templateUrl: "./user-registration.component.html",
 })
 export class UserRegistrationComponent {

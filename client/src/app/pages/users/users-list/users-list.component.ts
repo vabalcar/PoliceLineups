@@ -11,7 +11,6 @@ import { loadUsersList } from "src/app/state/users/users-list/users-list.actions
 import { selectUsersList } from "src/app/state/users/users-list/users-list.selectors";
 
 @Component({
-  selector: "app-users-list",
   templateUrl: "./users-list.component.html",
 })
 export class UsersListComponent implements OnInit {

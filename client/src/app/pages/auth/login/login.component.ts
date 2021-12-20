@@ -8,7 +8,6 @@ import { RequiredValidation } from "src/app/validations/required.validation";
 import { UsernameValidation } from "src/app/validations/users/username.validation";
 
 @Component({
-  selector: "app-login",
   templateUrl: "./login.component.html",
 })
 export class LoginComponent {

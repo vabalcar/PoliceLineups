@@ -7,7 +7,6 @@ import { AppState } from "src/app/state/app.state";
 import { selectUrl } from "src/app/state/router/router.selectors";
 
 @Component({
-  selector: "app-path-not-found",
   templateUrl: "./path-not-found.component.html",
 })
 export class PathNotFoundComponent {

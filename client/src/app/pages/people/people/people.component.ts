@@ -6,7 +6,6 @@ import { DynamicPath } from "src/app/routing/paths";
 const PEOPLE_LIMIT = 30;
 
 @Component({
-  selector: "app-people",
   templateUrl: "./people.component.html",
   styleUrls: ["./people.component.css"],
 })
