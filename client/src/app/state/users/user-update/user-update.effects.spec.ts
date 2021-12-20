@@ -1,4 +1,5 @@
 import { TestBed } from "@angular/core/testing";
+import { RouterTestingModule } from "@angular/router/testing";
 import { Actions } from "@ngrx/effects";
 import { provideMockActions } from "@ngrx/effects/testing";
 import { provideMockStore } from "@ngrx/store/testing";
@@ -13,6 +14,7 @@ describe("UserUpdateEffects", () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       providers: [
         UserUpdateEffects,
         provideMockStore(),
