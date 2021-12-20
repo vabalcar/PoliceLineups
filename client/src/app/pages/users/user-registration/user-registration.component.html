@@ -75,6 +75,24 @@
         />
       </mat-form-field>
     </div>
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input
+          required
+          email
+          matInput
+          type="email"
+          name="email"
+          autocomplete="email"
+          [formControl]="emailValidation.formControl"
+          [errorStateMatcher]="emailValidation.errorPublisher"
+        />
+        <mat-error>
+          {{ emailValidation.error$ | ngrxPush }}
+        </mat-error>
+      </mat-form-field>
+    </div>
     <button
       mat-raised-button
       color="primary"
@@ -82,7 +100,8 @@
       [disabled]="
         usernameValidation.invalid ||
         fullNameValidation.invalid ||
-        passwordSetterValidation.invalid
+        passwordSetterValidation.invalid ||
+        emailValidation.invalid
       "
       (click)="register()"
     >

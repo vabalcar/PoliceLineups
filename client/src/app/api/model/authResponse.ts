@@ -19,5 +19,6 @@ export interface AuthResponse extends Response {
     userId?: number;
     username?: string;
     isAdmin?: boolean;
+    email?: string;
     fullName?: string;
 }

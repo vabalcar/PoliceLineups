@@ -14,7 +14,7 @@ class User(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, user_id: int=None, username: str=None, is_admin: bool=None, full_name: str=None):  # noqa: E501
+    def __init__(self, user_id: int=None, username: str=None, is_admin: bool=None, email: str=None, full_name: str=None):  # noqa: E501
         """User - a model defined in Swagger
 
         :param user_id: The user_id of this User.  # noqa: E501
@@ -23,6 +23,8 @@ class User(Model):
         :type username: str
         :param is_admin: The is_admin of this User.  # noqa: E501
         :type is_admin: bool
+        :param email: The email of this User.  # noqa: E501
+        :type email: str
         :param full_name: The full_name of this User.  # noqa: E501
         :type full_name: str
         """
@@ -30,6 +32,7 @@ class User(Model):
             'user_id': int,
             'username': str,
             'is_admin': bool,
+            'email': str,
             'full_name': str
         }
 
@@ -37,11 +40,13 @@ class User(Model):
             'user_id': 'userId',
             'username': 'username',
             'is_admin': 'isAdmin',
+            'email': 'email',
             'full_name': 'fullName'
         }
         self._user_id = user_id
         self._username = username
         self._is_admin = is_admin
+        self._email = email
         self._full_name = full_name
 
     @classmethod
@@ -117,6 +122,27 @@ class User(Model):
         """
 
         self._is_admin = is_admin
+
+    @property
+    def email(self) -> str:
+        """Gets the email of this User.
+
+
+        :return: The email of this User.
+        :rtype: str
+        """
+        return self._email
+
+    @email.setter
+    def email(self, email: str):
+        """Sets the email of this User.
+
+
+        :param email: The email of this User.
+        :type email: str
+        """
+
+        self._email = email
 
     @property
     def full_name(self) -> str:

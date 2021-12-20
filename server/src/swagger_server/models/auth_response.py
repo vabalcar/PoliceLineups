@@ -17,7 +17,7 @@ class AuthResponse(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, auth_token: str=None, token_expiration_datetime: datetime=None, user_id: int=None, username: str=None, is_admin: bool=None, full_name: str=None, error: str=None):  # noqa: E501
+    def __init__(self, auth_token: str=None, token_expiration_datetime: datetime=None, user_id: int=None, username: str=None, is_admin: bool=None, email: str=None, full_name: str=None, error: str=None):  # noqa: E501
         """AuthResponse - a model defined in Swagger
 
         :param auth_token: The auth_token of this AuthResponse.  # noqa: E501
@@ -30,6 +30,8 @@ class AuthResponse(Model):
         :type username: str
         :param is_admin: The is_admin of this AuthResponse.  # noqa: E501
         :type is_admin: bool
+        :param email: The email of this AuthResponse.  # noqa: E501
+        :type email: str
         :param full_name: The full_name of this AuthResponse.  # noqa: E501
         :type full_name: str
         :param error: The error of this AuthResponse.  # noqa: E501
@@ -41,6 +43,7 @@ class AuthResponse(Model):
             'user_id': int,
             'username': str,
             'is_admin': bool,
+            'email': str,
             'full_name': str,
             'error': str
         }
@@ -51,6 +54,7 @@ class AuthResponse(Model):
             'user_id': 'userId',
             'username': 'username',
             'is_admin': 'isAdmin',
+            'email': 'email',
             'full_name': 'fullName',
             'error': 'error'
         }
@@ -59,6 +63,7 @@ class AuthResponse(Model):
         self._user_id = user_id
         self._username = username
         self._is_admin = is_admin
+        self._email = email
         self._full_name = full_name
         self._error = error
 
@@ -177,6 +182,27 @@ class AuthResponse(Model):
         """
 
         self._is_admin = is_admin
+
+    @property
+    def email(self) -> str:
+        """Gets the email of this AuthResponse.
+
+
+        :return: The email of this AuthResponse.
+        :rtype: str
+        """
+        return self._email
+
+    @email.setter
+    def email(self, email: str):
+        """Sets the email of this AuthResponse.
+
+
+        :param email: The email of this AuthResponse.
+        :type email: str
+        """
+
+        self._email = email
 
     @property
     def full_name(self) -> str:

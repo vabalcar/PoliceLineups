@@ -6,6 +6,7 @@ import {
   validateUserName,
 } from "src/app/state/users/user-registration/user-registration.actions";
 import { selectUsernameValidationError } from "src/app/state/users/user-registration/user-registration.selectors";
+import { EmailValidation } from "src/app/validations/users/email.validation";
 import { FullNameValidation } from "src/app/validations/users/full-name.validation";
 import {
   PasswordSetterValidation,
@@ -22,12 +23,14 @@ import { ObservableFormControl } from "src/app/validations/utils/ObservableFormC
 export class UserRegistrationComponent {
   readonly passwordValidationFormControls = PasswordValidationFormControls;
 
+  readonly isAdminFormControl: ObservableFormControl<boolean>;
   readonly usernameValidation: UsernameValidation;
   readonly fullNameValidation: FullNameValidation;
   readonly passwordSetterValidation: PasswordSetterValidation;
-  readonly isAdminFormControl: ObservableFormControl<boolean>;
+  readonly emailValidation: EmailValidation;
 
   constructor(private store: Store<AppState>) {
+    this.isAdminFormControl = new ObservableFormControl<boolean>();
     this.usernameValidation = new UsernameValidation(
       new BeValidation(
         (username) => this.store.dispatch(validateUserName({ username })),
@@ -36,16 +39,17 @@ export class UserRegistrationComponent {
     );
     this.fullNameValidation = new FullNameValidation();
     this.passwordSetterValidation = new PasswordSetterValidation();
-    this.isAdminFormControl = new ObservableFormControl<boolean>();
+    this.emailValidation = new EmailValidation();
   }
 
   register(): void {
     this.store.dispatch(
       registerUser({
-        username: this.usernameValidation.value,
-        password: this.passwordSetterValidation.value,
-        fullName: this.fullNameValidation.value,
         isAdmin: !!this.isAdminFormControl.value,
+        username: this.usernameValidation.value,
+        fullName: this.fullNameValidation.value,
+        password: this.passwordSetterValidation.value,
+        email: this.emailValidation.value,
       })
     );
   }

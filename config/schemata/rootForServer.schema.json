@@ -2,6 +2,10 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
+    "defaultEmail": {
+      "type": "string",
+      "format": "email"
+    },
     "defaultFullName": {
       "type": "string",
       "minLength": 1
@@ -11,5 +15,5 @@
       "minLength": 1
     }
   },
-  "required": ["defaultFullName", "defaultPassword"]
+  "required": ["defaultEmail", "defaultFullName", "defaultPassword"]
 }

@@ -14,9 +14,11 @@ def init_current_db():
 def init_users():
     if len(DbUser) == 0:
         root_user = DbUser(
-            username=Configuration().root_user.username,
-            password=Configuration().root_user.default_password,
             is_admin=True,
-            full_name=Configuration().root_user.default_full_name)
+            username=Configuration().root_user.username,
+            email=Configuration().root_user.default_email,
+            full_name=Configuration().root_user.default_full_name,
+            password=Configuration().root_user.default_password
+        )
 
         root_user.save()

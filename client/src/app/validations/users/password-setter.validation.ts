@@ -4,7 +4,7 @@ import { map } from "rxjs/operators";
 import { ErrorPublisher } from "../utils/ErrorPublisher";
 import { MultiFormValidation } from "../utils/MultiFormValidation";
 import { ObservableFormControl } from "../utils/ObservableFormControl";
-import { MinLengthValidationErrorProps } from "../utils/ValidationError";
+import { LengthValidationErrorProps } from "../utils/ValidationError";
 
 export enum PasswordValidationFormControls {
   password,
@@ -34,8 +34,12 @@ export class PasswordSetterValidation extends MultiFormValidation<
                 return "Password is required";
               case "minlength":
                 validationErrorProps =
-                  validationErrorProps as MinLengthValidationErrorProps;
+                  validationErrorProps as LengthValidationErrorProps;
                 return `Password has to be at least ${validationErrorProps.requiredLength} characters long`;
+              case "maxlength":
+                validationErrorProps =
+                  validationErrorProps as LengthValidationErrorProps;
+                return `Password cannot be longer than ${validationErrorProps.requiredLength} characters`;
             }
           }
         ),

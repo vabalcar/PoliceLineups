@@ -11,6 +11,7 @@ def get_users():
             user_id=db_user.user_id,
             username=db_user.username,
             is_admin=db_user.is_admin,
+            email=db_user.email,
             full_name=db_user.full_name)
         for db_user in DbUser.select()]
 
@@ -21,6 +22,7 @@ def get_user(user_id):
         user_id=db_user.user_id,
         username=db_user.username,
         is_admin=db_user.is_admin,
+        email=db_user.email,
         full_name=db_user.full_name) if db_user else Responses.NOT_FOUND
 
 

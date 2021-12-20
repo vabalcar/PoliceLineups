@@ -8,6 +8,7 @@ export const initialState: UserUpdateState = {
   userId: null,
   username: null,
   isAdmin: null,
+  email: null,
   fullName: null,
 };
 

@@ -1,4 +1,5 @@
 {
+  "defaultEmail": "root@domain.com",
   "defaultFullName": "Root",
   "defaultPassword": "1234 ;)"
 }

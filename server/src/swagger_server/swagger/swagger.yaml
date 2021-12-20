@@ -374,15 +374,21 @@ components:
           type: integer
           format: int64
         username:
+          minLength: 1
           type: string
         isAdmin:
           type: boolean
+        email:
+          type: string
+          format: email
         fullName:
+          minLength: 1
           type: string
       example:
         fullName: fullName
         isAdmin: true
         userId: 0
+        email: ""
         username: username
     UserWithPassword:
       allOf:
@@ -390,6 +396,8 @@ components:
       - type: object
         properties:
           password:
+            maxLength: 16
+            minLength: 4
             type: string
     Person:
       type: object

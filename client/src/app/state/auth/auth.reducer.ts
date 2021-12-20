@@ -1,6 +1,9 @@
 import { createReducer, on } from "@ngrx/store";
 
-import { currentUserFullNameUpdateSuccessful as fullNameUpdated } from "../users/user-update/user-update.actions";
+import {
+  currentUserEmailUpdateSuccessful as emailUpdated,
+  currentUserFullNameUpdateSuccessful as fullNameUpdated,
+} from "../users/user-update/user-update.actions";
 import {
   deleteSavedFeatureState,
   getSavedFeatureState,
@@ -19,6 +22,7 @@ const defaultState: AuthState = {
   userId: null,
   username: null,
   isAdmin: false,
+  email: null,
   fullName: null,
   token: null,
   tokenExpirationDatetime: null,
@@ -47,6 +51,7 @@ export const authReducer = createReducer(
       loginFailedCount: state.loginFailedCount + 1,
     })
   ),
+  on(emailUpdated, updateState),
   on(fullNameUpdated, updateState),
   on(logout, resetState)
 );

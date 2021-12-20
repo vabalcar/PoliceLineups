@@ -2,19 +2,21 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { BehaviorSubject, combineLatest, Observable } from "rxjs";
-import { map, share } from "rxjs/operators";
+import { map } from "rxjs/operators";
+import { User } from "src/app/api/model/user";
 import { StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
 import { selectCurrentUserUserId } from "src/app/state/auth/auth.selectors";
 import {
   deleteUser,
   loadUserToUpdate,
+  updateUserEmail,
   updateUserFullName,
   updateUserPassword,
   updateUserRole,
 } from "src/app/state/users/user-update/user-update.actions";
 import { selectEditedUserInfo } from "src/app/state/users/user-update/user-update.selectors";
-import { IUserInfo } from "src/app/state/users/utils/IUserInfo";
+import { EmailValidation } from "src/app/validations/users/email.validation";
 import { FullNameValidation } from "src/app/validations/users/full-name.validation";
 import {
   PasswordSetterValidation,
@@ -38,13 +40,14 @@ export class UserSettingsComponent implements OnInit {
   readonly passwordValidationFormControls = PasswordValidationFormControls;
 
   readonly fullNameValidation: FullNameValidation;
+  readonly emailValidation: EmailValidation;
   readonly passwordSetterValidation: PasswordSetterValidation;
   readonly isAdminFormControl: ObservableFormControl<boolean>;
 
   readonly userSettingsComponentData$: Observable<IUserSettingsComponentData>;
 
   private readonly loggedInUserId$: Observable<number>;
-  private readonly targetUserInfo$: Observable<IUserInfo>;
+  private readonly targetUser$: Observable<User>;
   private readonly userSettingsComponentDataSubject$: BehaviorSubject<
     IUserSettingsComponentData | undefined
   >;
@@ -55,20 +58,18 @@ export class UserSettingsComponent implements OnInit {
     private store: Store<AppState>
   ) {
     this.loggedInUserId$ = this.store.select(selectCurrentUserUserId);
-    this.targetUserInfo$ = this.store
-      .select(selectEditedUserInfo)
-      .pipe(share());
+    this.targetUser$ = this.store.select(selectEditedUserInfo);
 
     this.userSettingsComponentData$ = combineLatest([
       this.loggedInUserId$,
-      this.targetUserInfo$,
+      this.targetUser$,
     ]).pipe(
-      map(([loggedInUserId, targetUserInfo]) => ({
-        userId: targetUserInfo.userId,
-        username: targetUserInfo.username,
-        isEditingSelf: loggedInUserId === targetUserInfo.userId,
+      map(([loggedInUserId, targetUser]) => ({
+        userId: targetUser.userId,
+        username: targetUser.username,
+        isEditingSelf: loggedInUserId === targetUser.userId,
         isEditingRootUser:
-          targetUserInfo.username === environment.rootUser.username,
+          targetUser.username === environment.rootUser.username,
       }))
     );
 
@@ -78,13 +79,14 @@ export class UserSettingsComponent implements OnInit {
     );
 
     this.fullNameValidation = new FullNameValidation(
-      this.targetUserInfo$.pipe(
-        map((targetUserInfo) => targetUserInfo.fullName)
-      )
+      this.targetUser$.pipe(map((targetUserInfo) => targetUserInfo.fullName))
+    );
+    this.emailValidation = new EmailValidation(
+      this.targetUser$.pipe(map((targetUserInfo) => targetUserInfo.email))
     );
     this.passwordSetterValidation = new PasswordSetterValidation();
     this.isAdminFormControl = new ObservableFormControl(
-      this.targetUserInfo$.pipe(map((targetUserInfo) => targetUserInfo.isAdmin))
+      this.targetUser$.pipe(map((targetUserInfo) => targetUserInfo.isAdmin))
     );
   }
 
@@ -113,6 +115,17 @@ export class UserSettingsComponent implements OnInit {
           this.userSettingsComponentDataSubject$.getValue()
         ),
         newFullName: this.fullNameValidation.value,
+      })
+    );
+  }
+
+  updateUserEmail(): void {
+    this.store.dispatch(
+      updateUserEmail({
+        targetUserId: this.getTargetUserId(
+          this.userSettingsComponentDataSubject$.getValue()
+        ),
+        newEmail: this.emailValidation.value,
       })
     );
   }

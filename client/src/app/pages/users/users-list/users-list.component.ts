@@ -25,6 +25,7 @@ export class UsersListComponent implements OnInit {
   readonly displayedTableColumns: (keyof User)[] = [
     "username",
     "fullName",
+    "email",
     "isAdmin",
   ];
 

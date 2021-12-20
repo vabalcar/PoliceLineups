@@ -10,22 +10,24 @@ import { StaticPath } from "src/app/routing/paths";
 import { logout } from "../../auth/auth.actions";
 import { selectCurrentUserInfo } from "../../auth/auth.selectors";
 import { catchBeError } from "../../utils/errors.utils";
-import { IUserInfo } from "../utils/IUserInfo";
 import {
   currentUserDeletionSuccessful,
+  currentUserEmailUpdateSuccessful,
   currentUserFullNameUpdateSuccessful,
   deleteUser,
   loadUserToUpdate,
+  updateUserEmail,
   updateUserFullName,
   updateUserPassword,
   updateUserRole,
   userDeletionFailed,
   userDeletionSuccessful,
+  userEmailUpdateSuccessful,
   userFullNameUpdateSuccessful,
-  userToUpdateLoaded,
-  userUpdateFailed,
   userPasswordUpdateSuccessful,
   userRoleUpdateSuccessful,
+  userToUpdateLoaded,
+  userUpdateFailed,
 } from "./user-update.actions";
 
 @Injectable()
@@ -36,25 +38,71 @@ export class UserUpdateEffects {
       mergeMap((action) =>
         (!action.targetUserId
           ? this.store.select(selectCurrentUserInfo)
-          : this.api.getUser(action.targetUserId).pipe(
-              map(
-                (response) =>
-                  ({
-                    userId: action.targetUserId,
-                    username: response.username,
-                    isAdmin: response.isAdmin,
-                    fullName: response.fullName,
-                  } as IUserInfo)
-              )
-            )
+          : this.api.getUser(action.targetUserId)
         ).pipe(
-          map((userInfo) =>
+          map((user) =>
             userToUpdateLoaded({
-              ...userInfo,
+              ...user,
             })
           ),
           catchBeError()
         )
+      )
+    )
+  );
+
+  updateUserRole$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateUserRole),
+      exhaustMap((action) =>
+        (!action.targetUserId
+          ? this.api.updateCurrentUser({ isAdmin: action.isAdmin })
+          : this.api.updateUser(
+              {
+                isAdmin: action.isAdmin,
+              },
+              action.targetUserId
+            )
+        ).pipe(
+          map((response) =>
+            !response.error ? userRoleUpdateSuccessful() : userUpdateFailed()
+          ),
+          catchBeError()
+        )
+      )
+    )
+  );
+
+  updateUserEmail$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateUserEmail),
+      exhaustMap((action) =>
+        !action.targetUserId
+          ? this.api.updateCurrentUser({ email: action.newEmail }).pipe(
+              map((response) =>
+                !response.error
+                  ? currentUserEmailUpdateSuccessful({
+                      email: action.newEmail,
+                    })
+                  : userUpdateFailed()
+              ),
+              catchBeError()
+            )
+          : this.api
+              .updateUser(
+                {
+                  email: action.newEmail,
+                },
+                action.targetUserId
+              )
+              .pipe(
+                map((response) =>
+                  !response.error
+                    ? userEmailUpdateSuccessful()
+                    : userUpdateFailed()
+                ),
+                catchBeError()
+              )
       )
     )
   );
@@ -84,9 +132,7 @@ export class UserUpdateEffects {
               .pipe(
                 map((response) =>
                   !response.error
-                    ? userFullNameUpdateSuccessful({
-                        fullName: action.newFullName,
-                      })
+                    ? userFullNameUpdateSuccessful()
                     : userUpdateFailed()
                 ),
                 catchBeError()
@@ -112,28 +158,6 @@ export class UserUpdateEffects {
             !response.error
               ? userPasswordUpdateSuccessful()
               : userUpdateFailed()
-          ),
-          catchBeError()
-        )
-      )
-    )
-  );
-
-  updateUserRole$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(updateUserRole),
-      exhaustMap((action) =>
-        (!action.targetUserId
-          ? this.api.updateCurrentUser({ isAdmin: action.isAdmin })
-          : this.api.updateUser(
-              {
-                isAdmin: action.isAdmin,
-              },
-              action.targetUserId
-            )
-        ).pipe(
-          map((response) =>
-            !response.error ? userRoleUpdateSuccessful() : userUpdateFailed()
           ),
           catchBeError()
         )

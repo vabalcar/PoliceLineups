@@ -15,7 +15,7 @@ class UserWithPassword(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, user_id: int=None, username: str=None, is_admin: bool=None, full_name: str=None, password: str=None):  # noqa: E501
+    def __init__(self, user_id: int=None, username: str=None, is_admin: bool=None, email: str=None, full_name: str=None, password: str=None):  # noqa: E501
         """UserWithPassword - a model defined in Swagger
 
         :param user_id: The user_id of this UserWithPassword.  # noqa: E501
@@ -24,6 +24,8 @@ class UserWithPassword(Model):
         :type username: str
         :param is_admin: The is_admin of this UserWithPassword.  # noqa: E501
         :type is_admin: bool
+        :param email: The email of this UserWithPassword.  # noqa: E501
+        :type email: str
         :param full_name: The full_name of this UserWithPassword.  # noqa: E501
         :type full_name: str
         :param password: The password of this UserWithPassword.  # noqa: E501
@@ -33,6 +35,7 @@ class UserWithPassword(Model):
             'user_id': int,
             'username': str,
             'is_admin': bool,
+            'email': str,
             'full_name': str,
             'password': str
         }
@@ -41,12 +44,14 @@ class UserWithPassword(Model):
             'user_id': 'userId',
             'username': 'username',
             'is_admin': 'isAdmin',
+            'email': 'email',
             'full_name': 'fullName',
             'password': 'password'
         }
         self._user_id = user_id
         self._username = username
         self._is_admin = is_admin
+        self._email = email
         self._full_name = full_name
         self._password = password
 
@@ -123,6 +128,27 @@ class UserWithPassword(Model):
         """
 
         self._is_admin = is_admin
+
+    @property
+    def email(self) -> str:
+        """Gets the email of this UserWithPassword.
+
+
+        :return: The email of this UserWithPassword.
+        :rtype: str
+        """
+        return self._email
+
+    @email.setter
+    def email(self, email: str):
+        """Sets the email of this UserWithPassword.
+
+
+        :param email: The email of this UserWithPassword.
+        :type email: str
+        """
+
+        self._email = email
 
     @property
     def full_name(self) -> str:

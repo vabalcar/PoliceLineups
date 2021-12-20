@@ -43,12 +43,13 @@ export class AuthEffects implements OnInitEffects {
                 ? loginSuccessful({
                     userId: authResponse.userId,
                     username: action.username,
+                    isAdmin: !!authResponse.isAdmin,
+                    email: authResponse.email,
+                    fullName: authResponse.fullName,
                     token: authResponse.authToken,
                     tokenExpirationDatetime: convertToLocalDateTime(
                       authResponse.tokenExpirationDatetime
                     ),
-                    fullName: authResponse.fullName,
-                    isAdmin: !!authResponse.isAdmin,
                   })
                 : loginFailed()
             ),

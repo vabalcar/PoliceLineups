@@ -24,7 +24,9 @@ def login(body):
 
     return AuthResponse(
         user_id=db_user.user_id,
+        username=db_user.username,
         is_admin=db_user.is_admin,
+        email=db_user.email,
         full_name=db_user.full_name,
         auth_token=auth_token,
         token_expiration_datetime=auth_token_expiration_datetime)

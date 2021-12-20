@@ -1,4 +1,5 @@
 import { createAction, props } from "@ngrx/store";
+import { User } from "src/app/api/model/user";
 
 import { UserUpdateState } from "./user-update.state";
 
@@ -9,31 +10,7 @@ export const loadUserToUpdate = createAction(
 
 export const userToUpdateLoaded = createAction(
   "[User update] load user successful",
-  props<Pick<UserUpdateState, "userId" | "fullName">>()
-);
-
-export const updateUserFullName = createAction(
-  "[User update] update user full name",
-  props<{ targetUserId?: number; newFullName: string }>()
-);
-
-export const userFullNameUpdateSuccessful = createAction(
-  "[User update] full name update successful",
-  props<Pick<UserUpdateState, "fullName">>()
-);
-
-export const currentUserFullNameUpdateSuccessful = createAction(
-  "[User update] current full name update successful",
-  props<Pick<UserUpdateState, "fullName">>()
-);
-
-export const updateUserPassword = createAction(
-  "[User update] update password",
-  props<{ targetUserId?: number; newPassword: string }>()
-);
-
-export const userPasswordUpdateSuccessful = createAction(
-  "[User update] password update successful"
+  props<UserUpdateState>()
 );
 
 export const updateUserRole = createAction(
@@ -43,6 +20,43 @@ export const updateUserRole = createAction(
 
 export const userRoleUpdateSuccessful = createAction(
   "[User update] role update successful"
+);
+
+export const updateUserEmail = createAction(
+  "[User update] update user email",
+  props<{ targetUserId?: number; newEmail: string }>()
+);
+
+export const currentUserEmailUpdateSuccessful = createAction(
+  "[User update] current user email update successful",
+  props<Pick<User, "email">>()
+);
+
+export const userEmailUpdateSuccessful = createAction(
+  "[User update] user email update successful"
+);
+
+export const updateUserFullName = createAction(
+  "[User update] update user full name",
+  props<{ targetUserId?: number; newFullName: string }>()
+);
+
+export const currentUserFullNameUpdateSuccessful = createAction(
+  "[User update] current user full name update successful",
+  props<Pick<User, "fullName">>()
+);
+
+export const userFullNameUpdateSuccessful = createAction(
+  "[User update] user full name update successful"
+);
+
+export const updateUserPassword = createAction(
+  "[User update] update password",
+  props<{ targetUserId?: number; newPassword: string }>()
+);
+
+export const userPasswordUpdateSuccessful = createAction(
+  "[User update] password update successful"
 );
 
 export const userUpdateFailed = createAction("[User update] update failed");

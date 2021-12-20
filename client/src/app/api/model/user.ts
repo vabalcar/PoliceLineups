@@ -14,5 +14,6 @@ export interface User {
     userId?: number;
     username?: string;
     isAdmin?: boolean;
+    email?: string;
     fullName?: string;
 }

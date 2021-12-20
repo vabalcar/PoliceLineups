@@ -13,6 +13,10 @@ class RootUserConfiguration:
         return self._username
 
     @property
+    def default_email(self) -> str:
+        return self._default_email
+
+    @property
     def default_full_name(self) -> str:
         return self._default_full_name
 
@@ -24,6 +28,8 @@ class RootUserConfiguration:
                  raw_root_user_config_for_server: Mapping) -> None:
         self._user_id = 1
         self._username = raw_root_user_config.get('username')
+        self._default_email = raw_root_user_config_for_server.get(
+            'defaultEmail')
         self._default_full_name = raw_root_user_config_for_server.get(
             'defaultFullName')
         self._default_password = generate_password_hash(

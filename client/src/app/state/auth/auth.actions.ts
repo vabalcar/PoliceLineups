@@ -9,17 +9,7 @@ export const login = createAction(
 
 export const loginSuccessful = createAction(
   "[Auth] login successful",
-  props<
-    Pick<
-      AuthState,
-      | "userId"
-      | "username"
-      | "isAdmin"
-      | "fullName"
-      | "token"
-      | "tokenExpirationDatetime"
-    >
-  >()
+  props<Omit<AuthState, "loginFailedCount">>()
 );
 
 export const renewInitToken = createAction("[Auth] renew init token");

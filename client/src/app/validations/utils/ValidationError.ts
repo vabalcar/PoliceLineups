@@ -2,11 +2,17 @@ export type RequiredValidationErrorProps = {
   required: boolean;
 };
 
-export type MinLengthValidationErrorProps = {
+export type LengthValidationErrorProps = {
   requiredLength: number;
   actualLength: number;
 };
 
+export type EmailValidationErrorProps = {
+  email: boolean;
+};
+
 export type ValidationError =
   | ["required", RequiredValidationErrorProps]
-  | ["minlength", MinLengthValidationErrorProps];
+  | ["minlength", LengthValidationErrorProps]
+  | ["maxlength", LengthValidationErrorProps]
+  | ["email", EmailValidationErrorProps];
