@@ -41,6 +41,15 @@ export class UserRegistrationComponent {
     this.emailValidation = new EmailValidation();
   }
 
+  isRegistrationDisabled(): boolean {
+    return (
+      this.usernameValidation.invalid ||
+      this.fullNameValidation.invalid ||
+      this.passwordSetterValidation.invalid ||
+      this.emailValidation.invalid
+    );
+  }
+
   register(): void {
     this.store.dispatch(
       registerUser({

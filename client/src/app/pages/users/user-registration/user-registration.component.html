@@ -96,14 +96,9 @@
     </div>
     <button
       mat-raised-button
-      color="primary"
       fxFlexAlign="start"
-      [disabled]="
-        usernameValidation.invalid ||
-        fullNameValidation.invalid ||
-        passwordSetterValidation.invalid ||
-        emailValidation.invalid
-      "
+      [color]="isRegistrationDisabled() ? 'disabled' : 'primary'"
+      [disabled]="isRegistrationDisabled()"
       (click)="register(); clearForm()"
     >
       Register
