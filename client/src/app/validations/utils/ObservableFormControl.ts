@@ -60,4 +60,9 @@ export class ObservableFormControl<T> extends FormControl {
     ) as ValidationError[];
     return validationErrors.length > 0 ? validationErrors[0] : null;
   }
+
+  clearValue(emitEvent: boolean = false): void {
+    this.setValue(undefined, { emitEvent });
+    this.markAsPristine();
+  }
 }

@@ -25,10 +25,9 @@ export abstract class MultiFormValidation<T, K> extends FormValidationBase<T> {
     super(value$, errorPublisher, backendValidation);
   }
 
-  clearValue(): void {
+  clearValue(emitEvent: boolean = false): void {
     for (const formControl of this.formControls.values()) {
-      formControl.setValue(undefined);
-      formControl.clearValidators();
+      formControl.clearValue(emitEvent);
     }
   }
 }

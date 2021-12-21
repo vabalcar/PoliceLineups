@@ -16,6 +16,7 @@
           [formControl]="usernameValidation.formControl"
           [errorStateMatcher]="usernameValidation.errorPublisher"
           (focusout)="usernameValidation.triggerBeValidation()"
+          (ngModelChange)="usernameValidation.triggerBeRevalidation()"
         />
         <mat-error>
           {{ usernameValidation.error$ | ngrxPush }}

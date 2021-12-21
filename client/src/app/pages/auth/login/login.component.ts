@@ -21,8 +21,8 @@ export class LoginComponent {
       .select(selectLoginFailedCount)
       .subscribe((count) => {
         if (count > 0) {
-          this.usernameValidation?.clearValue();
-          this.passwordValidation?.clearValue();
+          this.usernameValidation?.clearValue(true);
+          this.passwordValidation?.clearValue(true);
         }
       });
 

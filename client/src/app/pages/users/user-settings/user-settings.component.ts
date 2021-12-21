@@ -138,6 +138,7 @@ export class UserSettingsComponent implements OnInit {
         newPassword: this.passwordSetterValidation.value,
       })
     );
+    this.passwordSetterValidation.clearValue();
   }
 
   updateUserRole(): void {

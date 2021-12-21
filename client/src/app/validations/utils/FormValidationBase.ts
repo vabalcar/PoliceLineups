@@ -22,12 +22,24 @@ export abstract class FormValidationBase<T> {
   ) {}
 
   triggerBeValidation(): void {
-    if (!this.beValidation || this.invalid) {
+    if (
+      !this.beValidation ||
+      this.pristine ||
+      this.errorPublisher.isFeErrorState()
+    ) {
       return;
     }
 
     this.beValidation.validationTrigger(this.value);
   }
 
-  abstract clearValue(): void;
+  triggerBeRevalidation(): void {
+    if (!this.errorPublisher.isBeErrorState()) {
+      return;
+    }
+
+    this.beValidation.validationTrigger(this.value);
+  }
+
+  abstract clearValue(emitEvent: boolean): void;
 }

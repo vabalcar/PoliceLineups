@@ -3,11 +3,14 @@ import { BehaviorSubject, combineLatest, Observable, of } from "rxjs";
 import { map, share } from "rxjs/operators";
 
 export class ErrorPublisher implements ErrorStateMatcher {
-  readonly error$: Observable<string | null>;
   readonly feError$: Observable<string | null>;
   readonly beError$: Observable<string | null>;
+  readonly error$: Observable<string | null>;
 
   private readonly unicastError$: Observable<string | null>;
+
+  private readonly feErrorSubject$: BehaviorSubject<string | null>;
+  private readonly beErrorSubject$: BehaviorSubject<string | null>;
   private readonly errorSubject$: BehaviorSubject<string | null>;
 
   constructor(
@@ -18,9 +21,15 @@ export class ErrorPublisher implements ErrorStateMatcher {
       feErrorSources?.length ? feErrorSources : [of(null)]
     );
 
+    this.feErrorSubject$ = new BehaviorSubject(null);
+    unicastFeError$.subscribe(this.feErrorSubject$);
+
     const unicastBeError$ = ErrorPublisher.reduceErrorSources(
       beErrorSources?.length ? beErrorSources : [of(null)]
     );
+
+    this.beErrorSubject$ = new BehaviorSubject(null);
+    unicastBeError$.subscribe(this.beErrorSubject$);
 
     this.unicastError$ = ErrorPublisher.reduceErrorSources([
       unicastFeError$,
@@ -41,6 +50,14 @@ export class ErrorPublisher implements ErrorStateMatcher {
     return combineLatest(errorSources).pipe(
       map((errors) => errors.reduce((prev, curr) => (prev ? prev : curr)))
     );
+  }
+
+  isFeErrorState(): boolean {
+    return !!this.feErrorSubject$.getValue();
+  }
+
+  isBeErrorState(): boolean {
+    return !!this.beErrorSubject$.getValue();
   }
 
   isErrorState(): boolean {

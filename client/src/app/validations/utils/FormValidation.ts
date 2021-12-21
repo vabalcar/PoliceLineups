@@ -20,7 +20,7 @@ export abstract class FormValidation<T> extends FormValidationBase<T> {
     super(formControl.value$, errorPublisher, beValidation);
   }
 
-  clearValue(): void {
-    this.formControl.setValue(undefined);
+  clearValue(emitEvent: boolean = false): void {
+    this.formControl.clearValue(emitEvent);
   }
 }
