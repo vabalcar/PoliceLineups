@@ -159,9 +159,10 @@
 
   <h2 class="mat-title">Delete account</h2>
   <button mat-raised-button color="warn" (click)="deleteUser()">
-    Delete
-    <span *ngIf="data.isEditingSelf">your</span>
-    account
-    <span *ngIf="!data.isEditingSelf">{{ data.username }}</span>
+    {{
+      data.isEditingSelf
+        ? "Delete your account"
+        : "Delete user " + data.username
+    }}
   </button>
 </ng-container>
