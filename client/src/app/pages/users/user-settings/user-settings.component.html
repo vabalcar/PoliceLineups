@@ -127,7 +127,9 @@
             mat-button
             color="accent"
             [disabled]="passwordSetterValidation.invalid"
-            (click)="updateUserPassword()"
+            (click)="
+              updateUserPassword(); passwordSetterValidation.clearValue()
+            "
           >
             Update
           </button>

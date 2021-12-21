@@ -104,7 +104,7 @@
         passwordSetterValidation.invalid ||
         emailValidation.invalid
       "
-      (click)="register()"
+      (click)="register(); clearForm()"
     >
       Register
     </button>

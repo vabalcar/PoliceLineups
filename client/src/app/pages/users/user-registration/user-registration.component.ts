@@ -51,11 +51,9 @@ export class UserRegistrationComponent {
         email: this.emailValidation.value,
       })
     );
-
-    this.clearForm();
   }
 
-  private clearForm() {
+  clearForm() {
     this.isAdminFormControl.clearValue();
     this.usernameValidation.clearValue();
     this.fullNameValidation.clearValue();
