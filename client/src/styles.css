@@ -40,6 +40,15 @@ form {
   width: fit-content !important;
 }
 
+.wrapping-form mat-form-field {
+  padding-bottom: 16px;
+}
+
+.wrapping-form mat-slide-toggle {
+  padding-top: 8px;
+  padding-bottom: 24px;
+}
+
 .mat-card-simple-header .mat-card-header-text {
   margin: 0 !important;
 }
