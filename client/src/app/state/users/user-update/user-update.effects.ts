@@ -6,6 +6,7 @@ import { of } from "rxjs";
 import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { StaticPath } from "src/app/routing/paths";
+import { NotificationsService } from "src/app/services/notifications.service";
 
 import { logout } from "../../auth/auth.actions";
 import { selectCurrentUserInfo } from "../../auth/auth.selectors";
@@ -165,6 +166,19 @@ export class UserUpdateEffects {
     )
   );
 
+  userPasswordUpdateSuccessful$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userPasswordUpdateSuccessful),
+        tap(() =>
+          this.notifications.showNotification("Password successfully updated")
+        )
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
   deleteUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteUser),
@@ -193,6 +207,11 @@ export class UserUpdateEffects {
   currentUserDeletionSuccessful$ = createEffect(() =>
     this.actions$.pipe(
       ofType(currentUserDeletionSuccessful),
+      tap(() =>
+        this.notifications.showNotification(
+          "Your account has been deleted successfully"
+        )
+      ),
       mergeMap((_) => of(logout()))
     )
   );
@@ -201,7 +220,12 @@ export class UserUpdateEffects {
     () =>
       this.actions$.pipe(
         ofType(userDeletionSuccessful),
-        tap(() => this.router.navigateByUrl(StaticPath.users))
+        tap(() => this.router.navigateByUrl(StaticPath.users)),
+        tap(() =>
+          this.notifications.showNotification(
+            "User has been deleted successfully"
+          )
+        )
       ),
     {
       dispatch: false,
@@ -212,6 +236,7 @@ export class UserUpdateEffects {
     private actions$: Actions,
     private api: DefaultService,
     private router: Router,
-    private store: Store
+    private store: Store,
+    private notifications: NotificationsService
   ) {}
 }

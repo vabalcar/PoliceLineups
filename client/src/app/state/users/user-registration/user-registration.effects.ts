@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { exhaustMap, map, mergeMap } from "rxjs/operators";
+import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
+import { NotificationsService } from "src/app/services/notifications.service";
 
 import { catchBeError } from "../../utils/errors.utils";
 import {
@@ -46,5 +47,20 @@ export class UserRegistrationEffects {
     )
   );
 
-  constructor(private actions$: Actions, private api: DefaultService) {}
+  userRegistrationSuccessful$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userRegistrationSuccessful),
+        tap(() => this.notifications.showNotification("User registered"))
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
+  constructor(
+    private actions$: Actions,
+    private api: DefaultService,
+    private notifications: NotificationsService
+  ) {}
 }
