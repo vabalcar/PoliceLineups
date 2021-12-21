@@ -40,26 +40,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/AuthTokenRenewalResponse"
 
-  /validation/users:
-    post:
-      summary: Validated properties of a new user
-      x-openapi-router-controller: police_lineups.controllers.users
-      operationId: validateNewUser
-      requestBody:
-        description: a user to add
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserWithPassword"
-      responses:
-        "200":
-          description: addition result
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Response"
-
   /users:
     get:
       summary: Returns all users
@@ -95,7 +75,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Response"
 
-  /user/current:
+  /users/current:
     get:
       summary: Returns a user
       x-openapi-router-controller: police_lineups.controllers.users
@@ -137,7 +117,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Response"
 
-  /user/{user_id}:
+  /users/{user_id}:
     get:
       summary: Returns a user
       x-openapi-router-controller: police_lineups.controllers.users
@@ -207,6 +187,26 @@ paths:
       responses:
         "200":
           description: removal result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+
+  /validation/users:
+    post:
+      summary: Validated properties of a new user
+      x-openapi-router-controller: police_lineups.controllers.users
+      operationId: validateNewUser
+      requestBody:
+        description: a user to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserWithPassword"
+      responses:
+        "200":
+          description: addition result
           content:
             application/json:
               schema:

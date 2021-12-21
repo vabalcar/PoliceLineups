@@ -53,7 +53,7 @@ class TestDefaultController(BaseTestCase):
         Returns a user
         """
         response = self.client.open(
-            '/user/current',
+            '/users/current',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -86,7 +86,7 @@ class TestDefaultController(BaseTestCase):
         Returns a user
         """
         response = self.client.open(
-            '/user/{user_id}'.format(user_id=789),
+            '/users/{user_id}'.format(user_id=789),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -122,7 +122,7 @@ class TestDefaultController(BaseTestCase):
         Removes a user
         """
         response = self.client.open(
-            '/user/current',
+            '/users/current',
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -144,7 +144,7 @@ class TestDefaultController(BaseTestCase):
         Removes a user
         """
         response = self.client.open(
-            '/user/{user_id}'.format(user_id=789),
+            '/users/{user_id}'.format(user_id=789),
             method='DELETE')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -167,7 +167,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = UserWithPassword()
         response = self.client.open(
-            '/user/current',
+            '/users/current',
             method='PATCH',
             data=json.dumps(body),
             content_type='application/json')
@@ -195,7 +195,7 @@ class TestDefaultController(BaseTestCase):
         """
         body = UserWithPassword()
         response = self.client.open(
-            '/user/{user_id}'.format(user_id=789),
+            '/users/{user_id}'.format(user_id=789),
             method='PATCH',
             data=json.dumps(body),
             content_type='application/json')

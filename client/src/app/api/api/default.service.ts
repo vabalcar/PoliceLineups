@@ -203,7 +203,7 @@ export class DefaultService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<User>('get',`${this.basePath}/user/current`,
+        return this.httpClient.request<User>('get',`${this.basePath}/users/current`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -342,7 +342,7 @@ export class DefaultService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<User>('get',`${this.basePath}/user/${encodeURIComponent(String(userId))}`,
+        return this.httpClient.request<User>('get',`${this.basePath}/users/${encodeURIComponent(String(userId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -475,7 +475,7 @@ export class DefaultService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Response>('delete',`${this.basePath}/user/current`,
+        return this.httpClient.request<Response>('delete',`${this.basePath}/users/current`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -571,7 +571,7 @@ export class DefaultService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Response>('delete',`${this.basePath}/user/${encodeURIComponent(String(userId))}`,
+        return this.httpClient.request<Response>('delete',`${this.basePath}/users/${encodeURIComponent(String(userId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -667,7 +667,7 @@ export class DefaultService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Response>('patch',`${this.basePath}/user/current`,
+        return this.httpClient.request<Response>('patch',`${this.basePath}/users/current`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -785,7 +785,7 @@ export class DefaultService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Response>('patch',`${this.basePath}/user/${encodeURIComponent(String(userId))}`,
+        return this.httpClient.request<Response>('patch',`${this.basePath}/users/${encodeURIComponent(String(userId))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

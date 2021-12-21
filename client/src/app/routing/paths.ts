@@ -1,7 +1,7 @@
 export enum StaticPath {
-  register = "/register",
+  userRegistration = "/users/registration",
   users = "/users",
-  currentUser = "/user/current",
+  currentUser = "/users/current",
   import = "/import",
   people = "/people",
   login = "/login",
@@ -13,13 +13,13 @@ export enum StaticPath {
 }
 
 export enum PathTemplate {
-  user = "user/:userId",
+  user = "users/:userId",
   person = "person/:personId",
 }
 
 export class DynamicPath {
   public static user(userId: number): string {
-    return `/user/${userId}`;
+    return `/users/${userId}`;
   }
 
   public static person(personId: number): string {

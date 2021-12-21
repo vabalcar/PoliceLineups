@@ -20,7 +20,7 @@ const getPathForRoute = (path: StaticPath) => path.substring(1);
 
 const routes: Routes = [
   {
-    path: getPathForRoute(StaticPath.register),
+    path: getPathForRoute(StaticPath.userRegistration),
     component: UserRegistrationComponent,
     canActivate: [AdminAuthGuard],
   },
