@@ -68,7 +68,7 @@ export class AuthEffects implements OnInitEffects {
             action.tokenExpirationDatetime
           )
         ),
-        tap(() => this.router.navigateByUrl(StaticPath.default))
+        tap(() => this.router.navigateByUrl(StaticPath.home))
       ),
     {
       dispatch: false,
@@ -125,7 +125,7 @@ export class AuthEffects implements OnInitEffects {
       this.actions$.pipe(
         ofType(logout),
         tap(() => this.authTokenRenewalScheduler.cancelScheduledTokenRenewal()),
-        tap(() => this.router.navigateByUrl(StaticPath.default)),
+        tap(() => this.router.navigateByUrl(StaticPath.login)),
         tap(() =>
           this.notifications.showNotification("You have been logged out")
         )

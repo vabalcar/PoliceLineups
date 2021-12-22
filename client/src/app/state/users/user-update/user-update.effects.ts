@@ -220,7 +220,7 @@ export class UserUpdateEffects {
     () =>
       this.actions$.pipe(
         ofType(userDeletionSuccessful),
-        tap(() => this.router.navigateByUrl(StaticPath.users)),
+        tap(() => this.router.navigateByUrl(StaticPath.usersList)),
         tap(() =>
           this.notifications.showNotification(
             "User has been deleted successfully"

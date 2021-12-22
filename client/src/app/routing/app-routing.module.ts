@@ -20,12 +20,34 @@ const getPathForRoute = (path: StaticPath) => path.substring(1);
 
 const routes: Routes = [
   {
+    path: getPathForRoute(StaticPath.root),
+    redirectTo: StaticPath.home,
+    pathMatch: "full",
+  },
+  { path: getPathForRoute(StaticPath.home), component: HomeComponent },
+  {
+    path: getPathForRoute(StaticPath.login),
+    component: LoginComponent,
+  },
+  {
+    path: getPathForRoute(StaticPath.notAuthorized),
+    component: NotAuthorizedComponent,
+  },
+  {
+    path: getPathForRoute(StaticPath.pathNotFound),
+    component: PathNotFoundComponent,
+  },
+  {
+    path: getPathForRoute(StaticPath.resourceNotFound),
+    component: ResourceNotFoundComponent,
+  },
+  {
     path: getPathForRoute(StaticPath.userRegistration),
     component: UserRegistrationComponent,
     canActivate: [AdminAuthGuard],
   },
   {
-    path: getPathForRoute(StaticPath.users),
+    path: getPathForRoute(StaticPath.usersList),
     component: UsersListComponent,
     canActivate: [AdminAuthGuard],
   },
@@ -53,28 +75,6 @@ const routes: Routes = [
     path: PathTemplate.person,
     component: PersonComponent,
     canActivate: [UserAuthGuard],
-  },
-  {
-    path: getPathForRoute(StaticPath.login),
-    component: LoginComponent,
-  },
-  { path: getPathForRoute(StaticPath.home), component: HomeComponent },
-  {
-    path: getPathForRoute(StaticPath.default),
-    redirectTo: StaticPath.home,
-    pathMatch: "full",
-  },
-  {
-    path: getPathForRoute(StaticPath.notAuthorized),
-    component: NotAuthorizedComponent,
-  },
-  {
-    path: getPathForRoute(StaticPath.pathNotFound),
-    component: PathNotFoundComponent,
-  },
-  {
-    path: getPathForRoute(StaticPath.resourceNotFound),
-    component: ResourceNotFoundComponent,
   },
   { path: "**", component: PathNotFoundComponent },
 ];

@@ -1,15 +1,15 @@
 export enum StaticPath {
-  userRegistration = "/users/registration",
-  users = "/users",
-  currentUser = "/users/current",
-  import = "/import",
-  people = "/people",
-  login = "/login",
-  default = "/",
+  root = "/",
   home = "/home",
+  login = "/login",
   notAuthorized = "/not-authorized",
   pathNotFound = "/path-not-found",
   resourceNotFound = "/resource-not-found",
+  userRegistration = "/users/registration",
+  usersList = "/users",
+  currentUser = "/users/current",
+  import = "/import",
+  people = "/people",
 }
 
 export enum PathTemplate {
