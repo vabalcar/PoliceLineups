@@ -39,7 +39,7 @@ export class NotificationsService {
       return;
     }
 
-    this.doShowNotification(this.messages.pop());
+    this.doShowNotification(this.messages.shift());
   }
 
   private doShowNotification(message: string): void {
