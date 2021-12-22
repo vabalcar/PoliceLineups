@@ -59,7 +59,10 @@ export const userPasswordUpdateSuccessful = createAction(
   "[User update] password update successful"
 );
 
-export const userUpdateFailed = createAction("[User update] update failed");
+export const userUpdateFailed = createAction(
+  "[User update] update failed",
+  props<{ error: string }>()
+);
 
 export const deleteUser = createAction(
   "[User update] deletion",
@@ -74,4 +77,7 @@ export const userDeletionSuccessful = createAction(
   "[User update] user deletion successful"
 );
 
-export const userDeletionFailed = createAction("[User update] deletion failed");
+export const userDeletionFailed = createAction(
+  "[User update] deletion failed",
+  props<{ error: string }>()
+);

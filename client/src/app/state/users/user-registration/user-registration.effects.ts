@@ -39,7 +39,7 @@ export class UserRegistrationEffects {
           map((response) =>
             !response.error
               ? userRegistrationSuccessful()
-              : userRegistrationFailed()
+              : userRegistrationFailed({ error: response.error })
           ),
           catchBeError()
         )
@@ -52,6 +52,21 @@ export class UserRegistrationEffects {
       this.actions$.pipe(
         ofType(userRegistrationSuccessful),
         tap(() => this.notifications.showNotification("User registered"))
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
+  userRegistrationFailed$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userRegistrationFailed),
+        tap((action) =>
+          this.notifications.showNotification(
+            `User registration failed: ${action.error}`
+          )
+        )
       ),
     {
       dispatch: false,

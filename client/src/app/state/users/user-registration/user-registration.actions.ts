@@ -23,5 +23,6 @@ export const userRegistrationSuccessful = createAction(
 );
 
 export const userRegistrationFailed = createAction(
-  "[User registration] failure"
+  "[User registration] failure",
+  props<{ error: string }>()
 );

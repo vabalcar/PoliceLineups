@@ -21,6 +21,9 @@ export const tokenRenewed = createAction(
   props<Pick<AuthState, "token" | "tokenExpirationDatetime">>()
 );
 
-export const loginFailed = createAction("[Auth] login failed");
+export const loginFailed = createAction(
+  "[Auth] login failed",
+  props<{ error: string }>()
+);
 
 export const logout = createAction("[Auth] logout");

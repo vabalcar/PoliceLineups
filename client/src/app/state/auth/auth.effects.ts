@@ -38,20 +38,20 @@ export class AuthEffects implements OnInitEffects {
         this.api
           .login({ username: action.username, password: action.password })
           .pipe(
-            map((authResponse) =>
-              !authResponse.error
+            map((response) =>
+              !response.error
                 ? loginSuccessful({
-                    userId: authResponse.userId,
+                    userId: response.userId,
                     username: action.username,
-                    isAdmin: !!authResponse.isAdmin,
-                    email: authResponse.email,
-                    fullName: authResponse.fullName,
-                    token: authResponse.authToken,
+                    isAdmin: !!response.isAdmin,
+                    email: response.email,
+                    fullName: response.fullName,
+                    token: response.authToken,
                     tokenExpirationDatetime: convertToLocalDateTime(
-                      authResponse.tokenExpirationDatetime
+                      response.tokenExpirationDatetime
                     ),
                   })
-                : loginFailed()
+                : loginFailed({ error: response.error })
             ),
             catchBeError()
           )
@@ -69,6 +69,19 @@ export class AuthEffects implements OnInitEffects {
           )
         ),
         tap(() => this.router.navigateByUrl(StaticPath.home))
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
+  loginFailed$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loginFailed),
+        tap((action) =>
+          this.notifications.showNotification(`Login failed: ${action.error}`)
+        )
       ),
     {
       dispatch: false,
@@ -107,17 +120,6 @@ export class AuthEffects implements OnInitEffects {
         )
       )
     )
-  );
-
-  loginFailed$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(loginFailed),
-        tap(() => this.notifications.showNotification("Login failed"))
-      ),
-    {
-      dispatch: false,
-    }
   );
 
   logout$ = createEffect(

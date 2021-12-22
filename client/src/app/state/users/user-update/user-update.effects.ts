@@ -66,7 +66,9 @@ export class UserUpdateEffects {
             )
         ).pipe(
           map((response) =>
-            !response.error ? userRoleUpdateSuccessful() : userUpdateFailed()
+            !response.error
+              ? userRoleUpdateSuccessful()
+              : userUpdateFailed({ error: response.error })
           ),
           catchBeError()
         )
@@ -85,7 +87,7 @@ export class UserUpdateEffects {
                   ? currentUserEmailUpdateSuccessful({
                       email: action.newEmail,
                     })
-                  : userUpdateFailed()
+                  : userUpdateFailed({ error: response.error })
               ),
               catchBeError()
             )
@@ -100,7 +102,7 @@ export class UserUpdateEffects {
                 map((response) =>
                   !response.error
                     ? userEmailUpdateSuccessful()
-                    : userUpdateFailed()
+                    : userUpdateFailed({ error: response.error })
                 ),
                 catchBeError()
               )
@@ -119,7 +121,7 @@ export class UserUpdateEffects {
                   ? currentUserFullNameUpdateSuccessful({
                       fullName: action.newFullName,
                     })
-                  : userUpdateFailed()
+                  : userUpdateFailed({ error: response.error })
               ),
               catchBeError()
             )
@@ -134,7 +136,7 @@ export class UserUpdateEffects {
                 map((response) =>
                   !response.error
                     ? userFullNameUpdateSuccessful()
-                    : userUpdateFailed()
+                    : userUpdateFailed({ error: response.error })
                 ),
                 catchBeError()
               )
@@ -158,7 +160,7 @@ export class UserUpdateEffects {
           map((response) =>
             !response.error
               ? userPasswordUpdateSuccessful()
-              : userUpdateFailed()
+              : userUpdateFailed({ error: response.error })
           ),
           catchBeError()
         )
@@ -179,6 +181,21 @@ export class UserUpdateEffects {
     }
   );
 
+  userUpdateFailed$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userUpdateFailed),
+        tap((action) =>
+          this.notifications.showNotification(
+            `User update failed: ${action.error}`
+          )
+        )
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
   deleteUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteUser),
@@ -188,7 +205,7 @@ export class UserUpdateEffects {
               map((response) =>
                 !response.error
                   ? currentUserDeletionSuccessful()
-                  : userDeletionFailed()
+                  : userDeletionFailed({ error: response.error })
               ),
               catchBeError()
             )
@@ -196,7 +213,7 @@ export class UserUpdateEffects {
               map((response) =>
                 !response.error
                   ? userDeletionSuccessful()
-                  : userDeletionFailed()
+                  : userDeletionFailed({ error: response.error })
               ),
               catchBeError()
             )
@@ -224,6 +241,21 @@ export class UserUpdateEffects {
         tap(() =>
           this.notifications.showNotification(
             "User has been deleted successfully"
+          )
+        )
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
+  userDeletionFailed$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userDeletionFailed),
+        tap((action) =>
+          this.notifications.showNotification(
+            `User deletion failed: ${action.error}`
           )
         )
       ),
