@@ -30,7 +30,7 @@ def update_user(body, user_id):
     if connexion.request.is_json:
         body = UserWithPassword.from_dict(connexion.request.get_json())
 
-    if user_id == Configuration().root_user.user_id and not body.is_admin:
+    if user_id == Configuration().root_user.user_id and body.is_admin is False:
         return UserErrors.ROOT_MUST_STAY_ADMIN
 
     if body.username is not None:
