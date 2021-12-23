@@ -13,7 +13,7 @@ $executor = [SequentialScriptExecutor]::new()
 $commonArgs = $Debug ? @('-Debug') : @()
 
 $certificateGenerationArgs = $NoConfigurationValidation ? @('-NoConfigurationValidation') : @()
-$certificateGeneration = $Debug ? @(@{Script = 'generate-certificate.ps1'; ArgumentList = $certificateGenerationArgs }) : @()
+$certificateGeneration = $Debug ? @(@{Script = 'generate-certificate.ps1'; ArgumentList = $commonArgs + $certificateGenerationArgs }) : @()
 
 $executor.Execute(@(
         @{Script = 'install.ps1' },
