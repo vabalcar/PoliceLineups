@@ -1,5 +1,6 @@
 #!/usr/bin/pwsh
 param (
+    [switch] $Debug,
     [switch] $NoCertificateStore,
     [switch] $NoConfigurationValidation
 )

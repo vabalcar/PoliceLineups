@@ -57,7 +57,7 @@
         "cwd": "${workspaceFolder}"
       },
       "command": "pwsh",
-      "args": ["-NoLogo", "-File", "generate-certificate.ps1"],
+      "args": ["-NoLogo", "-File", "generate-certificate.ps1", "-Debug"],
       "group": "build",
       "presentation": {
         "reveal": "always",
