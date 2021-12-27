@@ -1,0 +1,25 @@
+<ng-container *ngrxLet="userOverviewComponentData$ as data">
+  <h1 class="mat-headline">
+    {{ "User " + data.username }}
+  </h1>
+
+  <mat-list id="user-properties-list">
+    <mat-list-item
+      ><span class="label">Full name:</span> {{ data.fullName }}
+    </mat-list-item>
+    <mat-list-item
+      ><span class="label">Email:</span> {{ data.email }}</mat-list-item
+    >
+    <mat-list-item
+      ><span class="label">Role:</span>
+      {{ data.isAdmin ? "Admin" : "User" }}</mat-list-item
+    >
+  </mat-list>
+
+  <button
+    mat-raised-button
+    routerLink="{{ dynamicPath.userSettings(data.userId) }}"
+  >
+    Settings
+  </button>
+</ng-container>

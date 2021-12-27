@@ -39,6 +39,7 @@ import { ResourceNotFoundComponent } from "./pages/not-found/resource-not-found/
 import { ImportPersonComponent } from "./pages/people/import-person/import-person.component";
 import { PeopleComponent } from "./pages/people/people/people.component";
 import { PersonComponent } from "./pages/people/person/person.component";
+import { UserOverviewComponent } from "./pages/users/user-overview/user-overview.component";
 import { UserRegistrationComponent } from "./pages/users/user-registration/user-registration.component";
 import { UserSettingsComponent } from "./pages/users/user-settings/user-settings.component";
 import { UsersListComponent } from "./pages/users/users-list/users-list.component";
@@ -64,6 +65,7 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
     PersonComponent,
     UserRegistrationComponent,
     ResourceNotFoundComponent,
+    UserOverviewComponent,
     UserSettingsComponent,
     UsersListComponent,
   ],

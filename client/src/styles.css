@@ -90,3 +90,18 @@ table {
   vertical-align: middle;
   text-align: center;
 }
+
+.mat-list-item-content {
+  padding-left: 0 !important;
+  display: table-cell !important;
+  vertical-align: bottom !important;
+}
+
+mat-list-item:first-of-type {
+  height: fit-content !important;
+}
+
+mat-list-item span.label {
+  margin-right: 8px;
+  font-weight: bolder;
+}

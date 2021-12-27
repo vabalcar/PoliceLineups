@@ -7,19 +7,25 @@ export enum StaticPath {
   resourceNotFound = "/resource-not-found",
   userRegistration = "/users/registration",
   usersList = "/users",
-  currentUser = "/users/current",
+  currentUserOverview = "/users/current",
+  currentUserSettings = "/users/current/settings",
   import = "/import",
   people = "/people",
 }
 
 export enum PathTemplate {
-  user = "users/:userId",
+  userOverview = "users/:userId",
+  userSettings = "users/:userId/settings",
   person = "person/:personId",
 }
 
 export class DynamicPath {
-  public static user(userId: number): string {
+  public static userOverview(userId: number): string {
     return `/users/${userId}`;
+  }
+
+  public static userSettings(userId: number): string {
+    return `/users/${userId}/settings`;
   }
 
   public static person(personId: number): string {

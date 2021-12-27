@@ -24,7 +24,14 @@
       <button
         mat-menu-item
         class="button-with-icon-and-text"
-        routerLink="{{ staticPath.currentUser }}"
+        routerLink="{{ staticPath.currentUserOverview }}"
+      >
+        <mat-icon>person</mat-icon>Account
+      </button>
+      <button
+        mat-menu-item
+        class="button-with-icon-and-text"
+        routerLink="{{ staticPath.currentUserSettings }}"
       >
         <mat-icon>settings</mat-icon>Settings
       </button>

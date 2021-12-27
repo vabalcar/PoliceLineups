@@ -31,7 +31,7 @@
       mat-row
       *matRowDef="let user; columns: displayedTableColumns"
       class="clickable-row"
-      routerLink="{{ dynamicPath.user(user.userId) }}"
+      routerLink="{{ dynamicPath.userOverview(user.userId) }}"
     ></tr>
   </table>
 </div>
