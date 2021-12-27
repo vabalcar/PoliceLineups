@@ -5,6 +5,7 @@ import { DefaultService } from "src/app/api/api/default.service";
 import { NotificationsService } from "src/app/services/notifications.service";
 
 import { catchBeError } from "../../utils/errors.utils";
+import { omit } from "../../utils/object.utils";
 import {
   registerUser,
   usernameValidated,
@@ -35,7 +36,7 @@ export class UserRegistrationEffects {
     this.actions$.pipe(
       ofType(registerUser),
       exhaustMap((action) =>
-        this.api.addUser(action).pipe(
+        this.api.addUser(omit(action, "type")).pipe(
           map((response) =>
             !response.error
               ? userRegistrationSuccessful()
