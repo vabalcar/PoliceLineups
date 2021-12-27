@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { of } from "rxjs";
 import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
@@ -36,9 +36,14 @@ export class UserUpdateEffects {
   loadUserToUpdate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadUserToUpdate),
-      mergeMap((action) =>
-        (!action.targetUserId
-          ? this.store.select(selectCurrentUserInfo)
+      concatLatestFrom((action) =>
+        action.targetUserId
+          ? of(undefined)
+          : this.store.select(selectCurrentUserInfo)
+      ),
+      mergeMap(([action, currentUser]) =>
+        (currentUser
+          ? of(currentUser)
           : this.api.getUser(action.targetUserId)
         ).pipe(
           map((user) =>
