@@ -1,7 +1,6 @@
 <ng-container *ngrxLet="userSettingsComponentData$ as data">
   <h1 class="mat-headline">
-    Settings
-    <span *ngIf="!data.isEditingSelf">of user {{ data.username }}</span>
+    {{ data.isEditingSelf ? "Settings" : "Settings of user " + data.username }}
   </h1>
 
   <h2 class="mat-title">Update account</h2>
@@ -161,7 +160,12 @@
   </div>
 
   <h2 class="mat-title">Delete account</h2>
-  <button mat-raised-button color="warn" (click)="deleteUser()">
+  <button
+    mat-raised-button
+    [color]="data.isEditingRootUser ? 'disabled' : 'warn'"
+    [disabled]="data.isEditingRootUser"
+    (click)="deleteUser()"
+  >
     {{
       data.isEditingSelf
         ? "Delete your account"

@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { BehaviorSubject, combineLatest, Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { filter, map } from "rxjs/operators";
 import { User } from "src/app/api/model/user";
 import { StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
@@ -63,10 +63,16 @@ export class UserSettingsComponent implements OnInit {
       this.loggedInUserId$,
       this.targetUser$,
     ]).pipe(
+      filter(
+        ([loggedInUserId, targetUser]) =>
+          loggedInUserId !== undefined &&
+          targetUser.userId !== undefined &&
+          targetUser.username !== undefined
+      ),
       map(([loggedInUserId, targetUser]) => ({
         userId: targetUser.userId,
         username: targetUser.username,
-        isEditingSelf: loggedInUserId === targetUser.userId,
+        isEditingSelf: targetUser.userId === loggedInUserId,
         isEditingRootUser:
           targetUser.username === environment.rootUser.username,
       }))

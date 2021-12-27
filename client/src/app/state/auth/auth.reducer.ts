@@ -19,13 +19,6 @@ import { authFeatureName } from "./auth.selectors";
 import { AuthState } from "./auth.state";
 
 const defaultState: AuthState = {
-  userId: null,
-  username: null,
-  isAdmin: false,
-  email: null,
-  fullName: null,
-  token: null,
-  tokenExpirationDatetime: null,
   loginFailedCount: 0,
 };
 
