@@ -7,7 +7,7 @@ param (
 
 $configurationsToTest = $ForCompile ? @() : @('client.json')
 if ($Debug -or $ForCompile) {
-    $configurationsToTest += @('proxy.json', 'root.json')
+    $configurationsToTest += @('externalApps.json', 'proxy.json', 'root.json')
 }
 
 $allConfigurationsValid = & (Join-Path '..' 'config' 'test-all.ps1') -Configurations $configurationsToTest -Debug:$Debug -PassThru

@@ -1,10 +1,10 @@
-<ng-container *ngrxLet="isLoggedIn$ as isLoggedIn">
+<ng-container *ngrxLet="appComponentData$ as data">
   <mat-toolbar color="primary" id="toolbar">
     <button
       mat-icon-button
       id="toolbar-menu-button"
+      [disabled]="!data.isLoggedIn"
       (click)="drawer.toggle()"
-      [disabled]="!isLoggedIn"
     >
       <mat-icon>menu</mat-icon>
     </button>
@@ -16,9 +16,9 @@
       mat-button
       class="button-with-icon-and-text"
       [matMenuTriggerFor]="sessionMenu"
-      *ngIf="isLoggedIn"
+      *ngIf="data.isLoggedIn"
     >
-      <mat-icon>account_circle</mat-icon>{{ fullName$ | ngrxPush }}
+      <mat-icon>account_circle</mat-icon>{{ data.fullName }}
     </button>
     <mat-menu #sessionMenu="matMenu">
       <button
@@ -40,14 +40,32 @@
       mat-button
       class="button-with-icon-and-text"
       routerLink="{{ staticPath.login }}"
-      *ngIf="!isLoggedIn"
+      *ngIf="!data.isLoggedIn"
     >
       <mat-icon>login</mat-icon>Login
     </button>
   </mat-toolbar>
   <mat-drawer-container id="drawer-container">
     <mat-drawer #drawer id="drawer" mode="side" [(opened)]="drawerOpened">
-      <div *ngIf="isAdmin$ | ngrxPush">
+      <div *ngIf="data.isLoggedIn">
+        <mat-label class="mat-caption">People</mat-label>
+        <button
+          mat-button
+          class="button-with-icon-and-text"
+          routerLink="{{ staticPath.people }}"
+        >
+          <mat-icon>search</mat-icon>Search
+        </button>
+        <button
+          mat-button
+          class="button-with-icon-and-text"
+          routerLink="{{ staticPath.import }}"
+        >
+          <mat-icon>add</mat-icon>Import person
+        </button>
+        <mat-divider></mat-divider>
+      </div>
+      <div *ngIf="data.isAdmin">
         <mat-label class="mat-caption">Users</mat-label>
         <button
           class="button-with-icon-and-text"
@@ -64,22 +82,14 @@
           <mat-icon>person_add</mat-icon>Add user
         </button>
         <mat-divider></mat-divider>
-      </div>
-      <div *ngIf="isLoggedIn">
-        <mat-label class="mat-caption">People</mat-label>
+
+        <mat-label class="mat-caption">Server</mat-label>
         <button
-          mat-button
           class="button-with-icon-and-text"
-          routerLink="{{ staticPath.people }}"
-        >
-          <mat-icon>search</mat-icon>Search
-        </button>
-        <button
           mat-button
-          class="button-with-icon-and-text"
-          routerLink="{{ staticPath.import }}"
+          (click)="openServerAdministrationPanel()"
         >
-          <mat-icon>add</mat-icon>Import person
+          <mat-icon>admin_panel_settings</mat-icon>Administration
         </button>
         <mat-divider></mat-divider>
       </div>
