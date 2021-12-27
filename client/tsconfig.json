@@ -5,16 +5,17 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "module": "es2020",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es6",
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom"]
+
+    "target": "ES2019",
+    "module": "ES6",
+    "lib": ["ES2019", "DOM"]
   },
   "angularCompilerOptions": {
     "strictTemplates": true
