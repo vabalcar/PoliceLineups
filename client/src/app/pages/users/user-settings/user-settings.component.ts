@@ -25,6 +25,9 @@ import {
 import { ObservableFormControl } from "src/app/validations/utils/ObservableFormControl";
 import { environment } from "src/environments/environment";
 
+import { isId } from "../../utils/validations.utils";
+import { adminRole } from "../utils/user-role.utils";
+
 interface IUserSettingsComponentData {
   userId: number;
   username: string;
@@ -36,6 +39,8 @@ interface IUserSettingsComponentData {
   templateUrl: "./user-settings.component.html",
 })
 export class UserSettingsComponent implements OnInit {
+  readonly adminRole = adminRole;
+
   readonly passwordValidationFormControls = PasswordValidationFormControls;
 
   readonly fullNameValidation: FullNameValidation;
@@ -103,7 +108,7 @@ export class UserSettingsComponent implements OnInit {
         )
       )
       .subscribe((targetUserId) =>
-        targetUserId === undefined || this.isUserId(targetUserId)
+        targetUserId === undefined || isId(targetUserId)
           ? this.store.dispatch(
               loadUserToUpdate({
                 targetUserId,
@@ -171,9 +176,5 @@ export class UserSettingsComponent implements OnInit {
     userData: IUserSettingsComponentData | undefined
   ): number | undefined {
     return !userData || userData.isEditingSelf ? undefined : userData.userId;
-  }
-
-  private isUserId(n: number): boolean {
-    return Number.isInteger(n) && n > 0;
   }
 }

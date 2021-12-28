@@ -9,6 +9,7 @@ import { DynamicPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
 import { loadUsersList } from "src/app/state/users/users-list/users-list.actions";
 import { selectUsersList } from "src/app/state/users/users-list/users-list.selectors";
+import { getUserRole } from "../utils/user-role.utils";
 
 @Component({
   templateUrl: "./users-list.component.html",
@@ -18,6 +19,7 @@ export class UsersListComponent implements OnInit {
   readonly sort: MatSort;
 
   readonly dynamicPath = DynamicPath;
+  readonly getUserRole = getUserRole;
 
   readonly user$: Observable<MatTableDataSource<User>>;
 

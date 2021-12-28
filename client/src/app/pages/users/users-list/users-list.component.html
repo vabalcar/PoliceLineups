@@ -19,7 +19,7 @@
     <ng-container matColumnDef="isAdmin">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
       <td mat-cell *matCellDef="let user">
-        {{ user.isAdmin ? "Admin" : "User" }}
+        {{ getUserRole(user.isAdmin) }}
       </td>
     </ng-container>
 

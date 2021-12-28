@@ -10,8 +10,13 @@ import { selectCurrentUserUserId } from "src/app/state/auth/auth.selectors";
 import { loadUserToUpdate } from "src/app/state/users/user-update/user-update.actions";
 import { selectEditedUserInfo } from "src/app/state/users/user-update/user-update.selectors";
 
-interface IUserOverviewComponentData extends User {
+import { isId } from "../../utils/validations.utils";
+import { getUserRole, UserRole } from "../utils/user-role.utils";
+
+interface IUserOverviewComponentData {
   isOverviewingSelf: boolean;
+  user: User;
+  userRole: UserRole;
 }
 
 @Component({
@@ -44,7 +49,8 @@ export class UserOverviewComponent implements OnInit {
       ),
       map(([loggedInUserId, targetUser]) => ({
         isOverviewingSelf: targetUser.userId === loggedInUserId,
-        ...targetUser,
+        user: targetUser,
+        userRole: getUserRole(targetUser.isAdmin),
       }))
     );
   }
@@ -57,7 +63,7 @@ export class UserOverviewComponent implements OnInit {
         )
       )
       .subscribe((targetUserId) =>
-        targetUserId === undefined || this.isUserId(targetUserId)
+        targetUserId === undefined || isId(targetUserId)
           ? this.store.dispatch(
               loadUserToUpdate({
                 targetUserId,
@@ -65,9 +71,5 @@ export class UserOverviewComponent implements OnInit {
             )
           : this.router.navigateByUrl(StaticPath.pathNotFound)
       );
-  }
-
-  private isUserId(n: number): boolean {
-    return Number.isInteger(n) && n > 0;
   }
 }
