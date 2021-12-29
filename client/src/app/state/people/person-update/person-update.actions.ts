@@ -21,6 +21,24 @@ export const personFullNameUpdateSuccessful = createAction(
   "[Person update] full name update successful"
 );
 
+export const updatePersonBirthDate = createAction(
+  "[Person update] update birth date",
+  props<{ targetPersonId?: number; newBirthDate: Date }>()
+);
+
+export const personBirthDateUpdateSuccessful = createAction(
+  "[Person update] birth date update successful"
+);
+
+export const updatePersonNationality = createAction(
+  "[Person update] update nationality",
+  props<{ targetPersonId?: number; newNationality: string }>()
+);
+
+export const personNationalityUpdateSuccessful = createAction(
+  "[Person update] nationality update successful"
+);
+
 export const personUpdateFailed = createAction(
   "[Person update] update failed",
   props<{ error: string }>()

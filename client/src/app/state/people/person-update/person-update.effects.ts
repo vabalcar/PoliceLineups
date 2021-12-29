@@ -5,18 +5,22 @@ import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { StaticPath } from "src/app/routing/paths";
 import { NotificationsService } from "src/app/services/notifications.service";
-import { convertToLocalDateTime } from "../../utils/date.utils";
 
+import { convertToLocalDateTime } from "../../utils/date.utils";
 import { catchBeError } from "../../utils/errors.utils";
 import {
   deletePerson,
   loadPersonToUpdate,
+  personBirthDateUpdateSuccessful,
   personDeletionFailed,
   personDeletionSuccessful,
   personFullNameUpdateSuccessful,
+  personNationalityUpdateSuccessful,
   personToUpdateLoaded,
   personUpdateFailed,
+  updatePersonBirthDate,
   updatePersonFullName,
+  updatePersonNationality,
 } from "./person-update.actions";
 
 @Injectable()
@@ -53,6 +57,52 @@ export class PersonUpdateEffects {
             map((response) =>
               !response.error
                 ? personFullNameUpdateSuccessful()
+                : personUpdateFailed({ error: response.error })
+            ),
+            catchBeError()
+          )
+      )
+    )
+  );
+
+  updatePersonBirthDate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updatePersonBirthDate),
+      exhaustMap((action) =>
+        this.api
+          .updatePerson(
+            {
+              birthDate: action.newBirthDate,
+            },
+            action.targetPersonId
+          )
+          .pipe(
+            map((response) =>
+              !response.error
+                ? personBirthDateUpdateSuccessful()
+                : personUpdateFailed({ error: response.error })
+            ),
+            catchBeError()
+          )
+      )
+    )
+  );
+
+  updatePersonNationality$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updatePersonNationality),
+      exhaustMap((action) =>
+        this.api
+          .updatePerson(
+            {
+              nationality: action.newNationality,
+            },
+            action.targetPersonId
+          )
+          .pipe(
+            map((response) =>
+              !response.error
+                ? personNationalityUpdateSuccessful()
                 : personUpdateFailed({ error: response.error })
             ),
             catchBeError()

@@ -2,40 +2,119 @@
   <h1 class="mat-headline">Edit person</h1>
 
   <h2 class="mat-title">Update person</h2>
-  <form>
-    <mat-card class="form-card">
-      <mat-card-header class="mat-card-simple-header">
-        <mat-card-title>Full name</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-form-field appearance="outline">
-          <mat-label>Full name</mat-label>
-          <input
-            required
-            matInput
-            type="text"
-            name="fullName"
-            autocomplete="name"
-            [formControl]="fullNameValidation.formControl"
-            [errorStateMatcher]="fullNameValidation.errorPublisher"
-          />
-          <mat-error>
-            {{ fullNameValidation.error$ | ngrxPush }}
-          </mat-error>
-        </mat-form-field>
-      </mat-card-content>
-      <mat-card-actions>
-        <button
-          mat-button
-          color="accent"
-          [disabled]="fullNameValidation.invalid"
-          (click)="updateUserFullName()"
-        >
-          Update
-        </button>
-      </mat-card-actions>
-    </mat-card>
-  </form>
+  <div fxLayout="row wrap" fxLayoutGap="16px">
+    <form>
+      <mat-card class="form-card">
+        <mat-card-header class="mat-card-simple-header">
+          <mat-card-title>Full name</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="outline">
+            <mat-label>Full name</mat-label>
+            <input
+              required
+              matInput
+              type="text"
+              name="fullName"
+              autocomplete="name"
+              [formControl]="fullNameValidation.formControl"
+              [errorStateMatcher]="fullNameValidation.errorPublisher"
+            />
+            <mat-error>
+              {{ fullNameValidation.error$ | ngrxPush }}
+            </mat-error>
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-button
+            color="accent"
+            [disabled]="fullNameValidation.invalid"
+            (click)="updatePersonFullName()"
+          >
+            Update
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+
+    <form>
+      <mat-card class="form-card">
+        <mat-card-header class="mat-card-simple-header">
+          <mat-card-title>Birth date</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="outline">
+            <mat-label>Birth date</mat-label>
+            <input
+              required
+              matInput
+              name="birthDate"
+              [matDatepicker]="birthDateDatePicker"
+              [formControl]="birthDateValidation.formControl"
+              [errorStateMatcher]="birthDateValidation.errorPublisher"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="birthDateDatePicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #birthDateDatePicker></mat-datepicker>
+            <mat-error>
+              {{ birthDateValidation.error$ | ngrxPush }}
+            </mat-error>
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-button
+            color="accent"
+            [disabled]="birthDateValidation.invalid"
+            (click)="updatePersonBirthDate()"
+          >
+            Update
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+
+    <form>
+      <mat-card class="form-card">
+        <mat-card-header class="mat-card-simple-header">
+          <mat-card-title>Nationality</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="outline">
+            <mat-label>Nationality</mat-label>
+            <mat-select
+              required
+              [formControl]="nationalityValidation.formControl"
+              [errorStateMatcher]="nationalityValidation.errorPublisher"
+            >
+              <mat-option
+                *ngFor="let nationality of nationalities"
+                [value]="nationality"
+              >
+                {{ nationality }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              {{ nationalityValidation.error$ | ngrxPush }}
+            </mat-error>
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-button
+            color="accent"
+            [disabled]="nationalityValidation.invalid"
+            (click)="updatePersonNationality()"
+          >
+            Update
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
 
   <h2 class="mat-title">Delete person</h2>
   <button mat-raised-button color="warn" (click)="deletePerson()">
