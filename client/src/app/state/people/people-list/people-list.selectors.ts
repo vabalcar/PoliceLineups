@@ -8,7 +8,7 @@ import { PeopleListState } from "./people-list.state";
 export const peopleListFeatureKey = "peopleList";
 
 export const adapter: EntityAdapter<Person> = createEntityAdapter<Person>({
-  selectId: (person: Person) => person.id,
+  selectId: (person: Person) => person.personId,
 });
 
 const { selectAll } = adapter.getSelectors();

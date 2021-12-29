@@ -8,7 +8,7 @@ def get_people():
     return [
         Person(person_id=db_person.person_id,
                photo_id=db_person.photo_id,
-               full_name=db_person.name,
+               full_name=db_person.full_name,
                birth_date=db_person.birth_date,
                nationality=db_person.nationality)
         for db_person in DbPerson.select()]

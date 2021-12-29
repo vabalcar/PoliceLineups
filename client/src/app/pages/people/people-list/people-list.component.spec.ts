@@ -4,17 +4,17 @@ import { ReactiveComponentModule } from "@ngrx/component";
 import { of } from "rxjs";
 import { DefaultService } from "src/app/api/api/default.service";
 
-import { PeopleComponent } from "./people.component";
+import { PeopleListComponent } from "./people-list.component";
 
 describe("PeopleComponent", () => {
-  let component: PeopleComponent;
-  let fixture: ComponentFixture<PeopleComponent>;
+  let component: PeopleListComponent;
+  let fixture: ComponentFixture<PeopleListComponent>;
 
   beforeEach(async () => {
     spyOn(DefaultService.prototype, "getPeople").and.returnValue(of([]) as any);
 
     await TestBed.configureTestingModule({
-      declarations: [PeopleComponent],
+      declarations: [PeopleListComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [ReactiveComponentModule],
       providers: [
@@ -24,7 +24,7 @@ describe("PeopleComponent", () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PeopleComponent);
+    fixture = TestBed.createComponent(PeopleListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

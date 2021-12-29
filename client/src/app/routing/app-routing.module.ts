@@ -8,9 +8,9 @@ import { NotAuthorizedComponent } from "../pages/auth/not-authorized/not-authori
 import { HomeComponent } from "../pages/home/home.component";
 import { PathNotFoundComponent } from "../pages/not-found/path-not-found/path-not-found.component";
 import { ResourceNotFoundComponent } from "../pages/not-found/resource-not-found/resource-not-found.component";
-import { PeopleComponent } from "../pages/people/people/people.component";
+import { PeopleListComponent } from "../pages/people/people-list/people-list.component";
 import { ImportPersonComponent } from "../pages/people/person-import/person-import.component";
-import { PersonComponent } from "../pages/people/person/person.component";
+import { PersonComponent } from "../pages/people/person-overview/person.component";
 import { UserOverviewComponent } from "../pages/users/user-overview/user-overview.component";
 import { UserRegistrationComponent } from "../pages/users/user-registration/user-registration.component";
 import { UserSettingsComponent } from "../pages/users/user-settings/user-settings.component";
@@ -79,7 +79,7 @@ const routes: Routes = [
   },
   {
     path: getPathForRoute(StaticPath.peopleList),
-    component: PeopleComponent,
+    component: PeopleListComponent,
     canActivate: [UserAuthGuard],
   },
   {
