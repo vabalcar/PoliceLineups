@@ -7,11 +7,11 @@ import { Person } from "src/app/api/model/person";
 import { StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
 import {
+  deletePerson,
   loadPersonToUpdate,
   updatePersonFullName,
 } from "src/app/state/people/person-update/person-update.actions";
 import { selectEditedPerson } from "src/app/state/people/person-update/person-update.selectors";
-import { deleteUser } from "src/app/state/users/user-update/user-update.actions";
 import { FullNameValidation } from "src/app/validations/full-name.validation";
 
 import { isId } from "../../utils/validations.utils";
@@ -85,8 +85,8 @@ export class PersonEditComponent implements OnInit {
 
   deletePerson(): void {
     this.store.dispatch(
-      deleteUser({
-        targetUserId: this.getTargetPersonId(),
+      deletePerson({
+        targetPersonId: this.getTargetPersonId(),
       })
     );
   }
