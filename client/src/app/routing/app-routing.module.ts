@@ -8,8 +8,8 @@ import { NotAuthorizedComponent } from "../pages/auth/not-authorized/not-authori
 import { HomeComponent } from "../pages/home/home.component";
 import { PathNotFoundComponent } from "../pages/not-found/path-not-found/path-not-found.component";
 import { ResourceNotFoundComponent } from "../pages/not-found/resource-not-found/resource-not-found.component";
-import { ImportPersonComponent } from "../pages/people/import-person/import-person.component";
 import { PeopleComponent } from "../pages/people/people/people.component";
+import { ImportPersonComponent } from "../pages/people/person-import/person-import.component";
 import { PersonComponent } from "../pages/people/person/person.component";
 import { UserOverviewComponent } from "../pages/users/user-overview/user-overview.component";
 import { UserRegistrationComponent } from "../pages/users/user-registration/user-registration.component";
@@ -73,17 +73,17 @@ const routes: Routes = [
     canActivate: [AdminAuthGuard],
   },
   {
-    path: getPathForRoute(StaticPath.import),
+    path: getPathForRoute(StaticPath.personImport),
     component: ImportPersonComponent,
     canActivate: [UserAuthGuard],
   },
   {
-    path: getPathForRoute(StaticPath.people),
+    path: getPathForRoute(StaticPath.peopleList),
     component: PeopleComponent,
     canActivate: [UserAuthGuard],
   },
   {
-    path: PathTemplate.person,
+    path: PathTemplate.personOveriview,
     component: PersonComponent,
     canActivate: [UserAuthGuard],
   },

@@ -9,14 +9,15 @@ export enum StaticPath {
   usersList = "/users",
   currentUserOverview = "/users/current",
   currentUserSettings = "/users/current/settings",
-  import = "/import",
-  people = "/people",
+  personImport = "/people/import",
+  peopleList = "/people",
 }
 
 export enum PathTemplate {
   userOverview = "users/:userId",
   userSettings = "users/:userId/settings",
-  person = "person/:personId",
+  personOveriview = "people/:personId",
+  personEdit = "people/:personId/edit",
 }
 
 export class DynamicPath {
@@ -28,7 +29,11 @@ export class DynamicPath {
     return `/users/${userId}/settings`;
   }
 
-  public static person(personId: number): string {
-    return `/person/${personId}`;
+  public static personOverview(personId: number): string {
+    return `/people/${personId}`;
+  }
+
+  public static personEdit(personId: number): string {
+    return `/people/${personId}/edit`;
   }
 }

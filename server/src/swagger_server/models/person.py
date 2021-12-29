@@ -14,45 +14,40 @@ class Person(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, id: int=None, pid: str=None, name: str=None, born: int=None, nationality: str=None, features: str=None):  # noqa: E501
+    def __init__(self, person_id: int=None, photo_id: int=None, full_name: str=None, birth_date: datetime=None, nationality: str=None):  # noqa: E501
         """Person - a model defined in Swagger
 
-        :param id: The id of this Person.  # noqa: E501
-        :type id: int
-        :param pid: The pid of this Person.  # noqa: E501
-        :type pid: str
-        :param name: The name of this Person.  # noqa: E501
-        :type name: str
-        :param born: The born of this Person.  # noqa: E501
-        :type born: int
+        :param person_id: The person_id of this Person.  # noqa: E501
+        :type person_id: int
+        :param photo_id: The photo_id of this Person.  # noqa: E501
+        :type photo_id: int
+        :param full_name: The full_name of this Person.  # noqa: E501
+        :type full_name: str
+        :param birth_date: The birth_date of this Person.  # noqa: E501
+        :type birth_date: datetime
         :param nationality: The nationality of this Person.  # noqa: E501
         :type nationality: str
-        :param features: The features of this Person.  # noqa: E501
-        :type features: str
         """
         self.swagger_types = {
-            'id': int,
-            'pid': str,
-            'name': str,
-            'born': int,
-            'nationality': str,
-            'features': str
+            'person_id': int,
+            'photo_id': int,
+            'full_name': str,
+            'birth_date': datetime,
+            'nationality': str
         }
 
         self.attribute_map = {
-            'id': 'id',
-            'pid': 'pid',
-            'name': 'name',
-            'born': 'born',
-            'nationality': 'nationality',
-            'features': 'features'
+            'person_id': 'personId',
+            'photo_id': 'photoId',
+            'full_name': 'fullName',
+            'birth_date': 'birthDate',
+            'nationality': 'nationality'
         }
-        self._id = id
-        self._pid = pid
-        self._name = name
-        self._born = born
+        self._person_id = person_id
+        self._photo_id = photo_id
+        self._full_name = full_name
+        self._birth_date = birth_date
         self._nationality = nationality
-        self._features = features
 
     @classmethod
     def from_dict(cls, dikt) -> 'Person':
@@ -66,88 +61,88 @@ class Person(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def id(self) -> int:
-        """Gets the id of this Person.
+    def person_id(self) -> int:
+        """Gets the person_id of this Person.
 
 
-        :return: The id of this Person.
+        :return: The person_id of this Person.
         :rtype: int
         """
-        return self._id
+        return self._person_id
 
-    @id.setter
-    def id(self, id: int):
-        """Sets the id of this Person.
+    @person_id.setter
+    def person_id(self, person_id: int):
+        """Sets the person_id of this Person.
 
 
-        :param id: The id of this Person.
-        :type id: int
+        :param person_id: The person_id of this Person.
+        :type person_id: int
         """
 
-        self._id = id
+        self._person_id = person_id
 
     @property
-    def pid(self) -> str:
-        """Gets the pid of this Person.
+    def photo_id(self) -> int:
+        """Gets the photo_id of this Person.
 
 
-        :return: The pid of this Person.
-        :rtype: str
-        """
-        return self._pid
-
-    @pid.setter
-    def pid(self, pid: str):
-        """Sets the pid of this Person.
-
-
-        :param pid: The pid of this Person.
-        :type pid: str
-        """
-
-        self._pid = pid
-
-    @property
-    def name(self) -> str:
-        """Gets the name of this Person.
-
-
-        :return: The name of this Person.
-        :rtype: str
-        """
-        return self._name
-
-    @name.setter
-    def name(self, name: str):
-        """Sets the name of this Person.
-
-
-        :param name: The name of this Person.
-        :type name: str
-        """
-
-        self._name = name
-
-    @property
-    def born(self) -> int:
-        """Gets the born of this Person.
-
-
-        :return: The born of this Person.
+        :return: The photo_id of this Person.
         :rtype: int
         """
-        return self._born
+        return self._photo_id
 
-    @born.setter
-    def born(self, born: int):
-        """Sets the born of this Person.
+    @photo_id.setter
+    def photo_id(self, photo_id: int):
+        """Sets the photo_id of this Person.
 
 
-        :param born: The born of this Person.
-        :type born: int
+        :param photo_id: The photo_id of this Person.
+        :type photo_id: int
         """
 
-        self._born = born
+        self._photo_id = photo_id
+
+    @property
+    def full_name(self) -> str:
+        """Gets the full_name of this Person.
+
+
+        :return: The full_name of this Person.
+        :rtype: str
+        """
+        return self._full_name
+
+    @full_name.setter
+    def full_name(self, full_name: str):
+        """Sets the full_name of this Person.
+
+
+        :param full_name: The full_name of this Person.
+        :type full_name: str
+        """
+
+        self._full_name = full_name
+
+    @property
+    def birth_date(self) -> datetime:
+        """Gets the birth_date of this Person.
+
+
+        :return: The birth_date of this Person.
+        :rtype: datetime
+        """
+        return self._birth_date
+
+    @birth_date.setter
+    def birth_date(self, birth_date: datetime):
+        """Sets the birth_date of this Person.
+
+
+        :param birth_date: The birth_date of this Person.
+        :type birth_date: datetime
+        """
+
+        self._birth_date = birth_date
 
     @property
     def nationality(self) -> str:
@@ -169,24 +164,3 @@ class Person(Model):
         """
 
         self._nationality = nationality
-
-    @property
-    def features(self) -> str:
-        """Gets the features of this Person.
-
-
-        :return: The features of this Person.
-        :rtype: str
-        """
-        return self._features
-
-    @features.setter
-    def features(self, features: str):
-        """Sets the features of this Person.
-
-
-        :param features: The features of this Person.
-        :type features: str
-        """
-
-        self._features = features

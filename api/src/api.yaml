@@ -245,7 +245,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Response"
 
-  /person/{person_id}:
+  /people/{person_id}:
     get:
       summary: Returns a person
       x-openapi-router-controller: police_lineups.controllers.people
@@ -378,6 +378,7 @@ components:
         userId:
           type: integer
           format: int64
+          minimum: 1
         username:
           type: string
           minLength: 1
@@ -403,15 +404,20 @@ components:
     Person:
       type: object
       properties:
-        id:
+        personId:
           type: integer
-        pid:
-          type: string
-        name:
-          type: string
-        born:
+          format: int64
+          minimum: 1
+        photoId:
           type: integer
+          format: int64
+          minimum: 1
+        fullName:
+          type: string
+          minLength: 1
+        birthDate:
+          type: string
+          format: date-time
         nationality:
           type: string
-        features:
-          type: string
+          minLength: 1

@@ -16,8 +16,8 @@ import {
   updateUserRole,
 } from "src/app/state/users/user-update/user-update.actions";
 import { selectEditedUserInfo } from "src/app/state/users/user-update/user-update.selectors";
+import { FullNameValidation } from "src/app/validations/full-name.validation";
 import { EmailValidation } from "src/app/validations/users/email.validation";
-import { FullNameValidation } from "src/app/validations/users/full-name.validation";
 import {
   PasswordSetterValidation,
   PasswordValidationFormControls,

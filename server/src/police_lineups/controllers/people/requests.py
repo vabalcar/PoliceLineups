@@ -12,7 +12,7 @@ def add_person(body):
     if connexion.request.is_json:
         body = Person.from_dict(connexion.request.get_json())
 
-    if DbPerson.get_or_none(DbPerson.id == body.id) is not None:
+    if DbPerson.get_or_none(DbPerson.person_id == body.person_id) is not None:
         return PeopleErrors.PERSON_ALREADY_EXITS
 
     DbPerson.create(**body.to_dict())
@@ -25,7 +25,7 @@ def update_person(body, person_id):
         body = Person.from_dict(connexion.request.get_json())
 
     DbPerson.update(**clear_model_update(body)
-                    ).where(DbPerson.id == person_id).execute()
+                    ).where(DbPerson.person_id == person_id).execute()
 
     return Responses.SUCCESS
 

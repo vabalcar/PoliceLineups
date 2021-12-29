@@ -294,7 +294,7 @@ export class DefaultService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Person>('get',`${this.basePath}/person/${encodeURIComponent(String(personId))}`,
+        return this.httpClient.request<Person>('get',`${this.basePath}/people/${encodeURIComponent(String(personId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -523,7 +523,7 @@ export class DefaultService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Response>('delete',`${this.basePath}/person/${encodeURIComponent(String(personId))}`,
+        return this.httpClient.request<Response>('delete',`${this.basePath}/people/${encodeURIComponent(String(personId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -726,7 +726,7 @@ export class DefaultService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Response>('patch',`${this.basePath}/person/${encodeURIComponent(String(personId))}`,
+        return this.httpClient.request<Response>('patch',`${this.basePath}/people/${encodeURIComponent(String(personId))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

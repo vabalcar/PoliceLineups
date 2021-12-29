@@ -251,7 +251,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Response'
       x-openapi-router-controller: police_lineups.controllers.people
-  /person/{person_id}:
+  /people/{person_id}:
     get:
       summary: Returns a person
       operationId: get_person
@@ -371,6 +371,7 @@ components:
       type: object
       properties:
         userId:
+          minimum: 1
           type: integer
           format: int64
         username:
@@ -387,7 +388,7 @@ components:
       example:
         fullName: fullName
         isAdmin: true
-        userId: 0
+        userId: 1
         email: ""
         username: username
     UserWithPassword:
@@ -402,25 +403,29 @@ components:
     Person:
       type: object
       properties:
-        id:
+        personId:
+          minimum: 1
           type: integer
-        pid:
-          type: string
-        name:
-          type: string
-        born:
+          format: int64
+        photoId:
+          minimum: 1
           type: integer
+          format: int64
+        fullName:
+          minLength: 1
+          type: string
+        birthDate:
+          type: string
+          format: date-time
         nationality:
-          type: string
-        features:
+          minLength: 1
           type: string
       example:
-        features: features
         nationality: nationality
-        born: 6
-        name: name
-        pid: pid
-        id: 0
+        photoId: 1
+        fullName: fullName
+        personId: 1
+        birthDate: 2000-01-23T04:56:07.000+00:00
   securitySchemes:
     JwtAuthUser:
       type: http

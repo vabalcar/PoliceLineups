@@ -1,0 +1,81 @@
+<h1 class="mat-headline">Import person</h1>
+<form>
+  <div fxLayout="column" fxLayoutGap="16px">
+    <div
+      *ngIf="!files?.length"
+      appDropZone
+      class="dropzone"
+      id="import-person-dropzone"
+      (dropFiles)="filesDropped($event)"
+    >
+      <span class="dropzone-content">Drop your files here!</span>
+    </div>
+    <div *ngIf="files?.length > 0" fxLayout="row wrap" fxLayoutGap="16px">
+      <div *ngFor="let file of files">
+        <img *ngIf="file" [src]="file.url" height="200px" />
+      </div>
+    </div>
+    <div fxLayout="row wrap" fxLayoutGap="16px">
+      <mat-form-field appearance="fill">
+        <mat-label>Full name</mat-label>
+        <input
+          required
+          matInput
+          type="text"
+          name="fullName"
+          [formControl]="fullNameValidation.formControl"
+          [errorStateMatcher]="fullNameValidation.errorPublisher"
+        />
+        <mat-error>
+          {{ fullNameValidation.error$ | ngrxPush }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Birth date</mat-label>
+        <input
+          required
+          matInput
+          name="birthDate"
+          [matDatepicker]="birthDateDatePicker"
+          [formControl]="birthDateValidation.formControl"
+          [errorStateMatcher]="birthDateValidation.errorPublisher"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="birthDateDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #birthDateDatePicker></mat-datepicker>
+        <mat-error>
+          {{ birthDateValidation.error$ | ngrxPush }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Nationality</mat-label>
+        <mat-select
+          required
+          [formControl]="nationalityValidation.formControl"
+          [errorStateMatcher]="nationalityValidation.errorPublisher"
+        >
+          <mat-option
+            *ngFor="let nationality of nationalities"
+            [value]="nationality"
+          >
+            {{ nationality }}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          {{ nationalityValidation.error$ | ngrxPush }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <button
+      mat-raised-button
+      fxFlexAlign="start"
+      [color]="isImportDisabled() ? 'disabled' : 'primary'"
+      [disabled]="isImportDisabled()"
+      (click)="importPerson()"
+    >
+      Import
+    </button>
+  </div>
+</form>

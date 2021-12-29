@@ -11,10 +11,9 @@
  */
 
 export interface Person { 
-    id?: number;
-    pid?: string;
-    name?: string;
-    born?: number;
+    personId?: number;
+    photoId?: number;
+    fullName?: string;
+    birthDate?: Date;
     nationality?: string;
-    features?: string;
 }

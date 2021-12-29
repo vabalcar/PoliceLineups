@@ -4,6 +4,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatListModule } from "@angular/material/list";
@@ -36,8 +38,8 @@ import { NotAuthorizedComponent } from "./pages/auth/not-authorized/not-authoriz
 import { HomeComponent } from "./pages/home/home.component";
 import { PathNotFoundComponent } from "./pages/not-found/path-not-found/path-not-found.component";
 import { ResourceNotFoundComponent } from "./pages/not-found/resource-not-found/resource-not-found.component";
-import { ImportPersonComponent } from "./pages/people/import-person/import-person.component";
 import { PeopleComponent } from "./pages/people/people/people.component";
+import { ImportPersonComponent } from "./pages/people/person-import/person-import.component";
 import { PersonComponent } from "./pages/people/person/person.component";
 import { UserOverviewComponent } from "./pages/users/user-overview/user-overview.component";
 import { UserRegistrationComponent } from "./pages/users/user-registration/user-registration.component";
@@ -47,6 +49,9 @@ import { AppRoutingModule } from "./routing/app-routing.module";
 import { AppEffects } from "./state/app.effects";
 import { reducers } from "./state/app.reducer";
 import { AuthEffects } from "./state/auth/auth.effects";
+import { PeopleListEffects } from "./state/people/people-list/people-list.effects";
+import { PersonImportEffects } from "./state/people/person-import/person-import.effects";
+import { PersonUpdateEffects } from "./state/people/person-update/person-update.effects";
 import { UserRegistrationEffects } from "./state/users/user-registration/user-registration.effects";
 import { UserUpdateEffects } from "./state/users/user-update/user-update.effects";
 import { UsersListEffects } from "./state/users/users-list/users-list.effects";
@@ -79,10 +84,12 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
 
     MatButtonModule,
     MatCardModule,
+    MatDatepickerModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
     MatMenuModule,
+    MatNativeDateModule,
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,
@@ -106,6 +113,9 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
       UserRegistrationEffects,
       UserUpdateEffects,
       UsersListEffects,
+      PersonImportEffects,
+      PersonUpdateEffects,
+      PeopleListEffects,
     ]),
 
     ServiceWorkerModule.register("ngsw-worker.js", {

@@ -6,21 +6,19 @@ from police_lineups.db import DbPerson
 
 def get_people():
     return [
-        Person(id=db_person.id,
-               pid=db_person.pid,
-               name=db_person.name,
-               born=db_person.born,
-               nationality=db_person.nationality,
-               features=db_person.features)
+        Person(person_id=db_person.person_id,
+               photo_id=db_person.photo_id,
+               full_name=db_person.name,
+               birth_date=db_person.birth_date,
+               nationality=db_person.nationality)
         for db_person in DbPerson.select()]
 
 
 def get_person(person_id):
     db_person: DbPerson = DbPerson.get_or_none(person_id)
     return Person(
-        id=db_person.id,
-        pid=db_person.pid,
-        name=db_person.name,
-        born=db_person.born,
-        nationality=db_person.nationality,
-        features=db_person.features) if db_person else Responses.NOT_FOUND
+        person_id=db_person.person_id,
+        photo_id=db_person.photo_id,
+        full_name=db_person.full_name,
+        birth_date=db_person.birth_date,
+        nationality=db_person.nationality) if db_person else Responses.NOT_FOUND

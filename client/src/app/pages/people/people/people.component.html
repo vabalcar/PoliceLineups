@@ -9,7 +9,10 @@
           src="assets/media/photos/{{ person.pid }}.jpg"
         />
         <span>{{ person.name }}</span>
-        <button mat-button routerLink="{{ dynamicPath.person(person.id) }}">
+        <button
+          mat-button
+          routerLink="{{ dynamicPath.personOverview(person.id) }}"
+        >
           More
         </button>
       </div>
