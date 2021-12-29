@@ -11,7 +11,7 @@ import { nationalities } from "../utils/nationality.utils";
   templateUrl: "./person-import.component.html",
   styleUrls: ["./person-import.component.css"],
 })
-export class ImportPersonComponent {
+export class PersonImportComponent {
   readonly nationalities = nationalities;
 
   files?: FileHandle[];

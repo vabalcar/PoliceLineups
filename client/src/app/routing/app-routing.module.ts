@@ -9,7 +9,8 @@ import { HomeComponent } from "../pages/home/home.component";
 import { PathNotFoundComponent } from "../pages/not-found/path-not-found/path-not-found.component";
 import { ResourceNotFoundComponent } from "../pages/not-found/resource-not-found/resource-not-found.component";
 import { PeopleListComponent } from "../pages/people/people-list/people-list.component";
-import { ImportPersonComponent } from "../pages/people/person-import/person-import.component";
+import { PersonEditComponent } from "../pages/people/person-edit/person-edit.component";
+import { PersonImportComponent } from "../pages/people/person-import/person-import.component";
 import { PersonOverviewComponent } from "../pages/people/person-overview/person-overview.component";
 import { UserOverviewComponent } from "../pages/users/user-overview/user-overview.component";
 import { UserRegistrationComponent } from "../pages/users/user-registration/user-registration.component";
@@ -43,13 +44,13 @@ const routes: Routes = [
     component: ResourceNotFoundComponent,
   },
   {
-    path: getPathForRoute(StaticPath.userRegistration),
-    component: UserRegistrationComponent,
+    path: getPathForRoute(StaticPath.usersList),
+    component: UsersListComponent,
     canActivate: [AdminAuthGuard],
   },
   {
-    path: getPathForRoute(StaticPath.usersList),
-    component: UsersListComponent,
+    path: getPathForRoute(StaticPath.userRegistration),
+    component: UserRegistrationComponent,
     canActivate: [AdminAuthGuard],
   },
   {
@@ -58,14 +59,14 @@ const routes: Routes = [
     canActivate: [UserAuthGuard],
   },
   {
-    path: getPathForRoute(StaticPath.currentUserSettings),
-    component: UserSettingsComponent,
-    canActivate: [UserAuthGuard],
-  },
-  {
     path: PathTemplate.userOverview,
     component: UserOverviewComponent,
     canActivate: [AdminAuthGuard],
+  },
+  {
+    path: getPathForRoute(StaticPath.currentUserSettings),
+    component: UserSettingsComponent,
+    canActivate: [UserAuthGuard],
   },
   {
     path: PathTemplate.userSettings,
@@ -73,18 +74,23 @@ const routes: Routes = [
     canActivate: [AdminAuthGuard],
   },
   {
-    path: getPathForRoute(StaticPath.personImport),
-    component: ImportPersonComponent,
-    canActivate: [UserAuthGuard],
-  },
-  {
     path: getPathForRoute(StaticPath.peopleList),
     component: PeopleListComponent,
     canActivate: [UserAuthGuard],
   },
   {
+    path: getPathForRoute(StaticPath.personImport),
+    component: PersonImportComponent,
+    canActivate: [UserAuthGuard],
+  },
+  {
     path: PathTemplate.personOverview,
     component: PersonOverviewComponent,
+    canActivate: [UserAuthGuard],
+  },
+  {
+    path: PathTemplate.personEdit,
+    component: PersonEditComponent,
     canActivate: [UserAuthGuard],
   },
   { path: "**", component: PathNotFoundComponent },

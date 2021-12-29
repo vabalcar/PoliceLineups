@@ -5,12 +5,12 @@ export enum StaticPath {
   notAuthorized = "/not-authorized",
   pathNotFound = "/path-not-found",
   resourceNotFound = "/resource-not-found",
-  userRegistration = "/users/registration",
   usersList = "/users",
+  userRegistration = "/users/registration",
   currentUserOverview = "/users/current",
   currentUserSettings = "/users/current/settings",
-  personImport = "/people/import",
   peopleList = "/people",
+  personImport = "/people/import",
 }
 
 export enum PathTemplate {

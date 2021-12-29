@@ -39,7 +39,8 @@ import { HomeComponent } from "./pages/home/home.component";
 import { PathNotFoundComponent } from "./pages/not-found/path-not-found/path-not-found.component";
 import { ResourceNotFoundComponent } from "./pages/not-found/resource-not-found/resource-not-found.component";
 import { PeopleListComponent } from "./pages/people/people-list/people-list.component";
-import { ImportPersonComponent } from "./pages/people/person-import/person-import.component";
+import { PersonEditComponent } from "./pages/people/person-edit/person-edit.component";
+import { PersonImportComponent } from "./pages/people/person-import/person-import.component";
 import { PersonOverviewComponent } from "./pages/people/person-overview/person-overview.component";
 import { UserOverviewComponent } from "./pages/users/user-overview/user-overview.component";
 import { UserRegistrationComponent } from "./pages/users/user-registration/user-registration.component";
@@ -58,21 +59,28 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
 
 @NgModule({
   declarations: [
-    AppComponent,
     DropZoneDirective,
     ReactivelyDisabledControlDirective,
+
+    AppComponent,
+
     HomeComponent,
-    ImportPersonComponent,
+
     LoginComponent,
     NotAuthorizedComponent,
+
     PathNotFoundComponent,
-    PeopleListComponent,
-    PersonOverviewComponent,
-    UserRegistrationComponent,
     ResourceNotFoundComponent,
+
+    PeopleListComponent,
+    PersonImportComponent,
+    PersonOverviewComponent,
+    PersonEditComponent,
+
+    UsersListComponent,
+    UserRegistrationComponent,
     UserOverviewComponent,
     UserSettingsComponent,
-    UsersListComponent,
   ],
   imports: [
     AppRoutingModule,

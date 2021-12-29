@@ -15,5 +15,10 @@
     >
   </mat-list>
 
-  <button mat-raised-button>Edit</button>
+  <button
+    mat-raised-button
+    routerLink="{{ dynamicPath.personEdit(data.person.personId) }}"
+  >
+    Edit
+  </button>
 </ng-container>

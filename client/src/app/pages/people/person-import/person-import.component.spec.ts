@@ -1,21 +1,21 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ImportPersonComponent } from "./person-import.component";
+import { PersonImportComponent } from "./person-import.component";
 
 describe("ImportPersonComponent", () => {
-  let component: ImportPersonComponent;
-  let fixture: ComponentFixture<ImportPersonComponent>;
+  let component: PersonImportComponent;
+  let fixture: ComponentFixture<PersonImportComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ImportPersonComponent],
+      declarations: [PersonImportComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImportPersonComponent);
+    fixture = TestBed.createComponent(PersonImportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
