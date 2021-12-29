@@ -4,7 +4,7 @@ import { PersonUpdateState } from "./person-update.state";
 
 export const loadPersonToUpdate = createAction(
   "[Person update] load person",
-  props<{ targePersonId?: number }>()
+  props<{ targetPersonId?: number }>()
 );
 
 export const personToUpdateLoaded = createAction(

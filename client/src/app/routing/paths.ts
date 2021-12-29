@@ -16,7 +16,7 @@ export enum StaticPath {
 export enum PathTemplate {
   userOverview = "users/:userId",
   userSettings = "users/:userId/settings",
-  personOveriview = "people/:personId",
+  personOverview = "people/:personId",
   personEdit = "people/:personId/edit",
 }
 

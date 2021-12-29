@@ -4,13 +4,13 @@ import { AppState } from "../../app.state";
 import { createPersonSelector } from "../utils/selector.utils";
 import { PersonUpdateState } from "./person-update.state";
 
-export const personUpdateFeatureKey = "userUpdate";
+export const personUpdateFeatureKey = "personUpdate";
 
 export const selectPersonUpdateFeature = createFeatureSelector<
   AppState,
   PersonUpdateState
 >(personUpdateFeatureKey);
 
-export const selectEditedUserInfo = createPersonSelector(
+export const selectEditedPerson = createPersonSelector(
   selectPersonUpdateFeature
 );

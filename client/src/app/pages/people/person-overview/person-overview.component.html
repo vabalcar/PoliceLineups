@@ -1,0 +1,19 @@
+<ng-container *ngrxLet="personOverviewComponentData$ as data">
+  <h1 class="mat-headline">Person overview</h1>
+
+  <mat-list id="person-properties-list">
+    <mat-list-item
+      ><span class="label">Full name:</span> {{ data.person.fullName }}
+    </mat-list-item>
+    <mat-list-item
+      ><span class="label">Birth date:</span>
+      {{ data.person.birthDate.toLocaleDateString() }}</mat-list-item
+    >
+    <mat-list-item
+      ><span class="label">Nationality:</span>
+      {{ data.person.nationality }}</mat-list-item
+    >
+  </mat-list>
+
+  <button mat-raised-button>Edit</button>
+</ng-container>

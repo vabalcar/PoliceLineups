@@ -8,5 +8,5 @@ export const createPersonSelector = <TFeatureState extends Person>(
   featureSelector: Selector<AppState, TFeatureState>
 ) =>
   createSelector(featureSelector, (state: TFeatureState) =>
-    pick(state, "id", "pid", "name", "born", "nationality")
+    pick(state, "personId", "photoId", "fullName", "birthDate", "nationality")
   );

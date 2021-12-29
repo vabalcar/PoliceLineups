@@ -9,7 +9,7 @@ import { PersonUpdateState } from "./person-update.state";
 
 export const initialState: PersonUpdateState = {};
 
-export const userUpdateReducer = createReducer(
+export const personUpdateReducer = createReducer(
   initialState,
   on(loadPersonToUpdate, () => initialState),
   on(personToUpdateLoaded, updateState)

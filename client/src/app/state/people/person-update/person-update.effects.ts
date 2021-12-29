@@ -5,6 +5,7 @@ import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { StaticPath } from "src/app/routing/paths";
 import { NotificationsService } from "src/app/services/notifications.service";
+import { convertToLocalDateTime } from "../../utils/date.utils";
 
 import { catchBeError } from "../../utils/errors.utils";
 import {
@@ -24,10 +25,11 @@ export class PersonUpdateEffects {
     this.actions$.pipe(
       ofType(loadPersonToUpdate),
       mergeMap((action) =>
-        this.api.getPerson(action.targePersonId).pipe(
+        this.api.getPerson(action.targetPersonId).pipe(
           map((person) =>
             personToUpdateLoaded({
               ...person,
+              birthDate: convertToLocalDateTime(person.birthDate),
             })
           ),
           catchBeError()

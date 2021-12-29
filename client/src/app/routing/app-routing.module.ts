@@ -10,7 +10,7 @@ import { PathNotFoundComponent } from "../pages/not-found/path-not-found/path-no
 import { ResourceNotFoundComponent } from "../pages/not-found/resource-not-found/resource-not-found.component";
 import { PeopleListComponent } from "../pages/people/people-list/people-list.component";
 import { ImportPersonComponent } from "../pages/people/person-import/person-import.component";
-import { PersonComponent } from "../pages/people/person-overview/person.component";
+import { PersonOverviewComponent } from "../pages/people/person-overview/person-overview.component";
 import { UserOverviewComponent } from "../pages/users/user-overview/user-overview.component";
 import { UserRegistrationComponent } from "../pages/users/user-registration/user-registration.component";
 import { UserSettingsComponent } from "../pages/users/user-settings/user-settings.component";
@@ -83,8 +83,8 @@ const routes: Routes = [
     canActivate: [UserAuthGuard],
   },
   {
-    path: PathTemplate.personOveriview,
-    component: PersonComponent,
+    path: PathTemplate.personOverview,
+    component: PersonOverviewComponent,
     canActivate: [UserAuthGuard],
   },
   { path: "**", component: PathNotFoundComponent },

@@ -5,11 +5,11 @@ import { of } from "rxjs";
 import { DefaultService } from "src/app/api/api/default.service";
 import { Person } from "src/app/api/model/models";
 
-import { PersonComponent } from "./person.component";
+import { PersonOverviewComponent } from "./person-overview.component";
 
 describe("PersonComponent", () => {
-  let component: PersonComponent;
-  let fixture: ComponentFixture<PersonComponent>;
+  let component: PersonOverviewComponent;
+  let fixture: ComponentFixture<PersonOverviewComponent>;
 
   const person: Person = {};
 
@@ -19,7 +19,7 @@ describe("PersonComponent", () => {
     );
 
     await TestBed.configureTestingModule({
-      declarations: [PersonComponent],
+      declarations: [PersonOverviewComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [RouterTestingModule],
       providers: [
@@ -29,7 +29,7 @@ describe("PersonComponent", () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PersonComponent);
+    fixture = TestBed.createComponent(PersonOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
