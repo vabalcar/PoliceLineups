@@ -24,12 +24,15 @@ class TestDefaultController(BaseTestCase):
 
         Adds a person
         """
-        body = Person()
+        data = dict(full_name='full_name_example',
+                    birth_date='birth_date_example',
+                    nationality='nationality_example',
+                    photo_file='photo_file_example')
         response = self.client.open(
             '/people',
             method='POST',
-            data=json.dumps(body),
-            content_type='application/json')
+            data=data,
+            content_type='multipart/form-data')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 

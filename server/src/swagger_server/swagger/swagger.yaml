@@ -239,9 +239,9 @@ paths:
       requestBody:
         description: a person to add
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Person'
+              $ref: '#/components/schemas/people_body'
         required: true
       responses:
         "200":
@@ -407,10 +407,9 @@ components:
           minimum: 1
           type: integer
           format: int64
-        photoId:
-          minimum: 1
-          type: integer
-          format: int64
+        photoBlobName:
+          minLength: 1
+          type: string
         fullName:
           minLength: 1
           type: string
@@ -422,10 +421,24 @@ components:
           type: string
       example:
         nationality: nationality
-        photoId: 1
+        photoBlobName: photoBlobName
         fullName: fullName
         personId: 1
         birthDate: 2000-01-23T04:56:07.000+00:00
+    people_body:
+      type: object
+      properties:
+        fullName:
+          minLength: 1
+          type: string
+        birthDate:
+          type: string
+        nationality:
+          minLength: 1
+          type: string
+        photoFile:
+          type: string
+          format: binary
   securitySchemes:
     JwtAuthUser:
       type: http

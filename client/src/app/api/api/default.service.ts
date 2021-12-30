@@ -65,17 +65,32 @@ export class DefaultService {
     /**
      * Adds a person
      * 
-     * @param body a person to add
+     * @param fullName 
+     * @param birthDate 
+     * @param nationality 
+     * @param photoFile 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public addPerson(body: Person, observe?: 'body', reportProgress?: boolean): Observable<Response>;
-    public addPerson(body: Person, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
-    public addPerson(body: Person, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
-    public addPerson(body: Person, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public addPersonForm(fullName: string, birthDate: string, nationality: string, photoFile: Blob, observe?: 'body', reportProgress?: boolean): Observable<Response>;
+    public addPersonForm(fullName: string, birthDate: string, nationality: string, photoFile: Blob, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
+    public addPersonForm(fullName: string, birthDate: string, nationality: string, photoFile: Blob, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
+    public addPersonForm(fullName: string, birthDate: string, nationality: string, photoFile: Blob, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling addPerson.');
+        if (fullName === null || fullName === undefined) {
+            throw new Error('Required parameter fullName was null or undefined when calling addPerson.');
+        }
+
+        if (birthDate === null || birthDate === undefined) {
+            throw new Error('Required parameter birthDate was null or undefined when calling addPerson.');
+        }
+
+        if (nationality === null || nationality === undefined) {
+            throw new Error('Required parameter nationality was null or undefined when calling addPerson.');
+        }
+
+        if (photoFile === null || photoFile === undefined) {
+            throw new Error('Required parameter photoFile was null or undefined when calling addPerson.');
         }
 
         let headers = this.defaultHeaders;
@@ -98,16 +113,39 @@ export class DefaultService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): void; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        }
+
+        if (fullName !== undefined) {
+            formParams = formParams.append('fullName', <any>fullName) as any || formParams;
+        }
+        if (birthDate !== undefined) {
+            formParams = formParams.append('birthDate', <any>birthDate) as any || formParams;
+        }
+        if (nationality !== undefined) {
+            formParams = formParams.append('nationality', <any>nationality) as any || formParams;
+        }
+        if (photoFile !== undefined) {
+            formParams = formParams.append('photoFile', <any>photoFile) as any || formParams;
         }
 
         return this.httpClient.request<Response>('post',`${this.basePath}/people`,
             {
-                body: body,
+                body: convertFormParamsToString ? formParams.toString() : formParams,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

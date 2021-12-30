@@ -234,9 +234,23 @@ paths:
         description: a person to add
         required: true
         content:
-          application/json:
+          multipart/form-data:
+            # $ref is not wotking for multipart/form-data
             schema:
-              $ref: "#/components/schemas/Person"
+              type: object
+              properties:
+                fullName:
+                  type: string
+                  minLength: 1
+                birthDate:
+                  type: string
+                  # custom serialization must happen in multipart/form-data
+                nationality:
+                  type: string
+                  minLength: 1
+                photoFile:
+                  type: string
+                  format: binary
       responses:
         "200":
           description: addition result
@@ -408,10 +422,9 @@ components:
           type: integer
           format: int64
           minimum: 1
-        photoId:
-          type: integer
-          format: int64
-          minimum: 1
+        photoBlobName:
+          type: string
+          minLength: 1
         fullName:
           type: string
           minLength: 1

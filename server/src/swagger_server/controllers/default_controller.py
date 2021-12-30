@@ -12,18 +12,22 @@ from swagger_server.models.user_with_password import UserWithPassword  # noqa: E
 from swagger_server import util
 
 
-def add_person(body):  # noqa: E501
+def add_person(full_name, birth_date, nationality, photo_file):  # noqa: E501
     """Adds a person
 
      # noqa: E501
 
-    :param body: a person to add
-    :type body: dict | bytes
+    :param full_name: 
+    :type full_name: str
+    :param birth_date: 
+    :type birth_date: str
+    :param nationality: 
+    :type nationality: str
+    :param photo_file: 
+    :type photo_file: strstr
 
     :rtype: Response
     """
-    if connexion.request.is_json:
-        body = Person.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 

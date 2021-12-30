@@ -5,7 +5,6 @@ import { DefaultService } from "src/app/api/api/default.service";
 import { NotificationsService } from "src/app/services/notifications.service";
 
 import { catchBeError } from "../../utils/errors.utils";
-import { omit } from "../../utils/object.utils";
 import {
   importPerson,
   personImportFailed,
@@ -18,14 +17,21 @@ export class PersonImportEffects {
     this.actions$.pipe(
       ofType(importPerson),
       exhaustMap((action) =>
-        this.api.addPerson(omit(action, "type")).pipe(
-          map((response) =>
-            !response.error
-              ? personImportSuccessful()
-              : personImportFailed({ error: response.error })
-          ),
-          catchBeError()
-        )
+        this.api
+          .addPersonForm(
+            action.fullName,
+            action.birthDate,
+            action.nationality,
+            action.photoFile
+          )
+          .pipe(
+            map((response) =>
+              !response.error
+                ? personImportSuccessful()
+                : personImportFailed({ error: response.error })
+            ),
+            catchBeError()
+          )
       )
     )
   );

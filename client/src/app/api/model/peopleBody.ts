@@ -10,10 +10,9 @@
  * Do not edit the class manually.
  */
 
-export interface Person { 
-    personId?: number;
-    photoBlobName?: string;
+export interface PeopleBody { 
     fullName?: string;
-    birthDate?: Date;
+    birthDate?: string;
     nationality?: string;
+    photoFile?: Blob;
 }

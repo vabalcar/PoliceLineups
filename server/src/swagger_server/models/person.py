@@ -14,13 +14,13 @@ class Person(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, person_id: int=None, photo_id: int=None, full_name: str=None, birth_date: datetime=None, nationality: str=None):  # noqa: E501
+    def __init__(self, person_id: int=None, photo_blob_name: str=None, full_name: str=None, birth_date: datetime=None, nationality: str=None):  # noqa: E501
         """Person - a model defined in Swagger
 
         :param person_id: The person_id of this Person.  # noqa: E501
         :type person_id: int
-        :param photo_id: The photo_id of this Person.  # noqa: E501
-        :type photo_id: int
+        :param photo_blob_name: The photo_blob_name of this Person.  # noqa: E501
+        :type photo_blob_name: str
         :param full_name: The full_name of this Person.  # noqa: E501
         :type full_name: str
         :param birth_date: The birth_date of this Person.  # noqa: E501
@@ -30,7 +30,7 @@ class Person(Model):
         """
         self.swagger_types = {
             'person_id': int,
-            'photo_id': int,
+            'photo_blob_name': str,
             'full_name': str,
             'birth_date': datetime,
             'nationality': str
@@ -38,13 +38,13 @@ class Person(Model):
 
         self.attribute_map = {
             'person_id': 'personId',
-            'photo_id': 'photoId',
+            'photo_blob_name': 'photoBlobName',
             'full_name': 'fullName',
             'birth_date': 'birthDate',
             'nationality': 'nationality'
         }
         self._person_id = person_id
-        self._photo_id = photo_id
+        self._photo_blob_name = photo_blob_name
         self._full_name = full_name
         self._birth_date = birth_date
         self._nationality = nationality
@@ -82,25 +82,25 @@ class Person(Model):
         self._person_id = person_id
 
     @property
-    def photo_id(self) -> int:
-        """Gets the photo_id of this Person.
+    def photo_blob_name(self) -> str:
+        """Gets the photo_blob_name of this Person.
 
 
-        :return: The photo_id of this Person.
-        :rtype: int
+        :return: The photo_blob_name of this Person.
+        :rtype: str
         """
-        return self._photo_id
+        return self._photo_blob_name
 
-    @photo_id.setter
-    def photo_id(self, photo_id: int):
-        """Sets the photo_id of this Person.
+    @photo_blob_name.setter
+    def photo_blob_name(self, photo_blob_name: str):
+        """Sets the photo_blob_name of this Person.
 
 
-        :param photo_id: The photo_id of this Person.
-        :type photo_id: int
+        :param photo_blob_name: The photo_blob_name of this Person.
+        :type photo_blob_name: str
         """
 
-        self._photo_id = photo_id
+        self._photo_blob_name = photo_blob_name
 
     @property
     def full_name(self) -> str:

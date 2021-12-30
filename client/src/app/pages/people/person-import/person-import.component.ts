@@ -42,8 +42,10 @@ export class PersonImportComponent {
     this.store.dispatch(
       importPerson({
         fullName: this.fullNameValidation.value,
-        birthDate: this.birthDateValidation.value,
+        birthDate: this.birthDateValidation.value.toISOString(),
         nationality: this.nationalityValidation.value,
+        photoFile:
+          this.files && this.files.length > 0 ? this.files[0].file : new Blob(),
       })
     );
   }

@@ -1,9 +1,9 @@
 import { createAction, props } from "@ngrx/store";
-import { Person } from "src/app/api/model/person";
+import { PeopleBody } from "src/app/api/model/peopleBody";
 
 export const importPerson = createAction(
   "[Person import] request",
-  props<Person>()
+  props<PeopleBody>()
 );
 
 export const personImportSuccessful = createAction("[Person import] success");
