@@ -1,4 +1,4 @@
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -30,6 +30,7 @@ import { environment } from "src/environments/environment";
 
 import { DefaultService } from "./api/api/default.service";
 import { BASE_PATH } from "./api/variables";
+import { HttpRequestInterceptor } from "./communication/httpInterceptor";
 import { AppComponent } from "./components/app/app.component";
 import { DropZoneDirective } from "./directives/drop-zone.directive";
 import { ReactivelyDisabledControlDirective } from "./directives/reactively-disabled-control.directive";
@@ -138,6 +139,11 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
       provide: BASE_PATH,
       useFactory: () =>
         `https://${environment.proxy.host}:${environment.proxy.httpsPort}${environment.proxy.serverBasePath}`,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpRequestInterceptor,
+      multi: true,
     },
     DefaultService,
   ],

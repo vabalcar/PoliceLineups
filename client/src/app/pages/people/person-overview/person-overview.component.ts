@@ -1,18 +1,23 @@
 import { Component, OnInit } from "@angular/core";
+import { SafeUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
+import { combineLatest, Observable } from "rxjs";
 import { filter, map } from "rxjs/operators";
 import { Person } from "src/app/api/model/person";
 import { DynamicPath, StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
 import { loadPersonToUpdate } from "src/app/state/people/person-update/person-update.actions";
-import { selectEditedPerson } from "src/app/state/people/person-update/person-update.selectors";
+import {
+  selectEditedPerson,
+  selectPersonPhotoUrl,
+} from "src/app/state/people/person-update/person-update.selectors";
 
 import { isId } from "../../utils/validations.utils";
 
 interface IPersonOverviewComponentData {
   person: Person;
+  personPhotoUrl: SafeUrl;
 }
 
 @Component({
@@ -25,6 +30,7 @@ export class PersonOverviewComponent implements OnInit {
   readonly personOverviewComponentData$: Observable<IPersonOverviewComponentData>;
 
   private readonly targetPerson$: Observable<Person>;
+  private readonly targetPersonPhotoUrl$: Observable<SafeUrl>;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,11 +38,16 @@ export class PersonOverviewComponent implements OnInit {
     private store: Store<AppState>
   ) {
     this.targetPerson$ = this.store.select(selectEditedPerson);
+    this.targetPersonPhotoUrl$ = this.store.select(selectPersonPhotoUrl);
 
-    this.personOverviewComponentData$ = this.targetPerson$.pipe(
-      filter((targetPerson) => targetPerson.personId !== undefined),
-      map((targetPerson) => ({
+    this.personOverviewComponentData$ = combineLatest([
+      this.targetPerson$,
+      this.targetPersonPhotoUrl$,
+    ]).pipe(
+      filter(([targetPerson, _]) => targetPerson.personId !== undefined),
+      map(([targetPerson, targetPersonPhotoUrl]) => ({
         person: targetPerson,
+        personPhotoUrl: targetPersonPhotoUrl,
       }))
     );
   }

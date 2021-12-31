@@ -4,6 +4,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { StaticPath } from "src/app/routing/paths";
+import { BlobsService } from "src/app/services/blobs/blobs.service";
 import { NotificationsService } from "src/app/services/notifications/notifications.service";
 
 import { convertToLocalDateTime } from "../../utils/date.utils";
@@ -16,6 +17,7 @@ import {
   personDeletionSuccessful,
   personFullNameUpdateSuccessful,
   personNationalityUpdateSuccessful,
+  personPhotoLoaded,
   personToUpdateLoaded,
   personUpdateFailed,
   updatePersonBirthDate,
@@ -34,6 +36,22 @@ export class PersonUpdateEffects {
             personToUpdateLoaded({
               ...person,
               birthDate: convertToLocalDateTime(person.birthDate),
+            })
+          ),
+          catchBeError()
+        )
+      )
+    )
+  );
+
+  personToUpdateLoaded$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(personToUpdateLoaded),
+      mergeMap((action) =>
+        this.blobs.getBlobUrl(action.photoBlobName).pipe(
+          map((photoUrl) =>
+            personPhotoLoaded({
+              photoUrl,
             })
           ),
           catchBeError()
@@ -177,6 +195,7 @@ export class PersonUpdateEffects {
     private actions$: Actions,
     private api: DefaultService,
     private router: Router,
-    private notifications: NotificationsService
+    private notifications: NotificationsService,
+    private blobs: BlobsService
   ) {}
 }

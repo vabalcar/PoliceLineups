@@ -209,6 +209,55 @@ export class DefaultService {
     }
 
     /**
+     * Serves a blob
+     * 
+     * @param blobName name of a blob to serve
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getBlob(blobName: string, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getBlob(blobName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getBlob(blobName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getBlob(blobName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (blobName === null || blobName === undefined) {
+            throw new Error('Required parameter blobName was null or undefined when calling getBlob.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (JwtAuthUser) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/octet-stream',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Blob>('get',`${this.basePath}/blobs/${encodeURIComponent(String(blobName))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Returns a user
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

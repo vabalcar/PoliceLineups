@@ -259,6 +259,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/Response"
 
+  /blobs/{blob_name}:
+    get:
+      summary: Serves a blob
+      x-openapi-router-controller: police_lineups.controllers.blobs
+      operationId: getBlob
+      parameters:
+        - in: path
+          name: blob_name
+          description: name of a blob to serve
+          required: true
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        "200":
+          description: a blob
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: blob not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+
   /people/{person_id}:
     get:
       summary: Returns a person

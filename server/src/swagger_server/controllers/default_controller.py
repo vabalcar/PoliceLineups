@@ -46,6 +46,19 @@ def add_user(body):  # noqa: E501
     return 'do some magic!'
 
 
+def get_blob(blob_name):  # noqa: E501
+    """Serves a blob
+
+     # noqa: E501
+
+    :param blob_name: name of a blob to serve
+    :type blob_name: str
+
+    :rtype: str
+    """
+    return 'do some magic!'
+
+
 def get_current_user():  # noqa: E501
     """Returns a user
 

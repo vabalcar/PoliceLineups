@@ -50,6 +50,17 @@ class TestDefaultController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
+    def test_get_blob(self):
+        """Test case for get_blob
+
+        Serves a blob
+        """
+        response = self.client.open(
+            '/blobs/{blob_name}'.format(blob_name='blob_name_example'),
+            method='GET')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
     def test_get_current_user(self):
         """Test case for get_current_user
 

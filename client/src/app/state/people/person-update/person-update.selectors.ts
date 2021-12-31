@@ -1,4 +1,4 @@
-import { createFeatureSelector } from "@ngrx/store";
+import { createFeatureSelector, createSelector } from "@ngrx/store";
 
 import { AppState } from "../../app.state";
 import { createPersonSelector } from "../utils/selector.utils";
@@ -13,4 +13,9 @@ export const selectPersonUpdateFeature = createFeatureSelector<
 
 export const selectEditedPerson = createPersonSelector(
   selectPersonUpdateFeature
+);
+
+export const selectPersonPhotoUrl = createSelector(
+  selectPersonUpdateFeature,
+  (state: PersonUpdateState) => state.photoUrl
 );

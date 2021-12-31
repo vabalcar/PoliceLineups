@@ -12,6 +12,11 @@ export const personToUpdateLoaded = createAction(
   props<PersonUpdateState>()
 );
 
+export const personPhotoLoaded = createAction(
+  "[Person update] load person photo successful",
+  props<Pick<PersonUpdateState, "photoUrl">>()
+);
+
 export const updatePersonFullName = createAction(
   "[Person update] update full name",
   props<{ targetPersonId?: number; newFullName: string }>()
