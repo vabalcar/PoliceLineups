@@ -5,7 +5,7 @@ import { provideMockActions } from "@ngrx/effects/testing";
 import { provideMockStore } from "@ngrx/store/testing";
 import { Observable } from "rxjs";
 import { DefaultService } from "src/app/api/api/default.service";
-import { NotificationsService } from "src/app/services/notifications.service";
+import { NotificationsService } from "src/app/services/notifications/notifications.service";
 
 import { UserUpdateEffects } from "./user-update.effects";
 

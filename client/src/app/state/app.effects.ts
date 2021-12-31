@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { tap } from "rxjs/operators";
 
 import { StaticPath } from "../routing/paths";
-import { NotificationsService } from "../services/notifications.service";
+import { NotificationsService } from "../services/notifications/notifications.service";
 import { beFailed } from "./app.actions";
 
 @Injectable()

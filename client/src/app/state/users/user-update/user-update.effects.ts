@@ -6,7 +6,7 @@ import { of } from "rxjs";
 import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { StaticPath } from "src/app/routing/paths";
-import { NotificationsService } from "src/app/services/notifications.service";
+import { NotificationsService } from "src/app/services/notifications/notifications.service";
 
 import { logout } from "../../auth/auth.actions";
 import { selectCurrentUserInfo } from "../../auth/auth.selectors";

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { exhaustMap, map, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
-import { NotificationsService } from "src/app/services/notifications.service";
+import { NotificationsService } from "src/app/services/notifications/notifications.service";
 
 import { catchBeError } from "../../utils/errors.utils";
 import {

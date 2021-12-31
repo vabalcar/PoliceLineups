@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { StaticPath } from "src/app/routing/paths";
-import { NotificationsService } from "src/app/services/notifications.service";
+import { NotificationsService } from "src/app/services/notifications/notifications.service";
 
 import { convertToLocalDateTime } from "../../utils/date.utils";
 import { catchBeError } from "../../utils/errors.utils";
