@@ -1,20 +1,9 @@
 <h1 class="mat-headline">Import person</h1>
 <form>
   <div fxLayout="column" fxLayoutGap="16px">
-    <div
-      *ngIf="!files?.length"
-      appDropZone
-      class="dropzone"
-      id="import-person-dropzone"
-      (dropFiles)="filesDropped($event)"
-    >
-      <span class="dropzone-content">Drop your files here!</span>
-    </div>
-    <div *ngIf="files?.length > 0" fxLayout="row wrap" fxLayoutGap="16px">
-      <div *ngFor="let file of files">
-        <img *ngIf="file" [src]="file.url" height="200px" />
-      </div>
-    </div>
+    <app-photo-selector
+      (photoSelected)="photoSubject$.next($event)"
+    ></app-photo-selector>
     <div fxLayout="row wrap" fxLayoutGap="16px">
       <mat-form-field appearance="fill">
         <mat-label>Full name</mat-label>

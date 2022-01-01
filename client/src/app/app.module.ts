@@ -32,7 +32,9 @@ import { DefaultService } from "./api/api/default.service";
 import { BASE_PATH } from "./api/variables";
 import { HttpRequestInterceptor } from "./communication/httpInterceptor";
 import { AppComponent } from "./components/app/app.component";
+import { PhotoSelectorComponent } from "./components/photo-selector/photo-selector.component";
 import { DropZoneDirective } from "./directives/drop-zone.directive";
+import { FileUploadDirective } from "./directives/file-upload.directive";
 import { ReactivelyDisabledControlDirective } from "./directives/reactively-disabled-control.directive";
 import { LoginComponent } from "./pages/auth/login/login.component";
 import { NotAuthorizedComponent } from "./pages/auth/not-authorized/not-authorized.component";
@@ -61,9 +63,11 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
 @NgModule({
   declarations: [
     DropZoneDirective,
+    FileUploadDirective,
     ReactivelyDisabledControlDirective,
 
     AppComponent,
+    PhotoSelectorComponent,
 
     HomeComponent,
 

@@ -1,0 +1,27 @@
+<div fxLayout="column" fxLayoutGap="16px">
+  <div
+    *ngrxLet="photoSubject$ as photo"
+    appDropZone
+    class="dropzone"
+    (dropFiles)="filesSelected($event)"
+    style="width: 400px; height: 400px"
+  >
+    <span *ngIf="!photo" class="dropzone-content">Drop your files here!</span>
+    <img *ngIf="photo" [src]="photo.url" height="400px" />
+  </div>
+  <input
+    hidden
+    appFileUpload
+    #photoUploadInput
+    type="file"
+    (filesSelected)="filesSelected($event)"
+  />
+  <button
+    mat-flat-button
+    style="width: fit-content"
+    color="primary"
+    (click)="photoUploadInput.click()"
+  >
+    Choose file
+  </button>
+</div>
