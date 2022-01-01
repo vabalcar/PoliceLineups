@@ -81,14 +81,9 @@ table {
 }
 
 .dropzone {
-  display: table;
+  min-height: fit-content;
+  min-width: fit-content;
   background-color: #424242;
-}
-
-.dropzone .dropzone-content {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
 }
 
 .mat-list-item-content {

@@ -2,7 +2,7 @@
 <form>
   <div fxLayout="column" fxLayoutGap="16px">
     <app-photo-selector
-      (photoSelected)="photoSubject$.next($event)"
+      [app-photo-subject]="photoSubject$"
     ></app-photo-selector>
     <div fxLayout="row wrap" fxLayoutGap="16px">
       <mat-form-field appearance="fill">

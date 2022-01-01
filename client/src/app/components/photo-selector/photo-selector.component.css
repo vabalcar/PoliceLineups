@@ -1,0 +1,10 @@
+.dropzone .dropzone-content {
+  width: 100%;
+  height: 100%;
+}
+
+.dropzone .dropzone-content img {
+  box-sizing: border-box;
+  max-height: 100%;
+  height: 100%;
+}

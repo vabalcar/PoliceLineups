@@ -3,6 +3,7 @@ import { Store } from "@ngrx/store";
 import { BehaviorSubject } from "rxjs";
 import { AppState } from "src/app/state/app.state";
 import { importPerson } from "src/app/state/people/person-import/person-import.actions";
+import { FileHandle } from "src/app/utils/FileHandle";
 import { FullNameValidation } from "src/app/validations/full-name.validation";
 import { RequiredValidation } from "src/app/validations/required.validation";
 
@@ -15,7 +16,7 @@ import { nationalities } from "../utils/nationality.utils";
 export class PersonImportComponent {
   readonly nationalities = nationalities;
 
-  readonly photoSubject$: BehaviorSubject<File | undefined>;
+  readonly photoSubject$: BehaviorSubject<FileHandle | undefined>;
 
   readonly fullNameValidation: FullNameValidation;
   readonly birthDateValidation: RequiredValidation<Date>;
@@ -44,7 +45,7 @@ export class PersonImportComponent {
         fullName: this.fullNameValidation.value,
         birthDate: this.birthDateValidation.value.toISOString(),
         nationality: this.nationalityValidation.value,
-        photoFile: this.photoSubject$.getValue(),
+        photoFile: this.photoSubject$.getValue()?.file,
       })
     );
   }

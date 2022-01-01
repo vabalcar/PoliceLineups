@@ -1,26 +1,23 @@
-import { Component, EventEmitter, Output } from "@angular/core";
-import { BehaviorSubject, Subscription } from "rxjs";
+import { Component, Input } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 import { FileHandle } from "src/app/utils/FileHandle";
 
 @Component({
   selector: "app-photo-selector",
   templateUrl: "./photo-selector.component.html",
+  styleUrls: ["./photo-selector.component.css"],
 })
 export class PhotoSelectorComponent {
-  @Output()
-  readonly photoSelected = new EventEmitter<File | undefined>();
+  @Input("app-photo-subject")
+  photoSubject$: BehaviorSubject<FileHandle | undefined>;
 
-  readonly photoSubject$: BehaviorSubject<FileHandle | undefined>;
-  readonly selectedPhotoEmitation: Subscription;
+  @Input("dropzone-height")
+  dropzoneHeight = "400px";
 
-  constructor() {
-    this.photoSubject$ = new BehaviorSubject(undefined);
-    this.selectedPhotoEmitation = this.photoSubject$.subscribe((fileHandle) =>
-      this.photoSelected.emit(fileHandle?.file)
-    );
-  }
+  @Input("dropzone-width")
+  dropzoneWidth = "400px";
 
   filesSelected(fileHandles: FileHandle[]): void {
-    this.photoSubject$.next(fileHandles?.length ? fileHandles[0] : undefined);
+    this.photoSubject$?.next(fileHandles?.length ? fileHandles[0] : undefined);
   }
 }

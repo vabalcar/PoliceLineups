@@ -3,11 +3,20 @@
     *ngrxLet="photoSubject$ as photo"
     appDropZone
     class="dropzone"
+    style="width: {{ dropzoneWidth }}; height: {{ dropzoneHeight }}"
     (dropFiles)="filesSelected($event)"
-    style="width: 400px; height: 400px"
   >
-    <span *ngIf="!photo" class="dropzone-content">Drop your files here!</span>
-    <img *ngIf="photo" [src]="photo.url" height="400px" />
+    <div
+      *ngIf="!photo"
+      class="dropzone-content"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+    >
+      Drop a photo here!
+    </div>
+    <div *ngIf="photo" class="dropzone-content">
+      <img [src]="photo.url" />
+    </div>
   </div>
   <input
     hidden

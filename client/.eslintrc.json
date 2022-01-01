@@ -16,6 +16,7 @@
       ],
       "plugins": ["only-warn"],
       "rules": {
+        "@angular-eslint/no-input-rename": "off",
         "@typescript-eslint/explicit-member-accessibility": [
           "off",
           {
