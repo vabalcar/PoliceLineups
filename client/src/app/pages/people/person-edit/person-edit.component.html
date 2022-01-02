@@ -29,8 +29,10 @@
           <button
             mat-button
             color="accent"
-            [disabled]="fullNameValidation.invalid"
-            (click)="updatePersonFullName()"
+            [disabled]="fullNameValidation.pristineOrInvalid"
+            (click)="
+              updatePersonFullName(); fullNameValidation.markAsPristine()
+            "
           >
             Update
           </button>
@@ -68,8 +70,10 @@
           <button
             mat-button
             color="accent"
-            [disabled]="birthDateValidation.invalid"
-            (click)="updatePersonBirthDate()"
+            [disabled]="birthDateValidation.pristineOrInvalid"
+            (click)="
+              updatePersonBirthDate(); birthDateValidation.markAsPristine()
+            "
           >
             Update
           </button>
@@ -106,8 +110,8 @@
           <button
             mat-button
             color="accent"
-            [disabled]="nationalityValidation.invalid"
-            (click)="updatePersonNationality()"
+            [disabled]="nationalityValidation.pristineOrInvalid"
+            (click)="updatePersonNationality(); nationalityValidation.markAsPristine()"
           >
             Update
           </button>

@@ -20,8 +20,8 @@
           <button
             mat-button
             color="accent"
-            [disabled]="fullNameValidation.invalid"
-            (click)="updateUserFullName()"
+            [disabled]="fullNameValidation.pristineOrInvalid"
+            (click)="updateUserFullName(); fullNameValidation.markAsPristine()"
           >
             Update
           </button>
@@ -44,8 +44,8 @@
           <button
             mat-button
             color="accent"
-            [disabled]="emailValidation.invalid"
-            (click)="updateUserEmail()"
+            [disabled]="emailValidation.pristineOrInvalid"
+            (click)="updateUserEmail(); emailValidation.markAsPristine()"
           >
             Update
           </button>
@@ -70,7 +70,7 @@
           <button
             mat-button
             color="accent"
-            [disabled]="passwordSetterValidation.invalid"
+            [disabled]="passwordSetterValidation.pristineOrInvalid"
             (click)="
               updateUserPassword(); passwordSetterValidation.clearValue()
             "

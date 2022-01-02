@@ -30,4 +30,10 @@ export abstract class MultiFormValidation<T, K> extends FormValidationBase<T> {
       formControl.clearValue(emitEvent);
     }
   }
+
+  markAsPristine(): void {
+    for (const formControl of this.formControls.values()) {
+      formControl.markAsPristine();
+    }
+  }
 }

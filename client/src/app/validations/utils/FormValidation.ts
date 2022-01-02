@@ -23,4 +23,8 @@ export abstract class FormValidation<T> extends FormValidationBase<T> {
   clearValue(emitEvent: boolean = false): void {
     this.formControl.clearValue(emitEvent);
   }
+
+  markAsPristine(): void {
+    this.formControl.markAsPristine();
+  }
 }

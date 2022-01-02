@@ -38,10 +38,10 @@ export class UserRegistrationComponent {
 
   isRegistrationDisabled(): boolean {
     return (
-      this.usernameValidation.invalid ||
-      this.fullNameValidation.invalid ||
-      this.passwordSetterValidation.invalid ||
-      this.emailValidation.invalid
+      this.usernameValidation.pristineOrInvalid ||
+      this.fullNameValidation.pristineOrInvalid ||
+      this.passwordSetterValidation.pristineOrInvalid ||
+      this.emailValidation.pristineOrInvalid
     );
   }
 

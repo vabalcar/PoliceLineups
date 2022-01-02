@@ -29,9 +29,9 @@ export class PersonImportComponent {
   isImportDisabled(): boolean {
     return (
       this.photoSubject$.getValue() === undefined ||
-      this.fullNameValidation.invalid ||
-      this.birthDateValidation.invalid ||
-      this.nationalityValidation.invalid
+      this.fullNameValidation.pristineOrInvalid ||
+      this.birthDateValidation.pristineOrInvalid ||
+      this.nationalityValidation.pristineOrInvalid
     );
   }
 

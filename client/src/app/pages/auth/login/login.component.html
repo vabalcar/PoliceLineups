@@ -33,7 +33,10 @@
       mat-raised-button
       color="primary"
       fxFlexAlign="start"
-      [disabled]="usernameValidation.invalid || passwordValidation.invalid"
+      [disabled]="
+        usernameValidation.pristineOrInvalid ||
+        passwordValidation.pristineOrInvalid
+      "
       (click)="login()"
     >
       Login

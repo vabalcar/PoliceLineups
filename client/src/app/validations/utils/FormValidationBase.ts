@@ -11,7 +11,7 @@ export abstract class FormValidationBase<T> {
     return this.errorPublisher.error$;
   }
 
-  get invalid(): boolean {
+  get pristineOrInvalid(): boolean {
     return this.pristine || this.errorPublisher.isErrorState();
   }
 
@@ -34,7 +34,10 @@ export abstract class FormValidationBase<T> {
   }
 
   triggerBeRevalidation(): void {
-    if (!this.errorPublisher.isBeErrorState()) {
+    if (
+      !this.errorPublisher.isBeErrorState() ||
+      this.errorPublisher.isFeErrorState()
+    ) {
       return;
     }
 
@@ -42,4 +45,6 @@ export abstract class FormValidationBase<T> {
   }
 
   abstract clearValue(emitEvent: boolean): void;
+
+  abstract markAsPristine(): void;
 }
