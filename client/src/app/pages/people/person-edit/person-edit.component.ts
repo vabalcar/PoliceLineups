@@ -19,7 +19,6 @@ import { DateValidation } from "src/app/validations/people/date.validation";
 import { NationalityValidation } from "src/app/validations/people/nationality.validation";
 
 import { isId } from "../../utils/validations.utils";
-import { nationalities } from "../utils/nationality.utils";
 
 interface IPersonEditComponentData {
   person: Person;
@@ -29,8 +28,6 @@ interface IPersonEditComponentData {
   templateUrl: "./person-edit.component.html",
 })
 export class PersonEditComponent implements OnInit {
-  readonly nationalities = nationalities;
-
   readonly fullNameValidation: FullNameValidation;
   readonly birthDateValidation: DateValidation;
   readonly nationalityValidation: NationalityValidation;

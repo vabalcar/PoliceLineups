@@ -1,7 +1,8 @@
 import { Component, Input } from "@angular/core";
 import { MatFormFieldAppearance } from "@angular/material/form-field";
-import { nationalities } from "src/app/pages/people/utils/nationality.utils";
 import { RequiredValidation } from "src/app/validations/required.validation";
+
+import { nationalities } from "./utils/nationality.utils";
 
 @Component({
   selector: "app-nationality-selector",
