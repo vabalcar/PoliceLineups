@@ -15,7 +15,8 @@ import {
 } from "src/app/state/people/person-update/person-update.actions";
 import { selectEditedPerson } from "src/app/state/people/person-update/person-update.selectors";
 import { FullNameValidation } from "src/app/validations/full-name.validation";
-import { RequiredValidation } from "src/app/validations/required.validation";
+import { DateValidation } from "src/app/validations/people/date.validation";
+import { NationalityValidation } from "src/app/validations/people/nationality.validation";
 
 import { isId } from "../../utils/validations.utils";
 import { nationalities } from "../utils/nationality.utils";
@@ -31,8 +32,8 @@ export class PersonEditComponent implements OnInit {
   readonly nationalities = nationalities;
 
   readonly fullNameValidation: FullNameValidation;
-  readonly birthDateValidation: RequiredValidation<Date>;
-  readonly nationalityValidation: RequiredValidation<string>;
+  readonly birthDateValidation: DateValidation;
+  readonly nationalityValidation: NationalityValidation;
 
   readonly personEditComponentData$: Observable<IPersonEditComponentData>;
 
@@ -62,12 +63,10 @@ export class PersonEditComponent implements OnInit {
     this.fullNameValidation = new FullNameValidation(
       this.targetPerson$.pipe(map((targetPerson) => targetPerson.fullName))
     );
-    this.birthDateValidation = new RequiredValidation(
-      "Birth date",
+    this.birthDateValidation = new DateValidation(
       this.targetPerson$.pipe(map((targetPerson) => targetPerson.birthDate))
     );
-    this.nationalityValidation = new RequiredValidation(
-      "Nationality",
+    this.nationalityValidation = new NationalityValidation(
       this.targetPerson$.pipe(map((targetPerson) => targetPerson.nationality))
     );
   }
