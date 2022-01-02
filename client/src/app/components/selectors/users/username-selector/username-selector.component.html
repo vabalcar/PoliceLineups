@@ -1,0 +1,17 @@
+<mat-form-field [appearance]="appearance">
+  <mat-label>Username</mat-label>
+  <input
+    required
+    matInput
+    type="text"
+    name="username"
+    autocomplete="username"
+    [formControl]="usernameValidation.formControl"
+    [errorStateMatcher]="usernameValidation.errorPublisher"
+    (focusout)="usernameValidation.triggerBeValidation()"
+    (ngModelChange)="usernameValidation.triggerBeRevalidation()"
+  />
+  <mat-error>
+    {{ usernameValidation.error$ | ngrxPush }}
+  </mat-error>
+</mat-form-field>

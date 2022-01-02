@@ -1,0 +1,14 @@
+<mat-form-field [appearance]="appearance">
+  <mat-label>Full name</mat-label>
+  <input
+    required
+    matInput
+    type="text"
+    name="fullName"
+    [formControl]="fullNameValidation.formControl"
+    [errorStateMatcher]="fullNameValidation.errorPublisher"
+  />
+  <mat-error>
+    {{ fullNameValidation.error$ | ngrxPush }}
+  </mat-error>
+</mat-form-field>

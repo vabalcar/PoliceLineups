@@ -8,13 +8,13 @@ import { FileHandle } from "src/app/utils/FileHandle";
   styleUrls: ["./photo-selector.component.css"],
 })
 export class PhotoSelectorComponent {
-  @Input("app-photo-subject")
+  @Input("appPhotoSubject")
   photoSubject$: BehaviorSubject<FileHandle | undefined>;
 
-  @Input("dropzone-height")
+  @Input("appDropzoneHeight")
   dropzoneHeight = "400px";
 
-  @Input("dropzone-width")
+  @Input("appDropzoneWidth")
   dropzoneWidth = "400px";
 
   filesSelected(fileHandles: FileHandle[]): void {

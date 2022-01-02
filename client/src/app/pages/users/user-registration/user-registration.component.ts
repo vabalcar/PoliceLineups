@@ -8,10 +8,7 @@ import {
 import { selectUsernameValidationError } from "src/app/state/users/user-registration/user-registration.selectors";
 import { FullNameValidation } from "src/app/validations/full-name.validation";
 import { EmailValidation } from "src/app/validations/users/email.validation";
-import {
-  PasswordSetterValidation,
-  PasswordValidationFormControls,
-} from "src/app/validations/users/password-setter.validation";
+import { PasswordSetterValidation } from "src/app/validations/users/password-setter.validation";
 import { UsernameValidation } from "src/app/validations/users/username.validation";
 import { BeValidation } from "src/app/validations/utils/BeValidation";
 import { ObservableFormControl } from "src/app/validations/utils/ObservableFormControl";
@@ -20,8 +17,6 @@ import { ObservableFormControl } from "src/app/validations/utils/ObservableFormC
   templateUrl: "./user-registration.component.html",
 })
 export class UserRegistrationComponent {
-  readonly passwordValidationFormControls = PasswordValidationFormControls;
-
   readonly isAdminFormControl: ObservableFormControl<boolean>;
   readonly usernameValidation: UsernameValidation;
   readonly fullNameValidation: FullNameValidation;

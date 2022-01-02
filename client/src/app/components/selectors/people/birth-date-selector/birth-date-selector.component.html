@@ -1,0 +1,19 @@
+<mat-form-field [appearance]="appearance">
+  <mat-label>Birth date</mat-label>
+  <input
+    required
+    matInput
+    name="birthDate"
+    [matDatepicker]="birthDateDatePicker"
+    [formControl]="birthDateValidation.formControl"
+    [errorStateMatcher]="birthDateValidation.errorPublisher"
+  />
+  <mat-datepicker-toggle
+    matSuffix
+    [for]="birthDateDatePicker"
+  ></mat-datepicker-toggle>
+  <mat-datepicker #birthDateDatePicker></mat-datepicker>
+  <mat-error>
+    {{ birthDateValidation.error$ | ngrxPush }}
+  </mat-error>
+</mat-form-field>

@@ -1,0 +1,15 @@
+<mat-form-field [appearance]="appearance">
+  <mat-label>Nationality</mat-label>
+  <mat-select
+    required
+    [formControl]="nationalityValidation.formControl"
+    [errorStateMatcher]="nationalityValidation.errorPublisher"
+  >
+    <mat-option *ngFor="let nationality of nationalities" [value]="nationality">
+      {{ nationality }}
+    </mat-option>
+  </mat-select>
+  <mat-error>
+    {{ nationalityValidation.error$ | ngrxPush }}
+  </mat-error>
+</mat-form-field>

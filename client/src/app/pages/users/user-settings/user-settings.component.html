@@ -11,21 +11,10 @@
           <mat-card-title>Full name</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <mat-form-field appearance="outline">
-            <mat-label>Full name</mat-label>
-            <input
-              required
-              matInput
-              type="text"
-              name="fullName"
-              autocomplete="name"
-              [formControl]="fullNameValidation.formControl"
-              [errorStateMatcher]="fullNameValidation.errorPublisher"
-            />
-            <mat-error>
-              {{ fullNameValidation.error$ | ngrxPush }}
-            </mat-error>
-          </mat-form-field>
+          <app-full-name-selector
+            appAppearance="outline"
+            [appValidation]="fullNameValidation"
+          ></app-full-name-selector>
         </mat-card-content>
         <mat-card-actions>
           <button
@@ -46,22 +35,10 @@
           <mat-card-title>Email</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input
-              required
-              email
-              matInput
-              type="email"
-              name="email"
-              autocomplete="email"
-              [formControl]="emailValidation.formControl"
-              [errorStateMatcher]="emailValidation.errorPublisher"
-            />
-            <mat-error>
-              {{ emailValidation.error$ | ngrxPush }}
-            </mat-error>
-          </mat-form-field>
+          <app-email-selector
+            appAppearance="outline"
+            [appValidation]="emailValidation"
+          ></app-email-selector>
         </mat-card-content>
         <mat-card-actions>
           <button
@@ -82,47 +59,12 @@
           <mat-card-title>Password</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div fxLayout="row" fxLayoutGap="16px">
-            <mat-form-field appearance="outline">
-              <mat-label>Password</mat-label>
-              <input
-                required
-                minlength="4"
-                maxlength="16"
-                matInput
-                type="password"
-                name="password"
-                autocomplete="new-password"
-                [formControl]="
-                  passwordSetterValidation.formControls.get(
-                    passwordValidationFormControls.password
-                  )
-                "
-                [errorStateMatcher]="passwordSetterValidation.errorPublisher"
-              />
-              <mat-error>
-                {{ passwordSetterValidation.error$ | ngrxPush }}
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Password again</mat-label>
-              <input
-                required
-                minlength="4"
-                maxlength="16"
-                matInput
-                type="password"
-                name="passwordAgain"
-                autocomplete="new-password"
-                [formControl]="
-                  passwordSetterValidation.formControls.get(
-                    passwordValidationFormControls.passwordAgain
-                  )
-                "
-                [errorStateMatcher]="passwordSetterValidation.errorPublisher"
-              />
-            </mat-form-field>
-          </div>
+          <app-new-password-selector
+            appAppearance="outline"
+            appGapWidth="16px"
+            [appValidation]="passwordSetterValidation"
+          >
+          </app-new-password-selector>
         </mat-card-content>
         <mat-card-actions>
           <button

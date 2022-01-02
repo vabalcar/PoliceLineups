@@ -32,7 +32,13 @@ import { DefaultService } from "./api/api/default.service";
 import { BASE_PATH } from "./api/variables";
 import { HttpRequestInterceptor } from "./communication/httpInterceptor";
 import { AppComponent } from "./components/app/app.component";
-import { PhotoSelectorComponent } from "./components/photo-selector/photo-selector.component";
+import { FullNameSelectorComponent } from "./components/selectors/full-name-selector/full-name-selector.component";
+import { BirthDateSelectorComponent } from "./components/selectors/people/birth-date-selector/birth-date-selector.component";
+import { NationalitySelectorComponent } from "./components/selectors/people/nationality-selector/nationality-selector.component";
+import { PhotoSelectorComponent } from "./components/selectors/people/photo-selector/photo-selector.component";
+import { EmailSelectorComponent } from "./components/selectors/users/email-selector/email-selector.component";
+import { NewPasswordSelectorComponent } from "./components/selectors/users/new-password-selector/new-password-selector.component";
+import { UsernameSelectorComponent } from "./components/selectors/users/username-selector/username-selector.component";
 import { DropZoneDirective } from "./directives/drop-zone.directive";
 import { FileUploadDirective } from "./directives/file-upload.directive";
 import { ReactivelyDisabledControlDirective } from "./directives/reactively-disabled-control.directive";
@@ -67,7 +73,14 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
     ReactivelyDisabledControlDirective,
 
     AppComponent,
+
+    UsernameSelectorComponent,
+    FullNameSelectorComponent,
+    NewPasswordSelectorComponent,
+    EmailSelectorComponent,
     PhotoSelectorComponent,
+    BirthDateSelectorComponent,
+    NationalitySelectorComponent,
 
     HomeComponent,
 

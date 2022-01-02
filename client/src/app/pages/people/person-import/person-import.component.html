@@ -1,61 +1,15 @@
 <h1 class="mat-headline">Import person</h1>
 <form>
   <div fxLayout="column" fxLayoutGap="16px">
-    <app-photo-selector
-      [app-photo-subject]="photoSubject$"
-    ></app-photo-selector>
+    <app-photo-selector [appPhotoSubject]="photoSubject$"></app-photo-selector>
     <div fxLayout="row wrap" fxLayoutGap="16px">
-      <mat-form-field appearance="fill">
-        <mat-label>Full name</mat-label>
-        <input
-          required
-          matInput
-          type="text"
-          name="fullName"
-          [formControl]="fullNameValidation.formControl"
-          [errorStateMatcher]="fullNameValidation.errorPublisher"
-        />
-        <mat-error>
-          {{ fullNameValidation.error$ | ngrxPush }}
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Birth date</mat-label>
-        <input
-          required
-          matInput
-          name="birthDate"
-          [matDatepicker]="birthDateDatePicker"
-          [formControl]="birthDateValidation.formControl"
-          [errorStateMatcher]="birthDateValidation.errorPublisher"
-        />
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="birthDateDatePicker"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #birthDateDatePicker></mat-datepicker>
-        <mat-error>
-          {{ birthDateValidation.error$ | ngrxPush }}
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Nationality</mat-label>
-        <mat-select
-          required
-          [formControl]="nationalityValidation.formControl"
-          [errorStateMatcher]="nationalityValidation.errorPublisher"
-        >
-          <mat-option
-            *ngFor="let nationality of nationalities"
-            [value]="nationality"
-          >
-            {{ nationality }}
-          </mat-option>
-        </mat-select>
-        <mat-error>
-          {{ nationalityValidation.error$ | ngrxPush }}
-        </mat-error>
-      </mat-form-field>
+      <app-full-name-selector [appValidation]="fullNameValidation">
+      </app-full-name-selector>
+      <app-birth-date-selector
+        [appValidation]="birthDateValidation"
+      ></app-birth-date-selector>
+      <app-nationality-selector [appValidation]="nationalityValidation">
+      </app-nationality-selector>
     </div>
     <button
       mat-raised-button

@@ -7,15 +7,11 @@ import { FileHandle } from "src/app/utils/FileHandle";
 import { FullNameValidation } from "src/app/validations/full-name.validation";
 import { RequiredValidation } from "src/app/validations/required.validation";
 
-import { nationalities } from "../utils/nationality.utils";
-
 @Component({
   templateUrl: "./person-import.component.html",
   styleUrls: ["./person-import.component.css"],
 })
 export class PersonImportComponent {
-  readonly nationalities = nationalities;
-
   readonly photoSubject$: BehaviorSubject<FileHandle | undefined>;
 
   readonly fullNameValidation: FullNameValidation;
