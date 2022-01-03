@@ -5,16 +5,16 @@ import {
   HostListener,
   Output,
 } from "@angular/core";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 
-import { FileHandle } from "../utils/FileHandle";
+import { BlobsService } from "../services/blobs/blobs.service";
+import { BlobHandle } from "../utils/BlobHandle";
 
 @Directive({
   selector: "[appDropZone]",
 })
 export class DropZoneDirective {
   @Output()
-  dropFiles = new EventEmitter<FileHandle[]>();
+  dropFiles = new EventEmitter<BlobHandle[]>();
 
   @HostBinding("style.backgroundColor")
   backgroundColor: string | undefined;
@@ -23,7 +23,7 @@ export class DropZoneDirective {
     "--user-interaction-color"
   );
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private blobs: BlobsService) {}
 
   @HostListener("dragover", ["$event"])
   onDragOver(event: DragEvent) {
@@ -48,22 +48,18 @@ export class DropZoneDirective {
 
     this.resetBackgroundColor();
 
-    const files: FileHandle[] = Array.from(event.dataTransfer.files).map(
-      (file: File) => ({
-        file,
-        url: this.getUrlForFile(file),
+    const blobHandles: BlobHandle[] = Array.from(event.dataTransfer.files).map(
+      (blob: Blob) => ({
+        blob,
+        url: this.blobs.getUrlForBlob(blob),
       })
     );
 
-    if (files) {
-      this.dropFiles.emit(files);
+    if (!blobHandles?.length) {
+      return;
     }
-  }
 
-  private getUrlForFile(file: File): SafeUrl {
-    return this.sanitizer.bypassSecurityTrustUrl(
-      window.URL.createObjectURL(file)
-    );
+    this.dropFiles.emit(blobHandles);
   }
 
   private resetBackgroundColor(): void {

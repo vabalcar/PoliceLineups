@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
+import { SafeUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, combineLatest, Observable } from "rxjs";
 import { filter, map } from "rxjs/operators";
 import { Person } from "src/app/api/model/person";
 import { StaticPath } from "src/app/routing/paths";
@@ -13,7 +14,11 @@ import {
   updatePersonFullName,
   updatePersonNationality,
 } from "src/app/state/people/person-update/person-update.actions";
-import { selectEditedPerson } from "src/app/state/people/person-update/person-update.selectors";
+import {
+  selectEditedPerson,
+  selectPersonPhotoUrl,
+} from "src/app/state/people/person-update/person-update.selectors";
+import { BlobHandle } from "src/app/utils/BlobHandle";
 import { FullNameValidation } from "src/app/validations/full-name.validation";
 import { DateValidation } from "src/app/validations/people/date.validation";
 import { NationalityValidation } from "src/app/validations/people/nationality.validation";
@@ -22,12 +27,16 @@ import { isId } from "../../utils/validations.utils";
 
 interface IPersonEditComponentData {
   person: Person;
+  personPhotoUrl: SafeUrl;
 }
 
 @Component({
   templateUrl: "./person-edit.component.html",
+  styleUrls: ["./person-edit.component.css"],
 })
 export class PersonEditComponent implements OnInit {
+  readonly photoSubject$: BehaviorSubject<BlobHandle | undefined>;
+
   readonly fullNameValidation: FullNameValidation;
   readonly birthDateValidation: DateValidation;
   readonly nationalityValidation: NationalityValidation;
@@ -35,6 +44,7 @@ export class PersonEditComponent implements OnInit {
   readonly personEditComponentData$: Observable<IPersonEditComponentData>;
 
   private readonly targetPerson$: Observable<Person>;
+  private readonly targetPersonPhotoUrl$: Observable<SafeUrl>;
 
   private readonly personEditComponentDataSubject$: BehaviorSubject<
     IPersonEditComponentData | undefined
@@ -46,16 +56,25 @@ export class PersonEditComponent implements OnInit {
     private store: Store<AppState>
   ) {
     this.targetPerson$ = this.store.select(selectEditedPerson);
+    this.targetPersonPhotoUrl$ = this.store.select(selectPersonPhotoUrl);
 
-    this.personEditComponentData$ = this.targetPerson$.pipe(
-      filter((person) => person.personId !== undefined),
-      map((person) => ({ person }))
+    this.personEditComponentData$ = combineLatest([
+      this.targetPerson$,
+      this.targetPersonPhotoUrl$,
+    ]).pipe(
+      filter(([targetPerson, _]) => targetPerson.personId !== undefined),
+      map(([targetPerson, targetPersonPhotoUrl]) => ({
+        person: targetPerson,
+        personPhotoUrl: targetPersonPhotoUrl,
+      }))
     );
 
     this.personEditComponentDataSubject$ = new BehaviorSubject(undefined);
     this.personEditComponentData$.subscribe(
       this.personEditComponentDataSubject$
     );
+
+    this.photoSubject$ = new BehaviorSubject(undefined);
 
     this.fullNameValidation = new FullNameValidation(
       this.targetPerson$.pipe(map((targetPerson) => targetPerson.fullName))

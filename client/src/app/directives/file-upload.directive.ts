@@ -1,37 +1,33 @@
 import { Directive, EventEmitter, HostListener, Output } from "@angular/core";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 
-import { FileHandle } from "../utils/FileHandle";
+import { BlobsService } from "../services/blobs/blobs.service";
+import { BlobHandle } from "../utils/BlobHandle";
 
 @Directive({
   selector: "[appFileUpload]",
 })
 export class FileUploadDirective {
   @Output()
-  filesSelected = new EventEmitter<FileHandle[]>();
+  selectFiles = new EventEmitter<BlobHandle[]>();
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private blobs: BlobsService) {}
 
   @HostListener("change", ["$event"])
   onChange(event: any) {
     event.preventDefault();
     event.stopPropagation();
 
-    const files: FileHandle[] = Array.from(event.target.files).map(
-      (file: File) => ({
-        file,
-        url: this.getUrlForFile(file),
+    const blobHandles: BlobHandle[] = Array.from(event.target.files).map(
+      (blob: Blob) => ({
+        blob,
+        url: this.blobs.getUrlForBlob(blob),
       })
     );
 
-    if (files) {
-      this.filesSelected.emit(files);
+    if (!blobHandles?.length) {
+      return;
     }
-  }
 
-  private getUrlForFile(file: File): SafeUrl {
-    return this.sanitizer.bypassSecurityTrustUrl(
-      window.URL.createObjectURL(file)
-    );
+    this.selectFiles.emit(blobHandles);
   }
 }

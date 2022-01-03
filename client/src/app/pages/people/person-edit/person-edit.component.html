@@ -2,86 +2,112 @@
   <h1 class="mat-headline">Edit person</h1>
 
   <h2 class="mat-title">Update person</h2>
-  <div fxLayout="row wrap" fxLayoutGap="16px">
+  <div fxLayout="column">
     <form>
       <mat-card class="form-card">
         <mat-card-header class="mat-card-simple-header">
-          <mat-card-title>Full name</mat-card-title>
+          <mat-card-title>Photo</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <app-full-name-selector
-            appAppearance="outline"
-            [appValidation]="fullNameValidation"
-          >
-          </app-full-name-selector>
-        </mat-card-content>
+          <app-photo-selector
+            [appPhotoSubject]="photoSubject$"
+            [appSrc]="data.personPhotoUrl"
+          ></app-photo-selector
+        ></mat-card-content>
         <mat-card-actions>
           <button
+            id="person-photo-update-button"
             mat-button
             color="accent"
-            [disabled]="fullNameValidation.pristineOrInvalid"
-            (click)="
-              updatePersonFullName(); fullNameValidation.markAsPristine()
-            "
+            [disabled]="photoSubject$.getValue() === undefined"
           >
             Update
           </button>
         </mat-card-actions>
       </mat-card>
     </form>
+    <div fxLayout="row wrap" fxLayoutGap="16px">
+      <form>
+        <mat-card class="form-card">
+          <mat-card-header class="mat-card-simple-header">
+            <mat-card-title>Full name</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-full-name-selector
+              appAppearance="outline"
+              [appValidation]="fullNameValidation"
+            >
+            </app-full-name-selector>
+          </mat-card-content>
+          <mat-card-actions>
+            <button
+              mat-button
+              color="accent"
+              [disabled]="fullNameValidation.pristineOrInvalid"
+              (click)="
+                updatePersonFullName(); fullNameValidation.markAsPristine()
+              "
+            >
+              Update
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
 
-    <form>
-      <mat-card class="form-card">
-        <mat-card-header class="mat-card-simple-header">
-          <mat-card-title>Birth date</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <app-birth-date-selector
-            appAppearance="outline"
-            [appValidation]="birthDateValidation"
-          >
-          </app-birth-date-selector>
-        </mat-card-content>
-        <mat-card-actions>
-          <button
-            mat-button
-            color="accent"
-            [disabled]="birthDateValidation.pristineOrInvalid"
-            (click)="
-              updatePersonBirthDate(); birthDateValidation.markAsPristine()
-            "
-          >
-            Update
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </form>
+      <form>
+        <mat-card class="form-card">
+          <mat-card-header class="mat-card-simple-header">
+            <mat-card-title>Birth date</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-birth-date-selector
+              appAppearance="outline"
+              [appValidation]="birthDateValidation"
+            >
+            </app-birth-date-selector>
+          </mat-card-content>
+          <mat-card-actions>
+            <button
+              mat-button
+              color="accent"
+              [disabled]="birthDateValidation.pristineOrInvalid"
+              (click)="
+                updatePersonBirthDate(); birthDateValidation.markAsPristine()
+              "
+            >
+              Update
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
 
-    <form>
-      <mat-card class="form-card">
-        <mat-card-header class="mat-card-simple-header">
-          <mat-card-title>Nationality</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <app-nationality-selector
-            appAppearance="outline"
-            [appValidation]="nationalityValidation"
-          ></app-nationality-selector>
-        </mat-card-content>
-        <mat-card-actions>
-          <button
-            mat-button
-            color="accent"
-            [disabled]="nationalityValidation.pristineOrInvalid"
-            (click)="
-              updatePersonNationality(); nationalityValidation.markAsPristine()
-            "
-          >
-            Update
-          </button>
-        </mat-card-actions>
-      </mat-card>
-    </form>
+      <form>
+        <mat-card class="form-card">
+          <mat-card-header class="mat-card-simple-header">
+            <mat-card-title>Nationality</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-nationality-selector
+              appAppearance="outline"
+              [appValidation]="nationalityValidation"
+            ></app-nationality-selector>
+          </mat-card-content>
+          <mat-card-actions>
+            <button
+              mat-button
+              color="accent"
+              [disabled]="nationalityValidation.pristineOrInvalid"
+              (click)="
+                updatePersonNationality();
+                nationalityValidation.markAsPristine()
+              "
+            >
+              Update
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </div>
   </div>
 
   <h2 class="mat-title">Delete person</h2>

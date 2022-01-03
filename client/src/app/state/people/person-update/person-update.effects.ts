@@ -48,10 +48,10 @@ export class PersonUpdateEffects {
     this.actions$.pipe(
       ofType(personToUpdateLoaded),
       mergeMap((action) =>
-        this.blobs.getBlobUrl(action.photoBlobName).pipe(
-          map((photoUrl) =>
+        this.blobs.getBlob(action.photoBlobName).pipe(
+          map((photoBlobHandle) =>
             personPhotoLoaded({
-              photoUrl,
+              photoUrl: photoBlobHandle.url,
             })
           ),
           catchBeError()
