@@ -181,6 +181,21 @@ def renew_auth_token():  # noqa: E501
     return 'do some magic!'
 
 
+def update_blob(blob, blob_name):  # noqa: E501
+    """Updates a blob
+
+     # noqa: E501
+
+    :param blob: 
+    :type blob: strstr
+    :param blob_name: name of a blob
+    :type blob_name: str
+
+    :rtype: Response
+    """
+    return 'do some magic!'
+
+
 def update_current_user(body):  # noqa: E501
     """Updates a user
 

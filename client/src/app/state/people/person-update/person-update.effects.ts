@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
 import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { StaticPath } from "src/app/routing/paths";
@@ -18,12 +19,15 @@ import {
   personFullNameUpdateSuccessful,
   personNationalityUpdateSuccessful,
   personPhotoLoaded,
+  personPhotoUpdateSuccessful,
   personToUpdateLoaded,
   personUpdateFailed,
   updatePersonBirthDate,
   updatePersonFullName,
   updatePersonNationality,
+  updatePersonPhoto,
 } from "./person-update.actions";
+import { selectPersonPhotoBlobName } from "./person-update.selectors";
 
 @Injectable()
 export class PersonUpdateEffects {
@@ -53,6 +57,23 @@ export class PersonUpdateEffects {
             personPhotoLoaded({
               photoUrl: photoBlobHandle.url,
             })
+          ),
+          catchBeError()
+        )
+      )
+    )
+  );
+
+  updatePersonPhoto$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updatePersonPhoto),
+      concatLatestFrom(() => this.store.select(selectPersonPhotoBlobName)),
+      exhaustMap(([action, blobName]) =>
+        this.api.updateBlobForm(action.newPhoto.blob, blobName).pipe(
+          map((response) =>
+            !response.error
+              ? personPhotoUpdateSuccessful()
+              : personUpdateFailed({ error: response.error })
           ),
           catchBeError()
         )
@@ -196,6 +217,7 @@ export class PersonUpdateEffects {
     private api: DefaultService,
     private router: Router,
     private notifications: NotificationsService,
-    private blobs: BlobsService
+    private blobs: BlobsService,
+    private store: Store
   ) {}
 }

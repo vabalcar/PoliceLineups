@@ -5,6 +5,7 @@ import {
   loadPersonToUpdate,
   personPhotoLoaded,
   personToUpdateLoaded,
+  updatePersonPhoto,
 } from "./person-update.actions";
 import { PersonUpdateState } from "./person-update.state";
 
@@ -14,5 +15,8 @@ export const personUpdateReducer = createReducer(
   initialState,
   on(loadPersonToUpdate, () => initialState),
   on(personToUpdateLoaded, updateState),
-  on(personPhotoLoaded, updateState)
+  on(personPhotoLoaded, updateState),
+  on(updatePersonPhoto, (state, action) =>
+    updateState(state, { photoUrl: action.newPhoto.url })
+  )
 );

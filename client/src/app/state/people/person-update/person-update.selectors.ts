@@ -19,3 +19,8 @@ export const selectPersonPhotoUrl = createSelector(
   selectPersonUpdateFeature,
   (state: PersonUpdateState) => state.photoUrl
 );
+
+export const selectPersonPhotoBlobName = createSelector(
+  selectPersonUpdateFeature,
+  (state: PersonUpdateState) => state.photoBlobName
+);

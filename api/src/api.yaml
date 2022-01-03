@@ -286,6 +286,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/EmptyResponse"
+    patch:
+      summary: Updates a blob
+      x-openapi-router-controller: police_lineups.controllers.blobs
+      operationId: updateBlob
+      requestBody:
+        description: a blob to update
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                blob:
+                  type: string
+                  format: binary
+      parameters:
+        - in: path
+          name: blob_name
+          description: name of a blob
+          required: true
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        "200":
+          description: update result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
 
   /people/{person_id}:
     get:

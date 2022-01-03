@@ -174,6 +174,20 @@ class TestDefaultController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
+    def test_update_blob(self):
+        """Test case for update_blob
+
+        Updates a blob
+        """
+        data = dict(blob='blob_example')
+        response = self.client.open(
+            '/blobs/{blob_name}'.format(blob_name='blob_name_example'),
+            method='PATCH',
+            data=data,
+            content_type='multipart/form-data')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
     def test_update_current_user(self):
         """Test case for update_current_user
 

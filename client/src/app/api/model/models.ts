@@ -1,6 +1,7 @@
 export * from './authRequest';
 export * from './authResponse';
 export * from './authTokenRenewalResponse';
+export * from './blobsBlobNameBody';
 export * from './emptyResponse';
 export * from './peopleBody';
 export * from './person';

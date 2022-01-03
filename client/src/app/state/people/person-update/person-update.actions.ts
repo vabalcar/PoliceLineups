@@ -1,4 +1,5 @@
 import { createAction, props } from "@ngrx/store";
+import { BlobHandle } from "src/app/utils/BlobHandle";
 
 import { PersonUpdateState } from "./person-update.state";
 
@@ -15,6 +16,15 @@ export const personToUpdateLoaded = createAction(
 export const personPhotoLoaded = createAction(
   "[Person update] load person photo successful",
   props<Pick<PersonUpdateState, "photoUrl">>()
+);
+
+export const updatePersonPhoto = createAction(
+  "[Person update] update photo",
+  props<{ targetPersonId?: number; newPhoto: BlobHandle }>()
+);
+
+export const personPhotoUpdateSuccessful = createAction(
+  "[Person update] photo update successful"
 );
 
 export const updatePersonFullName = createAction(

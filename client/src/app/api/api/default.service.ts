@@ -712,6 +712,79 @@ export class DefaultService {
     }
 
     /**
+     * Updates a blob
+     * 
+     * @param blob 
+     * @param blobName name of a blob
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateBlobForm(blob: Blob, blobName: string, observe?: 'body', reportProgress?: boolean): Observable<Response>;
+    public updateBlobForm(blob: Blob, blobName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
+    public updateBlobForm(blob: Blob, blobName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
+    public updateBlobForm(blob: Blob, blobName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (blob === null || blob === undefined) {
+            throw new Error('Required parameter blob was null or undefined when calling updateBlob.');
+        }
+
+        if (blobName === null || blobName === undefined) {
+            throw new Error('Required parameter blobName was null or undefined when calling updateBlob.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (JwtAuthUser) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): void; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        }
+
+        if (blob !== undefined) {
+            formParams = formParams.append('blob', <any>blob) as any || formParams;
+        }
+
+        return this.httpClient.request<Response>('patch',`${this.basePath}/blobs/${encodeURIComponent(String(blobName))}`,
+            {
+                body: convertFormParamsToString ? formParams.toString() : formParams,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Updates a user
      * 
      * @param body update of user

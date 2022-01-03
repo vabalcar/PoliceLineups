@@ -28,6 +28,13 @@ class BlobStorage(metaclass=Singleton):
         if os.path.exists(blob_location):
             os.remove(blob_location)
 
+    def update(self, blob_name: str, file: FileStorage) -> None:
+        self.remove(blob_name)
+
+        file.save(
+            self._get_blob_location(blob_name))
+        file.close()
+
     def serve(self, blob_name: str) -> Response:
         return send_from_directory(self._blobs_root_dir, blob_name)
 
