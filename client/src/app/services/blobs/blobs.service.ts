@@ -5,9 +5,7 @@ import { map } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { BlobHandle } from "src/app/utils/BlobHandle";
 
-@Injectable({
-  providedIn: "root",
-})
+@Injectable()
 export class BlobsService {
   constructor(private api: DefaultService, private sanitizer: DomSanitizer) {}
 

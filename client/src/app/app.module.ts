@@ -56,6 +56,8 @@ import { UserRegistrationComponent } from "./pages/users/user-registration/user-
 import { UserSettingsComponent } from "./pages/users/user-settings/user-settings.component";
 import { UsersListComponent } from "./pages/users/users-list/users-list.component";
 import { AppRoutingModule } from "./routing/app-routing.module";
+import { BlobsService } from "./services/blobs/blobs.service";
+import { NotificationsService } from "./services/notifications/notifications.service";
 import { AppEffects } from "./state/app.effects";
 import { reducers } from "./state/app.reducer";
 import { AuthEffects } from "./state/auth/auth.effects";
@@ -163,6 +165,8 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
       multi: true,
     },
     DefaultService,
+    BlobsService,
+    NotificationsService,
   ],
   bootstrap: [AppComponent],
 })

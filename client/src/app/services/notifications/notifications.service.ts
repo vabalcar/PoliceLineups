@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
 import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
 
-@Injectable({
-  providedIn: "root",
-})
+@Injectable()
 export class NotificationsService {
   private static readonly notificationConfiguration: MatSnackBarConfig = {
     horizontalPosition: "center",
