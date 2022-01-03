@@ -10,7 +10,7 @@
         </mat-card-header>
         <mat-card-content>
           <app-photo-selector
-            [appPhotoSubject]="changedPhotoSubject$"
+            [appPhotoSubject]="newPhotoCandidateSubject$"
             [appSrc]="data.personPhotoUrl"
           ></app-photo-selector
         ></mat-card-content>
@@ -19,8 +19,10 @@
             id="person-photo-update-button"
             mat-button
             color="accent"
-            [disabled]="changedPhotoSubject$.getValue() === undefined"
-            (click)="updatePersonPhoto(); changedPhotoSubject$.next(undefined)"
+            [disabled]="newPhotoCandidateSubject$.getValue() === undefined"
+            (click)="
+              updatePersonPhoto(); newPhotoCandidateSubject$.next(undefined)
+            "
           >
             Update
           </button>

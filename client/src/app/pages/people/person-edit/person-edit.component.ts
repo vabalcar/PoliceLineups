@@ -36,7 +36,7 @@ interface IPersonEditComponentData {
   styleUrls: ["./person-edit.component.css"],
 })
 export class PersonEditComponent implements OnInit {
-  readonly changedPhotoSubject$: BehaviorSubject<BlobHandle | undefined>;
+  readonly newPhotoCandidateSubject$: BehaviorSubject<BlobHandle | undefined>;
 
   readonly fullNameValidation: FullNameValidation;
   readonly birthDateValidation: DateValidation;
@@ -75,7 +75,7 @@ export class PersonEditComponent implements OnInit {
       this.personEditComponentDataSubject$
     );
 
-    this.changedPhotoSubject$ = new BehaviorSubject(undefined);
+    this.newPhotoCandidateSubject$ = new BehaviorSubject(undefined);
 
     this.fullNameValidation = new FullNameValidation(
       this.targetPerson$.pipe(map((targetPerson) => targetPerson.fullName))
@@ -108,7 +108,7 @@ export class PersonEditComponent implements OnInit {
 
   updatePersonPhoto(): void {
     this.store.dispatch(
-      updatePersonPhoto({ newPhoto: this.changedPhotoSubject$.getValue() })
+      updatePersonPhoto({ newPhoto: this.newPhotoCandidateSubject$.getValue() })
     );
   }
 
