@@ -26,7 +26,7 @@ import { NationalityValidation } from "src/app/validations/people/nationality.va
 
 import { isId } from "../../utils/validations.utils";
 
-interface IPersonEditComponentData {
+interface PersonEditComponentData {
   person: Person;
   personPhotoUrl: SafeUrl;
 }
@@ -42,13 +42,13 @@ export class PersonEditComponent implements OnInit {
   readonly birthDateValidation: DateValidation;
   readonly nationalityValidation: NationalityValidation;
 
-  readonly personEditComponentData$: Observable<IPersonEditComponentData>;
+  readonly personEditComponentData$: Observable<PersonEditComponentData>;
 
   private readonly targetPerson$: Observable<Person>;
   private readonly targetPersonPhotoUrl$: Observable<SafeUrl>;
 
   private readonly personEditComponentDataSubject$: BehaviorSubject<
-    IPersonEditComponentData | undefined
+    PersonEditComponentData | undefined
   >;
 
   constructor(

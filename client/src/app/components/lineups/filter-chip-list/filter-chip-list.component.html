@@ -1,0 +1,14 @@
+<div fxLayout="row wrap">
+  <mat-chip-list *ngFor="let filterChipData of filterChipsData">
+    <ng-container *ngrxLet="filterChipData.message$ as filterChipMessage">
+      <mat-chip
+        *ngIf="filterChipMessage"
+        (removed)="filterChipData.validation.clearValue(true)"
+        style="margin-right: 8px"
+      >
+        {{ filterChipMessage }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </ng-container>
+  </mat-chip-list>
+</div>

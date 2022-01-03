@@ -38,6 +38,7 @@
           <mat-card-content>
             <app-full-name-selector
               appAppearance="outline"
+              [appRequired]="true"
               [appValidation]="fullNameValidation"
             >
             </app-full-name-selector>
@@ -65,6 +66,7 @@
           <mat-card-content>
             <app-birth-date-selector
               appAppearance="outline"
+              [appRequired]="true"
               [appValidation]="birthDateValidation"
             >
             </app-birth-date-selector>
@@ -92,6 +94,7 @@
           <mat-card-content>
             <app-nationality-selector
               appAppearance="outline"
+              [appRequired]="true"
               [appValidation]="nationalityValidation"
             ></app-nationality-selector>
           </mat-card-content>

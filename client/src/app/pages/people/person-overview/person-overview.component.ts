@@ -15,7 +15,7 @@ import {
 
 import { isId } from "../../utils/validations.utils";
 
-interface IPersonOverviewComponentData {
+interface PersonOverviewComponentData {
   person: Person;
   personPhotoUrl: SafeUrl;
 }
@@ -27,7 +27,7 @@ interface IPersonOverviewComponentData {
 export class PersonOverviewComponent implements OnInit {
   readonly dynamicPath = DynamicPath;
 
-  readonly personOverviewComponentData$: Observable<IPersonOverviewComponentData>;
+  readonly personOverviewComponentData$: Observable<PersonOverviewComponentData>;
 
   private readonly targetPerson$: Observable<Person>;
   private readonly targetPersonPhotoUrl$: Observable<SafeUrl>;

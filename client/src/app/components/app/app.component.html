@@ -55,6 +55,15 @@
   <mat-drawer-container id="drawer-container">
     <mat-drawer id="drawer" mode="side" [opened]="data.isMenuDrawerOpened">
       <div *ngIf="data.isLoggedIn">
+        <mat-label class="mat-caption">Lineups</mat-label>
+        <button
+          mat-button
+          class="button-with-icon-and-text"
+          routerLink="{{ staticPath.newLineup }}"
+        >
+          <mat-icon>add</mat-icon>New lineup
+        </button>
+        <mat-divider></mat-divider>
         <mat-label class="mat-caption">People</mat-label>
         <button
           mat-button
@@ -68,7 +77,7 @@
           class="button-with-icon-and-text"
           routerLink="{{ staticPath.personImport }}"
         >
-          <mat-icon>add</mat-icon>Import person
+          <mat-icon>person_add</mat-icon>Import person
         </button>
         <mat-divider></mat-divider>
       </div>

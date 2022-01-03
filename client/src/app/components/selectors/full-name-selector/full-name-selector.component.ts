@@ -12,4 +12,7 @@ export class FullNameSelectorComponent {
 
   @Input("appAppearance")
   appearance: MatFormFieldAppearance = "fill";
+
+  @Input("appRequired")
+  required = false;
 }

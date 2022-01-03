@@ -28,7 +28,7 @@ import { environment } from "src/environments/environment";
 import { isId } from "../../utils/validations.utils";
 import { adminRole } from "../utils/user-role.utils";
 
-interface IUserSettingsComponentData {
+interface UserSettingsComponentData {
   userId: number;
   username: string;
   isEditingSelf: boolean;
@@ -48,12 +48,12 @@ export class UserSettingsComponent implements OnInit {
   readonly passwordSetterValidation: PasswordSetterValidation;
   readonly isAdminFormControl: ObservableFormControl<boolean>;
 
-  readonly userSettingsComponentData$: Observable<IUserSettingsComponentData>;
+  readonly userSettingsComponentData$: Observable<UserSettingsComponentData>;
 
   private readonly loggedInUserId$: Observable<number>;
   private readonly targetUser$: Observable<User>;
   private readonly userSettingsComponentDataSubject$: BehaviorSubject<
-    IUserSettingsComponentData | undefined
+    UserSettingsComponentData | undefined
   >;
 
   constructor(
@@ -173,7 +173,7 @@ export class UserSettingsComponent implements OnInit {
   }
 
   private getTargetUserId(
-    userData: IUserSettingsComponentData | undefined
+    userData: UserSettingsComponentData | undefined
   ): number | undefined {
     return !userData || userData.isEditingSelf ? undefined : userData.userId;
   }

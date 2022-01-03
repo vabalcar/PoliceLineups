@@ -1,0 +1,15 @@
+<mat-form-field [appearance]="appearance">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    [required]="required"
+    matInput
+    type="number"
+    min="0"
+    name="age"
+    [formControl]="ageValidation.formControl"
+    [errorStateMatcher]="ageValidation.errorPublisher"
+  />
+  <mat-error>
+    {{ ageValidation.error$ | ngrxPush }}
+  </mat-error>
+</mat-form-field>

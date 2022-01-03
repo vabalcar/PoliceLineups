@@ -4,6 +4,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
+import { MatChipsModule } from "@angular/material/chips";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatIconModule } from "@angular/material/icon";
@@ -16,6 +17,7 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSliderModule } from "@angular/material/slider";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSortModule } from "@angular/material/sort";
+import { MatStepperModule } from "@angular/material/stepper";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { BrowserModule } from "@angular/platform-browser";
@@ -32,7 +34,9 @@ import { DefaultService } from "./api/api/default.service";
 import { BASE_PATH } from "./api/variables";
 import { HttpRequestInterceptor } from "./communication/httpInterceptor";
 import { AppComponent } from "./components/app/app.component";
+import { FilterChipListComponent } from "./components/lineups/filter-chip-list/filter-chip-list.component";
 import { FullNameSelectorComponent } from "./components/selectors/full-name-selector/full-name-selector.component";
+import { AgeSelectorComponent } from "./components/selectors/people/age-selector/age-selector.component";
 import { BirthDateSelectorComponent } from "./components/selectors/people/birth-date-selector/birth-date-selector.component";
 import { NationalitySelectorComponent } from "./components/selectors/people/nationality-selector/nationality-selector.component";
 import { PhotoSelectorComponent } from "./components/selectors/people/photo-selector/photo-selector.component";
@@ -45,6 +49,7 @@ import { ReactivelyDisabledControlDirective } from "./directives/reactively-disa
 import { LoginComponent } from "./pages/auth/login/login.component";
 import { NotAuthorizedComponent } from "./pages/auth/not-authorized/not-authorized.component";
 import { HomeComponent } from "./pages/home/home.component";
+import { LineupEditorComponent } from "./pages/lineups/lineup-editor/lineup-editor.component";
 import { PathNotFoundComponent } from "./pages/not-found/path-not-found/path-not-found.component";
 import { ResourceNotFoundComponent } from "./pages/not-found/resource-not-found/resource-not-found.component";
 import { PeopleListComponent } from "./pages/people/people-list/people-list.component";
@@ -76,6 +81,8 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
 
     AppComponent,
 
+    FilterChipListComponent,
+
     UsernameSelectorComponent,
     FullNameSelectorComponent,
     NewPasswordSelectorComponent,
@@ -83,6 +90,7 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
     PhotoSelectorComponent,
     BirthDateSelectorComponent,
     NationalitySelectorComponent,
+    AgeSelectorComponent,
 
     HomeComponent,
 
@@ -92,15 +100,17 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
     PathNotFoundComponent,
     ResourceNotFoundComponent,
 
+    UsersListComponent,
+    UserRegistrationComponent,
+    UserOverviewComponent,
+    UserSettingsComponent,
+
     PeopleListComponent,
     PersonImportComponent,
     PersonOverviewComponent,
     PersonEditComponent,
 
-    UsersListComponent,
-    UserRegistrationComponent,
-    UserOverviewComponent,
-    UserSettingsComponent,
+    LineupEditorComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -112,6 +122,7 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
 
     MatButtonModule,
     MatCardModule,
+    MatChipsModule,
     MatDatepickerModule,
     MatIconModule,
     MatInputModule,
@@ -124,6 +135,7 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
     MatSlideToggleModule,
     MatSnackBarModule,
     MatSortModule,
+    MatStepperModule,
     MatTableModule,
     MatToolbarModule,
 

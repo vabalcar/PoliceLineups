@@ -1,0 +1,53 @@
+<h1 class="mat-headline">New lineup</h1>
+<mat-horizontal-stepper #stepper>
+  <mat-step>
+    <ng-template matStepLabel>Filter</ng-template>
+    <div fxLayout="column" fxLayoutGap="16px">
+      <app-filter-chip-list
+        [appFilterChipsData]="filterChipsData"
+      ></app-filter-chip-list>
+      <form>
+        <div fxLayout="row wrap" fxLayoutGap="16px">
+          <app-full-name-selector
+            appAppearance="outline"
+            [appValidation]="fullNameValidation"
+          >
+          </app-full-name-selector>
+
+          <app-age-selector
+            appAppearance="outline"
+            appLabel="Minimal age"
+            [appValidation]="minAgeValidation"
+          >
+          </app-age-selector>
+
+          <app-age-selector
+            appAppearance="outline"
+            appLabel="Maximal age"
+            [appValidation]="maxAgeValidation"
+          >
+          </app-age-selector>
+
+          <app-nationality-selector
+            appAppearance="outline"
+            [appValidation]="nationalityValidation"
+          ></app-nationality-selector>
+        </div>
+      </form>
+    </div>
+    <button mat-button matStepperNext>Search</button></mat-step
+  >
+  <mat-step>
+    <ng-template matStepLabel>Search result</ng-template>
+    <app-filter-chip-list
+      [appFilterChipsData]="filterChipsData"
+    ></app-filter-chip-list>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext>Next</button></mat-step
+  >
+  <mat-step>
+    <ng-template matStepLabel>Lineup</ng-template>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button (click)="stepper.reset()">Reset</button>
+  </mat-step>
+</mat-horizontal-stepper>

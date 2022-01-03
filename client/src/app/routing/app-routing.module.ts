@@ -6,6 +6,7 @@ import { UserAuthGuard } from "../guards/auth-user/auth-user.guard";
 import { LoginComponent } from "../pages/auth/login/login.component";
 import { NotAuthorizedComponent } from "../pages/auth/not-authorized/not-authorized.component";
 import { HomeComponent } from "../pages/home/home.component";
+import { LineupEditorComponent } from "../pages/lineups/lineup-editor/lineup-editor.component";
 import { PathNotFoundComponent } from "../pages/not-found/path-not-found/path-not-found.component";
 import { ResourceNotFoundComponent } from "../pages/not-found/resource-not-found/resource-not-found.component";
 import { PeopleListComponent } from "../pages/people/people-list/people-list.component";
@@ -91,6 +92,11 @@ const routes: Routes = [
   {
     path: PathTemplate.personEdit,
     component: PersonEditComponent,
+    canActivate: [UserAuthGuard],
+  },
+  {
+    path: getPathForRoute(StaticPath.newLineup),
+    component: LineupEditorComponent,
     canActivate: [UserAuthGuard],
   },
   { path: "**", component: PathNotFoundComponent },

@@ -1,18 +1,21 @@
 import { Component, Input } from "@angular/core";
 import { MatFormFieldAppearance } from "@angular/material/form-field";
-import { DateValidation } from "src/app/validations/people/date.validation";
+import { AgeValidation } from "src/app/validations/people/age.validation";
 
 @Component({
-  selector: "app-birth-date-selector",
-  templateUrl: "./birth-date-selector.component.html",
+  selector: "app-age-selector",
+  templateUrl: "./age-selector.component.html",
 })
-export class BirthDateSelectorComponent {
+export class AgeSelectorComponent {
   @Input("appValidation")
-  birthDateValidation: DateValidation;
+  ageValidation: AgeValidation;
 
   @Input("appAppearance")
   appearance: MatFormFieldAppearance = "fill";
 
   @Input("appRequired")
   required = false;
+
+  @Input("appLabel")
+  label = "Age";
 }

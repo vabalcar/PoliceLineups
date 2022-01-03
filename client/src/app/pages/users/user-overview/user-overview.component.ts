@@ -13,7 +13,7 @@ import { selectEditedUserInfo } from "src/app/state/users/user-update/user-updat
 import { isId } from "../../utils/validations.utils";
 import { getUserRole, UserRole } from "../utils/user-role.utils";
 
-interface IUserOverviewComponentData {
+interface UserOverviewComponentData {
   isOverviewingSelf: boolean;
   user: User;
   userRole: UserRole;
@@ -26,7 +26,7 @@ interface IUserOverviewComponentData {
 export class UserOverviewComponent implements OnInit {
   readonly dynamicPath = DynamicPath;
 
-  readonly userOverviewComponentData$: Observable<IUserOverviewComponentData>;
+  readonly userOverviewComponentData$: Observable<UserOverviewComponentData>;
 
   private readonly loggedInUserId$: Observable<number>;
   private readonly targetUser$: Observable<User>;

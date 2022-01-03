@@ -1,7 +1,7 @@
 <mat-form-field [appearance]="appearance">
   <mat-label>Nationality</mat-label>
   <mat-select
-    required
+    [required]="required"
     [formControl]="nationalityValidation.formControl"
     [errorStateMatcher]="nationalityValidation.errorPublisher"
   >

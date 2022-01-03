@@ -3,12 +3,19 @@
   <div fxLayout="column" fxLayoutGap="16px">
     <app-photo-selector [appPhotoSubject]="photoSubject$"></app-photo-selector>
     <div fxLayout="row wrap" fxLayoutGap="16px">
-      <app-full-name-selector [appValidation]="fullNameValidation">
+      <app-full-name-selector
+        [appRequired]="true"
+        [appValidation]="fullNameValidation"
+      >
       </app-full-name-selector>
       <app-birth-date-selector
+        [appRequired]="true"
         [appValidation]="birthDateValidation"
       ></app-birth-date-selector>
-      <app-nationality-selector [appValidation]="nationalityValidation">
+      <app-nationality-selector
+        [appRequired]="true"
+        [appValidation]="nationalityValidation"
+      >
       </app-nationality-selector>
     </div>
     <button

@@ -14,7 +14,7 @@ import { toggleMenuDrawer } from "src/app/state/menu/menu.actions";
 import { selectIsMenuDrawerOpened } from "src/app/state/menu/menu.selectors";
 import { environment } from "src/environments/environment";
 
-interface IAppComponentData {
+interface AppComponentData {
   isLoggedIn?: boolean;
   isAdmin?: boolean;
   fullName?: string;
@@ -29,7 +29,7 @@ interface IAppComponentData {
 export class AppComponent {
   readonly staticPath = StaticPath;
 
-  readonly appComponentData$: Observable<IAppComponentData>;
+  readonly appComponentData$: Observable<AppComponentData>;
 
   private readonly isLoggedIn$: Observable<boolean>;
   private readonly isAdmin$: Observable<boolean>;

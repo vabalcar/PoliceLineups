@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { MatFormFieldAppearance } from "@angular/material/form-field";
-import { RequiredValidation } from "src/app/validations/required.validation";
+import { NationalityValidation } from "src/app/validations/people/nationality.validation";
 
 import { nationalities } from "./utils/nationality.utils";
 
@@ -10,10 +10,13 @@ import { nationalities } from "./utils/nationality.utils";
 })
 export class NationalitySelectorComponent {
   @Input("appValidation")
-  nationalityValidation: RequiredValidation<string>;
+  nationalityValidation: NationalityValidation;
 
   @Input("appAppearance")
   appearance: MatFormFieldAppearance = "fill";
+
+  @Input("appRequired")
+  required = false;
 
   readonly nationalities = nationalities;
 }

@@ -61,7 +61,7 @@ export class PasswordSetterValidation extends MultiFormValidation<
           formControls.get(PasswordValidationFormControls.passwordAgain).value$,
         ]).pipe(
           map(([password, passwordAgain]) =>
-            password === passwordAgain ? null : "passwords don't match"
+            password === passwordAgain ? null : "Passwords don't match"
           )
         ),
       ])

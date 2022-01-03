@@ -1,7 +1,7 @@
 <mat-form-field [appearance]="appearance">
   <mat-label>Birth date</mat-label>
   <input
-    required
+    [required]="required"
     matInput
     name="birthDate"
     [matDatepicker]="birthDateDatePicker"
