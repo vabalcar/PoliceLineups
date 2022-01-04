@@ -636,6 +636,9 @@ components:
     LineupOverview:
       type: object
       properties:
+        lineupId:
+          type: integer
+          format: int64
         name:
           type: string
           minLength: 1

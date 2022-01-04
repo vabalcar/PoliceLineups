@@ -14,9 +14,11 @@ class LineupOverview(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, name: str=None, last_edit_date_time: datetime=None, owner_username: str=None):  # noqa: E501
+    def __init__(self, lineup_id: int=None, name: str=None, last_edit_date_time: datetime=None, owner_username: str=None):  # noqa: E501
         """LineupOverview - a model defined in Swagger
 
+        :param lineup_id: The lineup_id of this LineupOverview.  # noqa: E501
+        :type lineup_id: int
         :param name: The name of this LineupOverview.  # noqa: E501
         :type name: str
         :param last_edit_date_time: The last_edit_date_time of this LineupOverview.  # noqa: E501
@@ -25,16 +27,19 @@ class LineupOverview(Model):
         :type owner_username: str
         """
         self.swagger_types = {
+            'lineup_id': int,
             'name': str,
             'last_edit_date_time': datetime,
             'owner_username': str
         }
 
         self.attribute_map = {
+            'lineup_id': 'lineupId',
             'name': 'name',
             'last_edit_date_time': 'lastEditDateTime',
             'owner_username': 'ownerUsername'
         }
+        self._lineup_id = lineup_id
         self._name = name
         self._last_edit_date_time = last_edit_date_time
         self._owner_username = owner_username
@@ -49,6 +54,27 @@ class LineupOverview(Model):
         :rtype: LineupOverview
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def lineup_id(self) -> int:
+        """Gets the lineup_id of this LineupOverview.
+
+
+        :return: The lineup_id of this LineupOverview.
+        :rtype: int
+        """
+        return self._lineup_id
+
+    @lineup_id.setter
+    def lineup_id(self, lineup_id: int):
+        """Sets the lineup_id of this LineupOverview.
+
+
+        :param lineup_id: The lineup_id of this LineupOverview.
+        :type lineup_id: int
+        """
+
+        self._lineup_id = lineup_id
 
     @property
     def name(self) -> str:

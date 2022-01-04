@@ -16,9 +16,11 @@ class Lineup(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, name: str=None, last_edit_date_time: datetime=None, owner_username: str=None, people: List[Person]=None):  # noqa: E501
+    def __init__(self, lineup_id: int=None, name: str=None, last_edit_date_time: datetime=None, owner_username: str=None, people: List[Person]=None):  # noqa: E501
         """Lineup - a model defined in Swagger
 
+        :param lineup_id: The lineup_id of this Lineup.  # noqa: E501
+        :type lineup_id: int
         :param name: The name of this Lineup.  # noqa: E501
         :type name: str
         :param last_edit_date_time: The last_edit_date_time of this Lineup.  # noqa: E501
@@ -29,6 +31,7 @@ class Lineup(Model):
         :type people: List[Person]
         """
         self.swagger_types = {
+            'lineup_id': int,
             'name': str,
             'last_edit_date_time': datetime,
             'owner_username': str,
@@ -36,11 +39,13 @@ class Lineup(Model):
         }
 
         self.attribute_map = {
+            'lineup_id': 'lineupId',
             'name': 'name',
             'last_edit_date_time': 'lastEditDateTime',
             'owner_username': 'ownerUsername',
             'people': 'people'
         }
+        self._lineup_id = lineup_id
         self._name = name
         self._last_edit_date_time = last_edit_date_time
         self._owner_username = owner_username
@@ -56,6 +61,27 @@ class Lineup(Model):
         :rtype: Lineup
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def lineup_id(self) -> int:
+        """Gets the lineup_id of this Lineup.
+
+
+        :return: The lineup_id of this Lineup.
+        :rtype: int
+        """
+        return self._lineup_id
+
+    @lineup_id.setter
+    def lineup_id(self, lineup_id: int):
+        """Sets the lineup_id of this Lineup.
+
+
+        :param lineup_id: The lineup_id of this Lineup.
+        :type lineup_id: int
+        """
+
+        self._lineup_id = lineup_id
 
     @property
     def name(self) -> str:

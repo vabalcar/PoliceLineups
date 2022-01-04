@@ -644,6 +644,9 @@ components:
     LineupOverview:
       type: object
       properties:
+        lineupId:
+          type: integer
+          format: int64
         name:
           minLength: 1
           type: string
@@ -654,6 +657,7 @@ components:
           minLength: 1
           type: string
       example:
+        lineupId: 0
         ownerUsername: ownerUsername
         lastEditDateTime: 2000-01-23T04:56:07.000+00:00
         name: name

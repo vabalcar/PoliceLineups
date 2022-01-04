@@ -11,6 +11,7 @@
  */
 
 export interface LineupOverview { 
+    lineupId?: number;
     name?: string;
     lastEditDateTime?: Date;
     ownerUsername?: string;

@@ -3,6 +3,7 @@ import { ActionReducerMap } from "@ngrx/store";
 
 import { authReducer } from "./auth/auth.reducer";
 import { lineupUpdateReducer } from "./lineups/lineup-update/lineup-update.reducer";
+import { lineupsListReducer } from "./lineups/lineups-list/lineups-list.reducer";
 import { menuReducer } from "./menu/menu.reducer";
 import { peopleListReducer } from "./people/people-list/people-list.reducer";
 import { personUpdateReducer } from "./people/person-update/person-update.reducer";
@@ -20,4 +21,5 @@ export const reducers: ActionReducerMap<Record<string, unknown>> = {
   personUpdate: personUpdateReducer,
   peopleList: peopleListReducer,
   lineupUpdate: lineupUpdateReducer,
+  lineupsList: lineupsListReducer,
 };

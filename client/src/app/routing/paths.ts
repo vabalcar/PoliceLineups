@@ -12,6 +12,7 @@ export enum StaticPath {
   peopleList = "/people",
   personImport = "/people/import",
   newLineup = "/lineups/new",
+  currentUserLineups = "/user/current/lineups",
 }
 
 export enum PathTemplate {

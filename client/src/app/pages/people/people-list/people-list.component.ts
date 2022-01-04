@@ -30,9 +30,9 @@ export class PeopleListComponent implements OnInit {
   constructor(private store: Store<AppState>) {
     this.people$ = this.store.select(selectPeopleList).pipe(
       map((people) => {
-        const usersSource = new MatTableDataSource(people);
-        usersSource.sort = this.sort;
-        return usersSource;
+        const peopleSource = new MatTableDataSource(people);
+        peopleSource.sort = this.sort;
+        return peopleSource;
       })
     );
   }

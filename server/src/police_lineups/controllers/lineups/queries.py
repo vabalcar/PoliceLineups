@@ -1,10 +1,10 @@
 def get_lineups():
-    pass
+    return []
 
 
 def get_lineups_for_current_user():
-    pass
+    return []
 
 
 def get_lineup(lineup_id):
-    pass
+    return None
