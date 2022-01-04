@@ -11,9 +11,9 @@ import { loadCurrentUserLineups } from "src/app/state/lineups/lineups-list/lineu
 import { selectLineupsList } from "src/app/state/lineups/lineups-list/lineups-list.selectors";
 
 @Component({
-  templateUrl: "./current-user-lineups.component.html",
+  templateUrl: "./current-user-lineups-list.component.html",
 })
-export class CurrentUserLineupsComponent implements OnInit {
+export class CurrentUserLineupsListComponent implements OnInit {
   @ViewChild(MatSort)
   readonly sort: MatSort;
 

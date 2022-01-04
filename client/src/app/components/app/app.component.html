@@ -59,9 +59,17 @@
         <button
           mat-button
           class="button-with-icon-and-text"
-          routerLink="{{ staticPath.currentUserLineups }}"
+          routerLink="{{ staticPath.currentUserLineupsList }}"
         >
           <mat-icon>list</mat-icon>My lineups
+        </button>
+        <button
+          *ngIf="data.isAdmin"
+          mat-button
+          class="button-with-icon-and-text"
+          routerLink="{{ staticPath.allLineupsList }}"
+        >
+          <mat-icon>list</mat-icon>All lineups
         </button>
         <button
           mat-button

@@ -49,8 +49,9 @@ import { ReactivelyDisabledControlDirective } from "./directives/reactively-disa
 import { LoginComponent } from "./pages/auth/login/login.component";
 import { NotAuthorizedComponent } from "./pages/auth/not-authorized/not-authorized.component";
 import { HomeComponent } from "./pages/home/home.component";
+import { AllLineupsListComponent } from "./pages/lineups/all-lineups-list/all-lineups-list.component";
+import { CurrentUserLineupsListComponent } from "./pages/lineups/current-user-lineups-list/current-user-lineups-list.component";
 import { LineupEditorComponent } from "./pages/lineups/lineup-editor/lineup-editor.component";
-import { CurrentUserLineupsComponent } from "./pages/lineups/lineups-list/current-user-lineups.component";
 import { PathNotFoundComponent } from "./pages/not-found/path-not-found/path-not-found.component";
 import { ResourceNotFoundComponent } from "./pages/not-found/resource-not-found/resource-not-found.component";
 import { PeopleListComponent } from "./pages/people/people-list/people-list.component";
@@ -114,7 +115,8 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
     PersonEditComponent,
 
     LineupEditorComponent,
-    CurrentUserLineupsComponent,
+    CurrentUserLineupsListComponent,
+    AllLineupsListComponent,
   ],
   imports: [
     AppRoutingModule,

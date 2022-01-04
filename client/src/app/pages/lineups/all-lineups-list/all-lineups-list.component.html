@@ -1,0 +1,31 @@
+<h1 class="mat-headline">All lineups</h1>
+<div class="long-table-container mat-elevation-z8">
+  <table mat-table [dataSource]="lineups$ | ngrxPush" matSort>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let lineup">{{ lineup.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastEditDateTime">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Last edited</th>
+      <td mat-cell *matCellDef="let lineup">
+        {{ lineup.lastEditDateTime.toLocaleString() }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ownerUsername">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Owner</th>
+      <td mat-cell *matCellDef="let lineup">{{ lineup.ownerUsername }}</td>
+    </ng-container>
+
+    <tr
+      mat-header-row
+      *matHeaderRowDef="displayedTableColumns; sticky: true"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="let lineup; columns: displayedTableColumns"
+      class="clickable-row"
+    ></tr>
+  </table>
+</div>
