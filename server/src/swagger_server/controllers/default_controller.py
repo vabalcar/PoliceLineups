@@ -5,11 +5,28 @@ from swagger_server.models.auth_request import AuthRequest  # noqa: E501
 from swagger_server.models.auth_response import AuthResponse  # noqa: E501
 from swagger_server.models.auth_token_renewal_response import AuthTokenRenewalResponse  # noqa: E501
 from swagger_server.models.empty_response import EmptyResponse  # noqa: E501
+from swagger_server.models.lineup import Lineup  # noqa: E501
+from swagger_server.models.lineup_overview import LineupOverview  # noqa: E501
 from swagger_server.models.person import Person  # noqa: E501
 from swagger_server.models.response import Response  # noqa: E501
 from swagger_server.models.user import User  # noqa: E501
 from swagger_server.models.user_with_password import UserWithPassword  # noqa: E501
 from swagger_server import util
+
+
+def add_lineup(body):  # noqa: E501
+    """Adds a lineup
+
+     # noqa: E501
+
+    :param body: a lineup to add
+    :type body: dict | bytes
+
+    :rtype: Response
+    """
+    if connexion.request.is_json:
+        body = Lineup.from_dict(connexion.request.get_json())  # noqa: E501
+    return 'do some magic!'
 
 
 def add_person(full_name, birth_date, nationality, photo_file):  # noqa: E501
@@ -66,6 +83,41 @@ def get_current_user():  # noqa: E501
 
 
     :rtype: User
+    """
+    return 'do some magic!'
+
+
+def get_lineup(lineup_id):  # noqa: E501
+    """Returns a lineup
+
+     # noqa: E501
+
+    :param lineup_id: id of a lineup
+    :type lineup_id: int
+
+    :rtype: Lineup
+    """
+    return 'do some magic!'
+
+
+def get_lineups():  # noqa: E501
+    """Returns a list of lineups for all users
+
+     # noqa: E501
+
+
+    :rtype: List[LineupOverview]
+    """
+    return 'do some magic!'
+
+
+def get_lineups_for_current_user():  # noqa: E501
+    """Returns a list of lineups for all users
+
+     # noqa: E501
+
+
+    :rtype: List[LineupOverview]
     """
     return 'do some magic!'
 
@@ -152,6 +204,19 @@ def remove_current_user():  # noqa: E501
     return 'do some magic!'
 
 
+def remove_lineup(lineup_id):  # noqa: E501
+    """Removes a lineup
+
+     # noqa: E501
+
+    :param lineup_id: id of a lineup
+    :type lineup_id: int
+
+    :rtype: Response
+    """
+    return 'do some magic!'
+
+
 def remove_person(person_id):  # noqa: E501
     """Removes a person
 
@@ -216,6 +281,23 @@ def update_current_user(body):  # noqa: E501
     """
     if connexion.request.is_json:
         body = UserWithPassword.from_dict(connexion.request.get_json())  # noqa: E501
+    return 'do some magic!'
+
+
+def update_lineup(body, lineup_id):  # noqa: E501
+    """Updates a lineup
+
+     # noqa: E501
+
+    :param body: a lineup to update
+    :type body: dict | bytes
+    :param lineup_id: id of a lineup
+    :type lineup_id: int
+
+    :rtype: Response
+    """
+    if connexion.request.is_json:
+        body = Lineup.from_dict(connexion.request.get_json())  # noqa: E501
     return 'do some magic!'
 
 

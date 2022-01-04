@@ -1,12 +1,14 @@
 from police_lineups.singletons import Configuration, DB
 
+from .lineup_people import DbLineupPerson
+from .lineups import DbLineup
 from .people import DbPerson
 from .users import DbUser
 
 
 def init_current_db():
     with DB().current as database:
-        database.create_tables([DbPerson, DbUser])
+        database.create_tables([DbUser, DbPerson, DbLineup, DbLineupPerson])
 
     init_users()
 

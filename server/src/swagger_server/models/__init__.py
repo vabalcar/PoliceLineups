@@ -8,6 +8,8 @@ from swagger_server.models.auth_response import AuthResponse
 from swagger_server.models.auth_token_renewal_response import AuthTokenRenewalResponse
 from swagger_server.models.blobs_blob_name_body import BlobsBlobNameBody
 from swagger_server.models.empty_response import EmptyResponse
+from swagger_server.models.lineup import Lineup
+from swagger_server.models.lineup_overview import LineupOverview
 from swagger_server.models.people_body import PeopleBody
 from swagger_server.models.person import Person
 from swagger_server.models.response import Response

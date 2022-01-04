@@ -21,6 +21,8 @@ import { AuthRequest } from '../model/authRequest';
 import { AuthResponse } from '../model/authResponse';
 import { AuthTokenRenewalResponse } from '../model/authTokenRenewalResponse';
 import { EmptyResponse } from '../model/emptyResponse';
+import { Lineup } from '../model/lineup';
+import { LineupOverview } from '../model/lineupOverview';
 import { Person } from '../model/person';
 import { Response } from '../model/response';
 import { User } from '../model/user';
@@ -61,6 +63,60 @@ export class DefaultService {
         return false;
     }
 
+
+    /**
+     * Adds a lineup
+     * 
+     * @param body a lineup to add
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public addLineup(body: Lineup, observe?: 'body', reportProgress?: boolean): Observable<Response>;
+    public addLineup(body: Lineup, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
+    public addLineup(body: Lineup, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
+    public addLineup(body: Lineup, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling addLineup.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (JwtAuthUser) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<Response>('post',`${this.basePath}/lineups`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      * Adds a person
@@ -291,6 +347,140 @@ export class DefaultService {
         ];
 
         return this.httpClient.request<User>('get',`${this.basePath}/users/current`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns a lineup
+     * 
+     * @param lineupId id of a lineup
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getLineup(lineupId: number, observe?: 'body', reportProgress?: boolean): Observable<Lineup>;
+    public getLineup(lineupId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Lineup>>;
+    public getLineup(lineupId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Lineup>>;
+    public getLineup(lineupId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (lineupId === null || lineupId === undefined) {
+            throw new Error('Required parameter lineupId was null or undefined when calling getLineup.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (JwtAuthUser) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Lineup>('get',`${this.basePath}/lineups/${encodeURIComponent(String(lineupId))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns a list of lineups for all users
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getLineups(observe?: 'body', reportProgress?: boolean): Observable<Array<LineupOverview>>;
+    public getLineups(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<LineupOverview>>>;
+    public getLineups(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<LineupOverview>>>;
+    public getLineups(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // authentication (JwtAuthAdmin) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<LineupOverview>>('get',`${this.basePath}/lineups`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Returns a list of lineups for all users
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getLineupsForCurrentUser(observe?: 'body', reportProgress?: boolean): Observable<Array<LineupOverview>>;
+    public getLineupsForCurrentUser(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<LineupOverview>>>;
+    public getLineupsForCurrentUser(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<LineupOverview>>>;
+    public getLineupsForCurrentUser(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // authentication (JwtAuthUser) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<LineupOverview>>('get',`${this.basePath}/user/current/lineups`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -596,6 +786,54 @@ export class DefaultService {
     }
 
     /**
+     * Removes a lineup
+     * 
+     * @param lineupId id of a lineup
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public removeLineup(lineupId: number, observe?: 'body', reportProgress?: boolean): Observable<Response>;
+    public removeLineup(lineupId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
+    public removeLineup(lineupId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
+    public removeLineup(lineupId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (lineupId === null || lineupId === undefined) {
+            throw new Error('Required parameter lineupId was null or undefined when calling removeLineup.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (JwtAuthUser) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Response>('delete',`${this.basePath}/lineups/${encodeURIComponent(String(lineupId))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Removes a person
      * 
      * @param personId id of a person
@@ -851,6 +1089,65 @@ export class DefaultService {
         }
 
         return this.httpClient.request<Response>('patch',`${this.basePath}/users/current`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Updates a lineup
+     * 
+     * @param body a lineup to update
+     * @param lineupId id of a lineup
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateLineup(body: Lineup, lineupId: number, observe?: 'body', reportProgress?: boolean): Observable<Response>;
+    public updateLineup(body: Lineup, lineupId: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Response>>;
+    public updateLineup(body: Lineup, lineupId: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Response>>;
+    public updateLineup(body: Lineup, lineupId: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling updateLineup.');
+        }
+
+        if (lineupId === null || lineupId === undefined) {
+            throw new Error('Required parameter lineupId was null or undefined when calling updateLineup.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (JwtAuthUser) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<Response>('patch',`${this.basePath}/lineups/${encodeURIComponent(String(lineupId))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

@@ -9,6 +9,8 @@ from swagger_server.models.auth_request import AuthRequest  # noqa: E501
 from swagger_server.models.auth_response import AuthResponse  # noqa: E501
 from swagger_server.models.auth_token_renewal_response import AuthTokenRenewalResponse  # noqa: E501
 from swagger_server.models.empty_response import EmptyResponse  # noqa: E501
+from swagger_server.models.lineup import Lineup  # noqa: E501
+from swagger_server.models.lineup_overview import LineupOverview  # noqa: E501
 from swagger_server.models.person import Person  # noqa: E501
 from swagger_server.models.response import Response  # noqa: E501
 from swagger_server.models.user import User  # noqa: E501
@@ -18,6 +20,20 @@ from swagger_server.test import BaseTestCase
 
 class TestDefaultController(BaseTestCase):
     """DefaultController integration test stubs"""
+
+    def test_add_lineup(self):
+        """Test case for add_lineup
+
+        Adds a lineup
+        """
+        body = Lineup()
+        response = self.client.open(
+            '/lineups',
+            method='POST',
+            data=json.dumps(body),
+            content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
 
     def test_add_person(self):
         """Test case for add_person
@@ -68,6 +84,39 @@ class TestDefaultController(BaseTestCase):
         """
         response = self.client.open(
             '/users/current',
+            method='GET')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_get_lineup(self):
+        """Test case for get_lineup
+
+        Returns a lineup
+        """
+        response = self.client.open(
+            '/lineups/{lineup_id}'.format(lineup_id=789),
+            method='GET')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_get_lineups(self):
+        """Test case for get_lineups
+
+        Returns a list of lineups for all users
+        """
+        response = self.client.open(
+            '/lineups',
+            method='GET')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_get_lineups_for_current_user(self):
+        """Test case for get_lineups_for_current_user
+
+        Returns a list of lineups for all users
+        """
+        response = self.client.open(
+            '/user/current/lineups',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -146,6 +195,17 @@ class TestDefaultController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
+    def test_remove_lineup(self):
+        """Test case for remove_lineup
+
+        Removes a lineup
+        """
+        response = self.client.open(
+            '/lineups/{lineup_id}'.format(lineup_id=789),
+            method='DELETE')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
     def test_remove_person(self):
         """Test case for remove_person
 
@@ -201,6 +261,20 @@ class TestDefaultController(BaseTestCase):
         body = UserWithPassword()
         response = self.client.open(
             '/users/current',
+            method='PATCH',
+            data=json.dumps(body),
+            content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_update_lineup(self):
+        """Test case for update_lineup
+
+        Updates a lineup
+        """
+        body = Lineup()
+        response = self.client.open(
+            '/lineups/{lineup_id}'.format(lineup_id=789),
             method='PATCH',
             data=json.dumps(body),
             content_type='application/json')

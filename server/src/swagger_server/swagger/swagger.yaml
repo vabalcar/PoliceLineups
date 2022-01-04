@@ -282,64 +282,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Response'
       x-openapi-router-controller: police_lineups.controllers.people
-  /blobs/{blob_name}:
-    get:
-      summary: Serves a blob
-      operationId: get_blob
-      parameters:
-      - name: blob_name
-        in: path
-        description: name of a blob to serve
-        required: true
-        style: simple
-        explode: false
-        schema:
-          minLength: 1
-          type: string
-      responses:
-        "200":
-          description: a blob
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-                x-content-type: application/octet-stream
-        "404":
-          description: blob not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmptyResponse'
-      x-openapi-router-controller: police_lineups.controllers.blobs
-    patch:
-      summary: Updates a blob
-      operationId: update_blob
-      parameters:
-      - name: blob_name
-        in: path
-        description: name of a blob
-        required: true
-        style: simple
-        explode: false
-        schema:
-          minLength: 1
-          type: string
-      requestBody:
-        description: a blob to update
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/blobs_blob_name_body'
-        required: true
-      responses:
-        "200":
-          description: update result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Response'
-      x-openapi-router-controller: police_lineups.controllers.blobs
   /people/{person_id}:
     get:
       summary: Returns a person
@@ -417,6 +359,191 @@ paths:
               schema:
                 $ref: '#/components/schemas/Response'
       x-openapi-router-controller: police_lineups.controllers.people
+  /user/current/lineups:
+    get:
+      summary: Returns a list of lineups for all users
+      operationId: get_lineups_for_current_user
+      responses:
+        "200":
+          description: a list of lineups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LineupOverview'
+                x-content-type: application/json
+      x-openapi-router-controller: police_lineups.controllers.lineups
+  /lineups:
+    get:
+      summary: Returns a list of lineups for all users
+      operationId: get_lineups
+      responses:
+        "200":
+          description: a list of lineups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LineupOverview'
+                x-content-type: application/json
+      security:
+      - JwtAuthAdmin: []
+      x-openapi-router-controller: police_lineups.controllers.lineups
+    post:
+      summary: Adds a lineup
+      operationId: add_lineup
+      requestBody:
+        description: a lineup to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lineup'
+        required: true
+      responses:
+        "200":
+          description: addition result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: police_lineups.controllers.lineups
+  /lineups/{lineup_id}:
+    get:
+      summary: Returns a lineup
+      operationId: get_lineup
+      parameters:
+      - name: lineup_id
+        in: path
+        description: id of a lineup
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: found lineup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lineup'
+        "404":
+          description: lineup not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+      x-openapi-router-controller: police_lineups.controllers.lineups
+    delete:
+      summary: Removes a lineup
+      operationId: remove_lineup
+      parameters:
+      - name: lineup_id
+        in: path
+        description: id of a lineup
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: removal result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: police_lineups.controllers.lineups
+    patch:
+      summary: Updates a lineup
+      operationId: update_lineup
+      parameters:
+      - name: lineup_id
+        in: path
+        description: id of a lineup
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: a lineup to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lineup'
+        required: true
+      responses:
+        "200":
+          description: update result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: police_lineups.controllers.lineups
+  /blobs/{blob_name}:
+    get:
+      summary: Serves a blob
+      operationId: get_blob
+      parameters:
+      - name: blob_name
+        in: path
+        description: name of a blob to serve
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minLength: 1
+          type: string
+      responses:
+        "200":
+          description: a blob
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                x-content-type: application/octet-stream
+        "404":
+          description: blob not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+      x-openapi-router-controller: police_lineups.controllers.blobs
+    patch:
+      summary: Updates a blob
+      operationId: update_blob
+      parameters:
+      - name: blob_name
+        in: path
+        description: name of a blob
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minLength: 1
+          type: string
+      requestBody:
+        description: a blob to update
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/blobs_blob_name_body'
+        required: true
+      responses:
+        "200":
+          description: update result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-openapi-router-controller: police_lineups.controllers.blobs
 components:
   schemas:
     AuthRequest:
@@ -514,6 +641,31 @@ components:
         fullName: fullName
         personId: 1
         birthDate: 2000-01-23T04:56:07.000+00:00
+    LineupOverview:
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+        lastEditDateTime:
+          type: string
+          format: date-time
+        ownerUsername:
+          minLength: 1
+          type: string
+      example:
+        ownerUsername: ownerUsername
+        lastEditDateTime: 2000-01-23T04:56:07.000+00:00
+        name: name
+    Lineup:
+      allOf:
+      - $ref: '#/components/schemas/LineupOverview'
+      - type: object
+        properties:
+          people:
+            type: array
+            items:
+              $ref: '#/components/schemas/Person'
     people_body:
       type: object
       properties:
