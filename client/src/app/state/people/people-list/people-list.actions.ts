@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { Person } from "src/app/api/model/person";
-import { PersonWithPhotoUrl } from "../utils/PersonWithPhotoUrl";
+import { PersonWithPhotoUrl } from "../../../utils/PersonWithPhotoUrl";
 
 export const loadPeopleList = createAction(
   "[People list] load people list",

@@ -4,7 +4,7 @@ import { combineLatest, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { Person } from "src/app/api/model/person";
-import { PersonWithPhotoUrl } from "src/app/state/people/utils/PersonWithPhotoUrl";
+import { PersonWithPhotoUrl } from "src/app/utils/PersonWithPhotoUrl";
 import { BlobHandle } from "src/app/utils/BlobHandle";
 
 @Injectable()

@@ -1,5 +1,8 @@
 <h1 class="mat-headline">New lineup</h1>
-<mat-horizontal-stepper #stepper>
+<mat-horizontal-stepper
+  #stepper
+  (animationDone)="stepper.selectedIndex === 1 && searchForPeople()"
+>
   <mat-step>
     <ng-template matStepLabel>Filter</ng-template>
     <div fxLayout="column" fxLayoutGap="16px">
@@ -35,20 +38,46 @@
         </div>
       </form>
     </div>
-    <button mat-button matStepperNext>Search</button></mat-step
+    <button mat-button (click)="stepper.next()">Search</button></mat-step
   >
   <mat-step>
     <ng-template matStepLabel>Search result</ng-template>
     <app-filter-chip-list
       [appFilterChipsData]="filterChipsData"
     ></app-filter-chip-list>
-    <app-people-grid [appPeoplePhotoUrls]="filteredPeoplePhotoUrls$ | ngrxPush">
-    </app-people-grid>
+
+    <div fxLayout="row wrap">
+      <div *ngFor="let person of filteredPeople$ | ngrxPush">
+        <div fxLayout="column">
+          <img
+            [src]="person.photoUrl"
+            height="150px"
+            (click)="addPersonToLineup(person)"
+          />
+          {{ person.fullName }}
+        </div>
+      </div>
+    </div>
+
     <button mat-button matStepperPrevious>Back</button>
     <button mat-button matStepperNext>Next</button></mat-step
   >
   <mat-step>
     <ng-template matStepLabel>Lineup</ng-template>
+
+    <div fxLayout="row wrap">
+      <div *ngFor="let person of lineupPeople$ | ngrxPush">
+        <div fxLayout="column">
+          <img
+            [src]="person.photoUrl"
+            height="150px"
+            (click)="removePersonFromLineup(person.personId)"
+          />
+          {{ person.fullName }}
+        </div>
+      </div>
+    </div>
+
     <button mat-button matStepperPrevious>Back</button>
     <button mat-button (click)="stepper.reset()">Reset</button>
   </mat-step>

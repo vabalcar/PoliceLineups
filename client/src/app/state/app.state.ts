@@ -1,6 +1,7 @@
 import { RouterState } from "@angular/router";
 
 import { AuthState } from "./auth/auth.state";
+import { LineupUpdateState } from "./lineups/lineup-update/lineup-update.state";
 import { MenuState } from "./menu/menu.state";
 import { PeopleListState } from "./people/people-list/people-list.state";
 import { PersonUpdateState } from "./people/person-update/person-update.state";
@@ -17,4 +18,5 @@ export interface AppState {
   usersList: UsersListState;
   personUpdate: PersonUpdateState;
   peopleList: PeopleListState;
+  lineupUpdate: LineupUpdateState;
 }

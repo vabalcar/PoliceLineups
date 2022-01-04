@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 
+import { createPersonSelector } from "../../../utils/selector.utils";
 import { AppState } from "../../app.state";
-import { createPersonSelector } from "../utils/selector.utils";
 import { PersonUpdateState } from "./person-update.state";
 
 export const personUpdateFeatureKey = "personUpdate";

@@ -1,11 +1,11 @@
 import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { PersonWithPhotoUrl } from "src/app/utils/PersonWithPhotoUrl";
 
-import { PersonWithPhotoUrl } from "../../../utils/PersonWithPhotoUrl";
 import { AppState } from "../../app.state";
-import { PeopleListState } from "./people-list.state";
+import { LineupUpdateState } from "./lineup-update.state";
 
-export const peopleListFeatureKey = "peopleList";
+export const lineupUpdateFeatureKey = "lineupUpdate";
 
 export const adapter: EntityAdapter<PersonWithPhotoUrl> = createEntityAdapter({
   selectId: (person) => person.personId,
@@ -13,12 +13,12 @@ export const adapter: EntityAdapter<PersonWithPhotoUrl> = createEntityAdapter({
 
 const { selectAll } = adapter.getSelectors();
 
-export const selectPeopleListFeature = createFeatureSelector<
+export const selectLineupUpdateFeature = createFeatureSelector<
   AppState,
-  PeopleListState
->(peopleListFeatureKey);
+  LineupUpdateState
+>(lineupUpdateFeatureKey);
 
-export const selectPeopleList = createSelector(
-  selectPeopleListFeature,
+export const selectLineupPeople = createSelector(
+  selectLineupUpdateFeature,
   selectAll
 );

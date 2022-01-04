@@ -35,7 +35,6 @@ import { BASE_PATH } from "./api/variables";
 import { HttpRequestInterceptor } from "./communication/httpInterceptor";
 import { AppComponent } from "./components/app/app.component";
 import { FilterChipListComponent } from "./components/lineups/filter-chip-list/filter-chip-list.component";
-import { PeopleGridComponent } from "./components/lineups/people-grid/people-grid.component";
 import { FullNameSelectorComponent } from "./components/selectors/full-name-selector/full-name-selector.component";
 import { AgeSelectorComponent } from "./components/selectors/people/age-selector/age-selector.component";
 import { BirthDateSelectorComponent } from "./components/selectors/people/birth-date-selector/birth-date-selector.component";
@@ -67,6 +66,7 @@ import { NotificationsService } from "./services/notifications/notifications.ser
 import { AppEffects } from "./state/app.effects";
 import { reducers } from "./state/app.reducer";
 import { AuthEffects } from "./state/auth/auth.effects";
+import { LineupUpdateEffects } from "./state/lineups/lineup-update/lineup-update.effects";
 import { PeopleListEffects } from "./state/people/people-list/people-list.effects";
 import { PersonImportEffects } from "./state/people/person-import/person-import.effects";
 import { PersonUpdateEffects } from "./state/people/person-update/person-update.effects";
@@ -83,7 +83,6 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
     AppComponent,
 
     FilterChipListComponent,
-    PeopleGridComponent,
 
     UsernameSelectorComponent,
     FullNameSelectorComponent,
@@ -158,6 +157,7 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
       PersonImportEffects,
       PersonUpdateEffects,
       PeopleListEffects,
+      LineupUpdateEffects,
     ]),
 
     ServiceWorkerModule.register("ngsw-worker.js", {
