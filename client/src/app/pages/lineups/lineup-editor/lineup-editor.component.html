@@ -42,6 +42,8 @@
     <app-filter-chip-list
       [appFilterChipsData]="filterChipsData"
     ></app-filter-chip-list>
+    <app-people-grid [appPeoplePhotoUrls]="filteredPeoplePhotoUrls$ | ngrxPush">
+    </app-people-grid>
     <button mat-button matStepperPrevious>Back</button>
     <button mat-button matStepperNext>Next</button></mat-step
   >

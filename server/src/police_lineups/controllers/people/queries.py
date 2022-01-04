@@ -4,7 +4,7 @@ from police_lineups.controllers.utils import Responses
 from police_lineups.db import DbPerson
 
 
-def get_people():
+def get_people(full_name=None, min_age=None, max_age=None, nationality=None):
     return [
         Person(person_id=db_person.person_id,
                photo_blob_name=db_person.photo_blob_name,

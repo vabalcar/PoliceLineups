@@ -15,7 +15,11 @@ export const personUpdateReducer = createReducer(
   initialState,
   on(loadPersonToUpdate, () => initialState),
   on(personToUpdateLoaded, updateState),
-  on(personPhotoLoaded, updateState),
+  on(personPhotoLoaded, (state, action) =>
+    state.personId === action.personId
+      ? updateState(state, { photoUrl: action.photoUrl })
+      : state
+  ),
   on(updatePersonPhoto, (state, action) =>
     updateState(state, { photoUrl: action.newPhoto.url })
   )

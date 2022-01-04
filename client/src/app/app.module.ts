@@ -35,6 +35,7 @@ import { BASE_PATH } from "./api/variables";
 import { HttpRequestInterceptor } from "./communication/httpInterceptor";
 import { AppComponent } from "./components/app/app.component";
 import { FilterChipListComponent } from "./components/lineups/filter-chip-list/filter-chip-list.component";
+import { PeopleGridComponent } from "./components/lineups/people-grid/people-grid.component";
 import { FullNameSelectorComponent } from "./components/selectors/full-name-selector/full-name-selector.component";
 import { AgeSelectorComponent } from "./components/selectors/people/age-selector/age-selector.component";
 import { BirthDateSelectorComponent } from "./components/selectors/people/birth-date-selector/birth-date-selector.component";
@@ -82,6 +83,7 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
     AppComponent,
 
     FilterChipListComponent,
+    PeopleGridComponent,
 
     UsernameSelectorComponent,
     FullNameSelectorComponent,
@@ -176,7 +178,9 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
       useClass: HttpRequestInterceptor,
       multi: true,
     },
+
     DefaultService,
+
     BlobsService,
     NotificationsService,
   ],

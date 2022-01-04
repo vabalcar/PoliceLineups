@@ -13,9 +13,14 @@ export const personToUpdateLoaded = createAction(
   props<PersonUpdateState>()
 );
 
+export const loadPersonPhoto = createAction(
+  "[Person update] load person photo",
+  props<Pick<PersonUpdateState, "personId" | "photoBlobName">>()
+);
+
 export const personPhotoLoaded = createAction(
   "[Person update] load person photo successful",
-  props<Pick<PersonUpdateState, "photoUrl">>()
+  props<Pick<PersonUpdateState, "personId" | "photoUrl">>()
 );
 
 export const updatePersonPhoto = createAction(

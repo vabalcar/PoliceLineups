@@ -1,6 +1,13 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { SafeUrl } from "@angular/platform-browser";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { FilterChipData } from "src/app/components/lineups/filter-chip-list/FilterChipData";
+import { AppState } from "src/app/state/app.state";
+import { loadPeopleList } from "src/app/state/people/people-list/people-list.actions";
+import { selectPeopleList } from "src/app/state/people/people-list/people-list.selectors";
+import { PersonWithPhotoUrl } from "src/app/state/people/utils/PersonWithPhotoUrl";
 import { FullNameValidation } from "src/app/validations/full-name.validation";
 import { AgeValidation } from "src/app/validations/people/age.validation";
 import { NationalityValidation } from "src/app/validations/people/nationality.validation";
@@ -8,7 +15,7 @@ import { NationalityValidation } from "src/app/validations/people/nationality.va
 @Component({
   templateUrl: "./lineup-editor.component.html",
 })
-export class LineupEditorComponent {
+export class LineupEditorComponent implements OnInit {
   readonly fullNameValidation: FullNameValidation;
   readonly minAgeValidation: AgeValidation;
   readonly maxAgeValidation: AgeValidation;
@@ -16,7 +23,15 @@ export class LineupEditorComponent {
 
   readonly filterChipsData: Array<FilterChipData>;
 
-  constructor() {
+  readonly filteredPeople$: Observable<Array<PersonWithPhotoUrl>>;
+  readonly filteredPeoplePhotoUrls$: Observable<Array<SafeUrl>>;
+
+  constructor(private store: Store<AppState>) {
+    this.filteredPeople$ = store.select(selectPeopleList);
+    this.filteredPeoplePhotoUrls$ = this.filteredPeople$.pipe(
+      map((people) => people?.map((person) => person.photoUrl))
+    );
+
     this.fullNameValidation = new FullNameValidation();
     this.minAgeValidation = new AgeValidation();
     this.maxAgeValidation = new AgeValidation();
@@ -48,5 +63,9 @@ export class LineupEditorComponent {
         ),
       },
     ];
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(loadPeopleList({ withPhoto: true }));
   }
 }

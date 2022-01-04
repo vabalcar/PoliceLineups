@@ -222,6 +222,37 @@ paths:
     get:
       summary: Returns a list of people
       operationId: get_people
+      parameters:
+      - name: fullName
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          minLength: 1
+          type: string
+      - name: minAge
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: maxAge
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: nationality
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          minLength: 1
+          type: string
       responses:
         "200":
           description: a JSON array of people

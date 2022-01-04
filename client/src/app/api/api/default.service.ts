@@ -303,13 +303,35 @@ export class DefaultService {
     /**
      * Returns a list of people
      * 
+     * @param fullName 
+     * @param minAge 
+     * @param maxAge 
+     * @param nationality 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPeople(observe?: 'body', reportProgress?: boolean): Observable<Array<Person>>;
-    public getPeople(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Person>>>;
-    public getPeople(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Person>>>;
-    public getPeople(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPeople(fullName?: string, minAge?: number, maxAge?: number, nationality?: string, observe?: 'body', reportProgress?: boolean): Observable<Array<Person>>;
+    public getPeople(fullName?: string, minAge?: number, maxAge?: number, nationality?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Person>>>;
+    public getPeople(fullName?: string, minAge?: number, maxAge?: number, nationality?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Person>>>;
+    public getPeople(fullName?: string, minAge?: number, maxAge?: number, nationality?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (fullName !== undefined && fullName !== null) {
+            queryParameters = queryParameters.set('fullName', <any>fullName);
+        }
+        if (minAge !== undefined && minAge !== null) {
+            queryParameters = queryParameters.set('minAge', <any>minAge);
+        }
+        if (maxAge !== undefined && maxAge !== null) {
+            queryParameters = queryParameters.set('maxAge', <any>maxAge);
+        }
+        if (nationality !== undefined && nationality !== null) {
+            queryParameters = queryParameters.set('nationality', <any>nationality);
+        }
 
         let headers = this.defaultHeaders;
 
@@ -335,6 +357,7 @@ export class DefaultService {
 
         return this.httpClient.request<Array<Person>>('get',`${this.basePath}/people`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

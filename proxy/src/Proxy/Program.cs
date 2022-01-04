@@ -67,9 +67,9 @@ appBuilder.WebHost.UseUrls(
 
 appBuilder.WebHost.ConfigureKestrel(kestrelOptions =>
 {
-    kestrelOptions.ConfigureEndpointDefaults(endpointCOnfiguration =>
+    kestrelOptions.ConfigureEndpointDefaults(endpointConfiguration =>
     {
-        endpointCOnfiguration.Protocols = HttpProtocols.Http1;
+        endpointConfiguration.Protocols = HttpProtocols.Http1;
     });
     kestrelOptions.ConfigureHttpsDefaults(httpsConfiguration =>
     {

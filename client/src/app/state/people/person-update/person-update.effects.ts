@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
+import { of } from "rxjs";
 import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { StaticPath } from "src/app/routing/paths";
@@ -12,6 +13,7 @@ import { convertToLocalDateTime } from "../../utils/date.utils";
 import { catchBeError } from "../../utils/errors.utils";
 import {
   deletePerson,
+  loadPersonPhoto,
   loadPersonToUpdate,
   personBirthDateUpdateSuccessful,
   personDeletionFailed,
@@ -52,9 +54,24 @@ export class PersonUpdateEffects {
     this.actions$.pipe(
       ofType(personToUpdateLoaded),
       mergeMap((action) =>
+        of(
+          loadPersonPhoto({
+            personId: action.personId,
+            photoBlobName: action.photoBlobName,
+          })
+        )
+      )
+    )
+  );
+
+  loadPersonPhoto$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadPersonPhoto),
+      mergeMap((action) =>
         this.blobs.getBlob(action.photoBlobName).pipe(
           map((photoBlobHandle) =>
             personPhotoLoaded({
+              personId: action.personId,
               photoUrl: photoBlobHandle.url,
             })
           ),

@@ -1,6 +1,3 @@
-import { SafeUrl } from "@angular/platform-browser";
-import { Person } from "src/app/api/model/person";
+import { PersonWithPhotoUrl } from "../utils/PersonWithPhotoUrl";
 
-export interface PersonUpdateState extends Person {
-  photoUrl?: SafeUrl;
-}
+export type PersonUpdateState = PersonWithPhotoUrl;

@@ -38,6 +38,6 @@ export class PeopleListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadPeopleList());
+    this.store.dispatch(loadPeopleList({}));
   }
 }

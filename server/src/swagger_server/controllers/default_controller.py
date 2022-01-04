@@ -70,11 +70,19 @@ def get_current_user():  # noqa: E501
     return 'do some magic!'
 
 
-def get_people():  # noqa: E501
+def get_people(full_name=None, min_age=None, max_age=None, nationality=None):  # noqa: E501
     """Returns a list of people
 
      # noqa: E501
 
+    :param full_name: 
+    :type full_name: str
+    :param min_age: 
+    :type min_age: int
+    :param max_age: 
+    :type max_age: int
+    :param nationality: 
+    :type nationality: str
 
     :rtype: List[Person]
     """

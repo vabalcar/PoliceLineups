@@ -217,6 +217,25 @@ paths:
       summary: Returns a list of people
       x-openapi-router-controller: police_lineups.controllers.people
       operationId: getPeople
+      parameters:
+        - in: query
+          name: fullName
+          schema:
+            type: string
+            minLength: 1
+        - in: query
+          name: minAge
+          schema:
+            type: integer
+        - in: query
+          name: maxAge
+          schema:
+            type: integer
+        - in: query
+          name: nationality
+          schema:
+            type: string
+            minLength: 1
       responses:
         "200":
           description: a JSON array of people

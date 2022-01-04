@@ -77,9 +77,14 @@ class TestDefaultController(BaseTestCase):
 
         Returns a list of people
         """
+        query_string = [('full_name', 'full_name_example'),
+                        ('min_age', 56),
+                        ('max_age', 56),
+                        ('nationality', 'nationality_example')]
         response = self.client.open(
             '/people',
-            method='GET')
+            method='GET',
+            query_string=query_string)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
