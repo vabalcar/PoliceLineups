@@ -4,6 +4,7 @@
   "python.linting.ignorePatterns": ["src\\swagger_server\\**\\*.py"],
   "python.linting.pylintArgs": [
     "--disable=no-value-for-parameter",
+    "--disable=not-an-iterable",
     "--variable-rgx",
     "^[a-z][a-z0-9]*(_[a-z0-9]+)*$",
     "--argument-rgx",

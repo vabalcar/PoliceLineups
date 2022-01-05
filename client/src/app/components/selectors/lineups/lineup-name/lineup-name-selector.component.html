@@ -1,0 +1,14 @@
+<mat-form-field [appearance]="appearance">
+  <mat-label>Lineup name</mat-label>
+  <input
+    [required]="required"
+    matInput
+    type="text"
+    name="lineupName"
+    [formControl]="lineupNameValidation.formControl"
+    [errorStateMatcher]="lineupNameValidation.errorPublisher"
+  />
+  <mat-error>
+    {{ lineupNameValidation.error$ | ngrxPush }}
+  </mat-error>
+</mat-form-field>

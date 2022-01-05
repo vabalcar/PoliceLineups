@@ -1,84 +1,129 @@
 <h1 class="mat-headline">New lineup</h1>
-<mat-horizontal-stepper
-  #stepper
-  (animationDone)="stepper.selectedIndex === 1 && searchForPeople()"
->
+<mat-horizontal-stepper #stepper>
   <mat-step>
-    <ng-template matStepLabel>Filter</ng-template>
+    <ng-template matStepLabel>People search</ng-template>
     <div fxLayout="column" fxLayoutGap="16px">
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Filter options</mat-panel-title>
+        </mat-expansion-panel-header>
+        <form>
+          <div fxLayout="row wrap" fxLayoutGap="16px">
+            <app-full-name-selector
+              appAppearance="outline"
+              [appValidation]="fullNameValidation"
+            >
+            </app-full-name-selector>
+
+            <app-age-selector
+              appAppearance="outline"
+              appLabel="Minimal age"
+              [appValidation]="minAgeValidation"
+            >
+            </app-age-selector>
+
+            <app-age-selector
+              appAppearance="outline"
+              appLabel="Maximal age"
+              [appValidation]="maxAgeValidation"
+            >
+            </app-age-selector>
+
+            <app-nationality-selector
+              appAppearance="outline"
+              [appValidation]="nationalityValidation"
+            ></app-nationality-selector>
+          </div>
+        </form>
+      </mat-expansion-panel>
       <app-filter-chip-list
         [appFilterChipsData]="filterChipsData"
       ></app-filter-chip-list>
-      <form>
-        <div fxLayout="row wrap" fxLayoutGap="16px">
-          <app-full-name-selector
-            appAppearance="outline"
-            [appValidation]="fullNameValidation"
-          >
-          </app-full-name-selector>
+      <button mat-button color="accent" (click)="searchForPeople()">
+        Search
+      </button>
 
-          <app-age-selector
-            appAppearance="outline"
-            appLabel="Minimal age"
-            [appValidation]="minAgeValidation"
-          >
-          </app-age-selector>
-
-          <app-age-selector
-            appAppearance="outline"
-            appLabel="Maximal age"
-            [appValidation]="maxAgeValidation"
-          >
-          </app-age-selector>
-
-          <app-nationality-selector
-            appAppearance="outline"
-            [appValidation]="nationalityValidation"
-          ></app-nationality-selector>
+      <ng-container *ngrxLet="filteredPeople$ as filteredPeople">
+        <h2 *ngIf="filteredPeople?.length" class="mat-title">Results</h2>
+        <div fxLayout="row wrap">
+          <div *ngFor="let person of filteredPeople">
+            <ng-container *ngrxLet="isInLineup(person) as isPersonInLineup">
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>{{ person.fullName }}</mat-card-title>
+                  <mat-icon *ngIf="isPersonInLineup">check_circle</mat-icon>
+                </mat-card-header>
+                <mat-card-content>
+                  <img [src]="person.photoUrl" height="150px" />
+                </mat-card-content>
+                <mat-card-actions>
+                  <button
+                    mat-button
+                    color="accent"
+                    [disabled]="isPersonInLineup"
+                    (click)="addPersonToLineup(person)"
+                  >
+                    Add to lineup
+                  </button>
+                  <button
+                    *ngIf="isPersonInLineup"
+                    mat-button
+                    color="warn"
+                    (click)="removePersonFromLineup(person)"
+                  >
+                    Remove from lineup
+                  </button>
+                </mat-card-actions>
+              </mat-card>
+            </ng-container>
+          </div>
         </div>
-      </form>
+      </ng-container>
     </div>
-    <button mat-button (click)="stepper.next()">Search</button></mat-step
-  >
-  <mat-step>
-    <ng-template matStepLabel>Search result</ng-template>
-    <app-filter-chip-list
-      [appFilterChipsData]="filterChipsData"
-    ></app-filter-chip-list>
-
-    <div fxLayout="row wrap">
-      <div *ngFor="let person of filteredPeople$ | ngrxPush">
-        <div fxLayout="column">
-          <img
-            [src]="person.photoUrl"
-            height="150px"
-            (click)="addPersonToLineup(person)"
-          />
-          {{ person.fullName }}
-        </div>
-      </div>
-    </div>
-
-    <button mat-button matStepperPrevious>Back</button>
-    <button mat-button matStepperNext>Next</button></mat-step
-  >
+  </mat-step>
   <mat-step>
     <ng-template matStepLabel>Lineup</ng-template>
-
-    <div fxLayout="row wrap">
-      <div *ngFor="let person of lineupPeople$ | ngrxPush">
-        <div fxLayout="column">
-          <img
-            [src]="person.photoUrl"
-            height="150px"
-            (click)="removePersonFromLineup(person.personId)"
-          />
-          {{ person.fullName }}
+    <div fxLayout="column" fxLayoutGap="16px">
+      <ng-container *ngrxLet="lineupPeople$ as lineupPeople">
+        <app-lineup-name-selector
+          appAppearance="outline"
+          [appRequired]="true"
+          [appValidation]="lineupNameValidation"
+        >
+        </app-lineup-name-selector>
+        <div fxLayout="row wrap">
+          <div *ngFor="let person of lineupPeople">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>{{ person.fullName }}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <img [src]="person.photoUrl" height="150px" />
+              </mat-card-content>
+              <mat-card-actions>
+                <button
+                  mat-button
+                  color="warn"
+                  (click)="removePersonFromLineup(person)"
+                >
+                  Remove from lineup
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </div>
         </div>
-      </div>
+        <button
+          mat-button
+          matStepperPrevious
+          color="accent"
+          [disabled]="
+            lineupNameValidation.pristineOrInvalid || !lineupPeople?.length
+          "
+          (click)="saveNewLineup()"
+        >
+          Save
+        </button>
+      </ng-container>
     </div>
-
-    <button mat-button matStepperPrevious>Back</button>
-    <button mat-button (click)="stepper.reset()">Reset</button>
   </mat-step>
 </mat-horizontal-stepper>

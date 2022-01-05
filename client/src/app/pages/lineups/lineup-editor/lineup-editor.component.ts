@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { Person } from "src/app/api/model/person";
 import { FilterChipData } from "src/app/components/lineups/filter-chip-list/FilterChipData";
@@ -9,12 +9,14 @@ import {
   addPersonToLineup,
   initializeLineup,
   removePersonFromLineup,
+  saveNewLineup,
 } from "src/app/state/lineups/lineup-update/lineup-update.actions";
 import { selectLineupPeople } from "src/app/state/lineups/lineup-update/lineup-update.selectors";
 import { loadPeopleList } from "src/app/state/people/people-list/people-list.actions";
 import { selectPeopleList } from "src/app/state/people/people-list/people-list.selectors";
 import { PersonWithPhotoUrl } from "src/app/utils/PersonWithPhotoUrl";
 import { FullNameValidation } from "src/app/validations/full-name.validation";
+import { LineupNameValidation } from "src/app/validations/lineups/lineup-name.validation";
 import { AgeValidation } from "src/app/validations/people/age.validation";
 import { NationalityValidation } from "src/app/validations/people/nationality.validation";
 
@@ -27,19 +29,27 @@ export class LineupEditorComponent implements OnInit {
   readonly maxAgeValidation: AgeValidation;
   readonly nationalityValidation: NationalityValidation;
 
+  readonly lineupNameValidation: LineupNameValidation;
+
   readonly filterChipsData: Array<FilterChipData>;
 
   readonly filteredPeople$: Observable<Array<PersonWithPhotoUrl>>;
   readonly lineupPeople$: Observable<Array<PersonWithPhotoUrl>>;
+  readonly lineupPeopleSubject: BehaviorSubject<Array<PersonWithPhotoUrl>>;
 
   constructor(private store: Store<AppState>) {
     this.filteredPeople$ = store.select(selectPeopleList);
     this.lineupPeople$ = store.select(selectLineupPeople);
 
+    this.lineupPeopleSubject = new BehaviorSubject([]);
+    this.lineupPeople$.subscribe(this.lineupPeopleSubject);
+
     this.fullNameValidation = new FullNameValidation();
     this.minAgeValidation = new AgeValidation();
     this.maxAgeValidation = new AgeValidation();
     this.nationalityValidation = new NationalityValidation();
+
+    this.lineupNameValidation = new LineupNameValidation();
 
     this.filterChipsData = [
       {
@@ -88,7 +98,23 @@ export class LineupEditorComponent implements OnInit {
     this.store.dispatch(addPersonToLineup({ person }));
   }
 
-  removePersonFromLineup(personId: number): void {
-    this.store.dispatch(removePersonFromLineup({ personId }));
+  removePersonFromLineup(person: Person): void {
+    this.store.dispatch(removePersonFromLineup({ personId: person.personId }));
+  }
+
+  saveNewLineup(): void {
+    this.store.dispatch(
+      saveNewLineup({ name: this.lineupNameValidation.value })
+    );
+  }
+
+  isInLineup(person: Person): Observable<boolean> {
+    return of(
+      this.lineupPeopleSubject
+        .getValue()
+        .findIndex(
+          (personInLineup) => personInLineup.personId === person.personId
+        ) !== -1
+    );
   }
 }

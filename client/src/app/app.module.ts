@@ -7,6 +7,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatExpansionModule } from "@angular/material/expansion";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatListModule } from "@angular/material/list";
@@ -36,6 +37,7 @@ import { HttpRequestInterceptor } from "./communication/httpInterceptor";
 import { AppComponent } from "./components/app/app.component";
 import { FilterChipListComponent } from "./components/lineups/filter-chip-list/filter-chip-list.component";
 import { FullNameSelectorComponent } from "./components/selectors/full-name-selector/full-name-selector.component";
+import { LineupNameSelectorComponent } from "./components/selectors/lineups/lineup-name/lineup-name-selector.component";
 import { AgeSelectorComponent } from "./components/selectors/people/age-selector/age-selector.component";
 import { BirthDateSelectorComponent } from "./components/selectors/people/birth-date-selector/birth-date-selector.component";
 import { NationalitySelectorComponent } from "./components/selectors/people/nationality-selector/nationality-selector.component";
@@ -95,6 +97,7 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
     BirthDateSelectorComponent,
     NationalitySelectorComponent,
     AgeSelectorComponent,
+    LineupNameSelectorComponent,
 
     HomeComponent,
 
@@ -130,6 +133,7 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
     MatCardModule,
     MatChipsModule,
     MatDatepickerModule,
+    MatExpansionModule,
     MatIconModule,
     MatInputModule,
     MatListModule,

@@ -28,3 +28,10 @@ export const removePersonFromLineup = createAction(
   "[Lineup update] remove person from lineup",
   props<{ personId: number }>()
 );
+
+export const saveNewLineup = createAction(
+  "[Lineup update] save new lineup",
+  props<{ name: string }>()
+);
+
+export const newLineupSaved = createAction("[Lineup update] new lineup saved");

@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { exhaustMap, map } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
+import { convertToLocalDateTime } from "../../utils/date.utils";
 
 import { catchBeError } from "../../utils/errors.utils";
 import {
@@ -17,7 +18,16 @@ export class LineupsListEffects {
       ofType(loadCurrentUserLineups),
       exhaustMap((_) =>
         this.api.getLineupsForCurrentUser().pipe(
-          map((lineups) => lineupsListLoaded({ lineups })),
+          map((responseLineups) =>
+            lineupsListLoaded({
+              lineups: responseLineups.map((lineup) => ({
+                ...lineup,
+                lastEditDateTime: convertToLocalDateTime(
+                  lineup.lastEditDateTime
+                ),
+              })),
+            })
+          ),
           catchBeError()
         )
       )
@@ -29,7 +39,16 @@ export class LineupsListEffects {
       ofType(loadAllLineups),
       exhaustMap((_) =>
         this.api.getLineups().pipe(
-          map((lineups) => lineupsListLoaded({ lineups })),
+          map((responseLineups) =>
+            lineupsListLoaded({
+              lineups: responseLineups.map((lineup) => ({
+                ...lineup,
+                lastEditDateTime: convertToLocalDateTime(
+                  lineup.lastEditDateTime
+                ),
+              })),
+            })
+          ),
           catchBeError()
         )
       )

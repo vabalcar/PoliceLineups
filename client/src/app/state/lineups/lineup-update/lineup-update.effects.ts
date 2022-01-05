@@ -1,16 +1,21 @@
 import { Injectable } from "@angular/core";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
 import { exhaustMap, map, mergeMap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
 import { BlobsService } from "src/app/services/blobs/blobs.service";
 
 import { convertToLocalDateTime } from "../../utils/date.utils";
 import { catchBeError } from "../../utils/errors.utils";
+import { pick } from "../../utils/object.utils";
 import {
   lineupPeopleLoaded,
   lineupPeoplePhotosLoaded,
   loadLineup,
+  newLineupSaved,
+  saveNewLineup,
 } from "./lineup-update.actions";
+import { selectLineupPeople } from "./lineup-update.selectors";
 
 @Injectable()
 export class LineupUpdateEffects {
@@ -18,10 +23,10 @@ export class LineupUpdateEffects {
     this.actions$.pipe(
       ofType(loadLineup),
       exhaustMap((action) =>
-        this.api.getPeople().pipe(
+        this.api.getLineup(action.lineupId).pipe(
           map((response) =>
             lineupPeopleLoaded({
-              people: response.map((person) => ({
+              people: response.people.map((person) => ({
                 ...person,
                 birthDate: convertToLocalDateTime(person.birthDate),
               })),
@@ -49,9 +54,28 @@ export class LineupUpdateEffects {
     )
   );
 
+  saveNewLineup$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(saveNewLineup),
+      concatLatestFrom(() =>
+        this.store
+          .select(selectLineupPeople)
+          .pipe(
+            map((people) => people.map((person) => pick(person, "personId")))
+          )
+      ),
+      mergeMap(([action, peopleWithIdOnly]) =>
+        this.api
+          .addLineup({ name: action.name, people: peopleWithIdOnly })
+          .pipe(map((_) => newLineupSaved()))
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private api: DefaultService,
-    private blobs: BlobsService
+    private blobs: BlobsService,
+    private store: Store
   ) {}
 }
