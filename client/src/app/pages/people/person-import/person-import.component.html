@@ -23,7 +23,7 @@
       fxFlexAlign="start"
       [color]="isImportDisabled() ? 'disabled' : 'primary'"
       [disabled]="isImportDisabled()"
-      (click)="importPerson()"
+      (click)="importPerson(); clearForm()"
     >
       Import
     </button>

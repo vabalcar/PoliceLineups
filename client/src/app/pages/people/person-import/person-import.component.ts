@@ -46,4 +46,11 @@ export class PersonImportComponent {
       })
     );
   }
+
+  clearForm() {
+    this.fullNameValidation.clearValue();
+    this.birthDateValidation.clearValue();
+    this.nationalityValidation.clearValue();
+    this.photoSubject$.next(undefined);
+  }
 }
