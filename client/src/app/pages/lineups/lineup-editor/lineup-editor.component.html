@@ -45,7 +45,7 @@
 
       <ng-container *ngrxLet="filteredPeople$ as filteredPeople">
         <h2 *ngIf="filteredPeople?.length" class="mat-title">Results</h2>
-        <div fxLayout="row wrap">
+        <div fxLayout="row wrap" fxLayoutGap="16px">
           <div *ngFor="let person of filteredPeople">
             <ng-container *ngrxLet="isInLineup(person) as isPersonInLineup">
               <mat-card>
@@ -91,7 +91,7 @@
           [appValidation]="lineupNameValidation"
         >
         </app-lineup-name-selector>
-        <div fxLayout="row wrap">
+        <div fxLayout="row wrap" fxLayoutGap="16px">
           <div *ngFor="let person of lineupPeople">
             <mat-card>
               <mat-card-header>

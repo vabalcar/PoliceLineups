@@ -11,7 +11,7 @@
   </mat-list>
 
   <ng-container *ngrxLet="lineupPeople$ as lineupPeople">
-    <div fxLayout="row wrap">
+    <div fxLayout="row wrap" fxLayoutGap="16px">
       <div *ngFor="let person of lineupPeople">
         <mat-card>
           <mat-card-header>
