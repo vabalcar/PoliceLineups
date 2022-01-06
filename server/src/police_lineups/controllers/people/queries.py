@@ -8,8 +8,7 @@ from police_lineups.controllers.utils import Responses
 from police_lineups.db import DbPerson
 
 
-def get_people(full_name=None, min_age=None, max_age=None, nationality=None):
-
+def get_people():
     full_name = connexion.request.args.get('fullName', None)
     min_age = connexion.request.args.get('minAge', None)
     max_age = connexion.request.args.get('maxAge', None)
@@ -22,11 +21,11 @@ def get_people(full_name=None, min_age=None, max_age=None, nationality=None):
 
     if min_age is not None:
         min_age_date = datetime.now() - relativedelta(years=int(min_age))
-        where_clauses.append(DbPerson.birth_date > min_age_date)
+        where_clauses.append(DbPerson.birth_date <= min_age_date)
 
     if max_age is not None:
         max_age_date = datetime.now() - relativedelta(years=int(max_age))
-        where_clauses.append(DbPerson.birth_date < max_age_date)
+        where_clauses.append(DbPerson.birth_date >= max_age_date)
 
     if nationality is not None:
         where_clauses.append(DbPerson.nationality == nationality)
