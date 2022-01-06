@@ -18,6 +18,11 @@ export const selectLineupUpdateFeature = createFeatureSelector<
   LineupUpdateState
 >(lineupUpdateFeatureKey);
 
+export const selectLineup = createSelector(
+  selectLineupUpdateFeature,
+  (state) => state.lineup
+);
+
 export const selectLineupPeople = createSelector(
   selectLineupUpdateFeature,
   selectAll

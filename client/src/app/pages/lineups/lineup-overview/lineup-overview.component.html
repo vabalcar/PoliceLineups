@@ -1,0 +1,35 @@
+<h1 class="mat-headline">Lineup overview</h1>
+<ng-container *ngrxLet="lineup$ as lineup">
+  <mat-list id="lineup-properties-list">
+    <mat-list-item
+      ><span class="label">Name:</span> {{ lineup.name }}
+    </mat-list-item>
+    <mat-list-item
+      ><span class="label">Last edit time:</span>
+      {{ lineup.lastEditDateTime.toLocaleString() }}</mat-list-item
+    >
+  </mat-list>
+
+  <ng-container *ngrxLet="lineupPeople$ as lineupPeople">
+    <div fxLayout="row wrap">
+      <div *ngFor="let person of lineupPeople">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{ person.fullName }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <img [src]="person.photoUrl" height="150px" />
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </ng-container>
+
+  <button
+    mat-raised-button
+    id="lineup-edit-button"
+    routerLink="{{ dynamicPath.lineupEdit(lineup.lineupId) }}"
+  >
+    Edit
+  </button>
+</ng-container>

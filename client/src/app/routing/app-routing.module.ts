@@ -9,6 +9,7 @@ import { HomeComponent } from "../pages/home/home.component";
 import { AllLineupsListComponent } from "../pages/lineups/all-lineups-list/all-lineups-list.component";
 import { CurrentUserLineupsListComponent } from "../pages/lineups/current-user-lineups-list/current-user-lineups-list.component";
 import { LineupEditorComponent } from "../pages/lineups/lineup-editor/lineup-editor.component";
+import { LineupOverviewComponent } from "../pages/lineups/lineup-overview/lineup-overview.component";
 import { PathNotFoundComponent } from "../pages/not-found/path-not-found/path-not-found.component";
 import { ResourceNotFoundComponent } from "../pages/not-found/resource-not-found/resource-not-found.component";
 import { PeopleListComponent } from "../pages/people/people-list/people-list.component";
@@ -110,6 +111,16 @@ const routes: Routes = [
     path: getPathForRoute(StaticPath.allLineupsList),
     component: AllLineupsListComponent,
     canActivate: [AdminAuthGuard],
+  },
+  {
+    path: PathTemplate.lineupOverview,
+    component: LineupOverviewComponent,
+    canActivate: [UserAuthGuard],
+  },
+  {
+    path: PathTemplate.lineupEdit,
+    component: LineupEditorComponent,
+    canActivate: [UserAuthGuard],
   },
   { path: "**", component: PathNotFoundComponent },
 ];

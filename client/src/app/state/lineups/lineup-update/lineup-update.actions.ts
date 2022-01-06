@@ -1,4 +1,5 @@
 import { createAction, props } from "@ngrx/store";
+import { LineupOverview } from "src/app/api/model/lineupOverview";
 import { Person } from "src/app/api/model/person";
 import { PersonWithPhotoUrl } from "../../../utils/PersonWithPhotoUrl";
 
@@ -7,9 +8,9 @@ export const loadLineup = createAction(
   props<{ lineupId: number }>()
 );
 
-export const lineupPeopleLoaded = createAction(
+export const lineupLoaded = createAction(
   "[Lineup update] people loaded",
-  props<{ people: Person[] }>()
+  props<{ lineup: LineupOverview; people: Person[] }>()
 );
 
 export const lineupPeoplePhotosLoaded = createAction(

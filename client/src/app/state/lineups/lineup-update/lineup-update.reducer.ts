@@ -2,7 +2,7 @@ import { createReducer, on } from "@ngrx/store";
 
 import {
   loadLineup,
-  lineupPeopleLoaded,
+  lineupLoaded,
   lineupPeoplePhotosLoaded,
   removePersonFromLineup,
   initializeLineup,
@@ -11,13 +11,18 @@ import {
 import { adapter } from "./lineup-update.selectors";
 import { LineupUpdateState } from "./lineup-update.state";
 
-export const initialState: LineupUpdateState = adapter.getInitialState();
+export const initialState: LineupUpdateState = {
+  ...adapter.getInitialState(),
+  lineup: undefined,
+};
 
 export const lineupUpdateReducer = createReducer(
   initialState,
   on(initializeLineup, () => initialState),
   on(loadLineup, () => initialState),
-  on(lineupPeopleLoaded, (state, { people }) => adapter.setAll(people, state)),
+  on(lineupLoaded, (state, { lineup, people }) =>
+    adapter.setAll(people, { ...state, lineup })
+  ),
   on(lineupPeoplePhotosLoaded, (state, { people }) =>
     adapter.setAll(people, state)
   ),

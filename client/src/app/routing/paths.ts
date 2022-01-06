@@ -21,6 +21,8 @@ export enum PathTemplate {
   userSettings = "users/:userId/settings",
   personOverview = "people/:personId",
   personEdit = "people/:personId/edit",
+  lineupOverview = "lineups/:lineupId",
+  lineupEdit = "lineups/:lineupId/edit",
 }
 
 export class DynamicPath {
@@ -38,5 +40,13 @@ export class DynamicPath {
 
   public static personEdit(personId: number): string {
     return `/people/${personId}/edit`;
+  }
+
+  public static lineupOverview(lineupId: number): string {
+    return `/lineups/${lineupId}`;
+  }
+
+  public static lineupEdit(lineupId: number): string {
+    return `/lineups/${lineupId}/edit`;
   }
 }

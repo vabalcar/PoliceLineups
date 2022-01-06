@@ -7,9 +7,9 @@ import { BlobsService } from "src/app/services/blobs/blobs.service";
 
 import { convertToLocalDateTime } from "../../utils/date.utils";
 import { catchBeError } from "../../utils/errors.utils";
-import { pick } from "../../utils/object.utils";
+import { omit, pick } from "../../utils/object.utils";
 import {
-  lineupPeopleLoaded,
+  lineupLoaded,
   lineupPeoplePhotosLoaded,
   loadLineup,
   newLineupSaved,
@@ -25,7 +25,13 @@ export class LineupUpdateEffects {
       exhaustMap((action) =>
         this.api.getLineup(action.lineupId).pipe(
           map((response) =>
-            lineupPeopleLoaded({
+            lineupLoaded({
+              lineup: {
+                ...omit(response, "people"),
+                lastEditDateTime: convertToLocalDateTime(
+                  response.lastEditDateTime
+                ),
+              },
               people: response.people.map((person) => ({
                 ...person,
                 birthDate: convertToLocalDateTime(person.birthDate),
@@ -40,7 +46,7 @@ export class LineupUpdateEffects {
 
   lineupPeopleLoaded$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(lineupPeopleLoaded),
+      ofType(lineupLoaded),
       mergeMap((action) =>
         this.blobs
           .getPhotos(action.people)

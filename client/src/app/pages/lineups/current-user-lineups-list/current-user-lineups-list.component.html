@@ -21,6 +21,7 @@
       mat-row
       *matRowDef="let lineup; columns: displayedTableColumns"
       class="clickable-row"
+      routerLink="{{ dynamicPath.lineupOverview(lineup.lineupId) }}"
     ></tr>
   </table>
 </div>
