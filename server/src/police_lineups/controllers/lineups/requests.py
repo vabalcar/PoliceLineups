@@ -7,6 +7,8 @@ from police_lineups.controllers.utils import Responses
 from police_lineups.db import DbLineup, DbLineupPerson
 from police_lineups.singletons import Context
 
+from .utils import owner_auth_guard
+
 
 def add_lineup(body):
     if connexion.request.is_json:
@@ -33,6 +35,8 @@ def update_lineup(body, lineup_id):
     if lineup is None:
         return Responses.NOT_FOUND
 
+    owner_auth_guard(lineup)
+
     DbLineup.update(
         {DbLineup.name: body.name if body.name is not None else lineup.name,
          DbLineup.last_edit_date_time: datetime.utcnow()}).where(
@@ -52,6 +56,8 @@ def remove_lineup(lineup_id):
     lineup: DbLineup = DbLineup.get_or_none(lineup_id)
     if lineup is None:
         return Responses.NOT_FOUND
+
+    owner_auth_guard(lineup)
 
     DbLineupPerson.delete().where(DbLineupPerson.lineup_id == lineup_id).execute()
     DbLineup.delete_by_id(lineup_id)

@@ -1,12 +1,12 @@
 from typing import List
 
-from werkzeug.exceptions import Unauthorized
-
 from swagger_server.models import Lineup, Person
 
 from police_lineups.controllers.utils.responses import Responses
 from police_lineups.db import DbLineup, DbLineupPerson, DbPerson, DbUser
 from police_lineups.singletons import Context
+
+from .utils import owner_auth_guard
 
 
 def get_lineups():
@@ -32,8 +32,7 @@ def get_lineup(lineup_id):
     if db_lineup is None:
         return Responses.NOT_FOUND
 
-    if not Context().user.is_admin and db_lineup.owner_id != Context().user.user_id:
-        raise Unauthorized
+    owner_auth_guard(db_lineup)
 
     lineup_people: List[Person] = [
         Person(
