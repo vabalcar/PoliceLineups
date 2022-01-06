@@ -14,7 +14,7 @@ def add_lineup(body):
 
     new_lineup = DbLineup.create(
         name=body.name,
-        last_edit_date_time=datetime.now(),
+        last_edit_date_time=datetime.utcnow(),
         owner_id=Context().user.user_id)
 
     for person in body.people:
@@ -33,9 +33,10 @@ def update_lineup(body, lineup_id):
     if lineup is None:
         return Responses.NOT_FOUND
 
-    if body.name is not None:
-        DbLineup.update({DbLineup.name: body.name}
-                        ).where(DbLineup.lineup_id == lineup_id).execute()
+    DbLineup.update(
+        {DbLineup.name: body.name if body.name is not None else lineup.name,
+         DbLineup.last_edit_date_time: datetime.utcnow()}).where(
+        DbLineup.lineup_id == lineup_id).execute()
 
     if body.people is not None:
         DbLineupPerson.delete().where(DbLineupPerson.lineup_id == lineup_id).execute()

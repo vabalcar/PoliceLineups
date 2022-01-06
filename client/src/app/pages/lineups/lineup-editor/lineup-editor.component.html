@@ -120,7 +120,8 @@
           color="accent"
           [disabled]="!lineupPeople?.length || isProblemWithLineupName()"
           (click)="
-            editingExistingLineup ? saveExistingLineup() : saveNewLineup()
+            editingExistingLineup ? saveExistingLineup() : saveNewLineup();
+            lineupNameValidation.markAsPristine()
           "
         >
           Save
