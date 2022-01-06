@@ -1,7 +1,8 @@
 import { createReducer, on } from "@ngrx/store";
-import { personPhotoLoaded } from "../person-update/person-update.actions";
 
+import { personPhotoLoaded } from "../person-update/person-update.actions";
 import {
+  initPeopleList,
   loadPeopleList,
   peopleListLoaded,
   peoplePhotosLoaded,
@@ -13,6 +14,7 @@ export const initialState: PeopleListState = adapter.getInitialState();
 
 export const peopleListReducer = createReducer(
   initialState,
+  on(initPeopleList, () => initialState),
   on(loadPeopleList, () => initialState),
   on(peopleListLoaded, (state, { people }) => adapter.setAll(people, state)),
   on(personPhotoLoaded, (state, action) =>

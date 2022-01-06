@@ -24,7 +24,10 @@ import {
   selectLineupPeople,
   selectWerePeopleEditedAfterLoad,
 } from "src/app/state/lineups/lineup-update/lineup-update.selectors";
-import { loadPeopleList } from "src/app/state/people/people-list/people-list.actions";
+import {
+  initPeopleList,
+  loadPeopleList,
+} from "src/app/state/people/people-list/people-list.actions";
 import { selectPeopleList } from "src/app/state/people/people-list/people-list.selectors";
 import { PersonWithPhotoUrl } from "src/app/utils/PersonWithPhotoUrl";
 import { FullNameValidation } from "src/app/validations/full-name.validation";
@@ -126,6 +129,8 @@ export class LineupEditorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.store.dispatch(initPeopleList());
+
     if (this.router.url === StaticPath.newLineup) {
       this.lineupNameValidation.clearValue();
       this.store.dispatch(initializeLineup());
