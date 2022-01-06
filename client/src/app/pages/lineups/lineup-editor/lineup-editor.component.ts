@@ -151,9 +151,10 @@ export class LineupEditorComponent implements OnInit {
   searchForPeople(): void {
     this.store.dispatch(
       loadPeopleList({
-        fullName: this.fullNameValidation.value,
-        minAge: this.minAgeValidation.value,
-        maxAge: this.maxAgeValidation.value,
+        fullName: this.fullNameValidation.value || undefined,
+        minAge: this.minAgeValidation.value || undefined,
+        maxAge: this.maxAgeValidation.value || undefined,
+        nationality: this.nationalityValidation.value || undefined,
         withPhoto: true,
       })
     );
