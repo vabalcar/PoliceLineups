@@ -9,6 +9,7 @@ import { Person } from "src/app/api/model/person";
 import { FilterChipData } from "src/app/components/lineups/filter-chip-list/FilterChipData";
 import { StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
+import { selectLineupRecommendations } from "src/app/state/lineups/lineup-recommendations/lineup-recommendations.selectors";
 import {
   addPersonToLineup,
   deleteLineup,
@@ -51,6 +52,8 @@ export class LineupEditorComponent implements OnInit {
 
   readonly filteredPeople$: Observable<Array<PersonWithPhotoUrl>>;
 
+  readonly recommendedPeople$: Observable<Array<PersonWithPhotoUrl>>;
+
   readonly lineup$: Observable<LineupOverview>;
   readonly lineupIdSubject$: BehaviorSubject<number | undefined>;
   readonly lineupPeople$: Observable<Array<PersonWithPhotoUrl>>;
@@ -66,6 +69,8 @@ export class LineupEditorComponent implements OnInit {
     private store: Store<AppState>
   ) {
     this.filteredPeople$ = store.select(selectPeopleList);
+
+    this.recommendedPeople$ = store.select(selectLineupRecommendations);
 
     this.lineup$ = store.select(selectLineup);
     this.lineupIdSubject$ = new BehaviorSubject(undefined);

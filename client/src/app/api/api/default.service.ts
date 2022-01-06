@@ -405,6 +405,60 @@ export class DefaultService {
     }
 
     /**
+     * Returns a list of recommended people based on list of people in lineup
+     * 
+     * @param body list of people in lineup
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getLineupRecommendations(body: Array<Person>, observe?: 'body', reportProgress?: boolean): Observable<Array<Person>>;
+    public getLineupRecommendations(body: Array<Person>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Person>>>;
+    public getLineupRecommendations(body: Array<Person>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Person>>>;
+    public getLineupRecommendations(body: Array<Person>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling getLineupRecommendations.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (JwtAuthUser) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<Array<Person>>('post',`${this.basePath}/lineups/recommendations`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Returns a list of lineups for all users
      * 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

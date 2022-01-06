@@ -71,6 +71,7 @@ import { NotificationsService } from "./services/notifications/notifications.ser
 import { AppEffects } from "./state/app.effects";
 import { reducers } from "./state/app.reducer";
 import { AuthEffects } from "./state/auth/auth.effects";
+import { LineupRecommendationsEffects } from "./state/lineups/lineup-recommendations/lineup-recommendations.effects";
 import { LineupUpdateEffects } from "./state/lineups/lineup-update/lineup-update.effects";
 import { LineupsListEffects } from "./state/lineups/lineups-list/lineups-list.effects";
 import { PeopleListEffects } from "./state/people/people-list/people-list.effects";
@@ -170,6 +171,7 @@ import { UsersListEffects } from "./state/users/users-list/users-list.effects";
       PeopleListEffects,
       LineupUpdateEffects,
       LineupsListEffects,
+      LineupRecommendationsEffects,
     ]),
 
     ServiceWorkerModule.register("ngsw-worker.js", {

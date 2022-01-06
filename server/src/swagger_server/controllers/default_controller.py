@@ -100,6 +100,21 @@ def get_lineup(lineup_id):  # noqa: E501
     return 'do some magic!'
 
 
+def get_lineup_recommendations(body):  # noqa: E501
+    """Returns a list of recommended people based on list of people in lineup
+
+     # noqa: E501
+
+    :param body: list of people in lineup
+    :type body: list | bytes
+
+    :rtype: List[Person]
+    """
+    if connexion.request.is_json:
+        body = [Person.from_dict(d) for d in connexion.request.get_json()]  # noqa: E501
+    return 'do some magic!'
+
+
 def get_lineups():  # noqa: E501
     """Returns a list of lineups for all users
 

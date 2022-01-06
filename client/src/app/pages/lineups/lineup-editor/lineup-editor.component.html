@@ -135,6 +135,36 @@
           Delete lineup
         </button>
       </ng-container>
+      <ng-container *ngrxLet="recommendedPeople$ as recommendedPeople">
+        <h2 *ngIf="recommendedPeople?.length" class="mat-title">
+          Recommendations
+        </h2>
+        <div fxLayout="row wrap" fxLayoutGap="16px">
+          <div *ngFor="let person of recommendedPeople">
+            <ng-container *ngrxLet="isInLineup(person) as isPersonInLineup">
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>{{ person.fullName }}</mat-card-title>
+                  <mat-icon *ngIf="isPersonInLineup">check_circle</mat-icon>
+                </mat-card-header>
+                <mat-card-content>
+                  <img [src]="person.photoUrl" height="150px" />
+                </mat-card-content>
+                <mat-card-actions>
+                  <button
+                    mat-button
+                    color="accent"
+                    [disabled]="isPersonInLineup"
+                    (click)="addPersonToLineup(person)"
+                  >
+                    Add to lineup
+                  </button>
+                </mat-card-actions>
+              </mat-card>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </mat-step>
 </mat-horizontal-stepper>

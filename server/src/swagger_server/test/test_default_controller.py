@@ -99,6 +99,20 @@ class TestDefaultController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
+    def test_get_lineup_recommendations(self):
+        """Test case for get_lineup_recommendations
+
+        Returns a list of recommended people based on list of people in lineup
+        """
+        body = [Person()]
+        response = self.client.open(
+            '/lineups/recommendations',
+            method='POST',
+            data=json.dumps(body),
+            content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
     def test_get_lineups(self):
         """Test case for get_lineups
 
