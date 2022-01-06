@@ -35,4 +35,25 @@ export const saveNewLineup = createAction(
   props<{ name: string }>()
 );
 
-export const newLineupSaved = createAction("[Lineup update] new lineup saved");
+export const lineupSavingSuccessful = createAction(
+  "[Lineup update] lineup saving successful"
+);
+
+export const lineupSavingFailed = createAction(
+  "[Lineup update] lineup saving failed",
+  props<{ error: string }>()
+);
+
+export const deleteLineup = createAction(
+  "[Lineup update] delete lineup",
+  props<{ lineupId: number }>()
+);
+
+export const lineupDeletionSuccessful = createAction(
+  "[Lineup update] lineup deletion successful"
+);
+
+export const lineupDeletionFailed = createAction(
+  "[Lineup update] lineup deletion failed",
+  props<{ error: string }>()
+);

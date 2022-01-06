@@ -33,4 +33,11 @@ def update_lineup(body, lineup_id):
 
 
 def remove_lineup(lineup_id):
+    lineup: DbLineup = DbLineup.get_or_none(lineup_id)
+    if lineup is None:
+        return Responses.NOT_FOUND
+
+    DbLineupPerson.delete().where(DbLineupPerson.lineup_id == lineup_id).execute()
+    DbLineup.delete_by_id(lineup_id)
+
     return Responses.SUCCESS

@@ -1,5 +1,8 @@
-<h1 class="mat-headline">New lineup</h1>
-<mat-horizontal-stepper #stepper>
+<h1 class="mat-headline">Lineup editor</h1>
+<mat-horizontal-stepper
+  #stepper
+  [selectedIndex]="selectedStepSubject$ | ngrxPush"
+>
   <mat-step>
     <ng-template matStepLabel>People search</ng-template>
     <div fxLayout="column" fxLayoutGap="16px">
@@ -71,7 +74,7 @@
                     color="warn"
                     (click)="removePersonFromLineup(person)"
                   >
-                    Remove from lineup
+                    Remove
                   </button>
                 </mat-card-actions>
               </mat-card>
@@ -81,7 +84,7 @@
       </ng-container>
     </div>
   </mat-step>
-  <mat-step>
+  <mat-step *ngrxLet="lineupIdSubject$ as editingExistingLineup">
     <ng-template matStepLabel>Lineup</ng-template>
     <div fxLayout="column" fxLayoutGap="16px">
       <ng-container *ngrxLet="lineupPeople$ as lineupPeople">
@@ -122,6 +125,14 @@
           (click)="saveNewLineup()"
         >
           Save
+        </button>
+        <button
+          *ngIf="editingExistingLineup"
+          mat-button
+          color="warn"
+          (click)="deleteLineup()"
+        >
+          Delete lineup
         </button>
       </ng-container>
     </div>

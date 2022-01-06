@@ -1,9 +1,12 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { exhaustMap, map, mergeMap } from "rxjs/operators";
+import { exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { DefaultService } from "src/app/api/api/default.service";
+import { StaticPath } from "src/app/routing/paths";
 import { BlobsService } from "src/app/services/blobs/blobs.service";
+import { NotificationsService } from "src/app/services/notifications/notifications.service";
 
 import { convertToLocalDateTime } from "../../utils/date.utils";
 import { catchBeError } from "../../utils/errors.utils";
@@ -12,8 +15,12 @@ import {
   lineupLoaded,
   lineupPeoplePhotosLoaded,
   loadLineup,
-  newLineupSaved,
+  lineupSavingSuccessful as lineupSavingSuccessful,
+  deleteLineup,
   saveNewLineup,
+  lineupDeletionSuccessful,
+  lineupDeletionFailed,
+  lineupSavingFailed as lineupSavingFailed,
 } from "./lineup-update.actions";
 import { selectLineupPeople } from "./lineup-update.selectors";
 
@@ -73,15 +80,97 @@ export class LineupUpdateEffects {
       mergeMap(([action, peopleWithIdOnly]) =>
         this.api
           .addLineup({ name: action.name, people: peopleWithIdOnly })
-          .pipe(map((_) => newLineupSaved()))
+          .pipe(
+            map((response) =>
+              !response.error
+                ? lineupSavingSuccessful()
+                : lineupSavingFailed({ error: response.error })
+            ),
+            catchBeError()
+          )
       )
     )
+  );
+
+  lineupSavingSuccessful$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(lineupSavingSuccessful),
+        tap(() => this.notifications.showNotification("Lineup saved"))
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
+  lineupSavingFailed$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(lineupSavingFailed),
+        tap((action) =>
+          this.notifications.showNotification(
+            `Lineup saving failed: ${action.error}`
+          )
+        )
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
+  deleteLineup$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteLineup),
+      mergeMap((action) =>
+        this.api.removeLineup(action.lineupId).pipe(
+          map((response) =>
+            !response.error
+              ? lineupDeletionSuccessful()
+              : lineupDeletionFailed({ error: response.error })
+          ),
+          catchBeError()
+        )
+      )
+    )
+  );
+
+  lineupDeletionSuccessful$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(lineupDeletionSuccessful),
+        tap(() => this.router.navigateByUrl(StaticPath.currentUserLineupsList)),
+        tap(() =>
+          this.notifications.showNotification(
+            "Lineup has been deleted successfully"
+          )
+        )
+      ),
+    {
+      dispatch: false,
+    }
+  );
+
+  lineupDeletionFailed$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(lineupDeletionFailed),
+        tap((action) =>
+          this.notifications.showNotification(
+            `Lineup deletion failed: ${action.error}`
+          )
+        )
+      ),
+    {
+      dispatch: false,
+    }
   );
 
   constructor(
     private actions$: Actions,
     private api: DefaultService,
     private blobs: BlobsService,
-    private store: Store
+    private store: Store,
+    private router: Router,
+    private notifications: NotificationsService
   ) {}
 }

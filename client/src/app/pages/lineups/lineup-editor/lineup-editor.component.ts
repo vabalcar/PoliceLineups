@@ -1,17 +1,26 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { MatStepper } from "@angular/material/stepper";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
+import { LineupOverview } from "src/app/api/model/lineupOverview";
 import { Person } from "src/app/api/model/person";
 import { FilterChipData } from "src/app/components/lineups/filter-chip-list/FilterChipData";
+import { StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
 import {
   addPersonToLineup,
+  deleteLineup,
   initializeLineup,
+  loadLineup,
   removePersonFromLineup,
   saveNewLineup,
 } from "src/app/state/lineups/lineup-update/lineup-update.actions";
-import { selectLineupPeople } from "src/app/state/lineups/lineup-update/lineup-update.selectors";
+import {
+  selectLineup,
+  selectLineupPeople,
+} from "src/app/state/lineups/lineup-update/lineup-update.selectors";
 import { loadPeopleList } from "src/app/state/people/people-list/people-list.actions";
 import { selectPeopleList } from "src/app/state/people/people-list/people-list.selectors";
 import { PersonWithPhotoUrl } from "src/app/utils/PersonWithPhotoUrl";
@@ -20,10 +29,15 @@ import { LineupNameValidation } from "src/app/validations/lineups/lineup-name.va
 import { AgeValidation } from "src/app/validations/people/age.validation";
 import { NationalityValidation } from "src/app/validations/people/nationality.validation";
 
+import { isId } from "../../utils/validations.utils";
+
 @Component({
   templateUrl: "./lineup-editor.component.html",
+  styleUrls: ["./lineup-editor.component.css"],
 })
 export class LineupEditorComponent implements OnInit {
+  @ViewChild("stepper") stepper: MatStepper;
+
   readonly fullNameValidation: FullNameValidation;
   readonly minAgeValidation: AgeValidation;
   readonly maxAgeValidation: AgeValidation;
@@ -34,22 +48,39 @@ export class LineupEditorComponent implements OnInit {
   readonly filterChipsData: Array<FilterChipData>;
 
   readonly filteredPeople$: Observable<Array<PersonWithPhotoUrl>>;
+
+  readonly lineup$: Observable<LineupOverview>;
+  readonly lineupIdSubject$: BehaviorSubject<number | undefined>;
   readonly lineupPeople$: Observable<Array<PersonWithPhotoUrl>>;
-  readonly lineupPeopleSubject: BehaviorSubject<Array<PersonWithPhotoUrl>>;
+  readonly lineupPeopleSubject$: BehaviorSubject<Array<PersonWithPhotoUrl>>;
 
-  constructor(private store: Store<AppState>) {
+  readonly selectedStepSubject$: BehaviorSubject<number>;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private store: Store<AppState>
+  ) {
     this.filteredPeople$ = store.select(selectPeopleList);
-    this.lineupPeople$ = store.select(selectLineupPeople);
 
-    this.lineupPeopleSubject = new BehaviorSubject([]);
-    this.lineupPeople$.subscribe(this.lineupPeopleSubject);
+    this.lineup$ = store.select(selectLineup);
+    this.lineupIdSubject$ = new BehaviorSubject(undefined);
+    this.lineup$
+      .pipe(map((lineup) => lineup?.lineupId))
+      .subscribe(this.lineupIdSubject$);
+
+    this.lineupPeople$ = store.select(selectLineupPeople);
+    this.lineupPeopleSubject$ = new BehaviorSubject([]);
+    this.lineupPeople$.subscribe(this.lineupPeopleSubject$);
 
     this.fullNameValidation = new FullNameValidation();
     this.minAgeValidation = new AgeValidation();
     this.maxAgeValidation = new AgeValidation();
     this.nationalityValidation = new NationalityValidation();
 
-    this.lineupNameValidation = new LineupNameValidation();
+    this.lineupNameValidation = new LineupNameValidation(
+      this.lineup$.pipe(map((lineup) => lineup?.name))
+    );
 
     this.filterChipsData = [
       {
@@ -77,10 +108,44 @@ export class LineupEditorComponent implements OnInit {
         ),
       },
     ];
+
+    this.selectedStepSubject$ = new BehaviorSubject(0);
   }
 
   ngOnInit(): void {
-    this.store.dispatch(initializeLineup());
+    if (this.router.url === StaticPath.newLineup) {
+      this.lineupNameValidation.clearValue();
+      this.store.dispatch(initializeLineup());
+      return;
+    }
+
+    this.selectedStepSubject$.next(1);
+
+    this.route.paramMap
+      .pipe(
+        map((params) =>
+          params.has("lineupId") ? +params.get("lineupId") : undefined
+        )
+      )
+      .subscribe((targetLineupId) =>
+        isId(targetLineupId)
+          ? this.store.dispatch(
+              loadLineup({
+                lineupId: targetLineupId,
+              })
+            )
+          : this.router.navigateByUrl(StaticPath.pathNotFound)
+      );
+  }
+
+  isInLineup(person: Person): Observable<boolean> {
+    return of(
+      this.lineupPeopleSubject$
+        .getValue()
+        .findIndex(
+          (personInLineup) => personInLineup.personId === person.personId
+        ) !== -1
+    );
   }
 
   searchForPeople(): void {
@@ -108,13 +173,9 @@ export class LineupEditorComponent implements OnInit {
     );
   }
 
-  isInLineup(person: Person): Observable<boolean> {
-    return of(
-      this.lineupPeopleSubject
-        .getValue()
-        .findIndex(
-          (personInLineup) => personInLineup.personId === person.personId
-        ) !== -1
+  deleteLineup(): void {
+    this.store.dispatch(
+      deleteLineup({ lineupId: this.lineupIdSubject$.getValue() })
     );
   }
 }

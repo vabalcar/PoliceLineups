@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { filter, map } from "rxjs/operators";
-import { Lineup } from "src/app/api/model/lineup";
+import { LineupOverview } from "src/app/api/model/lineupOverview";
 import { DynamicPath, StaticPath } from "src/app/routing/paths";
 import { AppState } from "src/app/state/app.state";
 import { loadLineup } from "src/app/state/lineups/lineup-update/lineup-update.actions";
@@ -12,6 +12,7 @@ import {
   selectLineupPeople,
 } from "src/app/state/lineups/lineup-update/lineup-update.selectors";
 import { PersonWithPhotoUrl } from "src/app/utils/PersonWithPhotoUrl";
+
 import { isId } from "../../utils/validations.utils";
 
 @Component({
@@ -21,7 +22,7 @@ import { isId } from "../../utils/validations.utils";
 export class LineupOverviewComponent implements OnInit {
   readonly dynamicPath = DynamicPath;
 
-  readonly lineup$: Observable<Lineup>;
+  readonly lineup$: Observable<LineupOverview>;
   readonly lineupPeople$: Observable<Array<PersonWithPhotoUrl>>;
 
   constructor(
