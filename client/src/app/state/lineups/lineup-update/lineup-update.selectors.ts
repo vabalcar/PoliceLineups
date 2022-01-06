@@ -27,3 +27,8 @@ export const selectLineupPeople = createSelector(
   selectLineupUpdateFeature,
   selectAll
 );
+
+export const selectWerePeopleEditedAfterLoad = createSelector(
+  selectLineupUpdateFeature,
+  (state) => state.werePeopleEditedAfterLoad
+);

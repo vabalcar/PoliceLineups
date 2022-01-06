@@ -35,8 +35,14 @@ export const saveNewLineup = createAction(
   props<{ name: string }>()
 );
 
+export const saveExistingLineup = createAction(
+  "[Lineup update] save existing lineup",
+  props<{ lineupId: number; name: string }>()
+);
+
 export const lineupSavingSuccessful = createAction(
-  "[Lineup update] lineup saving successful"
+  "[Lineup update] lineup saving successful",
+  props<{ newLineup?: boolean }>()
 );
 
 export const lineupSavingFailed = createAction(

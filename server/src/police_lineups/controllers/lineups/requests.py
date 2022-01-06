@@ -29,6 +29,21 @@ def update_lineup(body, lineup_id):
     if connexion.request.is_json:
         body = Lineup.from_dict(connexion.request.get_json())
 
+    lineup: DbLineup = DbLineup.get_or_none(lineup_id)
+    if lineup is None:
+        return Responses.NOT_FOUND
+
+    if body.name is not None:
+        DbLineup.update({DbLineup.name: body.name}
+                        ).where(DbLineup.lineup_id == lineup_id).execute()
+
+    if body.people is not None:
+        DbLineupPerson.delete().where(DbLineupPerson.lineup_id == lineup_id).execute()
+        for person in body.people:
+            DbLineupPerson.create(
+                person_id=person.person_id,
+                lineup_id=lineup_id)
+
     return Responses.SUCCESS
 
 

@@ -15,11 +15,13 @@ import {
   initializeLineup,
   loadLineup,
   removePersonFromLineup,
+  saveExistingLineup,
   saveNewLineup,
 } from "src/app/state/lineups/lineup-update/lineup-update.actions";
 import {
   selectLineup,
   selectLineupPeople,
+  selectWerePeopleEditedAfterLoad,
 } from "src/app/state/lineups/lineup-update/lineup-update.selectors";
 import { loadPeopleList } from "src/app/state/people/people-list/people-list.actions";
 import { selectPeopleList } from "src/app/state/people/people-list/people-list.selectors";
@@ -53,6 +55,8 @@ export class LineupEditorComponent implements OnInit {
   readonly lineupIdSubject$: BehaviorSubject<number | undefined>;
   readonly lineupPeople$: Observable<Array<PersonWithPhotoUrl>>;
   readonly lineupPeopleSubject$: BehaviorSubject<Array<PersonWithPhotoUrl>>;
+  readonly lineupPeopleEdited$: Observable<boolean>;
+  readonly lineupPeopleEditedSubject$: BehaviorSubject<boolean>;
 
   readonly selectedStepSubject$: BehaviorSubject<number>;
 
@@ -72,6 +76,10 @@ export class LineupEditorComponent implements OnInit {
     this.lineupPeople$ = store.select(selectLineupPeople);
     this.lineupPeopleSubject$ = new BehaviorSubject([]);
     this.lineupPeople$.subscribe(this.lineupPeopleSubject$);
+
+    this.lineupPeopleEdited$ = store.select(selectWerePeopleEditedAfterLoad);
+    this.lineupPeopleEditedSubject$ = new BehaviorSubject(false);
+    this.lineupPeopleEdited$.subscribe(this.lineupPeopleEditedSubject$);
 
     this.fullNameValidation = new FullNameValidation();
     this.minAgeValidation = new AgeValidation();
@@ -174,9 +182,36 @@ export class LineupEditorComponent implements OnInit {
     );
   }
 
+  saveExistingLineup(): void {
+    this.store.dispatch(
+      saveExistingLineup({
+        lineupId: this.lineupIdSubject$.getValue(),
+        name: this.lineupNameValidation.value,
+      })
+    );
+  }
+
   deleteLineup(): void {
     this.store.dispatch(
       deleteLineup({ lineupId: this.lineupIdSubject$.getValue() })
+    );
+  }
+
+  isProblemWithLineupName(): boolean {
+    return this.lineupIdSubject$.getValue()
+      ? this.isSaveButtonDisabledForLineupEditation()
+      : this.isSaveButtonDisabledForLineupCreation();
+  }
+
+  private isSaveButtonDisabledForLineupCreation(): boolean {
+    return this.lineupNameValidation.pristineOrInvalid;
+  }
+
+  private isSaveButtonDisabledForLineupEditation(): boolean {
+    return (
+      this.lineupNameValidation.errorPublisher.isErrorState() ||
+      (this.lineupNameValidation.pristine &&
+        !this.lineupPeopleEditedSubject$.getValue())
     );
   }
 }

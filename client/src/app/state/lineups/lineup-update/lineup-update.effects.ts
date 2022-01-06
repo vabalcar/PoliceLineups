@@ -21,6 +21,7 @@ import {
   lineupDeletionSuccessful,
   lineupDeletionFailed,
   lineupSavingFailed as lineupSavingFailed,
+  saveExistingLineup,
 } from "./lineup-update.actions";
 import { selectLineupPeople } from "./lineup-update.selectors";
 
@@ -83,7 +84,29 @@ export class LineupUpdateEffects {
           .pipe(
             map((response) =>
               !response.error
-                ? lineupSavingSuccessful()
+                ? lineupSavingSuccessful({ newLineup: true })
+                : lineupSavingFailed({ error: response.error })
+            ),
+            catchBeError()
+          )
+      )
+    )
+  );
+
+  saveExistingLineup$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(saveExistingLineup),
+      concatLatestFrom(() => this.store.select(selectLineupPeople)),
+      exhaustMap(([action, lineupPeople]) =>
+        this.api
+          .updateLineup(
+            { name: action.name, people: lineupPeople },
+            action.lineupId
+          )
+          .pipe(
+            map((response) =>
+              !response.error
+                ? lineupSavingSuccessful({ newLineup: false })
                 : lineupSavingFailed({ error: response.error })
             ),
             catchBeError()
@@ -96,7 +119,12 @@ export class LineupUpdateEffects {
     () =>
       this.actions$.pipe(
         ofType(lineupSavingSuccessful),
-        tap(() => this.notifications.showNotification("Lineup saved"))
+        tap(() => this.notifications.showNotification("Lineup saved")),
+        tap(
+          (action) =>
+            action.newLineup &&
+            this.router.navigateByUrl(StaticPath.currentUserLineupsList)
+        )
       ),
     {
       dispatch: false,

@@ -4,4 +4,5 @@ import { PersonWithPhotoUrl } from "src/app/utils/PersonWithPhotoUrl";
 
 export interface LineupUpdateState extends EntityState<PersonWithPhotoUrl> {
   lineup: LineupOverview;
+  werePeopleEditedAfterLoad: boolean;
 }

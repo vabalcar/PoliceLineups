@@ -23,6 +23,10 @@ def update_person(body, person_id):
     if connexion.request.is_json:
         body = Person.from_dict(connexion.request.get_json())
 
+    person: DbPerson = DbPerson.get_or_none(person_id)
+    if person is None:
+        return Responses.NOT_FOUND
+
     DbPerson.update(**clear_model_update(body)
                     ).where(DbPerson.person_id == person_id).execute()
 
