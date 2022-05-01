@@ -2,5 +2,4 @@
 
 /.venv_linux
 /.venv_windows
-/.vscode/settings.json
 /dist
