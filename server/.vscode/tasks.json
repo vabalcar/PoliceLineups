@@ -65,10 +65,10 @@
       "label": "Run DB",
       "type": "shell",
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}/../db"
       },
       "command": "pwsh",
-      "args": ["-NoLogo", "-File", "run-db.ps1", "-Debug"],
+      "args": ["-NoLogo", "-File", "run.ps1", "-Debug"],
       "group": "build",
       "presentation": {
         "reveal": "always",

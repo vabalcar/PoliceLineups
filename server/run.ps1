@@ -9,7 +9,7 @@ if (!$isConfigurationValid) {
     exit
 }
 
-$isDbRunning = & (Join-Path '.' 'run-db.ps1') -Debug:$Debug -NoConfigurationValidation -PassThru
+$isDbRunning = & (Join-Path '..' 'db' 'run.ps1') -Debug:$Debug -NoConfigurationValidation -PassThru
 if (!$isDbRunning) {
     Write-Host -ForegroundColor Red "DB is not running, so the server can not be run"
     exit
