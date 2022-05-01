@@ -1,5 +1,5 @@
 from peewee import Database
-from playhouse.pool import PooledMySQLDatabase
+from playhouse.pool import PooledPostgresqlDatabase
 
 from .configuration import Configuration
 from .utils import Singleton
@@ -12,7 +12,7 @@ class DB(metaclass=Singleton):
         return self._db
 
     def __init__(self) -> None:
-        self._db = PooledMySQLDatabase(
+        self._db = PooledPostgresqlDatabase(
             host=Configuration().db.host,
             user=Configuration().db.user,
             password=Configuration().db.password,

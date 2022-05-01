@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:14-alpine
+    restart: always
+    ports:
+      - ${POLICE_LINEUPS_DB_PORT}:5432
+    environment:
+      - POSTGRES_USER=${POLICE_LINEUPS_DB_USER}
+      - POSTGRES_PASSWORD=${POLICE_LINEUPS_DB_PASSWORD}
+      - POSTGRES_DB=${POLICE_LINEUPS_DB_NAME}
+  pgweb:
+    image: sosedoff/pgweb
+    depends_on:
+      - postgres
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - DATABASE_URL=postgres://${POLICE_LINEUPS_DB_USER}:${POLICE_LINEUPS_DB_PASSWORD}@postgres:5432/${POLICE_LINEUPS_DB_NAME}?sslmode=disable

@@ -1,5 +1,4 @@
 peewee~=3.14.4
-PyMySQL~=1.0.2
-PyMySQL[rsa]
+psycopg2~=2.9.3
 python-jose~=3.3.0
 waitress~=2.0.0
