@@ -1,6 +1,6 @@
 name;executable;installWebsite
 pslist;rkill;https://man.archlinux.org/man/pslist.1.en
-Python;python3.9;https://www.python.org/downloads/
+Python;python3.10;https://www.python.org/downloads/
 service;service;https://linux.die.net/man/8/service
 stty;stty;https://linux.die.net/man/1/stty
 sudo;sudo;https://linux.die.net/man/8/sudo

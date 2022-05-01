@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.10
 from werkzeug.serving import WSGIRequestHandler
 
 from police_lineups.singletons import Configuration, Server

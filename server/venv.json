@@ -1,4 +1,6 @@
 {
+  "globalPythonExecutableOnWindows": "python",
+  "globalPythonExecutableOnLinux": "python3.10",
   "nameOnLinux": ".venv_linux",
   "nameOnWindows": ".venv_windows",
   "requirementsLockFile": "requirements.lock"

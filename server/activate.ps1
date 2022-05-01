@@ -5,8 +5,8 @@ $activationScript = $IsWindows ? (Join-Path '.' $venvName 'Scripts' 'Activate.ps
 
 if (!(Test-Path -PathType Leaf $activationScript)) {
     "Creating virtual environment '$venvName'..." | Out-Host
-    $pythonExecutable = $IsWindows ? 'python' : 'python3.9'
-    & $pythonExecutable -m venv $venvName
+    $globalPythonExecutable = $IsWindows ? $venvInfo.globalPythonExecutableOnWindows : $venvInfo.globalPythonExecutableOnLinux
+    & $globalPythonExecutable -m venv $venvName
 }
 
 & $activationScript
