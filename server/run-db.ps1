@@ -19,22 +19,35 @@ if (!$isDbConfigurationValid) {
 'Running DB...' | Out-Host
 
 $dbConfiguration = Get-Content $dbConfigurationFile | ConvertFrom-Json
-$service = $dbConfiguration.service
+$serviceName = $dbConfiguration.service
+$isServiceRunning = $false
 
 if ($IsWindows) {
-    $dbStatus = (Get-Service $service).Status
+    $service = Get-Service $serviceName -ErrorAction SilentlyContinue
+    if ($null -eq $service) {
+        "Service $serviceName doesn't exist" | Out-Host
+        if ($PassThru) {
+            return $false
+        }
+        exit
+    }
 
-    if ($dbStatus -ne 'Running') {
+    $dbStatus = $service.Status
+    $isServiceRunning = $dbStatus -eq 'Running'
+
+    if (!$isServiceRunning) {
         Start-Process -Wait -Verb RunAs -FilePath 'pwsh' -Args '-NoLogo', '-Command', "Start-Service $service"
         $dbStatus = (Get-Service $service).Status
+        $isServiceRunning = $dbStatus -eq 'Running'
     }
 
     "DB (service $service) is $($dbStatus.ToString().ToLower())" | Out-Host
 }
 else {
-    & sudo service $service start
+    & sudo service $serviceName start
+    $isServiceRunning = $true
 }
 
 if ($PassThru) {
-    return $true
+    return $isServiceRunning
 }
