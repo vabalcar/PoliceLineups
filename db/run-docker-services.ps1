@@ -32,7 +32,14 @@ try {
     $env:POLICE_LINEUPS_DB_USER = $dbConfiguration.user
     $env:POLICE_LINEUPS_DB_PASSWORD = $dbConfiguration.password
 
-    Start-Process -Wait -NoNewWindow -WorkingDirectory $PSScriptRoot -Path 'docker' -ArgumentList 'compose', '--file', 'docker-compose.yaml', 'up', '--wait'
+    $dockerComposeArgs = @(
+        'compose',
+        '--file', 'docker-compose.yaml',
+        '--profile', ($Debug ? 'debug' : 'release'),
+        'up',
+        '--wait'
+    )
+    Start-Process -Wait -NoNewWindow -WorkingDirectory $PSScriptRoot -Path 'docker' -ArgumentList $dockerComposeArgs
 }
 finally {
     @(
