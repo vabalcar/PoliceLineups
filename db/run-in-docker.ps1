@@ -34,8 +34,8 @@ try {
 
     $dockerComposeArgs = @(
         'compose',
-        '--file', 'docker-compose.yaml',
-        '--profile', ($Debug ? 'debug' : 'release'),
+        '--file', 'compose.yaml',
+        '--profile', ($Debug ? 'debug' : 'production'),
         'up',
         '--wait'
     )

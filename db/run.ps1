@@ -16,7 +16,7 @@ $commonArgs = @{
 
 switch ($Mode) {
     'Docker' {
-        $result = & (Join-Path $PSScriptRoot 'run-docker-services.ps1') @commonArgs
+        $result = & (Join-Path $PSScriptRoot 'run-in-docker.ps1') @commonArgs
     }
     'Service' {
         $result = & (Join-Path $PSScriptRoot 'run-local-db-service.ps1') @commonArgs
