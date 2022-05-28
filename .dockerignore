@@ -1,0 +1,10 @@
+**/.vscode
+**/.gitattributes
+
+**/__pycache__
+**/.venv_linux
+**/.venv_windows
+**/dist
+**/requirements.lock
+
+/server/blobs/**/*

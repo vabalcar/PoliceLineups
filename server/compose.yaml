@@ -1,0 +1,23 @@
+name: police-lineups
+
+services:
+  server:
+    container_name: server
+    build:
+      context: ..
+      dockerfile: server/Dockerfile
+    profiles:
+      - debug
+      - production
+    restart: unless-stopped
+    ports:
+      - ${POLICE_LINEUPS_SERVER_PORT:-8000}:${POLICE_LINEUPS_SERVER_PORT:-8000}
+    volumes:
+      - blobs:/app/server/blobs
+
+networks:
+  default:
+    name: police-lineups-network
+
+volumes:
+  blobs:

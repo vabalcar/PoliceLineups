@@ -1,4 +1,4 @@
 peewee~=3.14.4
-psycopg2~=2.9.3
+psycopg2-binary~=2.9.3
 python-jose~=3.3.0
 waitress~=2.0.0
